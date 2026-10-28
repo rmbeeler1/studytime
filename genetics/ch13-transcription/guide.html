@@ -6,93 +6,289 @@
 <title>Genetics Ch 13: Transcription Study Guide</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#e9eef2; --surface:#ffffff; --ink:#15222c; --muted:#56656f; --line:#c9d3da; --soft:#dfe6eb;
-  --s-rna-structure:#1d5fa8; --s-rna-classes:#7a3eb1; --s-transcription-basics:#0e7c6b; --s-consensus-sequences:#b0306a; --s-bacterial-initiation:#c2410c; --s-bacterial-termination:#9a5b06; --s-eukaryotic-initiation:#4d7c0f; --s-eukaryotic-termination:#475569; 
-  --again:#b42318; --hard:#9a5b06; --good:#1d5fa8; --easy:#0e7c6b;
-  color-scheme: light;
-  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
-}
-@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
-  --bg:#0f1a22; --surface:#172530; --ink:#e4ebf0; --muted:#9aabb7; --line:#2c3d4a; --soft:#22323e;
-  --s-rna-structure:#7fb2ec; --s-rna-classes:#c4a1ea; --s-transcription-basics:#5fd0bc; --s-consensus-sequences:#f08cbc; --s-bacterial-initiation:#fb9a6c; --s-bacterial-termination:#e8b45c; --s-eukaryotic-initiation:#a8d46a; --s-eukaryotic-termination:#a8b6c8; 
-  --again:#f2867c; --hard:#e8b45c; --good:#7fb2ec; --easy:#5fd0bc; color-scheme: dark; }}
-:root[data-theme="dark"]{
-  --bg:#0f1a22; --surface:#172530; --ink:#e4ebf0; --muted:#9aabb7; --line:#2c3d4a; --soft:#22323e;
-  --s-rna-structure:#7fb2ec; --s-rna-classes:#c4a1ea; --s-transcription-basics:#5fd0bc; --s-consensus-sequences:#f08cbc; --s-bacterial-initiation:#fb9a6c; --s-bacterial-termination:#e8b45c; --s-eukaryotic-initiation:#a8d46a; --s-eukaryotic-termination:#a8b6c8; 
-  --again:#f2867c; --hard:#e8b45c; --good:#7fb2ec; --easy:#5fd0bc; color-scheme: dark; }
+/* Study Time design tokens and components. Source of truth: _builder/design/DESIGN.md
+   Decks are self-contained pages, so builders inline this file rather than linking it.
+   Load the font in <head>:
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"> */
 
-html{scroll-padding-top:16px;scroll-behavior:smooth}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:"Barlow",-apple-system,"Segoe UI",Roboto,sans-serif;font-size:18px;line-height:1.6;-webkit-font-smoothing:antialiased}
-.wrap{max-width:760px;margin:0 auto;padding:20px 16px 56px}
-h1,h2,h3{font-family:"Barlow Condensed","Barlow",sans-serif;line-height:1.1}
-h1{font-size:2.5rem;margin:.35em 0 .1em;font-weight:700}
-.kicker{color:var(--muted);font-size:.85em;letter-spacing:.06em;text-transform:uppercase;font-weight:600}
-.sub{color:var(--muted);margin:0 0 1em}
-.nav{display:flex;gap:16px;flex-wrap:wrap;font-size:.85em}
-.nav a{color:var(--muted);text-decoration:none;border-bottom:1px solid var(--line)}
-.actions{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 6px}
-.btn{display:inline-block;padding:9px 14px;border-radius:10px;background:var(--ink);color:var(--surface);text-decoration:none;font-weight:600;font-size:.9em;border:0;font-family:inherit;cursor:pointer}
-.btn.alt{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
-.toc{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin:16px 0 8px}
-.toc h2{font-size:1.2rem;margin:0 0 8px}
-.toc ol{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:4px 16px}
-.toc a{display:flex;align-items:center;gap:8px;color:var(--ink);text-decoration:none;padding:3px 0}
-.toc a::before{content:"";width:10px;height:10px;border-radius:3px;background:var(--c);flex:none}
-section{--c:var(--ink);background:var(--surface);border:1px solid var(--line);border-top:6px solid var(--c);border-radius:18px;padding:6px 20px 18px;margin-top:18px}
-section>h2{font-size:1.8rem;margin:.55em 0 .3em;display:flex;align-items:baseline;gap:10px}
-section>h2 .n{color:var(--c);font-size:.75em}
-h3{font-size:1.25rem;margin:1.2em 0 .3em;color:var(--c)}
-p{margin:.5em 0}
-ul,ol{padding-left:1.3em;margin:.4em 0}
-li{margin:.2em 0}
-b,strong{font-weight:600}
-.term{font-weight:600;color:var(--c)}
-table{width:100%;border-collapse:collapse;margin:.7em 0;font-size:.92em}
-th,td{text-align:start;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
-th{font-family:"Barlow Condensed";font-size:1.05em;color:var(--muted);font-weight:600;border-bottom:2px solid var(--line)}
-.tablewrap{overflow-x:auto}
-.viz{margin:12px 0 4px}
+/* ---------- tokens: light ---------- */
+/* [data-theme] on any element scopes a theme to that subtree (used by preview.html). */
+:root,[data-theme="light"]{
+  /* surfaces */
+  --bg:#f6f8fc;            /* page: cool off-white */
+  --surface:#ffffff;       /* raised panels and cards */
+  --sunken:#eef2f8;        /* wells, inputs, progress tracks */
+  --soft:#eef2f8;          /* alias of --sunken; diagrams and decks use it */
+  --line:#e1e7f0;          /* hairlines and card borders */
+  --line-strong:#c9d3e1;   /* input borders, dividers that must be seen */
+  --guide:#d3dbe8;         /* dashed column guides */
+  /* text */
+  --ink:#0c2340;           /* headings, key numbers, diagram strokes */
+  --text:#425672;          /* body copy */
+  --muted:#5b6b82;         /* captions, meta, helper text */
+  --on-accent:#ffffff;     /* text on --accent fills */
+  /* brand */
+  --accent:#5332e6;        /* violet: links, primary buttons, eyebrow labels */
+  --accent-hover:#4322cf;
+  --accent-tint:#efecfe;   /* violet wash behind selected items */
+  --sky:#0aa5f0;           /* bright sky: bands, fills, illustration only (not text) */
+  --sky-ink:#0068a8;       /* sky as text */
+  --sky-tint:#e3f4fd;
+  --band-from:#0aa5f0;     /* diagonal hero band */
+  --band-to:#5332e6;
+  /* feedback (flashcard grades) */
+  --again:#b42318; --hard:#985a00; --good:#2152c4; --easy:#0b7a5f;
+  /* section accents: decks map their 6 to 8 sections onto these, in order */
+  --sec-blue:#1f5bc4; --sec-violet:#7d3fc8; --sec-teal:#08776b; --sec-rose:#be2b6a;
+  --sec-orange:#bd4310; --sec-amber:#946000; --sec-green:#3d7a17; --sec-slate:#4d5d76;
+
+  /* type */
+  --font-sans:"Inter",ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+  --font-mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  --fs-display:clamp(2.75rem,1.6rem + 5vw,5.25rem);  /* hero headline */
+  --fs-h1:clamp(2.25rem,1.6rem + 2.8vw,3.5rem);
+  --fs-h2:clamp(1.625rem,1.3rem + 1.4vw,2.25rem);
+  --fs-h3:1.375rem;
+  --fs-lead:clamp(1.125rem,1rem + .5vw,1.375rem);    /* intro paragraph under a headline */
+  --fs-body:1.0625rem;     /* 17px */
+  --fs-small:.9375rem;     /* 15px */
+  --fs-caption:.8125rem;   /* 13px */
+  --fs-label:1rem;         /* eyebrow label */
+  --lh-tight:1.04; --lh-heading:1.15; --lh-body:1.65;
+  --track-display:-.04em; --track-heading:-.025em; --track-body:-.006em;
+  --fw-regular:400; --fw-medium:500; --fw-semibold:600; --fw-bold:700; --fw-black:800;
+
+  /* spacing: 4px base */
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:24px; --sp-6:32px;
+  --sp-7:48px; --sp-8:64px; --sp-9:96px; --sp-10:128px;
+  --gutter:16px;           /* side gutter on phones; 24px from 640px, 32px from 1024px */
+  --content-max:1080px;    /* wide grid for home page and heroes */
+  --reading-max:680px;     /* one column of prose or one flashcard */
+  --columns:4;             /* dashed guides; 2 on phones */
+
+  /* radii */
+  --r-xs:4px; --r-sm:6px; --r-md:10px; --r-lg:16px; --r-xl:24px; --r-pill:999px;
+
+  /* shadows: two layers each, tinted with navy, never pure black */
+  --shadow-xs:0 1px 2px rgba(12,35,64,.06),0 1px 1px rgba(12,35,64,.04);
+  --shadow-sm:0 2px 5px -1px rgba(30,40,90,.10),0 1px 3px -1px rgba(12,35,64,.10);
+  --shadow-md:0 13px 27px -5px rgba(30,40,90,.16),0 8px 16px -8px rgba(12,35,64,.18);
+  --shadow-lg:0 30px 60px -12px rgba(30,40,90,.22),0 18px 36px -18px rgba(12,35,64,.26);
+  --shadow-xl:0 50px 100px -20px rgba(30,40,90,.24),0 30px 60px -30px rgba(12,35,64,.30);
+
+  /* motion */
+  --ease-out:cubic-bezier(.2,.7,.2,1);
+  --ease-in-out:cubic-bezier(.65,0,.35,1);
+  --dur-fast:150ms; --dur-base:240ms; --dur-slow:420ms;
+
+  /* diagonal band */
+  --band-angle:-9deg;
+  --band-height:clamp(180px,32vw,380px);
+
+  color-scheme:light;
+}
+
+/* ---------- tokens: dark ---------- */
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --bg:#0a1524; --surface:#122036; --sunken:#0e1a2d; --soft:#1a2a44; --line:#22344f; --line-strong:#33496a; --guide:#22344f;
+  --ink:#f2f6fc; --text:#b6c3d6; --muted:#93a3ba; --on-accent:#0a1524;
+  --accent:#a99cff; --accent-hover:#c0b6ff; --accent-tint:#221f4d;
+  --sky:#38bdf8; --sky-ink:#5ec8ff; --sky-tint:#0d2a40; --band-from:#0b6fae; --band-to:#4b35c9;
+  --again:#ff8b80; --hard:#f2bd5c; --good:#86b1ff; --easy:#4fd6ad;
+  --sec-blue:#86b4ff; --sec-violet:#caa7f7; --sec-teal:#4fd2bf; --sec-rose:#f892c1;
+  --sec-orange:#ffa173; --sec-amber:#f0bf5e; --sec-green:#a6d86c; --sec-slate:#b0bdd2;
+  --shadow-xs:0 1px 2px rgba(0,0,0,.30);
+  --shadow-sm:0 2px 5px -1px rgba(0,0,0,.40),0 1px 3px -1px rgba(0,0,0,.30);
+  --shadow-md:0 13px 27px -5px rgba(0,0,0,.45),0 8px 16px -8px rgba(0,0,0,.40);
+  --shadow-lg:0 30px 60px -12px rgba(0,0,0,.55),0 18px 36px -18px rgba(0,0,0,.50);
+  --shadow-xl:0 50px 100px -20px rgba(0,0,0,.60),0 30px 60px -30px rgba(0,0,0,.55);
+  color-scheme:dark;
+}}
+:root[data-theme="dark"],[data-theme="dark"]{
+  --bg:#0a1524; --surface:#122036; --sunken:#0e1a2d; --soft:#1a2a44; --line:#22344f; --line-strong:#33496a; --guide:#22344f;
+  --ink:#f2f6fc; --text:#b6c3d6; --muted:#93a3ba; --on-accent:#0a1524;
+  --accent:#a99cff; --accent-hover:#c0b6ff; --accent-tint:#221f4d;
+  --sky:#38bdf8; --sky-ink:#5ec8ff; --sky-tint:#0d2a40; --band-from:#0b6fae; --band-to:#4b35c9;
+  --again:#ff8b80; --hard:#f2bd5c; --good:#86b1ff; --easy:#4fd6ad;
+  --sec-blue:#86b4ff; --sec-violet:#caa7f7; --sec-teal:#4fd2bf; --sec-rose:#f892c1;
+  --sec-orange:#ffa173; --sec-amber:#f0bf5e; --sec-green:#a6d86c; --sec-slate:#b0bdd2;
+  --shadow-xs:0 1px 2px rgba(0,0,0,.30);
+  --shadow-sm:0 2px 5px -1px rgba(0,0,0,.40),0 1px 3px -1px rgba(0,0,0,.30);
+  --shadow-md:0 13px 27px -5px rgba(0,0,0,.45),0 8px 16px -8px rgba(0,0,0,.40);
+  --shadow-lg:0 30px 60px -12px rgba(0,0,0,.55),0 18px 36px -18px rgba(0,0,0,.50);
+  --shadow-xl:0 50px 100px -20px rgba(0,0,0,.60),0 30px 60px -30px rgba(0,0,0,.55);
+  color-scheme:dark;
+}
+:root,[data-theme]{--focus-ring:0 0 0 3px color-mix(in srgb,var(--accent) 45%,transparent)}
+@media (min-width:640px){ :root{ --gutter:24px; } }
+@media (min-width:1024px){ :root{ --gutter:32px; } }
+@media (max-width:639px){ :root{ --columns:2; } }
+
+/* ---------- base ---------- */
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font-sans);font-size:var(--fs-body);
+  line-height:var(--lh-body);letter-spacing:var(--track-body);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2,h3,h4{color:var(--ink);font-weight:var(--fw-bold);line-height:var(--lh-heading);letter-spacing:var(--track-heading);margin:0 0 .4em;text-wrap:balance}
+h1{font-size:var(--fs-h1)} h2{font-size:var(--fs-h2)} h3{font-size:var(--fs-h3)}
+p{margin:0 0 1em;text-wrap:pretty}
+a{color:var(--accent)}
+:focus-visible{outline:none;box-shadow:var(--focus-ring);border-radius:var(--r-sm)}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---------- layout ---------- */
+.container{max-width:calc(var(--content-max) + 2*var(--gutter));margin-inline:auto;padding-inline:var(--gutter)}
+.reading{max-width:calc(var(--reading-max) + 2*var(--gutter));margin-inline:auto;padding-inline:var(--gutter)}
+
+/* Dashed vertical column guides. Put .guides on a positioned wrapper; content above it needs position:relative. */
+.guides{position:relative;isolation:isolate}
+.guides::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  width:min(100% - 2*var(--gutter),var(--content-max));margin-inline:auto;
+  --dash:linear-gradient(to bottom,var(--guide) 0 4px,transparent 4px 8px);
+  background-image:var(--dash),var(--dash),var(--dash),var(--dash),var(--dash);
+  background-size:1px 8px;background-repeat:repeat-y;
+  background-position:0 0,33.333% 0,50% 0,66.667% 0,100% 0}
+@media (min-width:640px){ .guides::before{background-position:0 0,25% 0,50% 0,75% 0,100% 0} }
+@media (max-width:639px){ .guides::before{background-image:var(--dash),var(--dash);background-position:0 0,100% 0} }
+
+/* ---------- hero and diagonal band ---------- */
+/* Bottom padding clears the band: text never sits on it. */
+.hero{position:relative;overflow:hidden;padding-block:var(--sp-9) calc(var(--band-height) * .6 + var(--sp-8))}
+.hero>:not(.band){position:relative}
+.band{position:absolute;left:-2%;right:-2%;bottom:calc(var(--band-height) * -.4);height:var(--band-height);pointer-events:none;
+  transform:skewY(var(--band-angle));transform-origin:0 100%;
+  background:linear-gradient(100deg,var(--band-from) 0%,var(--band-from) 50%,var(--band-to) 100%)}
+.band.solid{background:var(--band-from)}
+.display{color:var(--ink)}
+.hero .display{font-size:var(--fs-display);line-height:var(--lh-tight);letter-spacing:var(--track-display);font-weight:var(--fw-bold);max-width:14ch;margin-bottom:.35em}
+.lead{font-size:var(--fs-lead);line-height:1.6;color:var(--text);max-width:36ch}
+@media (max-width:639px){ .hero{padding-block:var(--sp-7) calc(var(--band-height) * .6 + var(--sp-7))} }
+
+/* ---------- eyebrow label ---------- */
+.label{display:inline-block;color:var(--accent);font-size:var(--fs-label);font-weight:var(--fw-semibold);letter-spacing:-.01em;margin:0 0 var(--sp-4)}
+.label.sky{color:var(--sky-ink)}
+.label.sec{color:var(--c,var(--accent))}
+.tag{display:inline-flex;align-items:center;gap:6px;padding:2px 10px;border-radius:var(--r-pill);background:var(--accent-tint);
+  color:var(--accent);font-size:var(--fs-caption);font-weight:var(--fw-semibold);line-height:1.6}
+.tag.sec{background:color-mix(in srgb,var(--c) 12%,transparent);color:var(--c)}
+
+/* ---------- buttons and links (both carry a chevron) ---------- */
+.btn,.link{--chev:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M3 1.5 6.5 5 3 8.5' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+.btn::after,.link::after{content:"";width:.7em;height:.7em;flex:none;background:currentColor;
+  -webkit-mask:var(--chev) center/contain no-repeat;mask:var(--chev) center/contain no-repeat;
+  transition:transform var(--dur-fast) var(--ease-out)}
+.btn:hover::after,.link:hover::after{transform:translateX(3px)}
+.btn.no-chev::after{display:none}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4em;min-height:44px;padding:10px 20px 10px 22px;
+  border:0;border-radius:var(--r-pill);background:var(--accent);color:var(--on-accent);
+  font:inherit;font-weight:var(--fw-semibold);font-size:var(--fs-body);line-height:1.2;text-decoration:none;cursor:pointer;
+  transition:background var(--dur-fast) var(--ease-out),box-shadow var(--dur-fast) var(--ease-out),transform var(--dur-fast) var(--ease-out)}
+.btn:hover{background:var(--accent-hover)}
+.btn:active{transform:translateY(1px)}
+.btn:disabled{opacity:.45;cursor:default}
+.btn.dark{background:var(--ink);color:var(--surface)}
+.btn.dark:hover{background:color-mix(in srgb,var(--ink) 86%,var(--accent))}
+.btn.ghost{background:var(--surface);color:var(--ink);box-shadow:var(--shadow-sm)}
+.btn.ghost:hover{box-shadow:var(--shadow-md)}
+.btn.block{width:100%}
+.btn.sm{min-height:36px;padding:6px 14px 6px 16px;font-size:var(--fs-small)}
+.link{display:inline-flex;align-items:center;gap:.3em;padding:6px 2px;color:var(--accent);font-weight:var(--fw-semibold);text-decoration:none;cursor:pointer;background:none;border:0;font:inherit;font-weight:var(--fw-semibold)}
+.link:hover{color:var(--accent-hover)}
+.link.quiet{color:var(--muted);font-weight:var(--fw-medium)}
+
+/* ---------- cards and panels ---------- */
+.card{position:relative;background:var(--surface);border-radius:var(--r-lg);box-shadow:var(--shadow-md);padding:var(--sp-5)}
+.card.flat{box-shadow:none;border:1px solid var(--line)}
+.card.float{box-shadow:var(--shadow-lg)}
+.card.lift{transition:box-shadow var(--dur-base) var(--ease-out),transform var(--dur-base) var(--ease-out)}
+.card.lift:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+.card.accent{border-top:4px solid var(--c,var(--accent))}
+.panel{background:var(--surface);border-radius:var(--r-md);box-shadow:var(--shadow-xl);overflow:hidden}
+.panel-head{display:flex;align-items:center;justify-content:space-between;padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--line);font-size:var(--fs-small);color:var(--ink);font-weight:var(--fw-semibold)}
+.panel-body{padding:var(--sp-4)}
+.track{height:6px;border-radius:var(--r-pill);background:var(--sunken);overflow:hidden}
+.track>i{display:block;height:100%;background:var(--c,var(--accent));border-radius:inherit;transition:width var(--dur-slow) var(--ease-out)}
+
+/* ---------- motion ---------- */
+.rise{animation:rise var(--dur-base) var(--ease-out) both}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* ---------- study guide: DESIGN.md section 11. Tokens only; no raw colors, sizes, radii or shadows. ---------- */
+:root{ --s-rna-structure:var(--sec-blue); --s-rna-classes:var(--sec-violet); --s-transcription-basics:var(--sec-teal); --s-consensus-sequences:var(--sec-rose); --s-bacterial-initiation:var(--sec-orange); --s-bacterial-termination:var(--sec-amber); --s-eukaryotic-initiation:var(--sec-green); --s-eukaryotic-termination:var(--sec-slate);  --deck-c:var(--sec-blue); }
+html{scroll-padding-top:var(--sp-4);scroll-behavior:smooth}
+svg text{font-family:var(--font-sans);font-weight:var(--fw-semibold);letter-spacing:-.01em}
+.deckhero{--band-from:var(--deck-c);padding-top:max(var(--sp-6),env(safe-area-inset-top,0px))}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .deckhero{--band-from:color-mix(in oklch,var(--deck-c) 62%,var(--bg))} }
+:root[data-theme="dark"] .deckhero{--band-from:color-mix(in oklch,var(--deck-c) 62%,var(--bg))}
+.deckhero h1{margin-bottom:var(--sp-3)}
+.deckhero .label{margin-bottom:var(--sp-2)}
+.deckhero .lead{max-width:40ch;margin:0}
+.toplinks{display:flex;gap:var(--sp-5);flex-wrap:wrap;margin:0 0 var(--sp-6)}
+.overlap{position:relative;margin-top:calc(var(--band-height) * -.5);padding-bottom:var(--sp-8)}
+.toc h2{font-size:var(--fs-h3);margin-bottom:var(--sp-3)}
+.toc ol{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--sp-1) var(--sp-5)}
+.toc a{display:flex;align-items:center;gap:var(--sp-2);color:var(--ink);text-decoration:none;font-weight:var(--fw-medium);padding:var(--sp-1) 0;line-height:1.35}
+.toc a:hover{color:var(--accent)}
+.toc a::before{content:"";width:10px;height:10px;border-radius:var(--r-xs);background:var(--c);flex:none}
+.tocfoot{display:flex;justify-content:space-between;align-items:center;gap:var(--sp-3);margin-top:var(--sp-4);padding-top:var(--sp-3);border-top:1px solid var(--line)}
+section.card{margin-top:var(--sp-6)}
+section>h2{display:flex;align-items:baseline;gap:var(--sp-3);margin:var(--sp-2) 0 var(--sp-3)}
+section>h2 .n{color:var(--c)}
+h3{color:var(--ink);margin:var(--sp-6) 0 var(--sp-2)}
+section p,section li{max-width:var(--reading-max)}
+ul,ol{padding-left:1.3em;margin:0 0 1em}
+li{margin:var(--sp-1) 0}
+b,strong{font-weight:var(--fw-semibold);color:var(--ink)}
+.term{font-weight:var(--fw-semibold);color:var(--c)}
+.tablewrap{overflow-x:auto;margin:var(--sp-3) 0 var(--sp-4)}
+table{width:100%;border-collapse:collapse;font-size:var(--fs-small)}
+th,td{text-align:start;padding:var(--sp-2) var(--sp-3) var(--sp-2) 0;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:var(--fw-semibold)}
+td{color:var(--text)}
+.viz{margin:var(--sp-4) 0 var(--sp-2)}
 .viz svg{width:100%;height:auto;max-height:420px;display:block}
-figure{margin:12px 0}
-figcaption{color:var(--muted);font-size:.85em;text-align:center}
-.box{border-radius:12px;padding:10px 14px;margin:12px 0;background:color-mix(in srgb,var(--c) 9%,transparent);border-left:4px solid var(--c)}
-.box>.lbl{display:block;font-family:"Barlow Condensed";font-weight:700;font-size:1.05em;color:var(--c);letter-spacing:.02em}
-.box.warn{--c:var(--again)}
-details.check{border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;margin:10px 0}
-details.check summary{cursor:pointer;font-weight:600;list-style:none}
+figure{margin:var(--sp-4) 0}
+figcaption{color:var(--muted);font-size:var(--fs-caption)}
+.box{--bar:var(--c);border-radius:var(--r-md);padding:var(--sp-3) var(--sp-4);margin:var(--sp-4) 0;background:color-mix(in srgb,var(--bar) 9%,var(--surface));border-left:4px solid var(--bar)}
+.box.warn{--bar:var(--again)}
+.box>.lbl{display:block;font-weight:var(--fw-bold);color:var(--bar);margin-bottom:var(--sp-1)}
+details.check{border:1.5px solid var(--line-strong);border-radius:var(--r-md);padding:var(--sp-3) var(--sp-4);margin:var(--sp-3) 0}
+details.check summary{cursor:pointer;list-style:none;color:var(--ink);font-weight:var(--fw-semibold)}
 details.check summary::-webkit-details-marker{display:none}
-details.check summary::before{content:"Check yourself ";font-family:"Barlow Condensed";color:var(--c);font-weight:700}
-details.check summary::after{content:"Show answer";display:block;color:var(--muted);font-weight:400;font-size:.85em;margin-top:2px}
-details.check[open] summary::after{content:""}
-details.check .a{margin-top:8px;padding-top:8px;border-top:1px solid var(--line)}
-.math{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:.9em;background:var(--soft);padding:1px 5px;border-radius:5px}
-.end{margin-top:26px;text-align:center;color:var(--muted)}
-.top{display:block;text-align:end;font-size:.8em;margin-top:8px;color:var(--muted)}
-svg text{font-family:"Barlow Condensed","Barlow",sans-serif;font-weight:600}
-@media (max-width:420px){body{font-size:17px}section{padding:4px 14px 14px}h1{font-size:2.1rem}}
+details.check summary .link{padding:0 0 var(--sp-1)}
+details.check summary .link::after{transition:transform var(--dur-fast) var(--ease-out)}
+details.check[open] summary .link::after{transform:rotate(90deg)}
+details.check .a{margin-top:var(--sp-3);padding-top:var(--sp-3);border-top:1px solid var(--line);color:var(--text)}
+.math{font-family:var(--font-mono);font-size:.92em;background:var(--sunken);padding:1px var(--sp-1);border-radius:var(--r-xs);color:var(--ink)}
+.backtop{display:flex;justify-content:flex-end;margin-top:var(--sp-3)}
+.end{margin-top:var(--sp-7)}
+.end h2{font-size:var(--fs-h3)}
+@media (max-width:520px){.toc ol{grid-template-columns:1fr}}
+@media (max-width:420px){.card{padding:var(--sp-4)}}
 @media print{
-  :root{--bg:#fff!important}
-  body{font-size:12pt}
-  .nav,.actions,.top,.end .btn{display:none!important}
-  section{break-inside:auto;border-radius:0;border-left:0;border-right:0;border-bottom:0}
+  :root{--bg:var(--surface)}
+  .band,.toplinks,.tocfoot,.backtop,.end{display:none!important}
+  .guides::before{display:none}
+  .hero{padding-block:0 var(--sp-4)}
+  .overlap{margin-top:0;padding-bottom:0}
+  .card{box-shadow:none}
+  section.card{break-inside:auto}
   figure,.box,table,details{break-inside:avoid}
-  details.check summary::after{content:""}
-  details.check .a{display:block!important}
+  details.check summary .link::after{display:none}
 }
 </style>
 </head>
 <body>
-<div class="wrap">
-<div class="nav"><a href="../../">All decks</a><a href="./">Flashcards and quiz</a></div>
-<div class="kicker">Study guide</div>
-<h1>Genetics Ch 13: Transcription</h1>
-<p class="sub">RNA structure and classes, bacterial and eukaryotic transcription.</p>
-<div class="actions"><a class="btn" href="./">Practice with flashcards</a><button class="btn alt" onclick="document.querySelectorAll('details').forEach(d=>d.open=true);print()">Print</button></div>
-<nav class="toc" aria-label="Sections"><h2>Sections</h2><ol id="toc"></ol></nav>
+<header class="hero guides deckhero"><div class="band" aria-hidden="true"></div><div class="reading">
+  <nav class="toplinks"><a class="link quiet" href="../../">Back to all decks</a><a class="link" href="./">Study the flashcards</a></nav>
+  <p class="label">Genetics study guide</p><h1>Ch 13: Transcription</h1><p class="lead">RNA structure and classes, bacterial and eukaryotic transcription.</p></div></header>
+<main class="reading overlap">
+<nav class="card float toc" id="toc" aria-label="Sections"><h2>Contents</h2><ol id="toclist"></ol>
+  <div class="tocfoot"><span class="hint">Every fact here is also a flashcard.</span><button class="btn ghost sm no-chev" onclick="document.querySelectorAll('details').forEach(d=>d.open=true);print()">Print</button></div></nav>
 <section data-sec="RNA Structure">
 <h2>RNA Structure</h2>
 <p>RNA is a chain of <span class="term">nucleotides</span>. Each nucleotide has three parts: a <b>phosphate</b>, a <b>sugar</b> and a <b>base</b>.</p>
@@ -330,8 +526,8 @@ svg text{font-family:"Barlow Condensed","Barlow",sans-serif;font-weight:600}
 <details class="check"><summary>Which eukaryotic polymerase terminates most like bacterial rho-independent termination?</summary><div class="a">RNA polymerase III, which transcribes a terminator sequence.</div></details>
 </section>
 
-<div class="end"><p>Done reading? Test what stuck.</p><a class="btn" href="./">Open flashcards and quiz</a></div>
-</div>
+<div class="card end"><h2>Done reading?</h2><p>Test what stuck with the flashcards and the quiz.</p><a class="btn block" href="./">Open flashcards and quiz</a></div>
+</main>
 <script>
 const P = {};
 /* ---------- diagrams ---------- */
@@ -344,10 +540,10 @@ function svgWrap(inner, h=340){ const id = "m"+(++uid);
 const INK="var(--ink)", ACC="var(--c)", MUT="var(--muted)";
 function label(x,y,t,o,anchor="middle"){
   const st = o.quiz===t ? "quiz" : (o.hideAll && o.quiz ? "blank" : (o.hl===t ? "hl":"show"));
-  const w = Math.max(28, t.length*13.4+20), x0 = anchor==="middle"? x-w/2 : anchor==="start"? x-8 : x-w+8;
+  const w = Math.max(28, t.length*15.5+20), x0 = anchor==="middle"? x-w/2 : anchor==="start"? x-8 : x-w+8;
   if (st==="quiz") return `<rect x="${x-30}" y="${y-22}" width="60" height="40" rx="9" style="fill:var(--c)"/><text x="${x}" y="${y+5}" text-anchor="middle" font-size="30" style="fill:var(--surface)">?</text>`;
   if (st==="blank") return `<rect x="${x0}" y="${y-19}" width="${w}" height="34" rx="8" style="fill:var(--soft);stroke:var(--line)"/>`;
-  return `<text x="${x}" y="${y+9}" text-anchor="${anchor}" font-size="${st==="hl"?31:28}" style="fill:${st==="hl"?ACC:INK}">${t}</text>`;
+  return `<text x="${x}" y="${y+9}" text-anchor="${anchor}" font-size="${st==="hl"?29:26}" style="fill:${st==="hl"?ACC:INK}">${t}</text>`;
 }
 const ln = (x1,y1,x2,y2,c=INK,w=2,extra="") => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" style="stroke:${c}" stroke-width="${w}" ${extra}/>`;
 const arr = (x1,y1,x2,y2,on) => ln(x1,y1,x2,y2,on?ACC:INK,on?5:3.5,`marker-end="${on?"MK_A":"MK_I"}"`);
@@ -452,8 +648,8 @@ const D = {
    <circle cx="300" cy="216" r="24" style="fill:color-mix(in srgb,var(--c) 30%,var(--surface));stroke:var(--c)" stroke-width="2.5"/><text x="300" y="223" text-anchor="middle" font-size="18" style="fill:var(--ink)">Rat1</text>
    ${arr(330,196,385,166,true)}<text x="590" y="262" text-anchor="end" font-size="21" style="fill:var(--c)">5′ to 3′ exonuclease degrades</text><text x="590" y="288" text-anchor="end" font-size="21" style="fill:var(--c)">the RNA until it reaches Pol II</text>`); },
  consensus(){ const rows=["TATAAAAG","TCCAATGC","AATAGCCG","TACAGGAC"], cons=["T","A","Y","A","R","N","A","C/G"];
-  let s=""; rows.forEach((r,i)=>{ [...r].forEach((ch,j)=>{ s+=`<text x="${150+j*52}" y="${60+i*42}" text-anchor="middle" font-size="26" style="fill:var(--ink);font-family:ui-monospace,Menlo,monospace">${ch}</text>`; }); });
-  cons.forEach((ch,j)=>{ s+=`<text x="${150+j*52}" y="${250}" text-anchor="middle" font-size="${ch.length>1?22:28}" style="fill:var(--c);font-family:ui-monospace,Menlo,monospace;font-weight:700">${ch}</text>`; });
+  let s=""; rows.forEach((r,i)=>{ [...r].forEach((ch,j)=>{ s+=`<text x="${150+j*52}" y="${60+i*42}" text-anchor="middle" font-size="26" style="fill:var(--ink);font-family:var(--font-mono)">${ch}</text>`; }); });
+  cons.forEach((ch,j)=>{ s+=`<text x="${150+j*52}" y="${250}" text-anchor="middle" font-size="${ch.length>1?22:28}" style="fill:var(--c);font-family:var(--font-mono);font-weight:700">${ch}</text>`; });
   return svgWrap(`${s}${ln(110,214,560,214,INK,2.5)}<text x="100" y="250" text-anchor="end" font-size="22" style="fill:var(--ink)">5′</text><text x="570" y="250" font-size="22" style="fill:var(--ink)">3′</text>
    <text x="300" y="300" text-anchor="middle" font-size="21" style="fill:var(--muted)">majority first. R = purine, Y = pyrimidine,</text>
    <text x="300" y="326" text-anchor="middle" font-size="21" style="fill:var(--muted)">N = any, C/G = split between groups</text>`); },
@@ -466,11 +662,12 @@ function viz(spec, extra={}){ if(!spec) return ""; const [k,arg]=spec.split(":")
 
 const slug = s => s.toLowerCase().replace(/ /g,"-");
 document.querySelectorAll("section[data-sec]").forEach((s,i)=>{
-  const name=s.dataset.sec; s.id=slug(name); s.style.setProperty("--c",`var(--s-${slug(name)})`);
-  const h=s.querySelector("h2"); if(h) h.insertAdjacentHTML("afterbegin",`<span class="n">${i+1}</span>`);
-  s.insertAdjacentHTML("beforeend",'<a class="top" href="#toc">Back to sections</a>');
-  document.getElementById("toc").insertAdjacentHTML("beforeend",`<li><a href="#${s.id}" style="--c:var(--s-${slug(name)})">${name}</a></li>`);
+  const name=s.dataset.sec, c=`var(--s-${slug(name)})`; s.id=slug(name); s.classList.add("card","accent"); s.style.setProperty("--c",c);
+  const h=s.querySelector("h2"); if(h) h.insertAdjacentHTML("afterbegin",`<span class="n num">${i+1}</span>`);
+  s.insertAdjacentHTML("beforeend",'<div class="backtop"><a class="link quiet" href="#toc">Back to contents</a></div>');
+  document.getElementById("toclist").insertAdjacentHTML("beforeend",`<li><a href="#${s.id}" style="--c:${c}">${name}</a></li>`);
 });
+document.querySelectorAll("details.check summary").forEach(s=>{ s.innerHTML=`<span class="link">Check yourself</span><span>${s.innerHTML}</span>`; s.style.display="grid"; });
 document.querySelectorAll("[data-viz]").forEach(el=>{ el.outerHTML = viz(el.dataset.viz) || ""; });
 </script>
 </body>

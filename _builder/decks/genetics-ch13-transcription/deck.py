@@ -7,15 +7,15 @@ META = {
     "subtitle": "RNA structure and classes, bacterial and eukaryotic transcription.",
 }
 # Genetics BIOL3304, Chapter 13: Transcription. Every fact traces to the lecture slides.
-SECTIONS = [  # name, light accent, dark accent
-    ("RNA Structure", "#1d5fa8", "#7fb2ec"),
-    ("RNA Classes", "#7a3eb1", "#c4a1ea"),
-    ("Transcription Basics", "#0e7c6b", "#5fd0bc"),
-    ("Consensus Sequences", "#b0306a", "#f08cbc"),
-    ("Bacterial Initiation", "#c2410c", "#fb9a6c"),
-    ("Bacterial Termination", "#9a5b06", "#e8b45c"),
-    ("Eukaryotic Initiation", "#4d7c0f", "#a8d46a"),
-    ("Eukaryotic Termination", "#475569", "#a8b6c8"),
+SECTIONS = [  # name, light, dark: the section tokens from _builder/design/tokens.css, in order
+    ("RNA Structure", "#1f5bc4", "#86b4ff"),
+    ("RNA Classes", "#7d3fc8", "#caa7f7"),
+    ("Transcription Basics", "#08776b", "#4fd2bf"),
+    ("Consensus Sequences", "#be2b6a", "#f892c1"),
+    ("Bacterial Initiation", "#bd4310", "#ffa173"),
+    ("Bacterial Termination", "#946000", "#f0bf5e"),
+    ("Eukaryotic Initiation", "#3d7a17", "#a6d86c"),
+    ("Eukaryotic Termination", "#4d5d76", "#b0bdd2"),
 ]
 
 # (Front, Back, Extra, Section, viz)

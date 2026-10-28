@@ -6,96 +6,289 @@
 <title>Aviation Unit 4: Aerodynamics Study Guide</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#e9eef2; --surface:#ffffff; --ink:#15222c; --muted:#56656f; --line:#c9d3da; --soft:#dfe6eb;
-  --s-forces:#1d5fa8; --s-lift-theory:#7a3eb1; --s-airfoils:#0e7c6b; --s-lift-factors:#b0306a;
-  --s-stalls:#c2410c; --s-weight-and-balance:#4d7c0f; --s-propellers:#9a5b06; --s-drag:#475569;
-  --again:#b42318; --hard:#9a5b06; --good:#1d5fa8; --easy:#0e7c6b;
-  color-scheme: light;
-  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
-}
-@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
-  --bg:#0f1a22; --surface:#172530; --ink:#e4ebf0; --muted:#9aabb7; --line:#2c3d4a; --soft:#22323e;
-  --s-forces:#7fb2ec; --s-lift-theory:#c4a1ea; --s-airfoils:#5fd0bc; --s-lift-factors:#f08cbc;
-  --s-stalls:#fb9a6c; --s-weight-and-balance:#a8d46a; --s-propellers:#e8b45c; --s-drag:#a8b6c8;
-  --again:#f2867c; --hard:#e8b45c; --good:#7fb2ec; --easy:#5fd0bc; color-scheme: dark; }}
-:root[data-theme="dark"]{
-  --bg:#0f1a22; --surface:#172530; --ink:#e4ebf0; --muted:#9aabb7; --line:#2c3d4a; --soft:#22323e;
-  --s-forces:#7fb2ec; --s-lift-theory:#c4a1ea; --s-airfoils:#5fd0bc; --s-lift-factors:#f08cbc;
-  --s-stalls:#fb9a6c; --s-weight-and-balance:#a8d46a; --s-propellers:#e8b45c; --s-drag:#a8b6c8;
-  --again:#f2867c; --hard:#e8b45c; --good:#7fb2ec; --easy:#5fd0bc; color-scheme: dark; }
+/* Study Time design tokens and components. Source of truth: _builder/design/DESIGN.md
+   Decks are self-contained pages, so builders inline this file rather than linking it.
+   Load the font in <head>:
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"> */
 
-html{scroll-padding-top:16px;scroll-behavior:smooth}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:"Barlow",-apple-system,"Segoe UI",Roboto,sans-serif;font-size:18px;line-height:1.6;-webkit-font-smoothing:antialiased}
-.wrap{max-width:760px;margin:0 auto;padding:20px 16px 56px}
-h1,h2,h3{font-family:"Barlow Condensed","Barlow",sans-serif;line-height:1.1}
-h1{font-size:2.5rem;margin:.35em 0 .1em;font-weight:700}
-.kicker{color:var(--muted);font-size:.85em;letter-spacing:.06em;text-transform:uppercase;font-weight:600}
-.sub{color:var(--muted);margin:0 0 1em}
-.nav{display:flex;gap:16px;flex-wrap:wrap;font-size:.85em}
-.nav a{color:var(--muted);text-decoration:none;border-bottom:1px solid var(--line)}
-.actions{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 6px}
-.btn{display:inline-block;padding:9px 14px;border-radius:10px;background:var(--ink);color:var(--surface);text-decoration:none;font-weight:600;font-size:.9em;border:0;font-family:inherit;cursor:pointer}
-.btn.alt{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
-.toc{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin:16px 0 8px}
-.toc h2{font-size:1.2rem;margin:0 0 8px}
-.toc ol{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:4px 16px}
-.toc a{display:flex;align-items:center;gap:8px;color:var(--ink);text-decoration:none;padding:3px 0}
-.toc a::before{content:"";width:10px;height:10px;border-radius:3px;background:var(--c);flex:none}
-section{--c:var(--ink);background:var(--surface);border:1px solid var(--line);border-top:6px solid var(--c);border-radius:18px;padding:6px 20px 18px;margin-top:18px}
-section>h2{font-size:1.8rem;margin:.55em 0 .3em;display:flex;align-items:baseline;gap:10px}
-section>h2 .n{color:var(--c);font-size:.75em}
-h3{font-size:1.25rem;margin:1.2em 0 .3em;color:var(--c)}
-p{margin:.5em 0}
-ul,ol{padding-left:1.3em;margin:.4em 0}
-li{margin:.2em 0}
-b,strong{font-weight:600}
-.term{font-weight:600;color:var(--c)}
-table{width:100%;border-collapse:collapse;margin:.7em 0;font-size:.92em}
-th,td{text-align:start;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
-th{font-family:"Barlow Condensed";font-size:1.05em;color:var(--muted);font-weight:600;border-bottom:2px solid var(--line)}
-.tablewrap{overflow-x:auto}
-.viz{margin:12px 0 4px}
+/* ---------- tokens: light ---------- */
+/* [data-theme] on any element scopes a theme to that subtree (used by preview.html). */
+:root,[data-theme="light"]{
+  /* surfaces */
+  --bg:#f6f8fc;            /* page: cool off-white */
+  --surface:#ffffff;       /* raised panels and cards */
+  --sunken:#eef2f8;        /* wells, inputs, progress tracks */
+  --soft:#eef2f8;          /* alias of --sunken; diagrams and decks use it */
+  --line:#e1e7f0;          /* hairlines and card borders */
+  --line-strong:#c9d3e1;   /* input borders, dividers that must be seen */
+  --guide:#d3dbe8;         /* dashed column guides */
+  /* text */
+  --ink:#0c2340;           /* headings, key numbers, diagram strokes */
+  --text:#425672;          /* body copy */
+  --muted:#5b6b82;         /* captions, meta, helper text */
+  --on-accent:#ffffff;     /* text on --accent fills */
+  /* brand */
+  --accent:#5332e6;        /* violet: links, primary buttons, eyebrow labels */
+  --accent-hover:#4322cf;
+  --accent-tint:#efecfe;   /* violet wash behind selected items */
+  --sky:#0aa5f0;           /* bright sky: bands, fills, illustration only (not text) */
+  --sky-ink:#0068a8;       /* sky as text */
+  --sky-tint:#e3f4fd;
+  --band-from:#0aa5f0;     /* diagonal hero band */
+  --band-to:#5332e6;
+  /* feedback (flashcard grades) */
+  --again:#b42318; --hard:#985a00; --good:#2152c4; --easy:#0b7a5f;
+  /* section accents: decks map their 6 to 8 sections onto these, in order */
+  --sec-blue:#1f5bc4; --sec-violet:#7d3fc8; --sec-teal:#08776b; --sec-rose:#be2b6a;
+  --sec-orange:#bd4310; --sec-amber:#946000; --sec-green:#3d7a17; --sec-slate:#4d5d76;
+
+  /* type */
+  --font-sans:"Inter",ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+  --font-mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  --fs-display:clamp(2.75rem,1.6rem + 5vw,5.25rem);  /* hero headline */
+  --fs-h1:clamp(2.25rem,1.6rem + 2.8vw,3.5rem);
+  --fs-h2:clamp(1.625rem,1.3rem + 1.4vw,2.25rem);
+  --fs-h3:1.375rem;
+  --fs-lead:clamp(1.125rem,1rem + .5vw,1.375rem);    /* intro paragraph under a headline */
+  --fs-body:1.0625rem;     /* 17px */
+  --fs-small:.9375rem;     /* 15px */
+  --fs-caption:.8125rem;   /* 13px */
+  --fs-label:1rem;         /* eyebrow label */
+  --lh-tight:1.04; --lh-heading:1.15; --lh-body:1.65;
+  --track-display:-.04em; --track-heading:-.025em; --track-body:-.006em;
+  --fw-regular:400; --fw-medium:500; --fw-semibold:600; --fw-bold:700; --fw-black:800;
+
+  /* spacing: 4px base */
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:24px; --sp-6:32px;
+  --sp-7:48px; --sp-8:64px; --sp-9:96px; --sp-10:128px;
+  --gutter:16px;           /* side gutter on phones; 24px from 640px, 32px from 1024px */
+  --content-max:1080px;    /* wide grid for home page and heroes */
+  --reading-max:680px;     /* one column of prose or one flashcard */
+  --columns:4;             /* dashed guides; 2 on phones */
+
+  /* radii */
+  --r-xs:4px; --r-sm:6px; --r-md:10px; --r-lg:16px; --r-xl:24px; --r-pill:999px;
+
+  /* shadows: two layers each, tinted with navy, never pure black */
+  --shadow-xs:0 1px 2px rgba(12,35,64,.06),0 1px 1px rgba(12,35,64,.04);
+  --shadow-sm:0 2px 5px -1px rgba(30,40,90,.10),0 1px 3px -1px rgba(12,35,64,.10);
+  --shadow-md:0 13px 27px -5px rgba(30,40,90,.16),0 8px 16px -8px rgba(12,35,64,.18);
+  --shadow-lg:0 30px 60px -12px rgba(30,40,90,.22),0 18px 36px -18px rgba(12,35,64,.26);
+  --shadow-xl:0 50px 100px -20px rgba(30,40,90,.24),0 30px 60px -30px rgba(12,35,64,.30);
+
+  /* motion */
+  --ease-out:cubic-bezier(.2,.7,.2,1);
+  --ease-in-out:cubic-bezier(.65,0,.35,1);
+  --dur-fast:150ms; --dur-base:240ms; --dur-slow:420ms;
+
+  /* diagonal band */
+  --band-angle:-9deg;
+  --band-height:clamp(180px,32vw,380px);
+
+  color-scheme:light;
+}
+
+/* ---------- tokens: dark ---------- */
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --bg:#0a1524; --surface:#122036; --sunken:#0e1a2d; --soft:#1a2a44; --line:#22344f; --line-strong:#33496a; --guide:#22344f;
+  --ink:#f2f6fc; --text:#b6c3d6; --muted:#93a3ba; --on-accent:#0a1524;
+  --accent:#a99cff; --accent-hover:#c0b6ff; --accent-tint:#221f4d;
+  --sky:#38bdf8; --sky-ink:#5ec8ff; --sky-tint:#0d2a40; --band-from:#0b6fae; --band-to:#4b35c9;
+  --again:#ff8b80; --hard:#f2bd5c; --good:#86b1ff; --easy:#4fd6ad;
+  --sec-blue:#86b4ff; --sec-violet:#caa7f7; --sec-teal:#4fd2bf; --sec-rose:#f892c1;
+  --sec-orange:#ffa173; --sec-amber:#f0bf5e; --sec-green:#a6d86c; --sec-slate:#b0bdd2;
+  --shadow-xs:0 1px 2px rgba(0,0,0,.30);
+  --shadow-sm:0 2px 5px -1px rgba(0,0,0,.40),0 1px 3px -1px rgba(0,0,0,.30);
+  --shadow-md:0 13px 27px -5px rgba(0,0,0,.45),0 8px 16px -8px rgba(0,0,0,.40);
+  --shadow-lg:0 30px 60px -12px rgba(0,0,0,.55),0 18px 36px -18px rgba(0,0,0,.50);
+  --shadow-xl:0 50px 100px -20px rgba(0,0,0,.60),0 30px 60px -30px rgba(0,0,0,.55);
+  color-scheme:dark;
+}}
+:root[data-theme="dark"],[data-theme="dark"]{
+  --bg:#0a1524; --surface:#122036; --sunken:#0e1a2d; --soft:#1a2a44; --line:#22344f; --line-strong:#33496a; --guide:#22344f;
+  --ink:#f2f6fc; --text:#b6c3d6; --muted:#93a3ba; --on-accent:#0a1524;
+  --accent:#a99cff; --accent-hover:#c0b6ff; --accent-tint:#221f4d;
+  --sky:#38bdf8; --sky-ink:#5ec8ff; --sky-tint:#0d2a40; --band-from:#0b6fae; --band-to:#4b35c9;
+  --again:#ff8b80; --hard:#f2bd5c; --good:#86b1ff; --easy:#4fd6ad;
+  --sec-blue:#86b4ff; --sec-violet:#caa7f7; --sec-teal:#4fd2bf; --sec-rose:#f892c1;
+  --sec-orange:#ffa173; --sec-amber:#f0bf5e; --sec-green:#a6d86c; --sec-slate:#b0bdd2;
+  --shadow-xs:0 1px 2px rgba(0,0,0,.30);
+  --shadow-sm:0 2px 5px -1px rgba(0,0,0,.40),0 1px 3px -1px rgba(0,0,0,.30);
+  --shadow-md:0 13px 27px -5px rgba(0,0,0,.45),0 8px 16px -8px rgba(0,0,0,.40);
+  --shadow-lg:0 30px 60px -12px rgba(0,0,0,.55),0 18px 36px -18px rgba(0,0,0,.50);
+  --shadow-xl:0 50px 100px -20px rgba(0,0,0,.60),0 30px 60px -30px rgba(0,0,0,.55);
+  color-scheme:dark;
+}
+:root,[data-theme]{--focus-ring:0 0 0 3px color-mix(in srgb,var(--accent) 45%,transparent)}
+@media (min-width:640px){ :root{ --gutter:24px; } }
+@media (min-width:1024px){ :root{ --gutter:32px; } }
+@media (max-width:639px){ :root{ --columns:2; } }
+
+/* ---------- base ---------- */
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font-sans);font-size:var(--fs-body);
+  line-height:var(--lh-body);letter-spacing:var(--track-body);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2,h3,h4{color:var(--ink);font-weight:var(--fw-bold);line-height:var(--lh-heading);letter-spacing:var(--track-heading);margin:0 0 .4em;text-wrap:balance}
+h1{font-size:var(--fs-h1)} h2{font-size:var(--fs-h2)} h3{font-size:var(--fs-h3)}
+p{margin:0 0 1em;text-wrap:pretty}
+a{color:var(--accent)}
+:focus-visible{outline:none;box-shadow:var(--focus-ring);border-radius:var(--r-sm)}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---------- layout ---------- */
+.container{max-width:calc(var(--content-max) + 2*var(--gutter));margin-inline:auto;padding-inline:var(--gutter)}
+.reading{max-width:calc(var(--reading-max) + 2*var(--gutter));margin-inline:auto;padding-inline:var(--gutter)}
+
+/* Dashed vertical column guides. Put .guides on a positioned wrapper; content above it needs position:relative. */
+.guides{position:relative;isolation:isolate}
+.guides::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  width:min(100% - 2*var(--gutter),var(--content-max));margin-inline:auto;
+  --dash:linear-gradient(to bottom,var(--guide) 0 4px,transparent 4px 8px);
+  background-image:var(--dash),var(--dash),var(--dash),var(--dash),var(--dash);
+  background-size:1px 8px;background-repeat:repeat-y;
+  background-position:0 0,33.333% 0,50% 0,66.667% 0,100% 0}
+@media (min-width:640px){ .guides::before{background-position:0 0,25% 0,50% 0,75% 0,100% 0} }
+@media (max-width:639px){ .guides::before{background-image:var(--dash),var(--dash);background-position:0 0,100% 0} }
+
+/* ---------- hero and diagonal band ---------- */
+/* Bottom padding clears the band: text never sits on it. */
+.hero{position:relative;overflow:hidden;padding-block:var(--sp-9) calc(var(--band-height) * .6 + var(--sp-8))}
+.hero>:not(.band){position:relative}
+.band{position:absolute;left:-2%;right:-2%;bottom:calc(var(--band-height) * -.4);height:var(--band-height);pointer-events:none;
+  transform:skewY(var(--band-angle));transform-origin:0 100%;
+  background:linear-gradient(100deg,var(--band-from) 0%,var(--band-from) 50%,var(--band-to) 100%)}
+.band.solid{background:var(--band-from)}
+.display{color:var(--ink)}
+.hero .display{font-size:var(--fs-display);line-height:var(--lh-tight);letter-spacing:var(--track-display);font-weight:var(--fw-bold);max-width:14ch;margin-bottom:.35em}
+.lead{font-size:var(--fs-lead);line-height:1.6;color:var(--text);max-width:36ch}
+@media (max-width:639px){ .hero{padding-block:var(--sp-7) calc(var(--band-height) * .6 + var(--sp-7))} }
+
+/* ---------- eyebrow label ---------- */
+.label{display:inline-block;color:var(--accent);font-size:var(--fs-label);font-weight:var(--fw-semibold);letter-spacing:-.01em;margin:0 0 var(--sp-4)}
+.label.sky{color:var(--sky-ink)}
+.label.sec{color:var(--c,var(--accent))}
+.tag{display:inline-flex;align-items:center;gap:6px;padding:2px 10px;border-radius:var(--r-pill);background:var(--accent-tint);
+  color:var(--accent);font-size:var(--fs-caption);font-weight:var(--fw-semibold);line-height:1.6}
+.tag.sec{background:color-mix(in srgb,var(--c) 12%,transparent);color:var(--c)}
+
+/* ---------- buttons and links (both carry a chevron) ---------- */
+.btn,.link{--chev:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M3 1.5 6.5 5 3 8.5' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+.btn::after,.link::after{content:"";width:.7em;height:.7em;flex:none;background:currentColor;
+  -webkit-mask:var(--chev) center/contain no-repeat;mask:var(--chev) center/contain no-repeat;
+  transition:transform var(--dur-fast) var(--ease-out)}
+.btn:hover::after,.link:hover::after{transform:translateX(3px)}
+.btn.no-chev::after{display:none}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4em;min-height:44px;padding:10px 20px 10px 22px;
+  border:0;border-radius:var(--r-pill);background:var(--accent);color:var(--on-accent);
+  font:inherit;font-weight:var(--fw-semibold);font-size:var(--fs-body);line-height:1.2;text-decoration:none;cursor:pointer;
+  transition:background var(--dur-fast) var(--ease-out),box-shadow var(--dur-fast) var(--ease-out),transform var(--dur-fast) var(--ease-out)}
+.btn:hover{background:var(--accent-hover)}
+.btn:active{transform:translateY(1px)}
+.btn:disabled{opacity:.45;cursor:default}
+.btn.dark{background:var(--ink);color:var(--surface)}
+.btn.dark:hover{background:color-mix(in srgb,var(--ink) 86%,var(--accent))}
+.btn.ghost{background:var(--surface);color:var(--ink);box-shadow:var(--shadow-sm)}
+.btn.ghost:hover{box-shadow:var(--shadow-md)}
+.btn.block{width:100%}
+.btn.sm{min-height:36px;padding:6px 14px 6px 16px;font-size:var(--fs-small)}
+.link{display:inline-flex;align-items:center;gap:.3em;padding:6px 2px;color:var(--accent);font-weight:var(--fw-semibold);text-decoration:none;cursor:pointer;background:none;border:0;font:inherit;font-weight:var(--fw-semibold)}
+.link:hover{color:var(--accent-hover)}
+.link.quiet{color:var(--muted);font-weight:var(--fw-medium)}
+
+/* ---------- cards and panels ---------- */
+.card{position:relative;background:var(--surface);border-radius:var(--r-lg);box-shadow:var(--shadow-md);padding:var(--sp-5)}
+.card.flat{box-shadow:none;border:1px solid var(--line)}
+.card.float{box-shadow:var(--shadow-lg)}
+.card.lift{transition:box-shadow var(--dur-base) var(--ease-out),transform var(--dur-base) var(--ease-out)}
+.card.lift:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+.card.accent{border-top:4px solid var(--c,var(--accent))}
+.panel{background:var(--surface);border-radius:var(--r-md);box-shadow:var(--shadow-xl);overflow:hidden}
+.panel-head{display:flex;align-items:center;justify-content:space-between;padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--line);font-size:var(--fs-small);color:var(--ink);font-weight:var(--fw-semibold)}
+.panel-body{padding:var(--sp-4)}
+.track{height:6px;border-radius:var(--r-pill);background:var(--sunken);overflow:hidden}
+.track>i{display:block;height:100%;background:var(--c,var(--accent));border-radius:inherit;transition:width var(--dur-slow) var(--ease-out)}
+
+/* ---------- motion ---------- */
+.rise{animation:rise var(--dur-base) var(--ease-out) both}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* ---------- study guide: DESIGN.md section 11. Tokens only; no raw colors, sizes, radii or shadows. ---------- */
+:root{ --s-forces:var(--sec-blue); --s-lift-theory:var(--sec-violet); --s-airfoils:var(--sec-teal); --s-lift-factors:var(--sec-rose); --s-stalls:var(--sec-orange); --s-weight-and-balance:var(--sec-amber); --s-propellers:var(--sec-green); --s-drag:var(--sec-slate);  --deck-c:var(--sec-blue); }
+html{scroll-padding-top:var(--sp-4);scroll-behavior:smooth}
+svg text{font-family:var(--font-sans);font-weight:var(--fw-semibold);letter-spacing:-.01em}
+.deckhero{--band-from:var(--deck-c);padding-top:max(var(--sp-6),env(safe-area-inset-top,0px))}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .deckhero{--band-from:color-mix(in oklch,var(--deck-c) 62%,var(--bg))} }
+:root[data-theme="dark"] .deckhero{--band-from:color-mix(in oklch,var(--deck-c) 62%,var(--bg))}
+.deckhero h1{margin-bottom:var(--sp-3)}
+.deckhero .label{margin-bottom:var(--sp-2)}
+.deckhero .lead{max-width:40ch;margin:0}
+.toplinks{display:flex;gap:var(--sp-5);flex-wrap:wrap;margin:0 0 var(--sp-6)}
+.overlap{position:relative;margin-top:calc(var(--band-height) * -.5);padding-bottom:var(--sp-8)}
+.toc h2{font-size:var(--fs-h3);margin-bottom:var(--sp-3)}
+.toc ol{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--sp-1) var(--sp-5)}
+.toc a{display:flex;align-items:center;gap:var(--sp-2);color:var(--ink);text-decoration:none;font-weight:var(--fw-medium);padding:var(--sp-1) 0;line-height:1.35}
+.toc a:hover{color:var(--accent)}
+.toc a::before{content:"";width:10px;height:10px;border-radius:var(--r-xs);background:var(--c);flex:none}
+.tocfoot{display:flex;justify-content:space-between;align-items:center;gap:var(--sp-3);margin-top:var(--sp-4);padding-top:var(--sp-3);border-top:1px solid var(--line)}
+section.card{margin-top:var(--sp-6)}
+section>h2{display:flex;align-items:baseline;gap:var(--sp-3);margin:var(--sp-2) 0 var(--sp-3)}
+section>h2 .n{color:var(--c)}
+h3{color:var(--ink);margin:var(--sp-6) 0 var(--sp-2)}
+section p,section li{max-width:var(--reading-max)}
+ul,ol{padding-left:1.3em;margin:0 0 1em}
+li{margin:var(--sp-1) 0}
+b,strong{font-weight:var(--fw-semibold);color:var(--ink)}
+.term{font-weight:var(--fw-semibold);color:var(--c)}
+.tablewrap{overflow-x:auto;margin:var(--sp-3) 0 var(--sp-4)}
+table{width:100%;border-collapse:collapse;font-size:var(--fs-small)}
+th,td{text-align:start;padding:var(--sp-2) var(--sp-3) var(--sp-2) 0;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:var(--fw-semibold)}
+td{color:var(--text)}
+.viz{margin:var(--sp-4) 0 var(--sp-2)}
 .viz svg{width:100%;height:auto;max-height:420px;display:block}
-figure{margin:12px 0}
-figcaption{color:var(--muted);font-size:.85em;text-align:center}
-.box{border-radius:12px;padding:10px 14px;margin:12px 0;background:color-mix(in srgb,var(--c) 9%,transparent);border-left:4px solid var(--c)}
-.box>.lbl{display:block;font-family:"Barlow Condensed";font-weight:700;font-size:1.05em;color:var(--c);letter-spacing:.02em}
-.box.warn{--c:var(--again)}
-details.check{border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;margin:10px 0}
-details.check summary{cursor:pointer;font-weight:600;list-style:none}
+figure{margin:var(--sp-4) 0}
+figcaption{color:var(--muted);font-size:var(--fs-caption)}
+.box{--bar:var(--c);border-radius:var(--r-md);padding:var(--sp-3) var(--sp-4);margin:var(--sp-4) 0;background:color-mix(in srgb,var(--bar) 9%,var(--surface));border-left:4px solid var(--bar)}
+.box.warn{--bar:var(--again)}
+.box>.lbl{display:block;font-weight:var(--fw-bold);color:var(--bar);margin-bottom:var(--sp-1)}
+details.check{border:1.5px solid var(--line-strong);border-radius:var(--r-md);padding:var(--sp-3) var(--sp-4);margin:var(--sp-3) 0}
+details.check summary{cursor:pointer;list-style:none;color:var(--ink);font-weight:var(--fw-semibold)}
 details.check summary::-webkit-details-marker{display:none}
-details.check summary::before{content:"Check yourself ";font-family:"Barlow Condensed";color:var(--c);font-weight:700}
-details.check summary::after{content:"Show answer";display:block;color:var(--muted);font-weight:400;font-size:.85em;margin-top:2px}
-details.check[open] summary::after{content:""}
-details.check .a{margin-top:8px;padding-top:8px;border-top:1px solid var(--line)}
-.math{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:.9em;background:var(--soft);padding:1px 5px;border-radius:5px}
-.end{margin-top:26px;text-align:center;color:var(--muted)}
-.top{display:block;text-align:end;font-size:.8em;margin-top:8px;color:var(--muted)}
-svg text{font-family:"Barlow Condensed","Barlow",sans-serif;font-weight:600}
-@media (max-width:420px){body{font-size:17px}section{padding:4px 14px 14px}h1{font-size:2.1rem}}
+details.check summary .link{padding:0 0 var(--sp-1)}
+details.check summary .link::after{transition:transform var(--dur-fast) var(--ease-out)}
+details.check[open] summary .link::after{transform:rotate(90deg)}
+details.check .a{margin-top:var(--sp-3);padding-top:var(--sp-3);border-top:1px solid var(--line);color:var(--text)}
+.math{font-family:var(--font-mono);font-size:.92em;background:var(--sunken);padding:1px var(--sp-1);border-radius:var(--r-xs);color:var(--ink)}
+.backtop{display:flex;justify-content:flex-end;margin-top:var(--sp-3)}
+.end{margin-top:var(--sp-7)}
+.end h2{font-size:var(--fs-h3)}
+@media (max-width:520px){.toc ol{grid-template-columns:1fr}}
+@media (max-width:420px){.card{padding:var(--sp-4)}}
 @media print{
-  :root{--bg:#fff!important}
-  body{font-size:12pt}
-  .nav,.actions,.top,.end .btn{display:none!important}
-  section{break-inside:auto;border-radius:0;border-left:0;border-right:0;border-bottom:0}
+  :root{--bg:var(--surface)}
+  .band,.toplinks,.tocfoot,.backtop,.end{display:none!important}
+  .guides::before{display:none}
+  .hero{padding-block:0 var(--sp-4)}
+  .overlap{margin-top:0;padding-bottom:0}
+  .card{box-shadow:none}
+  section.card{break-inside:auto}
   figure,.box,table,details{break-inside:avoid}
-  details.check summary::after{content:""}
-  details.check .a{display:block!important}
+  details.check summary .link::after{display:none}
 }
 </style>
 </head>
 <body>
-<div class="wrap">
-<div class="nav"><a href="../../">All decks</a><a href="./">Flashcards and quiz</a></div>
-<div class="kicker">Study guide</div>
-<h1>Aviation Unit 4: Aerodynamics</h1>
-<p class="sub">Forces, lift, stalls, weight and balance, propellers and drag.</p>
-<div class="actions"><a class="btn" href="./">Practice with flashcards</a><button class="btn alt" onclick="document.querySelectorAll('details').forEach(d=>d.open=true);print()">Print</button></div>
-<nav class="toc" aria-label="Sections"><h2>Sections</h2><ol id="toc"></ol></nav>
+<header class="hero guides deckhero"><div class="band" aria-hidden="true"></div><div class="reading">
+  <nav class="toplinks"><a class="link quiet" href="../../">Back to all decks</a><a class="link" href="./">Study the flashcards</a></nav>
+  <p class="label">Aviation study guide</p><h1>Unit 4: Aerodynamics</h1><p class="lead">Forces, lift, stalls, weight and balance, propellers and drag.</p></div></header>
+<main class="reading overlap">
+<nav class="card float toc" id="toc" aria-label="Sections"><h2>Contents</h2><ol id="toclist"></ol>
+  <div class="tocfoot"><span class="hint">Every fact here is also a flashcard.</span><button class="btn ghost sm no-chev" onclick="document.querySelectorAll('details').forEach(d=>d.open=true);print()">Print</button></div></nav>
 <section data-sec="Forces">
 <h2>Forces</h2>
 <p>Four forces act on an airplane in flight: <b>lift</b>, <b>weight</b>, <b>thrust</b> and <b>drag</b>.</p>
@@ -262,8 +455,8 @@ svg text{font-family:"Barlow Condensed","Barlow",sans-serif;font-weight:600}
 <details class="check"><summary>Ground effect is actually a reduction of which type of drag?</summary><div class="a">Induced drag.</div></details>
 </section>
 
-<div class="end"><p>Done reading? Test what stuck.</p><a class="btn" href="./">Open flashcards and quiz</a></div>
-</div>
+<div class="card end"><h2>Done reading?</h2><p>Test what stuck with the flashcards and the quiz.</p><a class="btn block" href="./">Open flashcards and quiz</a></div>
+</main>
 <script>
 const P = {"aoa": "M493.5 212.0 L488.8 209.6 L484.1 207.2 L479.4 204.9 L474.7 202.6 L470.0 200.3 L465.3 198.1 L460.6 195.9 L455.8 193.7 L451.1 191.5 L446.3 189.4 L441.6 187.3 L436.8 185.3 L432.1 183.2 L427.3 181.2 L422.5 179.3 L417.7 177.3 L412.9 175.4 L408.1 173.5 L403.3 171.7 L398.5 169.9 L393.7 168.1 L388.9 166.3 L384.0 164.6 L379.2 162.9 L374.3 161.3 L369.5 159.6 L364.6 158.1 L359.8 156.5 L354.9 155.0 L350.0 153.5 L345.1 152.1 L340.2 150.7 L335.3 149.3 L330.4 148.0 L325.5 146.7 L320.5 145.4 L315.6 144.3 L310.6 143.2 L305.6 142.2 L300.6 141.2 L295.6 140.3 L290.6 139.5 L285.5 138.8 L280.5 138.2 L275.4 137.7 L270.3 137.2 L265.2 136.9 L260.0 136.7 L254.8 136.5 L249.7 136.5 L244.4 136.6 L239.2 136.9 L233.9 137.3 L228.6 137.9 L223.2 138.7 L217.7 139.9 L212.2 141.4 L206.5 143.7 L200.0 150.0 L200.0 150.0 L203.8 156.5 L208.5 159.0 L213.3 160.9 L218.2 162.4 L223.1 163.8 L228.0 165.0 L233.0 166.1 L238.0 167.1 L243.0 168.0 L248.0 168.9 L253.0 169.8 L258.0 170.7 L263.0 171.5 L268.0 172.3 L273.1 173.1 L278.1 173.9 L283.1 174.8 L288.1 175.6 L293.2 176.4 L298.2 177.2 L303.2 178.0 L308.2 178.9 L313.2 179.7 L318.3 180.6 L323.3 181.5 L328.3 182.3 L333.3 183.2 L338.3 184.0 L343.3 184.9 L348.4 185.7 L353.4 186.6 L358.4 187.4 L363.4 188.3 L368.4 189.2 L373.4 190.0 L378.4 190.9 L383.5 191.8 L388.5 192.7 L393.5 193.5 L398.5 194.4 L403.5 195.3 L408.5 196.2 L413.5 197.2 L418.5 198.1 L423.5 199.0 L428.5 199.9 L433.5 200.9 L438.5 201.8 L443.5 202.8 L448.5 203.8 L453.5 204.7 L458.5 205.7 L463.5 206.7 L468.4 207.7 L473.4 208.7 L478.4 209.7 L483.4 210.7 L488.4 211.7 L493.4 212.7Z", "up": "M280.0 129.7 L275.8 128.5 L271.5 127.4 L267.3 126.3 L263.1 125.3 L258.8 124.2 L254.6 123.2 L250.3 122.2 L246.1 121.3 L241.9 120.4 L237.6 119.5 L233.4 118.6 L229.2 117.7 L224.9 116.9 L220.7 116.1 L216.4 115.3 L212.2 114.6 L208.0 113.8 L203.7 113.1 L199.5 112.5 L195.3 111.8 L191.0 111.2 L186.8 110.6 L182.5 110.0 L178.3 109.5 L174.1 109.0 L169.8 108.5 L165.6 108.0 L161.4 107.6 L157.1 107.2 L152.9 106.9 L148.6 106.5 L144.4 106.2 L140.2 106.0 L135.9 105.7 L131.7 105.6 L127.5 105.4 L123.2 105.3 L119.0 105.3 L114.7 105.3 L110.5 105.4 L106.3 105.6 L102.0 105.8 L97.8 106.1 L93.6 106.4 L89.3 106.9 L85.1 107.4 L80.8 108.0 L76.6 108.7 L72.4 109.5 L68.1 110.4 L63.9 111.4 L59.7 112.5 L55.4 113.8 L51.2 115.2 L46.9 116.8 L42.7 118.7 L38.5 120.9 L34.2 123.7 L30.0 130.0 L30.0 130.0 L34.2 134.6 L38.5 135.9 L42.7 136.6 L46.9 137.0 L51.2 137.2 L55.4 137.3 L59.7 137.4 L63.9 137.3 L68.1 137.3 L72.4 137.1 L76.6 137.0 L80.8 136.8 L85.1 136.6 L89.3 136.4 L93.6 136.2 L97.8 136.0 L102.0 135.8 L106.3 135.6 L110.5 135.4 L114.7 135.2 L119.0 135.0 L123.2 134.8 L127.5 134.6 L131.7 134.4 L135.9 134.3 L140.2 134.1 L144.4 133.9 L148.6 133.8 L152.9 133.6 L157.1 133.4 L161.4 133.3 L165.6 133.1 L169.8 132.9 L174.1 132.7 L178.3 132.6 L182.5 132.4 L186.8 132.3 L191.0 132.1 L195.3 132.0 L199.5 131.8 L203.7 131.7 L208.0 131.6 L212.2 131.4 L216.4 131.3 L220.7 131.2 L224.9 131.1 L229.2 131.0 L233.4 130.9 L237.6 130.8 L241.9 130.8 L246.1 130.7 L250.3 130.6 L254.6 130.6 L258.8 130.5 L263.1 130.5 L267.3 130.4 L271.5 130.4 L275.8 130.3 L280.0 130.3Z", "upc": "M30.0 130.0 L34.2 129.2 L38.5 128.4 L42.7 127.6 L46.9 126.9 L51.2 126.2 L55.4 125.6 L59.7 124.9 L63.9 124.4 L68.1 123.8 L72.4 123.3 L76.6 122.9 L80.8 122.4 L85.1 122.0 L89.3 121.7 L93.6 121.3 L97.8 121.0 L102.0 120.8 L106.3 120.6 L110.5 120.4 L114.7 120.2 L119.0 120.1 L123.2 120.0 L127.5 120.0 L131.7 120.0 L135.9 120.0 L140.2 120.0 L144.4 120.1 L148.6 120.2 L152.9 120.2 L157.1 120.3 L161.4 120.4 L165.6 120.6 L169.8 120.7 L174.1 120.9 L178.3 121.0 L182.5 121.2 L186.8 121.4 L191.0 121.7 L195.3 121.9 L199.5 122.1 L203.7 122.4 L208.0 122.7 L212.2 123.0 L216.4 123.3 L220.7 123.7 L224.9 124.0 L229.2 124.4 L233.4 124.8 L237.6 125.1 L241.9 125.6 L246.1 126.0 L250.3 126.4 L254.6 126.9 L258.8 127.4 L263.1 127.9 L267.3 128.4 L271.5 128.9 L275.8 129.4 L280.0 130.0", "down": "M553.6 174.7 L550.4 170.8 L547.1 167.0 L543.9 163.2 L540.6 159.4 L537.4 155.6 L534.1 151.9 L530.9 148.2 L527.7 144.5 L524.4 140.8 L521.2 137.2 L517.9 133.6 L514.7 130.0 L511.4 126.5 L508.2 123.0 L504.9 119.5 L501.7 116.0 L498.0 113.8 L493.7 113.1 L489.5 112.5 L485.3 111.8 L481.0 111.2 L476.8 110.6 L472.5 110.0 L468.3 109.5 L464.1 109.0 L459.8 108.5 L455.6 108.0 L451.4 107.6 L447.1 107.2 L442.9 106.9 L438.6 106.5 L434.4 106.2 L430.2 106.0 L425.9 105.7 L421.7 105.6 L417.5 105.4 L413.2 105.3 L409.0 105.3 L404.7 105.3 L400.5 105.4 L396.3 105.6 L392.0 105.8 L387.8 106.1 L383.6 106.4 L379.3 106.9 L375.1 107.4 L370.8 108.0 L366.6 108.7 L362.4 109.5 L358.1 110.4 L353.9 111.4 L349.7 112.5 L345.4 113.8 L341.2 115.2 L336.9 116.8 L332.7 118.7 L328.5 120.9 L324.2 123.7 L320.0 130.0 L320.0 130.0 L324.2 134.6 L328.5 135.9 L332.7 136.6 L336.9 137.0 L341.2 137.2 L345.4 137.3 L349.7 137.4 L353.9 137.3 L358.1 137.3 L362.4 137.1 L366.6 137.0 L370.8 136.8 L375.1 136.6 L379.3 136.4 L383.6 136.2 L387.8 136.0 L392.0 135.8 L396.3 135.6 L400.5 135.4 L404.7 135.2 L409.0 135.0 L413.2 134.8 L417.5 134.6 L421.7 134.4 L425.9 134.3 L430.2 134.1 L434.4 133.9 L438.6 133.8 L442.9 133.6 L447.1 133.4 L451.4 133.3 L455.6 133.1 L459.8 132.9 L464.1 132.7 L468.3 132.6 L472.5 132.4 L476.8 132.3 L481.0 132.1 L485.3 132.0 L489.5 131.8 L493.7 131.7 L498.0 131.6 L501.7 132.9 L504.9 135.5 L508.2 138.1 L511.4 140.7 L514.7 143.3 L517.9 146.0 L521.2 148.6 L524.4 151.2 L527.7 153.9 L530.9 156.6 L534.1 159.2 L537.4 161.9 L540.6 164.6 L543.9 167.2 L547.1 169.9 L550.4 172.6 L553.6 175.3Z", "downc": "M320.0 130.0 L324.2 129.2 L328.5 128.4 L332.7 127.6 L336.9 126.9 L341.2 126.2 L345.4 125.6 L349.7 124.9 L353.9 124.4 L358.1 123.8 L362.4 123.3 L366.6 122.9 L370.8 122.4 L375.1 122.0 L379.3 121.7 L383.6 121.3 L387.8 121.0 L392.0 120.8 L396.3 120.6 L400.5 120.4 L404.7 120.2 L409.0 120.1 L413.2 120.0 L417.5 120.0 L421.7 120.0 L425.9 120.0 L430.2 120.0 L434.4 120.1 L438.6 120.2 L442.9 120.2 L447.1 120.3 L451.4 120.4 L455.6 120.6 L459.8 120.7 L464.1 120.9 L468.3 121.0 L472.5 121.2 L476.8 121.4 L481.0 121.7 L485.3 121.9 L489.5 122.1 L493.7 122.4 L498.0 122.7 L501.7 124.4 L504.9 127.5 L508.2 130.5 L511.4 133.6 L514.7 136.7 L517.9 139.8 L521.2 142.9 L524.4 146.0 L527.7 149.2 L530.9 152.4 L534.1 155.6 L537.4 158.8 L540.6 162.0 L543.9 165.2 L547.1 168.4 L550.4 171.7 L553.6 175.0", "root": "M190.0 265.7 L188.1 264.5 L186.1 263.3 L184.1 262.2 L182.2 261.0 L180.2 259.9 L178.2 258.8 L176.2 257.7 L174.3 256.6 L172.3 255.5 L170.3 254.5 L168.3 253.4 L166.3 252.4 L164.3 251.4 L162.3 250.4 L160.3 249.4 L158.3 248.4 L156.3 247.4 L154.3 246.5 L152.2 245.5 L150.2 244.6 L148.2 243.7 L146.1 242.8 L144.1 241.9 L142.1 241.0 L140.0 240.1 L138.0 239.3 L135.9 238.5 L133.9 237.6 L131.8 236.8 L129.7 236.0 L127.7 235.3 L125.6 234.5 L123.5 233.8 L121.4 233.1 L119.3 232.4 L117.2 231.7 L115.1 231.0 L113.0 230.4 L110.9 229.8 L108.8 229.2 L106.6 228.7 L104.5 228.2 L102.3 227.8 L100.1 227.3 L98.0 227.0 L95.8 226.6 L93.6 226.3 L91.3 226.0 L89.1 225.8 L86.9 225.7 L84.6 225.6 L82.3 225.5 L80.0 225.5 L77.7 225.6 L75.4 225.8 L73.0 226.2 L70.5 226.7 L68.0 227.5 L65.0 230.0 L65.0 230.0 L66.5 232.9 L68.4 234.2 L70.4 235.1 L72.5 235.9 L74.6 236.6 L76.7 237.3 L78.8 237.9 L80.9 238.5 L83.0 239.1 L85.2 239.6 L87.3 240.2 L89.4 240.7 L91.6 241.2 L93.7 241.7 L95.9 242.2 L98.0 242.7 L100.2 243.2 L102.3 243.7 L104.5 244.2 L106.6 244.7 L108.8 245.2 L110.9 245.7 L113.1 246.3 L115.2 246.8 L117.3 247.3 L119.5 247.8 L121.6 248.4 L123.8 248.9 L125.9 249.4 L128.0 249.9 L130.2 250.5 L132.3 251.0 L134.5 251.5 L136.6 252.0 L138.8 252.5 L140.9 253.1 L143.0 253.6 L145.2 254.1 L147.3 254.7 L149.5 255.2 L151.6 255.8 L153.7 256.3 L155.9 256.8 L158.0 257.4 L160.1 257.9 L162.3 258.5 L164.4 259.1 L166.5 259.6 L168.7 260.2 L170.8 260.8 L172.9 261.3 L175.0 261.9 L177.2 262.5 L179.3 263.1 L181.4 263.6 L183.5 264.2 L185.7 264.8 L187.8 265.4 L189.9 266.0Z", "tip": "M504.9 244.1 L503.6 243.6 L502.2 243.2 L500.9 242.8 L499.6 242.4 L498.2 242.0 L496.9 241.6 L495.5 241.2 L494.2 240.8 L492.9 240.5 L491.5 240.1 L490.2 239.8 L488.8 239.4 L487.5 239.1 L486.2 238.7 L484.8 238.4 L483.5 238.1 L482.1 237.8 L480.8 237.5 L479.5 237.2 L478.1 237.0 L476.8 236.7 L475.4 236.4 L474.1 236.2 L472.7 235.9 L471.4 235.7 L470.0 235.5 L468.7 235.3 L467.4 235.0 L466.0 234.9 L464.7 234.7 L463.3 234.5 L462.0 234.3 L460.6 234.2 L459.3 234.0 L457.9 233.9 L456.6 233.8 L455.2 233.7 L453.8 233.6 L452.5 233.5 L451.1 233.5 L449.8 233.5 L448.4 233.5 L447.1 233.5 L445.7 233.5 L444.3 233.6 L443.0 233.7 L441.6 233.8 L440.3 234.0 L438.9 234.2 L437.5 234.4 L436.1 234.6 L434.8 234.9 L433.4 235.2 L432.0 235.6 L430.6 236.1 L429.3 236.6 L427.9 237.2 L426.5 238.1 L425.0 240.0 L425.0 240.0 L426.3 241.6 L427.6 242.0 L429.0 242.3 L430.3 242.5 L431.6 242.7 L433.0 242.8 L434.4 242.9 L435.7 242.9 L437.1 243.0 L438.4 243.0 L439.8 243.0 L441.1 243.0 L442.5 243.0 L443.8 243.0 L445.2 243.0 L446.6 243.1 L447.9 243.1 L449.3 243.1 L450.6 243.1 L452.0 243.1 L453.4 243.1 L454.7 243.1 L456.1 243.1 L457.4 243.1 L458.8 243.1 L460.1 243.2 L461.5 243.2 L462.9 243.2 L464.2 243.2 L465.6 243.2 L466.9 243.2 L468.3 243.3 L469.6 243.3 L471.0 243.3 L472.3 243.3 L473.7 243.3 L475.1 243.4 L476.4 243.4 L477.8 243.4 L479.1 243.4 L480.5 243.5 L481.8 243.5 L483.2 243.5 L484.6 243.5 L485.9 243.6 L487.3 243.6 L488.6 243.7 L490.0 243.7 L491.3 243.7 L492.7 243.8 L494.0 243.8 L495.4 243.9 L496.8 243.9 L498.1 244.0 L499.5 244.1 L500.8 244.1 L502.2 244.2 L503.5 244.2 L504.9 244.3Z"};
 /* ---------- diagrams ---------- */
@@ -276,10 +469,10 @@ function svgWrap(inner, h=340){ const id = "m"+(++uid);
 const INK="var(--ink)", ACC="var(--c)", MUT="var(--muted)";
 function label(x,y,t,o,anchor="middle"){
   const st = o.quiz===t ? "quiz" : (o.hideAll && o.quiz ? "blank" : (o.hl===t ? "hl":"show"));
-  const w = Math.max(28, t.length*13.4+20), x0 = anchor==="middle"? x-w/2 : anchor==="start"? x-8 : x-w+8;
+  const w = Math.max(28, t.length*15.5+20), x0 = anchor==="middle"? x-w/2 : anchor==="start"? x-8 : x-w+8;
   if (st==="quiz") return `<rect x="${x-30}" y="${y-22}" width="60" height="40" rx="9" style="fill:var(--c)"/><text x="${x}" y="${y+5}" text-anchor="middle" font-size="30" style="fill:var(--surface)">?</text>`;
   if (st==="blank") return `<rect x="${x0}" y="${y-19}" width="${w}" height="34" rx="8" style="fill:var(--soft);stroke:var(--line)"/>`;
-  return `<text x="${x}" y="${y+9}" text-anchor="${anchor}" font-size="${st==="hl"?31:28}" style="fill:${st==="hl"?ACC:INK}">${t}</text>`;
+  return `<text x="${x}" y="${y+9}" text-anchor="${anchor}" font-size="${st==="hl"?29:26}" style="fill:${st==="hl"?ACC:INK}">${t}</text>`;
 }
 const ln = (x1,y1,x2,y2,c=INK,w=2,extra="") => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" style="stroke:${c}" stroke-width="${w}" ${extra}/>`;
 const arr = (x1,y1,x2,y2,on) => ln(x1,y1,x2,y2,on?ACC:INK,on?5:3.5,`marker-end="${on?"MK_A":"MK_I"}"`);
@@ -372,19 +565,21 @@ const D = {
  vector(){ return svgWrap(`${ln(110,230,470,110,ACC,5,'marker-end="MK_A"')}
    ${ln(100,262,456,143,MUT,1.5)}<text x="250" y="240" font-size="28" style="fill:var(--ink)" transform="rotate(-18 250 240)">length = magnitude</text>
    <text x="560" y="70" text-anchor="end" font-size="28" style="fill:var(--ink)">arrowhead = direction</text>`,300); },
-};
+}
+;
 function viz(spec, extra={}){ if(!spec) return ""; const [k,arg]=spec.split(":");
-  const o = Object.assign({}, extra); if(arg){ if(k==="curve"||k==="lever"||k==="cg") o.hl=arg; else if(!o.quiz) o.hl=arg; }
+  const o = Object.assign({}, extra); if(arg && !o.quiz) o.hl=arg;
   return D[k] ? `<div class="viz">${D[k](o)}</div>` : ""; }
 
 
 const slug = s => s.toLowerCase().replace(/ /g,"-");
 document.querySelectorAll("section[data-sec]").forEach((s,i)=>{
-  const name=s.dataset.sec; s.id=slug(name); s.style.setProperty("--c",`var(--s-${slug(name)})`);
-  const h=s.querySelector("h2"); if(h) h.insertAdjacentHTML("afterbegin",`<span class="n">${i+1}</span>`);
-  s.insertAdjacentHTML("beforeend",'<a class="top" href="#toc">Back to sections</a>');
-  document.getElementById("toc").insertAdjacentHTML("beforeend",`<li><a href="#${s.id}" style="--c:var(--s-${slug(name)})">${name}</a></li>`);
+  const name=s.dataset.sec, c=`var(--s-${slug(name)})`; s.id=slug(name); s.classList.add("card","accent"); s.style.setProperty("--c",c);
+  const h=s.querySelector("h2"); if(h) h.insertAdjacentHTML("afterbegin",`<span class="n num">${i+1}</span>`);
+  s.insertAdjacentHTML("beforeend",'<div class="backtop"><a class="link quiet" href="#toc">Back to contents</a></div>');
+  document.getElementById("toclist").insertAdjacentHTML("beforeend",`<li><a href="#${s.id}" style="--c:${c}">${name}</a></li>`);
 });
+document.querySelectorAll("details.check summary").forEach(s=>{ s.innerHTML=`<span class="link">Check yourself</span><span>${s.innerHTML}</span>`; s.style.display="grid"; });
 document.querySelectorAll("[data-viz]").forEach(el=>{ el.outerHTML = viz(el.dataset.viz) || ""; });
 </script>
 </body>

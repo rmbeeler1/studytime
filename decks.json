@@ -1,26 +1,28 @@
 [
   {
-    "id": "aviation-u04-aerodynamics",
-    "subject": "Aviation",
-    "number": "Unit 4",
-    "topic": "Aerodynamics",
-    "path": "aviation/u04-aerodynamics/",
-    "cards": 127,
-    "added": "2026-10-28",
-    "v": "902834e7",
-    "guide": "guide.html",
-    "gv": "2fed7857"
-  },
-  {
     "id": "genetics-ch13-transcription",
     "subject": "Genetics",
     "number": "Ch 13",
     "topic": "Transcription",
     "path": "genetics/ch13-transcription/",
     "cards": 169,
+    "accent": "sec-blue",
     "added": "2026-10-28",
-    "v": "03063f5a",
+    "v": "79348bc6",
     "guide": "guide.html",
-    "gv": "9182d4f9"
+    "gv": "27328cf3"
+  },
+  {
+    "id": "aviation-u04-aerodynamics",
+    "subject": "Aviation",
+    "number": "Unit 4",
+    "topic": "Aerodynamics",
+    "path": "aviation/u04-aerodynamics/",
+    "cards": 127,
+    "accent": "sec-blue",
+    "added": "2026-10-28",
+    "v": "d8fc0c62",
+    "guide": "guide.html",
+    "gv": "7f83cb5c"
   }
 ]

@@ -6,91 +6,95 @@
 <title>__TITLE__ Study Guide</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-__TOKENS__
-html{scroll-padding-top:16px;scroll-behavior:smooth}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:"Barlow",-apple-system,"Segoe UI",Roboto,sans-serif;font-size:18px;line-height:1.6;-webkit-font-smoothing:antialiased}
-.wrap{max-width:760px;margin:0 auto;padding:20px 16px 56px}
-h1,h2,h3{font-family:"Barlow Condensed","Barlow",sans-serif;line-height:1.1}
-h1{font-size:2.5rem;margin:.35em 0 .1em;font-weight:700}
-.kicker{color:var(--muted);font-size:.85em;letter-spacing:.06em;text-transform:uppercase;font-weight:600}
-.sub{color:var(--muted);margin:0 0 1em}
-.nav{display:flex;gap:16px;flex-wrap:wrap;font-size:.85em}
-.nav a{color:var(--muted);text-decoration:none;border-bottom:1px solid var(--line)}
-.actions{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 6px}
-.btn{display:inline-block;padding:9px 14px;border-radius:10px;background:var(--ink);color:var(--surface);text-decoration:none;font-weight:600;font-size:.9em;border:0;font-family:inherit;cursor:pointer}
-.btn.alt{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
-.toc{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin:16px 0 8px}
-.toc h2{font-size:1.2rem;margin:0 0 8px}
-.toc ol{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:4px 16px}
-.toc a{display:flex;align-items:center;gap:8px;color:var(--ink);text-decoration:none;padding:3px 0}
-.toc a::before{content:"";width:10px;height:10px;border-radius:3px;background:var(--c);flex:none}
-section{--c:var(--ink);background:var(--surface);border:1px solid var(--line);border-top:6px solid var(--c);border-radius:18px;padding:6px 20px 18px;margin-top:18px}
-section>h2{font-size:1.8rem;margin:.55em 0 .3em;display:flex;align-items:baseline;gap:10px}
-section>h2 .n{color:var(--c);font-size:.75em}
-h3{font-size:1.25rem;margin:1.2em 0 .3em;color:var(--c)}
-p{margin:.5em 0}
-ul,ol{padding-left:1.3em;margin:.4em 0}
-li{margin:.2em 0}
-b,strong{font-weight:600}
-.term{font-weight:600;color:var(--c)}
-table{width:100%;border-collapse:collapse;margin:.7em 0;font-size:.92em}
-th,td{text-align:start;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
-th{font-family:"Barlow Condensed";font-size:1.05em;color:var(--muted);font-weight:600;border-bottom:2px solid var(--line)}
-.tablewrap{overflow-x:auto}
-.viz{margin:12px 0 4px}
+__TOKENS_CSS__
+/* ---------- study guide: DESIGN.md section 11. Tokens only; no raw colors, sizes, radii or shadows. ---------- */
+__SECVARS__
+html{scroll-padding-top:var(--sp-4);scroll-behavior:smooth}
+svg text{font-family:var(--font-sans);font-weight:var(--fw-semibold);letter-spacing:-.01em}
+.deckhero{--band-from:var(--deck-c);padding-top:max(var(--sp-6),env(safe-area-inset-top,0px))}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .deckhero{--band-from:color-mix(in oklch,var(--deck-c) 62%,var(--bg))} }
+:root[data-theme="dark"] .deckhero{--band-from:color-mix(in oklch,var(--deck-c) 62%,var(--bg))}
+.deckhero h1{margin-bottom:var(--sp-3)}
+.deckhero .label{margin-bottom:var(--sp-2)}
+.deckhero .lead{max-width:40ch;margin:0}
+.toplinks{display:flex;gap:var(--sp-5);flex-wrap:wrap;margin:0 0 var(--sp-6)}
+.overlap{position:relative;margin-top:calc(var(--band-height) * -.5);padding-bottom:var(--sp-8)}
+.toc h2{font-size:var(--fs-h3);margin-bottom:var(--sp-3)}
+.toc ol{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--sp-1) var(--sp-5)}
+.toc a{display:flex;align-items:center;gap:var(--sp-2);color:var(--ink);text-decoration:none;font-weight:var(--fw-medium);padding:var(--sp-1) 0;line-height:1.35}
+.toc a:hover{color:var(--accent)}
+.toc a::before{content:"";width:10px;height:10px;border-radius:var(--r-xs);background:var(--c);flex:none}
+.tocfoot{display:flex;justify-content:space-between;align-items:center;gap:var(--sp-3);margin-top:var(--sp-4);padding-top:var(--sp-3);border-top:1px solid var(--line)}
+section.card{margin-top:var(--sp-6)}
+section>h2{display:flex;align-items:baseline;gap:var(--sp-3);margin:var(--sp-2) 0 var(--sp-3)}
+section>h2 .n{color:var(--c)}
+h3{color:var(--ink);margin:var(--sp-6) 0 var(--sp-2)}
+section p,section li{max-width:var(--reading-max)}
+ul,ol{padding-left:1.3em;margin:0 0 1em}
+li{margin:var(--sp-1) 0}
+b,strong{font-weight:var(--fw-semibold);color:var(--ink)}
+.term{font-weight:var(--fw-semibold);color:var(--c)}
+.tablewrap{overflow-x:auto;margin:var(--sp-3) 0 var(--sp-4)}
+table{width:100%;border-collapse:collapse;font-size:var(--fs-small)}
+th,td{text-align:start;padding:var(--sp-2) var(--sp-3) var(--sp-2) 0;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:var(--fw-semibold)}
+td{color:var(--text)}
+.viz{margin:var(--sp-4) 0 var(--sp-2)}
 .viz svg{width:100%;height:auto;max-height:420px;display:block}
-figure{margin:12px 0}
-figcaption{color:var(--muted);font-size:.85em;text-align:center}
-.box{border-radius:12px;padding:10px 14px;margin:12px 0;background:color-mix(in srgb,var(--c) 9%,transparent);border-left:4px solid var(--c)}
-.box>.lbl{display:block;font-family:"Barlow Condensed";font-weight:700;font-size:1.05em;color:var(--c);letter-spacing:.02em}
-.box.warn{--c:var(--again)}
-details.check{border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;margin:10px 0}
-details.check summary{cursor:pointer;font-weight:600;list-style:none}
+figure{margin:var(--sp-4) 0}
+figcaption{color:var(--muted);font-size:var(--fs-caption)}
+.box{--bar:var(--c);border-radius:var(--r-md);padding:var(--sp-3) var(--sp-4);margin:var(--sp-4) 0;background:color-mix(in srgb,var(--bar) 9%,var(--surface));border-left:4px solid var(--bar)}
+.box.warn{--bar:var(--again)}
+.box>.lbl{display:block;font-weight:var(--fw-bold);color:var(--bar);margin-bottom:var(--sp-1)}
+details.check{border:1.5px solid var(--line-strong);border-radius:var(--r-md);padding:var(--sp-3) var(--sp-4);margin:var(--sp-3) 0}
+details.check summary{cursor:pointer;list-style:none;color:var(--ink);font-weight:var(--fw-semibold)}
 details.check summary::-webkit-details-marker{display:none}
-details.check summary::before{content:"Check yourself ";font-family:"Barlow Condensed";color:var(--c);font-weight:700}
-details.check summary::after{content:"Show answer";display:block;color:var(--muted);font-weight:400;font-size:.85em;margin-top:2px}
-details.check[open] summary::after{content:""}
-details.check .a{margin-top:8px;padding-top:8px;border-top:1px solid var(--line)}
-.math{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:.9em;background:var(--soft);padding:1px 5px;border-radius:5px}
-.end{margin-top:26px;text-align:center;color:var(--muted)}
-.top{display:block;text-align:end;font-size:.8em;margin-top:8px;color:var(--muted)}
-svg text{font-family:"Barlow Condensed","Barlow",sans-serif;font-weight:600}
-@media (max-width:420px){body{font-size:17px}section{padding:4px 14px 14px}h1{font-size:2.1rem}}
+details.check summary .link{padding:0 0 var(--sp-1)}
+details.check summary .link::after{transition:transform var(--dur-fast) var(--ease-out)}
+details.check[open] summary .link::after{transform:rotate(90deg)}
+details.check .a{margin-top:var(--sp-3);padding-top:var(--sp-3);border-top:1px solid var(--line);color:var(--text)}
+.math{font-family:var(--font-mono);font-size:.92em;background:var(--sunken);padding:1px var(--sp-1);border-radius:var(--r-xs);color:var(--ink)}
+.backtop{display:flex;justify-content:flex-end;margin-top:var(--sp-3)}
+.end{margin-top:var(--sp-7)}
+.end h2{font-size:var(--fs-h3)}
+@media (max-width:520px){.toc ol{grid-template-columns:1fr}}
+@media (max-width:420px){.card{padding:var(--sp-4)}}
 @media print{
-  :root{--bg:#fff!important}
-  body{font-size:12pt}
-  .nav,.actions,.top,.end .btn{display:none!important}
-  section{break-inside:auto;border-radius:0;border-left:0;border-right:0;border-bottom:0}
+  :root{--bg:var(--surface)}
+  .band,.toplinks,.tocfoot,.backtop,.end{display:none!important}
+  .guides::before{display:none}
+  .hero{padding-block:0 var(--sp-4)}
+  .overlap{margin-top:0;padding-bottom:0}
+  .card{box-shadow:none}
+  section.card{break-inside:auto}
   figure,.box,table,details{break-inside:avoid}
-  details.check summary::after{content:""}
-  details.check .a{display:block!important}
+  details.check summary .link::after{display:none}
 }
 </style>
 </head>
 <body>
-<div class="wrap">
-<div class="nav"><a href="../../">All decks</a><a href="./">Flashcards and quiz</a></div>
-<div class="kicker">Study guide</div>
-<h1>__TITLE__</h1>
-<p class="sub">__SUB__</p>
-<div class="actions"><a class="btn" href="./">Practice with flashcards</a><button class="btn alt" onclick="document.querySelectorAll('details').forEach(d=>d.open=true);print()">Print</button></div>
-<nav class="toc" aria-label="Sections"><h2>Sections</h2><ol id="toc"></ol></nav>
+<header class="hero guides deckhero"><div class="band" aria-hidden="true"></div><div class="reading">
+  <nav class="toplinks"><a class="link quiet" href="../../">Back to all decks</a><a class="link" href="./">Study the flashcards</a></nav>
+  <p class="label">__SUBJECT__ study guide</p><h1>__HEADING__</h1><p class="lead">__SUB__</p></div></header>
+<main class="reading overlap">
+<nav class="card float toc" id="toc" aria-label="Sections"><h2>Contents</h2><ol id="toclist"></ol>
+  <div class="tocfoot"><span class="hint">Every fact here is also a flashcard.</span><button class="btn ghost sm no-chev" onclick="document.querySelectorAll('details').forEach(d=>d.open=true);print()">Print</button></div></nav>
 __BODY__
-<div class="end"><p>Done reading? Test what stuck.</p><a class="btn" href="./">Open flashcards and quiz</a></div>
-</div>
+<div class="card end"><h2>Done reading?</h2><p>Test what stuck with the flashcards and the quiz.</p><a class="btn block" href="./">Open flashcards and quiz</a></div>
+</main>
 <script>
 const P = __PATHS__;
 __DIAGRAM_CODE__
 const slug = s => s.toLowerCase().replace(/ /g,"-");
 document.querySelectorAll("section[data-sec]").forEach((s,i)=>{
-  const name=s.dataset.sec; s.id=slug(name); s.style.setProperty("--c",`var(--s-${slug(name)})`);
-  const h=s.querySelector("h2"); if(h) h.insertAdjacentHTML("afterbegin",`<span class="n">${i+1}</span>`);
-  s.insertAdjacentHTML("beforeend",'<a class="top" href="#toc">Back to sections</a>');
-  document.getElementById("toc").insertAdjacentHTML("beforeend",`<li><a href="#${s.id}" style="--c:var(--s-${slug(name)})">${name}</a></li>`);
+  const name=s.dataset.sec, c=`var(--s-${slug(name)})`; s.id=slug(name); s.classList.add("card","accent"); s.style.setProperty("--c",c);
+  const h=s.querySelector("h2"); if(h) h.insertAdjacentHTML("afterbegin",`<span class="n num">${i+1}</span>`);
+  s.insertAdjacentHTML("beforeend",'<div class="backtop"><a class="link quiet" href="#toc">Back to contents</a></div>');
+  document.getElementById("toclist").insertAdjacentHTML("beforeend",`<li><a href="#${s.id}" style="--c:${c}">${name}</a></li>`);
 });
+document.querySelectorAll("details.check summary").forEach(s=>{ s.innerHTML=`<span class="link">Check yourself</span><span>${s.innerHTML}</span>`; s.style.display="grid"; });
 document.querySelectorAll("[data-viz]").forEach(el=>{ el.outerHTML = viz(el.dataset.viz) || ""; });
 </script>
 </body>

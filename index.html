@@ -6,43 +6,248 @@
 <title>Study Time</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#e9eef2;--surface:#fff;--ink:#15222c;--muted:#56656f;--line:#c9d3da;--soft:#dfe6eb;--acc:#1d5fa8;color-scheme:light;
-  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1a22;--surface:#172530;--ink:#e4ebf0;--muted:#9aabb7;--line:#2c3d4a;--soft:#22323e;--acc:#7fb2ec;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#0f1a22;--surface:#172530;--ink:#e4ebf0;--muted:#9aabb7;--line:#2c3d4a;--soft:#22323e;--acc:#7fb2ec;color-scheme:dark}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:"Barlow",-apple-system,"Segoe UI",Roboto,sans-serif;font-size:19px;line-height:1.5}
-.wrap{max-width:720px;margin:0 auto;padding:24px 16px 48px}
-h1{font-family:"Barlow Condensed","Barlow",sans-serif;font-size:2.6rem;line-height:1;margin:.3em 0 .15em}
-h2{font-family:"Barlow Condensed","Barlow",sans-serif;font-size:1.5rem;margin:1.4em 0 .4em}
-.sub{color:var(--muted);margin:0}
-a.deck{display:grid;grid-template-columns:auto 1fr auto;gap:4px 14px;align-items:center;text-decoration:none;color:inherit;
-  background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin-bottom:10px}
-a.deck:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
-.num{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:1.05rem;color:var(--acc);grid-row:1/3}
-.topic{font-weight:600;font-size:1.1em}
-.meta{color:var(--muted);font-size:.8em;grid-column:2/3}
-.pct{grid-row:1/3;grid-column:3;font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:1.3rem;text-align:end;line-height:1.1}
-.pct small{display:block;font-family:"Barlow",sans-serif;font-weight:400;font-size:.6rem;color:var(--muted)}
-.bar{grid-column:1/4;height:6px;border-radius:3px;background:var(--soft);overflow:hidden;margin-top:6px}
-.bar i{display:block;height:100%;background:var(--acc)}
+/* Study Time design tokens and components. Source of truth: _builder/design/DESIGN.md
+   Decks are self-contained pages, so builders inline this file rather than linking it.
+   Load the font in <head>:
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"> */
+
+/* ---------- tokens: light ---------- */
+/* [data-theme] on any element scopes a theme to that subtree (used by preview.html). */
+:root,[data-theme="light"]{
+  /* surfaces */
+  --bg:#f6f8fc;            /* page: cool off-white */
+  --surface:#ffffff;       /* raised panels and cards */
+  --sunken:#eef2f8;        /* wells, inputs, progress tracks */
+  --soft:#eef2f8;          /* alias of --sunken; diagrams and decks use it */
+  --line:#e1e7f0;          /* hairlines and card borders */
+  --line-strong:#c9d3e1;   /* input borders, dividers that must be seen */
+  --guide:#d3dbe8;         /* dashed column guides */
+  /* text */
+  --ink:#0c2340;           /* headings, key numbers, diagram strokes */
+  --text:#425672;          /* body copy */
+  --muted:#5b6b82;         /* captions, meta, helper text */
+  --on-accent:#ffffff;     /* text on --accent fills */
+  /* brand */
+  --accent:#5332e6;        /* violet: links, primary buttons, eyebrow labels */
+  --accent-hover:#4322cf;
+  --accent-tint:#efecfe;   /* violet wash behind selected items */
+  --sky:#0aa5f0;           /* bright sky: bands, fills, illustration only (not text) */
+  --sky-ink:#0068a8;       /* sky as text */
+  --sky-tint:#e3f4fd;
+  --band-from:#0aa5f0;     /* diagonal hero band */
+  --band-to:#5332e6;
+  /* feedback (flashcard grades) */
+  --again:#b42318; --hard:#985a00; --good:#2152c4; --easy:#0b7a5f;
+  /* section accents: decks map their 6 to 8 sections onto these, in order */
+  --sec-blue:#1f5bc4; --sec-violet:#7d3fc8; --sec-teal:#08776b; --sec-rose:#be2b6a;
+  --sec-orange:#bd4310; --sec-amber:#946000; --sec-green:#3d7a17; --sec-slate:#4d5d76;
+
+  /* type */
+  --font-sans:"Inter",ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+  --font-mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  --fs-display:clamp(2.75rem,1.6rem + 5vw,5.25rem);  /* hero headline */
+  --fs-h1:clamp(2.25rem,1.6rem + 2.8vw,3.5rem);
+  --fs-h2:clamp(1.625rem,1.3rem + 1.4vw,2.25rem);
+  --fs-h3:1.375rem;
+  --fs-lead:clamp(1.125rem,1rem + .5vw,1.375rem);    /* intro paragraph under a headline */
+  --fs-body:1.0625rem;     /* 17px */
+  --fs-small:.9375rem;     /* 15px */
+  --fs-caption:.8125rem;   /* 13px */
+  --fs-label:1rem;         /* eyebrow label */
+  --lh-tight:1.04; --lh-heading:1.15; --lh-body:1.65;
+  --track-display:-.04em; --track-heading:-.025em; --track-body:-.006em;
+  --fw-regular:400; --fw-medium:500; --fw-semibold:600; --fw-bold:700; --fw-black:800;
+
+  /* spacing: 4px base */
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:24px; --sp-6:32px;
+  --sp-7:48px; --sp-8:64px; --sp-9:96px; --sp-10:128px;
+  --gutter:16px;           /* side gutter on phones; 24px from 640px, 32px from 1024px */
+  --content-max:1080px;    /* wide grid for home page and heroes */
+  --reading-max:680px;     /* one column of prose or one flashcard */
+  --columns:4;             /* dashed guides; 2 on phones */
+
+  /* radii */
+  --r-xs:4px; --r-sm:6px; --r-md:10px; --r-lg:16px; --r-xl:24px; --r-pill:999px;
+
+  /* shadows: two layers each, tinted with navy, never pure black */
+  --shadow-xs:0 1px 2px rgba(12,35,64,.06),0 1px 1px rgba(12,35,64,.04);
+  --shadow-sm:0 2px 5px -1px rgba(30,40,90,.10),0 1px 3px -1px rgba(12,35,64,.10);
+  --shadow-md:0 13px 27px -5px rgba(30,40,90,.16),0 8px 16px -8px rgba(12,35,64,.18);
+  --shadow-lg:0 30px 60px -12px rgba(30,40,90,.22),0 18px 36px -18px rgba(12,35,64,.26);
+  --shadow-xl:0 50px 100px -20px rgba(30,40,90,.24),0 30px 60px -30px rgba(12,35,64,.30);
+
+  /* motion */
+  --ease-out:cubic-bezier(.2,.7,.2,1);
+  --ease-in-out:cubic-bezier(.65,0,.35,1);
+  --dur-fast:150ms; --dur-base:240ms; --dur-slow:420ms;
+
+  /* diagonal band */
+  --band-angle:-9deg;
+  --band-height:clamp(180px,32vw,380px);
+
+  color-scheme:light;
+}
+
+/* ---------- tokens: dark ---------- */
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --bg:#0a1524; --surface:#122036; --sunken:#0e1a2d; --soft:#1a2a44; --line:#22344f; --line-strong:#33496a; --guide:#22344f;
+  --ink:#f2f6fc; --text:#b6c3d6; --muted:#93a3ba; --on-accent:#0a1524;
+  --accent:#a99cff; --accent-hover:#c0b6ff; --accent-tint:#221f4d;
+  --sky:#38bdf8; --sky-ink:#5ec8ff; --sky-tint:#0d2a40; --band-from:#0b6fae; --band-to:#4b35c9;
+  --again:#ff8b80; --hard:#f2bd5c; --good:#86b1ff; --easy:#4fd6ad;
+  --sec-blue:#86b4ff; --sec-violet:#caa7f7; --sec-teal:#4fd2bf; --sec-rose:#f892c1;
+  --sec-orange:#ffa173; --sec-amber:#f0bf5e; --sec-green:#a6d86c; --sec-slate:#b0bdd2;
+  --shadow-xs:0 1px 2px rgba(0,0,0,.30);
+  --shadow-sm:0 2px 5px -1px rgba(0,0,0,.40),0 1px 3px -1px rgba(0,0,0,.30);
+  --shadow-md:0 13px 27px -5px rgba(0,0,0,.45),0 8px 16px -8px rgba(0,0,0,.40);
+  --shadow-lg:0 30px 60px -12px rgba(0,0,0,.55),0 18px 36px -18px rgba(0,0,0,.50);
+  --shadow-xl:0 50px 100px -20px rgba(0,0,0,.60),0 30px 60px -30px rgba(0,0,0,.55);
+  color-scheme:dark;
+}}
+:root[data-theme="dark"],[data-theme="dark"]{
+  --bg:#0a1524; --surface:#122036; --sunken:#0e1a2d; --soft:#1a2a44; --line:#22344f; --line-strong:#33496a; --guide:#22344f;
+  --ink:#f2f6fc; --text:#b6c3d6; --muted:#93a3ba; --on-accent:#0a1524;
+  --accent:#a99cff; --accent-hover:#c0b6ff; --accent-tint:#221f4d;
+  --sky:#38bdf8; --sky-ink:#5ec8ff; --sky-tint:#0d2a40; --band-from:#0b6fae; --band-to:#4b35c9;
+  --again:#ff8b80; --hard:#f2bd5c; --good:#86b1ff; --easy:#4fd6ad;
+  --sec-blue:#86b4ff; --sec-violet:#caa7f7; --sec-teal:#4fd2bf; --sec-rose:#f892c1;
+  --sec-orange:#ffa173; --sec-amber:#f0bf5e; --sec-green:#a6d86c; --sec-slate:#b0bdd2;
+  --shadow-xs:0 1px 2px rgba(0,0,0,.30);
+  --shadow-sm:0 2px 5px -1px rgba(0,0,0,.40),0 1px 3px -1px rgba(0,0,0,.30);
+  --shadow-md:0 13px 27px -5px rgba(0,0,0,.45),0 8px 16px -8px rgba(0,0,0,.40);
+  --shadow-lg:0 30px 60px -12px rgba(0,0,0,.55),0 18px 36px -18px rgba(0,0,0,.50);
+  --shadow-xl:0 50px 100px -20px rgba(0,0,0,.60),0 30px 60px -30px rgba(0,0,0,.55);
+  color-scheme:dark;
+}
+:root,[data-theme]{--focus-ring:0 0 0 3px color-mix(in srgb,var(--accent) 45%,transparent)}
+@media (min-width:640px){ :root{ --gutter:24px; } }
+@media (min-width:1024px){ :root{ --gutter:32px; } }
+@media (max-width:639px){ :root{ --columns:2; } }
+
+/* ---------- base ---------- */
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font-sans);font-size:var(--fs-body);
+  line-height:var(--lh-body);letter-spacing:var(--track-body);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2,h3,h4{color:var(--ink);font-weight:var(--fw-bold);line-height:var(--lh-heading);letter-spacing:var(--track-heading);margin:0 0 .4em;text-wrap:balance}
+h1{font-size:var(--fs-h1)} h2{font-size:var(--fs-h2)} h3{font-size:var(--fs-h3)}
+p{margin:0 0 1em;text-wrap:pretty}
+a{color:var(--accent)}
+:focus-visible{outline:none;box-shadow:var(--focus-ring);border-radius:var(--r-sm)}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---------- layout ---------- */
+.container{max-width:calc(var(--content-max) + 2*var(--gutter));margin-inline:auto;padding-inline:var(--gutter)}
+.reading{max-width:calc(var(--reading-max) + 2*var(--gutter));margin-inline:auto;padding-inline:var(--gutter)}
+
+/* Dashed vertical column guides. Put .guides on a positioned wrapper; content above it needs position:relative. */
+.guides{position:relative;isolation:isolate}
+.guides::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  width:min(100% - 2*var(--gutter),var(--content-max));margin-inline:auto;
+  --dash:linear-gradient(to bottom,var(--guide) 0 4px,transparent 4px 8px);
+  background-image:var(--dash),var(--dash),var(--dash),var(--dash),var(--dash);
+  background-size:1px 8px;background-repeat:repeat-y;
+  background-position:0 0,33.333% 0,50% 0,66.667% 0,100% 0}
+@media (min-width:640px){ .guides::before{background-position:0 0,25% 0,50% 0,75% 0,100% 0} }
+@media (max-width:639px){ .guides::before{background-image:var(--dash),var(--dash);background-position:0 0,100% 0} }
+
+/* ---------- hero and diagonal band ---------- */
+/* Bottom padding clears the band: text never sits on it. */
+.hero{position:relative;overflow:hidden;padding-block:var(--sp-9) calc(var(--band-height) * .6 + var(--sp-8))}
+.hero>:not(.band){position:relative}
+.band{position:absolute;left:-2%;right:-2%;bottom:calc(var(--band-height) * -.4);height:var(--band-height);pointer-events:none;
+  transform:skewY(var(--band-angle));transform-origin:0 100%;
+  background:linear-gradient(100deg,var(--band-from) 0%,var(--band-from) 50%,var(--band-to) 100%)}
+.band.solid{background:var(--band-from)}
+.display{color:var(--ink)}
+.hero .display{font-size:var(--fs-display);line-height:var(--lh-tight);letter-spacing:var(--track-display);font-weight:var(--fw-bold);max-width:14ch;margin-bottom:.35em}
+.lead{font-size:var(--fs-lead);line-height:1.6;color:var(--text);max-width:36ch}
+@media (max-width:639px){ .hero{padding-block:var(--sp-7) calc(var(--band-height) * .6 + var(--sp-7))} }
+
+/* ---------- eyebrow label ---------- */
+.label{display:inline-block;color:var(--accent);font-size:var(--fs-label);font-weight:var(--fw-semibold);letter-spacing:-.01em;margin:0 0 var(--sp-4)}
+.label.sky{color:var(--sky-ink)}
+.label.sec{color:var(--c,var(--accent))}
+.tag{display:inline-flex;align-items:center;gap:6px;padding:2px 10px;border-radius:var(--r-pill);background:var(--accent-tint);
+  color:var(--accent);font-size:var(--fs-caption);font-weight:var(--fw-semibold);line-height:1.6}
+.tag.sec{background:color-mix(in srgb,var(--c) 12%,transparent);color:var(--c)}
+
+/* ---------- buttons and links (both carry a chevron) ---------- */
+.btn,.link{--chev:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M3 1.5 6.5 5 3 8.5' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+.btn::after,.link::after{content:"";width:.7em;height:.7em;flex:none;background:currentColor;
+  -webkit-mask:var(--chev) center/contain no-repeat;mask:var(--chev) center/contain no-repeat;
+  transition:transform var(--dur-fast) var(--ease-out)}
+.btn:hover::after,.link:hover::after{transform:translateX(3px)}
+.btn.no-chev::after{display:none}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4em;min-height:44px;padding:10px 20px 10px 22px;
+  border:0;border-radius:var(--r-pill);background:var(--accent);color:var(--on-accent);
+  font:inherit;font-weight:var(--fw-semibold);font-size:var(--fs-body);line-height:1.2;text-decoration:none;cursor:pointer;
+  transition:background var(--dur-fast) var(--ease-out),box-shadow var(--dur-fast) var(--ease-out),transform var(--dur-fast) var(--ease-out)}
+.btn:hover{background:var(--accent-hover)}
+.btn:active{transform:translateY(1px)}
+.btn:disabled{opacity:.45;cursor:default}
+.btn.dark{background:var(--ink);color:var(--surface)}
+.btn.dark:hover{background:color-mix(in srgb,var(--ink) 86%,var(--accent))}
+.btn.ghost{background:var(--surface);color:var(--ink);box-shadow:var(--shadow-sm)}
+.btn.ghost:hover{box-shadow:var(--shadow-md)}
+.btn.block{width:100%}
+.btn.sm{min-height:36px;padding:6px 14px 6px 16px;font-size:var(--fs-small)}
+.link{display:inline-flex;align-items:center;gap:.3em;padding:6px 2px;color:var(--accent);font-weight:var(--fw-semibold);text-decoration:none;cursor:pointer;background:none;border:0;font:inherit;font-weight:var(--fw-semibold)}
+.link:hover{color:var(--accent-hover)}
+.link.quiet{color:var(--muted);font-weight:var(--fw-medium)}
+
+/* ---------- cards and panels ---------- */
+.card{position:relative;background:var(--surface);border-radius:var(--r-lg);box-shadow:var(--shadow-md);padding:var(--sp-5)}
+.card.flat{box-shadow:none;border:1px solid var(--line)}
+.card.float{box-shadow:var(--shadow-lg)}
+.card.lift{transition:box-shadow var(--dur-base) var(--ease-out),transform var(--dur-base) var(--ease-out)}
+.card.lift:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+.card.accent{border-top:4px solid var(--c,var(--accent))}
+.panel{background:var(--surface);border-radius:var(--r-md);box-shadow:var(--shadow-xl);overflow:hidden}
+.panel-head{display:flex;align-items:center;justify-content:space-between;padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--line);font-size:var(--fs-small);color:var(--ink);font-weight:var(--fw-semibold)}
+.panel-body{padding:var(--sp-4)}
+.track{height:6px;border-radius:var(--r-pill);background:var(--sunken);overflow:hidden}
+.track>i{display:block;height:100%;background:var(--c,var(--accent));border-radius:inherit;transition:width var(--dur-slow) var(--ease-out)}
+
+/* ---------- motion ---------- */
+.rise{animation:rise var(--dur-base) var(--ease-out) both}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* ---------- home page: DESIGN.md section 12. Tokens only; no raw colors, sizes, radii or shadows. ---------- */
+.hero{padding-top:max(var(--sp-9),env(safe-area-inset-top,0px))}
+@media (max-width:639px){ .hero{padding-top:max(var(--sp-7),env(safe-area-inset-top,0px))} }
+/* No overlap here: subject headings are text, and text never sits on the band. */
+.list{position:relative;padding-top:var(--sp-6);padding-bottom:var(--sp-9)}
+.subject+.subject{margin-top:var(--sp-7)}
+.subject>h2{margin-bottom:var(--sp-4)}
+.decks{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:var(--sp-5)}
+.deck{display:grid;grid-template-columns:auto 1fr auto;gap:var(--sp-1) var(--sp-3);align-items:baseline}
+.deck .cover{position:static;color:inherit;text-decoration:none}
+.deck .cover::after{content:"";position:absolute;inset:0;border-radius:inherit}
+.deck .cover:focus-visible{box-shadow:none}
+.deck:has(.cover:focus-visible){box-shadow:var(--focus-ring),var(--shadow-lg)}
+.deck .n{color:var(--c);font-weight:var(--fw-bold)}
+.deck .topic{color:var(--ink);font-weight:var(--fw-semibold);font-size:var(--fs-h3);line-height:var(--lh-heading);letter-spacing:var(--track-heading)}
+.deck .pct{grid-row:1/3;grid-column:3;text-align:end;color:var(--ink);font-weight:var(--fw-bold);font-size:var(--fs-h3);line-height:1.1}
+.deck .pct small{display:block;color:var(--muted);font-weight:var(--fw-medium);font-size:var(--fs-caption)}
+.deck .meta{grid-column:2;color:var(--muted);font-size:var(--fs-small)}
+.deck .track{grid-column:1/4;margin-top:var(--sp-3)}
+.deck .foot{grid-column:1/4;display:flex;justify-content:flex-end;margin-top:var(--sp-2);min-height:var(--sp-2)}
+.deck .foot .link{position:relative;z-index:1}
 .empty{color:var(--muted)}
-.item{margin-bottom:10px}
-.item a.deck{margin-bottom:0}
-.item.has-guide a.deck{border-radius:16px 16px 0 0}
-a.guide{display:flex;align-items:center;justify-content:space-between;gap:10px;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-top:0;border-radius:0 0 16px 16px;padding:10px 16px;font-size:.9em;font-weight:500}
-a.guide span{color:var(--muted);font-weight:400;font-size:.9em}
-a.guide:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <h1>Study Time</h1>
-  <p class="sub">Pick a deck. Progress saves on this device.</p>
-  <div id="list"><p class="empty">Loading decks…</p></div>
-</div>
+<header class="hero guides"><div class="band" aria-hidden="true"></div><div class="container">
+  <p class="label">Study Time</p>
+  <h1 class="display">Pick up where you left off.</h1>
+  <p class="lead">Flashcards, quizzes and study guides for every unit. Progress saves on this device.</p>
+</div></header>
+<main class="container list guides" id="list"><p class="empty">Loading decks…</p></main>
 <script>
 function solid(id){
   try{ const s=JSON.parse(localStorage.getItem("studytime:"+id)||"null"); if(!s||!s.cards) return 0;
@@ -50,15 +255,16 @@ function solid(id){
 }
 fetch("decks.json",{cache:"no-store"}).then(r=>r.json()).then(decks=>{
   const by={}; decks.forEach(d=>(by[d.subject]=by[d.subject]||[]).push(d));
-  const html=Object.keys(by).sort().map(sub=>`<h2>${sub}</h2>`+by[sub]
+  // ?v= changes whenever a page is rebuilt, so phones never show a stale copy after an update.
+  const v=x=>x?`?v=${x}`:"";
+  const html=Object.keys(by).sort().map(sub=>`<section class="subject"><h2>${sub}</h2><div class="decks">`+by[sub]
     .sort((a,b)=>a.path.localeCompare(b.path))
-    .map(d=>{const n=solid(d.id), p=Math.round(n/d.cards*100);
-      // ?v= changes whenever a page is rebuilt, so phones never show a stale copy after an update.
-      const v=x=>x?`?v=${x}`:"";
-      return `<div class="item${d.guide?" has-guide":""}"><a class="deck" href="${d.path}${v(d.v)}"><span class="num">${d.number}</span><span class="topic">${d.topic}</span>
-      <span class="meta">${d.cards} cards</span><span class="pct">${p}%<small>solid</small></span>
-      <span class="bar"><i style="width:${p}%"></i></span></a>
-      ${d.guide?`<a class="guide" href="${d.path}${d.guide}${v(d.gv)}">Study guide <span>Read the notes</span></a>`:""}</div>`}).join("")).join("");
+    .map(d=>{const p=Math.round(solid(d.id)/d.cards*100);
+      return `<article class="card lift deck" style="--c:var(--${d.accent||"sec-blue"})">
+       <span class="n num">${d.number}</span><a class="cover topic" href="${d.path}${v(d.v)}">${d.topic}</a>
+       <span class="pct num">${p}%<small>solid</small></span><span class="meta num">${d.cards} cards</span>
+       <span class="track"><i style="width:${p}%"></i></span>
+       <span class="foot">${d.guide?`<a class="link" href="${d.path}${d.guide}${v(d.gv)}">Guide</a>`:""}</span></article>`}).join("")+`</div></section>`).join("");
   document.getElementById("list").innerHTML=html||'<p class="empty">No decks yet.</p>';
 }).catch(()=>{document.getElementById("list").innerHTML='<p class="empty">Could not load the deck list. Open this page from its GitHub Pages link, not as a downloaded file.</p>';});
 </script>

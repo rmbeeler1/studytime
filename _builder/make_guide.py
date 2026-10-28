@@ -1,10 +1,11 @@
 """Build one study guide: python _builder/make_guide.py <deck-id>
-Reads _builder/decks/<deck-id>/guide.html (the guide's body) and takes colors, sections and diagrams
-from the already-built deck page, so it works for decks with no builder source (aviation u04).
+Reads _builder/decks/<deck-id>/guide.html (the guide's body), inlines _builder/design/tokens.css, and takes
+section colors and diagrams from the already-built deck page. make_deck.py runs this automatically.
 Writes <path>/guide.html and stamps decks.json with version tags for cache busting."""
 import json, re, sys, hashlib, pathlib
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 B = ROOT / "_builder"
+HEX = re.compile(r"(?<![&\w])#[0-9a-fA-F]{3}(?:[0-9a-fA-F]{3})?\b")
 
 def decks():
     return json.loads((ROOT / "decks.json").read_text())
@@ -25,23 +26,28 @@ def main(deck_id):
     if not src.exists(): sys.exit(f"no guide source at {src.relative_to(ROOT)}")
     deck = (ROOT / d["path"] / "index.html").read_text()
     body = src.read_text()
-    tokens = deck[deck.index(":root{"):deck.index("html{scroll-padding-top")]
+    # Section colors and diagrams come from the built deck page, so the guide always matches it.
+    secvars = re.search(r":root\{ --s-.*?--deck-c:[^;]+; \}", deck).group(0)
     code = deck[deck.index("/* ---------- diagrams ---------- */"):deck.index("/* ---------- scheduling ---------- */")]
     paths = json.loads(re.search(r"const DATA = (.*?);\nconst CARDS", deck, re.S).group(1)).get("paths", {})
     secs = json.loads(re.search(r"const SECS = (\[.*?\]);", deck).group(1))
-    sub = re.search(r'<p class="sub">(.*?)</p>', deck).group(1)
-    sub = sub if "__SUB__" not in sub else ""
+    m = re.search(r'<p class="lead">(.*?)</p>', deck); sub = m.group(1) if m else ""
     problems = []
     used = re.findall(r'data-sec="([^"]+)"', body)
     problems += [f"unknown section {s!r}" for s in used if s not in secs]
     problems += [f"section {s!r} has no guide section" for s in secs if s not in used]
+    if used != [s for s in secs if s in used]: problems.append("guide sections must follow the deck's section order")
     for v in re.findall(r'data-viz="([^"]+)"', body):
         k = v.split(":")[0]
         if not re.search(r"(^|[\s{,])" + re.escape(k) + r"\s*[:(]", code, re.M): problems.append(f"unknown diagram {v!r}")
     title = f"{d['subject']} {d['number']}: {d['topic']}"
     html = (B / "guide_template.html").read_text()
-    html = (html.replace("__TOKENS__", tokens).replace("__TITLE__", title).replace("__SUB__", sub)
+    html = (html.replace("__SECVARS__", secvars).replace("__TITLE__", title).replace("__SUB__", sub)
+            .replace("__SUBJECT__", d["subject"]).replace("__HEADING__", f"{d['number']}: {d['topic']}")
             .replace("__PATHS__", json.dumps(paths)).replace("__DIAGRAM_CODE__", code).replace("__BODY__", body))
+    stray = HEX.findall(html)
+    if stray: problems.append("raw hex colors outside tokens.css (use a token): " + ", ".join(sorted(set(stray))))
+    html = html.replace("__TOKENS_CSS__", (B / "design" / "tokens.css").read_text())
     if "—" in html: problems.append("em-dash found")
     if problems:
         print("FIX BEFORE PUBLISHING:"); [print(" -", p) for p in problems]; sys.exit(1)

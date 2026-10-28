@@ -99,8 +99,8 @@
    <circle cx="300" cy="216" r="24" style="fill:color-mix(in srgb,var(--c) 30%,var(--surface));stroke:var(--c)" stroke-width="2.5"/><text x="300" y="223" text-anchor="middle" font-size="18" style="fill:var(--ink)">Rat1</text>
    ${arr(330,196,385,166,true)}<text x="590" y="262" text-anchor="end" font-size="21" style="fill:var(--c)">5′ to 3′ exonuclease degrades</text><text x="590" y="288" text-anchor="end" font-size="21" style="fill:var(--c)">the RNA until it reaches Pol II</text>`); },
  consensus(){ const rows=["TATAAAAG","TCCAATGC","AATAGCCG","TACAGGAC"], cons=["T","A","Y","A","R","N","A","C/G"];
-  let s=""; rows.forEach((r,i)=>{ [...r].forEach((ch,j)=>{ s+=`<text x="${150+j*52}" y="${60+i*42}" text-anchor="middle" font-size="26" style="fill:var(--ink);font-family:ui-monospace,Menlo,monospace">${ch}</text>`; }); });
-  cons.forEach((ch,j)=>{ s+=`<text x="${150+j*52}" y="${250}" text-anchor="middle" font-size="${ch.length>1?22:28}" style="fill:var(--c);font-family:ui-monospace,Menlo,monospace;font-weight:700">${ch}</text>`; });
+  let s=""; rows.forEach((r,i)=>{ [...r].forEach((ch,j)=>{ s+=`<text x="${150+j*52}" y="${60+i*42}" text-anchor="middle" font-size="26" style="fill:var(--ink);font-family:var(--font-mono)">${ch}</text>`; }); });
+  cons.forEach((ch,j)=>{ s+=`<text x="${150+j*52}" y="${250}" text-anchor="middle" font-size="${ch.length>1?22:28}" style="fill:var(--c);font-family:var(--font-mono);font-weight:700">${ch}</text>`; });
   return svgWrap(`${s}${ln(110,214,560,214,INK,2.5)}<text x="100" y="250" text-anchor="end" font-size="22" style="fill:var(--ink)">5′</text><text x="570" y="250" font-size="22" style="fill:var(--ink)">3′</text>
    <text x="300" y="300" text-anchor="middle" font-size="21" style="fill:var(--muted)">majority first. R = purine, Y = pyrimidine,</text>
    <text x="300" y="326" text-anchor="middle" font-size="21" style="fill:var(--muted)">N = any, C/G = split between groups</text>`); },

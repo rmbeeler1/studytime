@@ -6,143 +6,328 @@
 <title>Genetics Ch 13: Transcription</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#e9eef2; --surface:#ffffff; --ink:#15222c; --muted:#56656f; --line:#c9d3da; --soft:#dfe6eb;
-  --s-rna-structure:#1d5fa8; --s-rna-classes:#7a3eb1; --s-transcription-basics:#0e7c6b; --s-consensus-sequences:#b0306a; --s-bacterial-initiation:#c2410c; --s-bacterial-termination:#9a5b06; --s-eukaryotic-initiation:#4d7c0f; --s-eukaryotic-termination:#475569; 
-  --again:#b42318; --hard:#9a5b06; --good:#1d5fa8; --easy:#0e7c6b;
-  color-scheme: light;
-  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+/* Study Time design tokens and components. Source of truth: _builder/design/DESIGN.md
+   Decks are self-contained pages, so builders inline this file rather than linking it.
+   Load the font in <head>:
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"> */
+
+/* ---------- tokens: light ---------- */
+/* [data-theme] on any element scopes a theme to that subtree (used by preview.html). */
+:root,[data-theme="light"]{
+  /* surfaces */
+  --bg:#f6f8fc;            /* page: cool off-white */
+  --surface:#ffffff;       /* raised panels and cards */
+  --sunken:#eef2f8;        /* wells, inputs, progress tracks */
+  --soft:#eef2f8;          /* alias of --sunken; diagrams and decks use it */
+  --line:#e1e7f0;          /* hairlines and card borders */
+  --line-strong:#c9d3e1;   /* input borders, dividers that must be seen */
+  --guide:#d3dbe8;         /* dashed column guides */
+  /* text */
+  --ink:#0c2340;           /* headings, key numbers, diagram strokes */
+  --text:#425672;          /* body copy */
+  --muted:#5b6b82;         /* captions, meta, helper text */
+  --on-accent:#ffffff;     /* text on --accent fills */
+  /* brand */
+  --accent:#5332e6;        /* violet: links, primary buttons, eyebrow labels */
+  --accent-hover:#4322cf;
+  --accent-tint:#efecfe;   /* violet wash behind selected items */
+  --sky:#0aa5f0;           /* bright sky: bands, fills, illustration only (not text) */
+  --sky-ink:#0068a8;       /* sky as text */
+  --sky-tint:#e3f4fd;
+  --band-from:#0aa5f0;     /* diagonal hero band */
+  --band-to:#5332e6;
+  /* feedback (flashcard grades) */
+  --again:#b42318; --hard:#985a00; --good:#2152c4; --easy:#0b7a5f;
+  /* section accents: decks map their 6 to 8 sections onto these, in order */
+  --sec-blue:#1f5bc4; --sec-violet:#7d3fc8; --sec-teal:#08776b; --sec-rose:#be2b6a;
+  --sec-orange:#bd4310; --sec-amber:#946000; --sec-green:#3d7a17; --sec-slate:#4d5d76;
+
+  /* type */
+  --font-sans:"Inter",ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+  --font-mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  --fs-display:clamp(2.75rem,1.6rem + 5vw,5.25rem);  /* hero headline */
+  --fs-h1:clamp(2.25rem,1.6rem + 2.8vw,3.5rem);
+  --fs-h2:clamp(1.625rem,1.3rem + 1.4vw,2.25rem);
+  --fs-h3:1.375rem;
+  --fs-lead:clamp(1.125rem,1rem + .5vw,1.375rem);    /* intro paragraph under a headline */
+  --fs-body:1.0625rem;     /* 17px */
+  --fs-small:.9375rem;     /* 15px */
+  --fs-caption:.8125rem;   /* 13px */
+  --fs-label:1rem;         /* eyebrow label */
+  --lh-tight:1.04; --lh-heading:1.15; --lh-body:1.65;
+  --track-display:-.04em; --track-heading:-.025em; --track-body:-.006em;
+  --fw-regular:400; --fw-medium:500; --fw-semibold:600; --fw-bold:700; --fw-black:800;
+
+  /* spacing: 4px base */
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:24px; --sp-6:32px;
+  --sp-7:48px; --sp-8:64px; --sp-9:96px; --sp-10:128px;
+  --gutter:16px;           /* side gutter on phones; 24px from 640px, 32px from 1024px */
+  --content-max:1080px;    /* wide grid for home page and heroes */
+  --reading-max:680px;     /* one column of prose or one flashcard */
+  --columns:4;             /* dashed guides; 2 on phones */
+
+  /* radii */
+  --r-xs:4px; --r-sm:6px; --r-md:10px; --r-lg:16px; --r-xl:24px; --r-pill:999px;
+
+  /* shadows: two layers each, tinted with navy, never pure black */
+  --shadow-xs:0 1px 2px rgba(12,35,64,.06),0 1px 1px rgba(12,35,64,.04);
+  --shadow-sm:0 2px 5px -1px rgba(30,40,90,.10),0 1px 3px -1px rgba(12,35,64,.10);
+  --shadow-md:0 13px 27px -5px rgba(30,40,90,.16),0 8px 16px -8px rgba(12,35,64,.18);
+  --shadow-lg:0 30px 60px -12px rgba(30,40,90,.22),0 18px 36px -18px rgba(12,35,64,.26);
+  --shadow-xl:0 50px 100px -20px rgba(30,40,90,.24),0 30px 60px -30px rgba(12,35,64,.30);
+
+  /* motion */
+  --ease-out:cubic-bezier(.2,.7,.2,1);
+  --ease-in-out:cubic-bezier(.65,0,.35,1);
+  --dur-fast:150ms; --dur-base:240ms; --dur-slow:420ms;
+
+  /* diagonal band */
+  --band-angle:-9deg;
+  --band-height:clamp(180px,32vw,380px);
+
+  color-scheme:light;
 }
-@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
-  --bg:#0f1a22; --surface:#172530; --ink:#e4ebf0; --muted:#9aabb7; --line:#2c3d4a; --soft:#22323e;
-  --s-rna-structure:#7fb2ec; --s-rna-classes:#c4a1ea; --s-transcription-basics:#5fd0bc; --s-consensus-sequences:#f08cbc; --s-bacterial-initiation:#fb9a6c; --s-bacterial-termination:#e8b45c; --s-eukaryotic-initiation:#a8d46a; --s-eukaryotic-termination:#a8b6c8; 
-  --again:#f2867c; --hard:#e8b45c; --good:#7fb2ec; --easy:#5fd0bc; color-scheme: dark; }}
-:root[data-theme="dark"]{
-  --bg:#0f1a22; --surface:#172530; --ink:#e4ebf0; --muted:#9aabb7; --line:#2c3d4a; --soft:#22323e;
-  --s-rna-structure:#7fb2ec; --s-rna-classes:#c4a1ea; --s-transcription-basics:#5fd0bc; --s-consensus-sequences:#f08cbc; --s-bacterial-initiation:#fb9a6c; --s-bacterial-termination:#e8b45c; --s-eukaryotic-initiation:#a8d46a; --s-eukaryotic-termination:#a8b6c8; 
-  --again:#f2867c; --hard:#e8b45c; --good:#7fb2ec; --easy:#5fd0bc; color-scheme: dark; }
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:"Barlow",-apple-system,"Segoe UI",Roboto,sans-serif;font-size:19px;line-height:1.5;-webkit-font-smoothing:antialiased}
-button{font:inherit;color:inherit;cursor:pointer}
-button:focus-visible{outline:3px solid var(--good);outline-offset:2px}
-.wrap{max-width:720px;margin:0 auto;padding:20px 16px 40px}
-h1,h2,.cond{font-family:"Barlow Condensed","Barlow",sans-serif}
-h1{font-size:2.4rem;line-height:1.05;margin:.4em 0 .15em;font-weight:700;letter-spacing:-.01em}
-.sub{color:var(--muted);margin:0 0 1.2em}
-.hub{color:var(--muted);font-size:.85em;text-decoration:none;border-bottom:1px solid var(--line)}
-/* home */
-.launch{background:var(--surface);border-radius:18px;padding:22px 20px;border:1px solid var(--line)}
-.due{display:flex;align-items:baseline;gap:.4em;flex-wrap:wrap}
-.due b{font-family:"Barlow Condensed";font-size:3.4rem;line-height:1;font-weight:700}
-.modes{display:flex;gap:8px;margin:16px 0}
-.mode{flex:1;padding:10px 12px;border-radius:12px;border:1.5px solid var(--line);background:transparent;text-align:start;line-height:1.3}
-.mode small{display:block;color:var(--muted);font-size:.78em}
-.mode[aria-pressed="true"]{border-color:var(--ink);background:var(--soft)}
-.go{width:100%;padding:14px;border-radius:12px;border:0;background:var(--ink);color:var(--surface);font-weight:600;font-size:1.05em}
-.go:disabled{opacity:.4;cursor:default}
-.secs{margin-top:22px}
-.secs h2{font-size:1.35rem;margin:0 0 8px;font-weight:600}
-.sec{display:grid;grid-template-columns:22px 1fr auto;gap:10px;align-items:center;width:100%;padding:10px 4px;background:none;border:0;border-bottom:1px solid var(--line);text-align:start}
-.chk{width:20px;height:20px;border-radius:6px;border:2px solid var(--c);display:grid;place-items:center}
-.sec[aria-pressed="true"] .chk{background:var(--c)}
-.sec[aria-pressed="true"] .chk::after{content:"";width:9px;height:5px;border:2.5px solid var(--surface);border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px)}
-.bar{grid-column:2/4;height:7px;border-radius:4px;background:var(--soft);overflow:hidden;display:flex;margin-top:-4px}
-.bar i{display:block;height:100%}
-.secname{font-weight:500}
-.secmeta{color:var(--muted);font-size:.8em;white-space:nowrap}
-.legend{display:flex;gap:14px;color:var(--muted);font-size:.78em;margin-top:10px;flex-wrap:wrap}
-.legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px;background:var(--sw)}
-.foot{display:flex;justify-content:space-between;margin-top:22px;color:var(--muted);font-size:.85em}
-.link{background:none;border:0;color:var(--muted);text-decoration:underline;padding:0}
-/* study */
-.top{display:flex;align-items:center;gap:12px}
-.back{background:none;border:0;padding:6px 0;color:var(--muted)}
-.track{flex:1;height:6px;border-radius:3px;background:var(--soft);overflow:hidden}
-.track i{display:block;height:100%;background:var(--ink);transition:width .3s}
-.count{color:var(--muted);font-size:.85em;min-width:3.5em;text-align:end}
-.card{--c:var(--ink);margin-top:16px;background:var(--surface);border-radius:18px;border:1px solid var(--line);border-top:6px solid var(--c);padding:18px 20px 22px;min-height:360px;display:flex;flex-direction:column}
-.chip{display:flex;align-items:center;gap:8px;color:var(--c);font-weight:600;font-size:.85em}
-.chip .dot{width:9px;height:9px;border-radius:50%;background:var(--c)}
-.chip .add{color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:0 6px;font-weight:500;font-size:.9em}
-.prompt{font-size:1.32em;font-weight:600;line-height:1.35;margin:.5em 0 .2em}
-.list{display:inline-block;text-align:start}
-.cz{color:var(--c);font-weight:700}
-.cz.gap{display:inline-block;min-width:3.2em;padding:0 .35em;border-radius:6px;background:color-mix(in srgb,var(--c) 14%,transparent);border-bottom:2.5px solid var(--c);text-align:center;font-weight:600}
-.viz{margin:12px 0 4px}
-.viz svg{width:100%;height:auto;max-height:46vh;display:block}
-.answer{border-top:1.5px solid var(--line);margin-top:16px;padding-top:14px}
-.ans{font-size:1.32em;font-weight:600;color:var(--c)}
-.extra{color:var(--muted);font-size:.9em;margin-top:.5em}
-.spacer{flex:1}
-.reveal{margin-top:18px;width:100%;padding:14px;border-radius:12px;border:1.5px solid var(--ink);background:transparent;font-weight:600}
-.grades{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:18px}
-.g{padding:10px 4px;border-radius:12px;border:0;background:var(--soft);font-weight:600;line-height:1.2;border-bottom:3px solid var(--gc)}
-.g small{display:block;font-weight:400;color:var(--muted);font-size:.72em;margin-top:2px}
-.keys{color:var(--muted);font-size:.75em;text-align:center;margin-top:10px}
-.done{text-align:center;padding:40px 10px}
-.done h1{font-size:2.6rem}
-@media (hover:none){.keys{display:none}}
-@media (max-width:420px){body{font-size:18px}.card{padding:16px 14px 18px}.due b{font-size:3rem}}
-@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
-.fadein{animation:fi .22s ease-out}
-@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-svg text{font-family:"Barlow Condensed","Barlow",sans-serif;font-weight:600}
-.mode{min-width:0}
-.go.alt{background:transparent;color:var(--ink);border:1.5px solid var(--line);margin-top:10px}
-.resume{background:var(--surface);border:1.5px solid var(--ink);border-radius:18px;padding:18px 20px;margin-bottom:14px;display:grid;gap:10px}
-.resume b{display:block;font-family:"Barlow Condensed";font-size:1.5rem;line-height:1.1}
-.resume span{color:var(--muted);font-size:.9em}
-.resume .link{justify-self:center;font-size:.85em}
+
+/* ---------- tokens: dark ---------- */
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --bg:#0a1524; --surface:#122036; --sunken:#0e1a2d; --soft:#1a2a44; --line:#22344f; --line-strong:#33496a; --guide:#22344f;
+  --ink:#f2f6fc; --text:#b6c3d6; --muted:#93a3ba; --on-accent:#0a1524;
+  --accent:#a99cff; --accent-hover:#c0b6ff; --accent-tint:#221f4d;
+  --sky:#38bdf8; --sky-ink:#5ec8ff; --sky-tint:#0d2a40; --band-from:#0b6fae; --band-to:#4b35c9;
+  --again:#ff8b80; --hard:#f2bd5c; --good:#86b1ff; --easy:#4fd6ad;
+  --sec-blue:#86b4ff; --sec-violet:#caa7f7; --sec-teal:#4fd2bf; --sec-rose:#f892c1;
+  --sec-orange:#ffa173; --sec-amber:#f0bf5e; --sec-green:#a6d86c; --sec-slate:#b0bdd2;
+  --shadow-xs:0 1px 2px rgba(0,0,0,.30);
+  --shadow-sm:0 2px 5px -1px rgba(0,0,0,.40),0 1px 3px -1px rgba(0,0,0,.30);
+  --shadow-md:0 13px 27px -5px rgba(0,0,0,.45),0 8px 16px -8px rgba(0,0,0,.40);
+  --shadow-lg:0 30px 60px -12px rgba(0,0,0,.55),0 18px 36px -18px rgba(0,0,0,.50);
+  --shadow-xl:0 50px 100px -20px rgba(0,0,0,.60),0 30px 60px -30px rgba(0,0,0,.55);
+  color-scheme:dark;
+}}
+:root[data-theme="dark"],[data-theme="dark"]{
+  --bg:#0a1524; --surface:#122036; --sunken:#0e1a2d; --soft:#1a2a44; --line:#22344f; --line-strong:#33496a; --guide:#22344f;
+  --ink:#f2f6fc; --text:#b6c3d6; --muted:#93a3ba; --on-accent:#0a1524;
+  --accent:#a99cff; --accent-hover:#c0b6ff; --accent-tint:#221f4d;
+  --sky:#38bdf8; --sky-ink:#5ec8ff; --sky-tint:#0d2a40; --band-from:#0b6fae; --band-to:#4b35c9;
+  --again:#ff8b80; --hard:#f2bd5c; --good:#86b1ff; --easy:#4fd6ad;
+  --sec-blue:#86b4ff; --sec-violet:#caa7f7; --sec-teal:#4fd2bf; --sec-rose:#f892c1;
+  --sec-orange:#ffa173; --sec-amber:#f0bf5e; --sec-green:#a6d86c; --sec-slate:#b0bdd2;
+  --shadow-xs:0 1px 2px rgba(0,0,0,.30);
+  --shadow-sm:0 2px 5px -1px rgba(0,0,0,.40),0 1px 3px -1px rgba(0,0,0,.30);
+  --shadow-md:0 13px 27px -5px rgba(0,0,0,.45),0 8px 16px -8px rgba(0,0,0,.40);
+  --shadow-lg:0 30px 60px -12px rgba(0,0,0,.55),0 18px 36px -18px rgba(0,0,0,.50);
+  --shadow-xl:0 50px 100px -20px rgba(0,0,0,.60),0 30px 60px -30px rgba(0,0,0,.55);
+  color-scheme:dark;
+}
+:root,[data-theme]{--focus-ring:0 0 0 3px color-mix(in srgb,var(--accent) 45%,transparent)}
+@media (min-width:640px){ :root{ --gutter:24px; } }
+@media (min-width:1024px){ :root{ --gutter:32px; } }
+@media (max-width:639px){ :root{ --columns:2; } }
+
+/* ---------- base ---------- */
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font-sans);font-size:var(--fs-body);
+  line-height:var(--lh-body);letter-spacing:var(--track-body);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2,h3,h4{color:var(--ink);font-weight:var(--fw-bold);line-height:var(--lh-heading);letter-spacing:var(--track-heading);margin:0 0 .4em;text-wrap:balance}
+h1{font-size:var(--fs-h1)} h2{font-size:var(--fs-h2)} h3{font-size:var(--fs-h3)}
+p{margin:0 0 1em;text-wrap:pretty}
+a{color:var(--accent)}
+:focus-visible{outline:none;box-shadow:var(--focus-ring);border-radius:var(--r-sm)}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---------- layout ---------- */
+.container{max-width:calc(var(--content-max) + 2*var(--gutter));margin-inline:auto;padding-inline:var(--gutter)}
+.reading{max-width:calc(var(--reading-max) + 2*var(--gutter));margin-inline:auto;padding-inline:var(--gutter)}
+
+/* Dashed vertical column guides. Put .guides on a positioned wrapper; content above it needs position:relative. */
+.guides{position:relative;isolation:isolate}
+.guides::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  width:min(100% - 2*var(--gutter),var(--content-max));margin-inline:auto;
+  --dash:linear-gradient(to bottom,var(--guide) 0 4px,transparent 4px 8px);
+  background-image:var(--dash),var(--dash),var(--dash),var(--dash),var(--dash);
+  background-size:1px 8px;background-repeat:repeat-y;
+  background-position:0 0,33.333% 0,50% 0,66.667% 0,100% 0}
+@media (min-width:640px){ .guides::before{background-position:0 0,25% 0,50% 0,75% 0,100% 0} }
+@media (max-width:639px){ .guides::before{background-image:var(--dash),var(--dash);background-position:0 0,100% 0} }
+
+/* ---------- hero and diagonal band ---------- */
+/* Bottom padding clears the band: text never sits on it. */
+.hero{position:relative;overflow:hidden;padding-block:var(--sp-9) calc(var(--band-height) * .6 + var(--sp-8))}
+.hero>:not(.band){position:relative}
+.band{position:absolute;left:-2%;right:-2%;bottom:calc(var(--band-height) * -.4);height:var(--band-height);pointer-events:none;
+  transform:skewY(var(--band-angle));transform-origin:0 100%;
+  background:linear-gradient(100deg,var(--band-from) 0%,var(--band-from) 50%,var(--band-to) 100%)}
+.band.solid{background:var(--band-from)}
+.display{color:var(--ink)}
+.hero .display{font-size:var(--fs-display);line-height:var(--lh-tight);letter-spacing:var(--track-display);font-weight:var(--fw-bold);max-width:14ch;margin-bottom:.35em}
+.lead{font-size:var(--fs-lead);line-height:1.6;color:var(--text);max-width:36ch}
+@media (max-width:639px){ .hero{padding-block:var(--sp-7) calc(var(--band-height) * .6 + var(--sp-7))} }
+
+/* ---------- eyebrow label ---------- */
+.label{display:inline-block;color:var(--accent);font-size:var(--fs-label);font-weight:var(--fw-semibold);letter-spacing:-.01em;margin:0 0 var(--sp-4)}
+.label.sky{color:var(--sky-ink)}
+.label.sec{color:var(--c,var(--accent))}
+.tag{display:inline-flex;align-items:center;gap:6px;padding:2px 10px;border-radius:var(--r-pill);background:var(--accent-tint);
+  color:var(--accent);font-size:var(--fs-caption);font-weight:var(--fw-semibold);line-height:1.6}
+.tag.sec{background:color-mix(in srgb,var(--c) 12%,transparent);color:var(--c)}
+
+/* ---------- buttons and links (both carry a chevron) ---------- */
+.btn,.link{--chev:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M3 1.5 6.5 5 3 8.5' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+.btn::after,.link::after{content:"";width:.7em;height:.7em;flex:none;background:currentColor;
+  -webkit-mask:var(--chev) center/contain no-repeat;mask:var(--chev) center/contain no-repeat;
+  transition:transform var(--dur-fast) var(--ease-out)}
+.btn:hover::after,.link:hover::after{transform:translateX(3px)}
+.btn.no-chev::after{display:none}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4em;min-height:44px;padding:10px 20px 10px 22px;
+  border:0;border-radius:var(--r-pill);background:var(--accent);color:var(--on-accent);
+  font:inherit;font-weight:var(--fw-semibold);font-size:var(--fs-body);line-height:1.2;text-decoration:none;cursor:pointer;
+  transition:background var(--dur-fast) var(--ease-out),box-shadow var(--dur-fast) var(--ease-out),transform var(--dur-fast) var(--ease-out)}
+.btn:hover{background:var(--accent-hover)}
+.btn:active{transform:translateY(1px)}
+.btn:disabled{opacity:.45;cursor:default}
+.btn.dark{background:var(--ink);color:var(--surface)}
+.btn.dark:hover{background:color-mix(in srgb,var(--ink) 86%,var(--accent))}
+.btn.ghost{background:var(--surface);color:var(--ink);box-shadow:var(--shadow-sm)}
+.btn.ghost:hover{box-shadow:var(--shadow-md)}
+.btn.block{width:100%}
+.btn.sm{min-height:36px;padding:6px 14px 6px 16px;font-size:var(--fs-small)}
+.link{display:inline-flex;align-items:center;gap:.3em;padding:6px 2px;color:var(--accent);font-weight:var(--fw-semibold);text-decoration:none;cursor:pointer;background:none;border:0;font:inherit;font-weight:var(--fw-semibold)}
+.link:hover{color:var(--accent-hover)}
+.link.quiet{color:var(--muted);font-weight:var(--fw-medium)}
+
+/* ---------- cards and panels ---------- */
+.card{position:relative;background:var(--surface);border-radius:var(--r-lg);box-shadow:var(--shadow-md);padding:var(--sp-5)}
+.card.flat{box-shadow:none;border:1px solid var(--line)}
+.card.float{box-shadow:var(--shadow-lg)}
+.card.lift{transition:box-shadow var(--dur-base) var(--ease-out),transform var(--dur-base) var(--ease-out)}
+.card.lift:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+.card.accent{border-top:4px solid var(--c,var(--accent))}
+.panel{background:var(--surface);border-radius:var(--r-md);box-shadow:var(--shadow-xl);overflow:hidden}
+.panel-head{display:flex;align-items:center;justify-content:space-between;padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--line);font-size:var(--fs-small);color:var(--ink);font-weight:var(--fw-semibold)}
+.panel-body{padding:var(--sp-4)}
+.track{height:6px;border-radius:var(--r-pill);background:var(--sunken);overflow:hidden}
+.track>i{display:block;height:100%;background:var(--c,var(--accent));border-radius:inherit;transition:width var(--dur-slow) var(--ease-out)}
+
+/* ---------- motion ---------- */
+.rise{animation:rise var(--dur-base) var(--ease-out) both}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* ---------- deck page: DESIGN.md section 10. Tokens only; no raw colors, sizes, radii or shadows. ---------- */
+:root{ --s-rna-structure:var(--sec-blue); --s-rna-classes:var(--sec-violet); --s-transcription-basics:var(--sec-teal); --s-consensus-sequences:var(--sec-rose); --s-bacterial-initiation:var(--sec-orange); --s-bacterial-termination:var(--sec-amber); --s-eukaryotic-initiation:var(--sec-green); --s-eukaryotic-termination:var(--sec-slate);  --deck-c:var(--sec-blue); }
+body{padding-bottom:env(safe-area-inset-bottom,0px)}
+button{font:inherit;color:inherit}
+svg text{font-family:var(--font-sans);font-weight:var(--fw-semibold);letter-spacing:-.01em}
+/* home hero: band starts in the deck's first section color; darkened in dark mode so it doesn't glare */
+.deckhero{--band-from:var(--deck-c);padding-top:max(var(--sp-6),env(safe-area-inset-top,0px))}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .deckhero{--band-from:color-mix(in oklch,var(--deck-c) 62%,var(--bg))} }
+:root[data-theme="dark"] .deckhero{--band-from:color-mix(in oklch,var(--deck-c) 62%,var(--bg))}
+.deckhero h1{margin-bottom:var(--sp-3)}
+.deckhero .label{margin-bottom:var(--sp-2)}
+.deckhero .lead{max-width:40ch;margin:0}
+.toplinks{display:flex;gap:var(--sp-5);flex-wrap:wrap;margin:0 0 var(--sp-6)}
+.overlap{position:relative;margin-top:calc(var(--band-height) * -.5);padding-bottom:var(--sp-8)}
+.stack>*+*{margin-top:var(--sp-5)}
+.card h2{font-size:var(--fs-h3);margin-bottom:var(--sp-1)}
+.hint{color:var(--muted);font-size:var(--fs-small);margin:0 0 var(--sp-4)}
+.resume{border-top:4px solid var(--accent)}
+.center{display:flex;justify-content:center;margin-top:var(--sp-2)}
+/* launch */
+.due{display:flex;align-items:baseline;gap:var(--sp-3);flex-wrap:wrap}
+.due b{font-size:var(--fs-h1);line-height:1;letter-spacing:var(--track-display);color:var(--ink);font-weight:var(--fw-bold)}
+.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-2);margin:var(--sp-5) 0}
+.mode{min-width:0;padding:var(--sp-3);border-radius:var(--r-md);border:1.5px solid var(--line-strong);background:var(--surface);text-align:start;line-height:var(--lh-heading);
+  color:var(--ink);font-weight:var(--fw-semibold);font-size:var(--fs-small);cursor:pointer;transition:border-color var(--dur-fast) var(--ease-out),background var(--dur-fast) var(--ease-out)}
+.mode small{display:block;color:var(--muted);font-weight:var(--fw-regular);font-size:var(--fs-caption);margin-top:var(--sp-1);line-height:1.4}
+.mode:hover,.len:hover{border-color:var(--accent)}
+.mode[aria-pressed="true"],.len[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-tint)}
+/* quiz length and history */
+.lens{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-2);margin:0 0 var(--sp-4)}
+.len{min-height:44px;border-radius:var(--r-pill);border:1.5px solid var(--line-strong);background:var(--surface);font-weight:var(--fw-semibold);color:var(--ink);cursor:pointer}
+.hist{margin:0 0 var(--sp-5)}
+.histhead{display:flex;justify-content:space-between;align-items:baseline;gap:var(--sp-3);flex-wrap:wrap;color:var(--muted);font-size:var(--fs-small)}
+.histhead b{font-size:var(--fs-h3);color:var(--ink);margin-right:var(--sp-1)}
+.hist svg{width:100%;height:auto;display:block;margin-top:var(--sp-2)}
+.hist svg text{font-weight:var(--fw-medium)}
+/* sections */
+.secs{padding:var(--sp-2) var(--sp-5)}
+.secs h2{margin:var(--sp-4) 0 var(--sp-2)}
+.secrow{display:grid;grid-template-columns:22px 1fr auto;gap:var(--sp-1) var(--sp-3);align-items:center;width:100%;padding:var(--sp-3) 0;background:none;border:0;border-top:1px solid var(--line);text-align:start;cursor:pointer;color:var(--ink)}
+.chk{width:22px;height:22px;border-radius:var(--r-sm);border:2px solid var(--c);display:grid;place-items:center}
+.secrow[aria-pressed="true"] .chk{background:var(--c)}
+.secrow[aria-pressed="true"] .chk::after{content:"";width:10px;height:5px;border:2.5px solid var(--surface);border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px)}
+.secname{font-weight:var(--fw-semibold)}
+.secmeta{color:var(--muted);font-size:var(--fs-caption);white-space:nowrap}
+.secrow .track,.bs .track{grid-column:2/4;display:flex}
+.bs .track{grid-column:1/3}
+.track>i+i{border-radius:0}
+.legend{display:flex;gap:var(--sp-2) var(--sp-4);color:var(--muted);font-size:var(--fs-caption);flex-wrap:wrap;padding:var(--sp-3) 0 var(--sp-4);border-top:1px solid var(--line)}
+.legend span::before,.glegend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:var(--r-xs);margin-right:var(--sp-1);vertical-align:-1px;background:var(--sw)}
 .legend .nosw::before{display:none}
-.chip .score{margin-left:auto;color:var(--muted);font-weight:500;white-space:nowrap}
-.chip .score small{font-size:.85em}
-.result{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px;margin:18px 0;text-align:start}
-.big{display:flex;align-items:center;gap:14px}
-.big b{font-family:"Barlow Condensed";font-size:3.4rem;line-height:1}
-.big span{color:var(--muted);font-size:.9em;line-height:1.3}
-.gbar{display:flex;height:12px;border-radius:6px;overflow:hidden;margin:16px 0 8px;background:var(--soft)}
-.glegend{display:flex;gap:14px;flex-wrap:wrap;color:var(--muted);font-size:.8em}
-.glegend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px;background:var(--sw)}
-.bysec{margin-top:14px}
-.bs{display:grid;grid-template-columns:1fr auto;gap:2px 10px;padding:8px 0;border-top:1px solid var(--line)}
-.bs .bar{grid-column:1/3;margin-top:2px}
-.done .go{margin-top:10px}
-@media (max-width:420px){.modes{gap:6px}.mode{padding:9px 8px;font-size:.9em}.chip{flex-wrap:wrap}}
-.quizbox{margin-top:14px}
-.quizbox h2{font-size:1.5rem;margin:0;line-height:1.1}
-.quizbox .sub{margin:.2em 0 .8em;font-size:.9em}
-.lens{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 0 12px}
-.len{padding:8px 0;border-radius:10px;border:1.5px solid var(--line);background:transparent;font-weight:600}
-.len[aria-pressed="true"]{border-color:var(--ink);background:var(--soft)}
-.hist{margin:0 0 14px}
-.histhead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:.85em}
-.histhead b{font-family:"Barlow Condensed";font-size:1.6rem;color:var(--ink)}
-.hist svg{width:100%;height:auto;display:block;margin-top:4px}
-.opts{display:grid;gap:8px;margin-top:16px}
-.opt{display:flex;align-items:center;gap:12px;width:100%;padding:12px 14px;border-radius:12px;border:1.5px solid var(--line);background:transparent;text-align:start;line-height:1.3}
-.opt:not(:disabled):hover{border-color:var(--c)}
-.opt .ltr{flex:none;width:28px;height:28px;border-radius:8px;display:grid;place-items:center;background:var(--soft);font-weight:600;font-size:.85em}
+.foot{display:flex;justify-content:space-between;align-items:center;gap:var(--sp-3);color:var(--muted);font-size:var(--fs-small)}
+/* study mode: no band, no guides, one card */
+.study{padding-top:max(var(--sp-4),env(safe-area-inset-top,0px));padding-bottom:var(--sp-7)}
+.top{display:flex;align-items:center;gap:var(--sp-3)}
+.top .track{flex:1}
+.top .track>i{background:var(--accent)}
+.count{color:var(--muted);font-size:var(--fs-small);white-space:nowrap}
+.fc{--c:var(--ink);margin-top:var(--sp-4);min-height:360px;display:flex;flex-direction:column}
+.chip{display:flex;align-items:center;gap:var(--sp-2);flex-wrap:wrap}
+.score{margin-left:auto;color:var(--muted);font-size:var(--fs-caption);font-weight:var(--fw-medium);white-space:nowrap}
+.prompt{color:var(--ink);font-size:var(--fs-h3);font-weight:var(--fw-semibold);line-height:1.35;letter-spacing:-.015em;margin:var(--sp-4) 0 var(--sp-1)}
+.list{display:inline-block;text-align:start}
+.cz{color:var(--c);font-weight:var(--fw-bold)}
+.cz.gap{display:inline-block;min-width:3.2em;padding:0 var(--sp-2);border-radius:var(--r-sm);background:color-mix(in srgb,var(--c) 12%,transparent);border-bottom:2.5px solid var(--c);text-align:center;font-weight:var(--fw-semibold)}
+.viz{margin:var(--sp-3) 0 var(--sp-1)}
+.viz svg{width:100%;height:auto;max-height:46vh;display:block}
+.answer{border-top:1px solid var(--line);margin-top:var(--sp-4);padding-top:var(--sp-4)}
+.ans{font-size:var(--fs-h3);line-height:1.35;font-weight:var(--fw-semibold);color:var(--c);letter-spacing:-.015em}
+.extra{color:var(--text);font-size:var(--fs-small);margin-top:var(--sp-2)}
+.spacer{flex:1}
+.fc .btn{margin-top:var(--sp-5)}
+.grades{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-2);margin-top:var(--sp-5)}
+.g{min-height:56px;padding:var(--sp-2) var(--sp-1);border-radius:var(--r-md);border:0;background:var(--soft);border-bottom:3px solid var(--gc);color:var(--ink);font-weight:var(--fw-semibold);line-height:1.2;cursor:pointer;
+  transition:transform var(--dur-fast) var(--ease-out)}
+.g:active{transform:translateY(1px)}
+.g small{display:block;font-weight:var(--fw-regular);color:var(--muted);font-size:var(--fs-caption);margin-top:2px}
+.keys{color:var(--muted);font-size:var(--fs-caption);margin-top:var(--sp-3)}
+@media (hover:none){.keys{display:none}}
+/* quiz */
+.opts{display:grid;gap:var(--sp-2);margin-top:var(--sp-4)}
+.opt{display:flex;align-items:center;gap:var(--sp-3);width:100%;min-height:52px;padding:var(--sp-3) var(--sp-4);border-radius:var(--r-md);border:1.5px solid var(--line-strong);background:var(--surface);
+  text-align:start;line-height:1.35;color:var(--ink);cursor:pointer;transition:border-color var(--dur-fast) var(--ease-out)}
+.opt:not(:disabled):hover{border-color:var(--accent)}
+.opt .ltr{flex:none;width:28px;height:28px;border-radius:var(--r-sm);display:grid;place-items:center;background:var(--soft);font-weight:var(--fw-semibold);font-size:var(--fs-caption)}
 .opt:disabled{cursor:default}
-.opt.ok{border-color:var(--easy);background:color-mix(in srgb,var(--easy) 12%,transparent)}
+.opt.ok{border-color:var(--easy);background:color-mix(in srgb,var(--easy) 12%,var(--surface))}
 .opt.ok .ltr{background:var(--easy);color:var(--surface)}
-.opt.bad{border-color:var(--again);background:color-mix(in srgb,var(--again) 10%,transparent)}
+.opt.bad{border-color:var(--again);background:color-mix(in srgb,var(--again) 12%,var(--surface))}
 .opt.bad .ltr{background:var(--again);color:var(--surface)}
 .opt.dim{opacity:.55}
-.verdict{margin-top:14px;font-weight:600}
+.verdict{margin-top:var(--sp-4);font-weight:var(--fw-semibold)}
 .verdict.ok{color:var(--easy)}.verdict.bad{color:var(--again)}
-.missed h2{font-size:1.35rem;margin:0}
-.missed .sub{margin:.1em 0 .4em;font-size:.85em}
-.mq{border-top:1px solid var(--line);border-left:4px solid var(--c);padding:10px 0 10px 12px;font-size:.92em}
-.mq .ma{color:var(--c);font-weight:600;margin-top:2px}
-.hub+.hub{margin-left:16px}
+/* results */
+.done h1{margin-top:var(--sp-5)}
+.big{text-align:center;padding:var(--sp-2) 0 var(--sp-4)}
+.big b{display:block;font-size:var(--fs-display);line-height:var(--lh-tight);letter-spacing:var(--track-display);color:var(--ink)}
+.big span{color:var(--muted);font-size:var(--fs-small)}
+.gbar{display:flex;gap:2px;height:10px;border-radius:var(--r-pill);overflow:hidden;margin:var(--sp-2) 0;background:var(--sunken)}
+.glegend{display:flex;gap:var(--sp-2) var(--sp-4);flex-wrap:wrap;color:var(--muted);font-size:var(--fs-caption)}
+.bysec{margin-top:var(--sp-4)}
+.bs{display:grid;grid-template-columns:1fr auto;gap:var(--sp-1) var(--sp-3);padding:var(--sp-3) 0;border-top:1px solid var(--line);color:var(--ink);font-weight:var(--fw-medium)}
+.mq{border-top:1px solid var(--line);border-left:4px solid var(--c);padding:var(--sp-3) 0 var(--sp-3) var(--sp-3);font-size:var(--fs-small);color:var(--text)}
+.mq .ma{color:var(--c);font-weight:var(--fw-semibold);margin-top:2px}
+@media (max-width:420px){.modes{gap:var(--sp-1)}.mode{padding:var(--sp-2)}.card{padding:var(--sp-4)}.secs{padding:var(--sp-1) var(--sp-4)}}
 </style>
 </head>
 <body>
-<div class="wrap" id="app"></div>
+<div id="app"></div>
 <script>
+
 const DATA = {"cards": [{"id": "b0", "sec": "RNA Structure", "kind": "basic", "front": "Which sugar is found in RNA?", "back": "Ribose", "extra": "DNA uses deoxyribose.", "added": false, "viz": "sugar", "vf": false}, {"id": "b1", "sec": "RNA Structure", "kind": "basic", "front": "What does ribose have at its 2\u2032 carbon that deoxyribose lacks?", "back": "An OH (hydroxyl) group", "extra": "Deoxyribose has just an H at the 2\u2032 carbon.", "added": false, "viz": "sugar", "vf": false}, {"id": "b2", "sec": "RNA Structure", "kind": "basic", "front": "Why is RNA less stable than DNA?", "back": "Ribose's 2\u2032 OH is chemically more reactive", "extra": "RNA is easily degraded; DNA is stable.", "added": false, "viz": "sugar", "vf": false}, {"id": "b3", "sec": "RNA Structure", "kind": "basic", "front": "Which base is found in RNA but not in DNA?", "back": "Uracil (U)", "extra": "", "added": false, "viz": "bases:U", "vf": false}, {"id": "b4", "sec": "RNA Structure", "kind": "basic", "front": "Which base is found in DNA but not in RNA?", "back": "Thymine (T)", "extra": "", "added": false, "viz": "bases:T", "vf": false}, {"id": "b5", "sec": "RNA Structure", "kind": "basic", "front": "How many rings does a purine base have?", "back": "Two", "extra": "Purines: A and G.", "added": false, "viz": "bases:purine", "vf": false}, {"id": "b6", "sec": "RNA Structure", "kind": "basic", "front": "How many rings does a pyrimidine base have?", "back": "One", "extra": "Pyrimidines: C, T and U.", "added": false, "viz": "bases:pyrimidine", "vf": false}, {"id": "b7", "sec": "RNA Structure", "kind": "basic", "front": "What type of bond joins RNA nucleotides together?", "back": "Phosphodiester bonds", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b8", "sec": "RNA Structure", "kind": "basic", "front": "The RNA backbone alternates between which two components?", "back": "Phosphate groups and ribose sugars", "extra": "Note the 5\u2032 to 3\u2032 direction of the strand.", "added": false, "viz": "", "vf": false}, {"id": "b9", "sec": "RNA Structure", "kind": "basic", "front": "Is RNA usually single- or double-stranded?", "back": "Usually single-stranded", "extra": "DNA is usually double-stranded.", "added": false, "viz": "", "vf": false}, {"id": "b10", "sec": "RNA Structure", "kind": "basic", "front": "What is DNA's secondary structure?", "back": "A double helix", "extra": "RNA can take many types of secondary structure.", "added": false, "viz": "", "vf": false}, {"id": "b11", "sec": "RNA Structure", "kind": "basic", "front": "What creates RNA secondary structure?", "back": "Intramolecular base pairing", "extra": "The strand folds back and pairs with itself.", "added": false, "viz": "hairpin", "vf": false}, {"id": "b12", "sec": "RNA Structure", "kind": "basic", "front": "What determines an RNA's secondary structure?", "back": "Its base sequence", "extra": "Different RNAs can assume different structures.", "added": false, "viz": "hairpin", "vf": false}, {"id": "b13", "sec": "RNA Structure", "kind": "basic", "front": "In RNA intramolecular base pairing, adenine pairs with what?", "back": "Uracil (A-U)", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b14", "sec": "RNA Structure", "kind": "basic", "front": "In RNA intramolecular base pairing, guanine pairs with what?", "back": "Cytosine (G-C)", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b15", "sec": "RNA Structure", "kind": "basic", "front": "What does RNA secondary structure provide?", "back": "Function", "extra": "Secondary structure provides function!", "added": false, "viz": "", "vf": false}, {"id": "b16", "sec": "RNA Classes", "kind": "basic", "front": "Which class of RNA encodes proteins?", "back": "Messenger RNA (mRNA)", "extra": "Found in the nucleus and cytoplasm.", "added": false, "viz": "", "vf": false}, {"id": "b17", "sec": "RNA Classes", "kind": "basic", "front": "Which RNA acts as an adaptor between mRNA and amino acids?", "back": "Transfer RNA (tRNA)", "extra": "Helps incorporate amino acids into the polypeptide chain. Covered in Chapter 15.", "added": false, "viz": "", "vf": false}, {"id": "b18", "sec": "RNA Classes", "kind": "basic", "front": "Which RNA forms the structural and functional parts of the ribosome?", "back": "Ribosomal RNA (rRNA)", "extra": "Covered in Chapter 14.", "added": false, "viz": "", "vf": false}, {"id": "b19", "sec": "RNA Classes", "kind": "basic", "front": "What does small nuclear RNA (snRNA) do?", "back": "Processes pre-mRNA", "extra": "Eukaryotic, nucleus.", "added": false, "viz": "", "vf": false}, {"id": "b20", "sec": "RNA Classes", "kind": "basic", "front": "What does small nucleolar RNA (snoRNA) do?", "back": "Processes and assembles rRNA", "extra": "Eukaryotic, nucleus.", "added": false, "viz": "", "vf": false}, {"id": "b21", "sec": "RNA Classes", "kind": "basic", "front": "What does microRNA (miRNA) do?", "back": "Inhibits translation of mRNA", "extra": "Eukaryotic, nucleus and cytoplasm.", "added": false, "viz": "", "vf": false}, {"id": "b22", "sec": "RNA Classes", "kind": "basic", "front": "What does small interfering RNA (siRNA) do?", "back": "Triggers degradation of other RNA molecules", "extra": "Eukaryotic, nucleus and cytoplasm.", "added": false, "viz": "", "vf": false}, {"id": "b23", "sec": "RNA Classes", "kind": "basic", "front": "What does Piwi-interacting RNA (piRNA) do?", "back": "Suppresses transposable elements in reproductive cells", "extra": "It suppresses their transcription.", "added": false, "viz": "", "vf": false}, {"id": "b24", "sec": "RNA Classes", "kind": "basic", "front": "What does CRISPR RNA (crRNA) do?", "back": "Assists destruction of foreign DNA", "extra": "Prokaryotic only.", "added": false, "viz": "", "vf": false}, {"id": "b25", "sec": "RNA Classes", "kind": "basic", "front": "What does long noncoding RNA (lncRNA) do?", "back": "A variety of functions", "extra": "Eukaryotic, nucleus and cytoplasm.", "added": false, "viz": "", "vf": false}, {"id": "b26", "sec": "RNA Classes", "kind": "basic", "front": "Which RNA class in Table 13.2 is found only in prokaryotes?", "back": "CRISPR RNA (crRNA)", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b27", "sec": "RNA Classes", "kind": "basic", "front": "Where are all eukaryotic RNAs synthesized?", "back": "In the nucleus", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b28", "sec": "Transcription Basics", "kind": "basic", "front": "In the flow of genetic information, DNA is transcribed into what?", "back": "RNA", "extra": "RNA is then translated into protein.", "added": false, "viz": "flow", "vf": false}, {"id": "b29", "sec": "Transcription Basics", "kind": "basic", "front": "Which enzyme carries out transcription?", "back": "RNA polymerase", "extra": "DNA replication uses DNA polymerase.", "added": false, "viz": "", "vf": false}, {"id": "b30", "sec": "Transcription Basics", "kind": "basic", "front": "DNA replication uses both strands as template. Transcription uses how many?", "back": "One (the template strand)", "extra": "", "added": false, "viz": "template", "vf": false}, {"id": "b31", "sec": "Transcription Basics", "kind": "basic", "front": "What primer does transcription require?", "back": "None", "extra": "DNA replication needs a primer; transcription does not.", "added": false, "viz": "", "vf": false}, {"id": "b32", "sec": "Transcription Basics", "kind": "basic", "front": "In transcription, adenine in the DNA template pairs with what?", "back": "Uracil (U)", "extra": "No thymine in RNA.", "added": false, "viz": "", "vf": false}, {"id": "b33", "sec": "Transcription Basics", "kind": "basic", "front": "What is the final product of transcription?", "back": "A single-stranded RNA molecule", "extra": "Such as mRNA. Replication makes two identical dsDNA molecules.", "added": false, "viz": "", "vf": false}, {"id": "b34", "sec": "Transcription Basics", "kind": "basic", "front": "In what direction is RNA synthesized?", "back": "5\u2032 to 3\u2032", "extra": "Same direction as DNA replication.", "added": false, "viz": "template", "vf": false}, {"id": "b35", "sec": "Transcription Basics", "kind": "basic", "front": "To which end of the RNA are new nucleotides always added?", "back": "The 3\u2032 end", "extra": "", "added": false, "viz": "template", "vf": false}, {"id": "b36", "sec": "Transcription Basics", "kind": "basic", "front": "Which DNA strand has the same sequence as the RNA?", "back": "The nontemplate strand (T instead of U)", "extra": "It is not transcribed.", "added": false, "viz": "template:nontemplate", "vf": false}, {"id": "b37", "sec": "Transcription Basics", "kind": "basic", "front": "The template strand relates to the RNA how?", "back": "Complementary and antiparallel", "extra": "", "added": false, "viz": "template:template", "vf": false}, {"id": "b38", "sec": "Transcription Basics", "kind": "basic", "front": "Which DNA strand can serve as a gene's template?", "back": "Either strand", "extra": "Whichever is used, the RNA is always antiparallel to it.", "added": false, "viz": "template", "vf": false}, {"id": "b39", "sec": "Transcription Basics", "kind": "basic", "front": "What is the promoter?", "back": "DNA just upstream of the start site", "extra": "Where the transcription apparatus binds.", "added": false, "viz": "gene:Promoter", "vf": false}, {"id": "b40", "sec": "Transcription Basics", "kind": "basic", "front": "Which part of a gene serves as the template for RNA synthesis?", "back": "The RNA-coding region", "extra": "", "added": false, "viz": "gene:RNA-coding region", "vf": false}, {"id": "b41", "sec": "Transcription Basics", "kind": "basic", "front": "What is the terminator?", "back": "DNA sequence that causes transcription to stop", "extra": "Usually part of the RNA.", "added": false, "viz": "gene:Terminator", "vf": false}, {"id": "b42", "sec": "Transcription Basics", "kind": "basic", "front": "Is the promoter upstream or downstream of the start site?", "back": "Upstream", "extra": "", "added": false, "viz": "gene:Promoter", "vf": false}, {"id": "b43", "sec": "Transcription Basics", "kind": "basic", "front": "Which is NOT a promoter function: bind apparatus, set start, pick strand, end?", "back": "Signaling where transcription ends", "extra": "Concept Check 1. That is the terminator's job.", "added": false, "viz": "gene:Terminator", "vf": false}, {"id": "b44", "sec": "Transcription Basics", "kind": "basic", "front": "Template DNA is 5\u2032-AGGCTAG-3\u2032. What is the RNA?", "back": "3\u2032-UCCGAUC-5\u2032", "extra": "Complementary and antiparallel. Read 5\u2032 to 3\u2032 it is 5\u2032-CUAGCCU-3\u2032.", "added": false, "viz": "", "vf": false}, {"id": "b45", "sec": "Transcription Basics", "kind": "basic", "front": "What determines where and how transcription is initiated?", "back": "Gene structure, especially the promoter", "extra": "", "added": false, "viz": "gene:Promoter", "vf": false}, {"id": "b46", "sec": "Consensus Sequences", "kind": "basic", "front": "What is a consensus sequence?", "back": "The most common nucleotides at a specific location", "extra": "In DNA or RNA.", "added": false, "viz": "consensus", "vf": false}, {"id": "b47", "sec": "Consensus Sequences", "kind": "basic", "front": "In a consensus sequence, what does R stand for?", "back": "A purine (A or G)", "extra": "", "added": false, "viz": "consensus", "vf": false}, {"id": "b48", "sec": "Consensus Sequences", "kind": "basic", "front": "In a consensus sequence, what does Y stand for?", "back": "A pyrimidine (C, T or U)", "extra": "", "added": false, "viz": "consensus", "vf": false}, {"id": "b49", "sec": "Consensus Sequences", "kind": "basic", "front": "In a consensus sequence, what does N stand for?", "back": "Any nucleotide", "extra": "N = all.", "added": false, "viz": "consensus", "vf": false}, {"id": "b50", "sec": "Consensus Sequences", "kind": "basic", "front": "Building a consensus, what rule do you apply first?", "back": "Go by majority", "extra": "Then use R or Y when a position is split within one group.", "added": false, "viz": "consensus", "vf": false}, {"id": "b51", "sec": "Consensus Sequences", "kind": "basic", "front": "A position is split between C and G. How is it written?", "back": "C/G", "extra": "Split between the two groups, so list both.", "added": false, "viz": "consensus", "vf": false}, {"id": "b52", "sec": "Consensus Sequences", "kind": "basic", "front": "Position reads T, C, T, C across four sequences. Consensus letter?", "back": "Y", "extra": "T and C are both pyrimidines.", "added": false, "viz": "consensus", "vf": false}, {"id": "b53", "sec": "Consensus Sequences", "kind": "basic", "front": "Position reads A, A, G, G across four sequences. Consensus letter?", "back": "R", "extra": "A and G are both purines.", "added": false, "viz": "consensus", "vf": false}, {"id": "b54", "sec": "Consensus Sequences", "kind": "basic", "front": "Position reads A, T, C, G across four sequences. Consensus letter?", "back": "N", "extra": "No majority and no single group.", "added": false, "viz": "consensus", "vf": false}, {"id": "b55", "sec": "Consensus Sequences", "kind": "basic", "front": "Consensus of TATAAAAG, TCCAATGC, AATAGCCG, TACAGGAC?", "back": "5\u2032-TAYARNA(C/G)-3\u2032", "extra": "Position by position: T, A, Y, A, R, N, A, C/G.", "added": false, "viz": "consensus:solved", "vf": false}, {"id": "b56", "sec": "Bacterial Initiation", "kind": "basic", "front": "How many subunits make up the bacterial core RNA polymerase?", "back": "Five", "extra": "2 \u03b1, \u03b2, \u03b2\u2032 and \u03c9.", "added": false, "viz": "polymerase", "vf": false}, {"id": "b57", "sec": "Bacterial Initiation", "kind": "basic", "front": "What does the bacterial core enzyme do?", "back": "Synthesizes RNA", "extra": "", "added": false, "viz": "polymerase", "vf": false}, {"id": "b58", "sec": "Bacterial Initiation", "kind": "basic", "front": "What does the sigma (\u03c3) factor do?", "back": "Guides core enzyme to promoters to start transcription", "extra": "", "added": false, "viz": "polymerase:sigma", "vf": false}, {"id": "b59", "sec": "Bacterial Initiation", "kind": "basic", "front": "What is the holoenzyme?", "back": "Core enzyme plus sigma factor", "extra": "The form that initially binds the promoter.", "added": false, "viz": "polymerase:holo", "vf": false}, {"id": "b60", "sec": "Bacterial Initiation", "kind": "basic", "front": "Which form of bacterial RNA polymerase first binds the promoter?", "back": "The holoenzyme", "extra": "", "added": false, "viz": "polymerase:holo", "vf": false}, {"id": "b61", "sec": "Bacterial Initiation", "kind": "basic", "front": "What is the bacterial \u221210 consensus sequence?", "back": "TATAAT", "extra": "10 bp upstream of the start site.", "added": false, "viz": "bprom", "vf": false}, {"id": "b62", "sec": "Bacterial Initiation", "kind": "basic", "front": "What is the bacterial \u221235 consensus sequence?", "back": "TTGACA", "extra": "35 bp upstream of the start site.", "added": false, "viz": "bprom", "vf": false}, {"id": "b63", "sec": "Bacterial Initiation", "kind": "basic", "front": "The \u221210 sequence sits how far from the start site?", "back": "10 bp upstream", "extra": "", "added": false, "viz": "bprom", "vf": false}, {"id": "b64", "sec": "Bacterial Initiation", "kind": "basic", "front": "What number is given to the transcription start site?", "back": "+1", "extra": "", "added": false, "viz": "bprom", "vf": false}, {"id": "b65", "sec": "Bacterial Initiation", "kind": "basic", "front": "What binds the \u221210 consensus sequence in most bacterial promoters?", "back": "The holoenzyme (core enzyme + sigma)", "extra": "Concept Check 2.", "added": false, "viz": "bprom", "vf": false}, {"id": "b66", "sec": "Bacterial Initiation", "kind": "basic", "front": "After binding, how does the holoenzyme form the transcription bubble?", "back": "Changes conformation and unwinds the DNA", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b67", "sec": "Bacterial Initiation", "kind": "basic", "front": "What determines the first RNA nucleotide?", "back": "It is complementary to the template at the start site", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b68", "sec": "Bacterial Initiation", "kind": "basic", "front": "How many phosphates are cleaved from each subsequent rNTP?", "back": "Two", "extra": "Leaves one phosphate in the phosphodiester bond.", "added": false, "viz": "", "vf": false}, {"id": "b69", "sec": "Bacterial Initiation", "kind": "basic", "front": "How many phosphate groups does the first rNTP keep?", "back": "All three", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b70", "sec": "Bacterial Initiation", "kind": "basic", "front": "When is the sigma factor released?", "back": "As RNA polymerase moves beyond the promoter", "extra": "Now just the core enzyme continues.", "added": false, "viz": "polymerase", "vf": false}, {"id": "b71", "sec": "Bacterial Termination", "kind": "basic", "front": "During elongation, which form of RNA polymerase moves downstream?", "back": "The core enzyme", "extra": "Sigma is already released.", "added": false, "viz": "", "vf": false}, {"id": "b72", "sec": "Bacterial Termination", "kind": "basic", "front": "About how many base pairs are unwound in the transcription bubble?", "back": "About 18 bp", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b73", "sec": "Bacterial Termination", "kind": "basic", "front": "What can cause RNA polymerase to pause?", "back": "Certain DNA sequences or RNA secondary structures", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b74", "sec": "Bacterial Termination", "kind": "basic", "front": "After adding a wrong nucleotide, what does RNA polymerase do?", "back": "Pauses, backs up, cuts the last few nucleotides", "extra": "Then it continues transcribing.", "added": false, "viz": "", "vf": false}, {"id": "b75", "sec": "Bacterial Termination", "kind": "basic", "front": "What does rut stand for in a rut site?", "back": "Rho utilization", "extra": "It is in the RNA sequence.", "added": false, "viz": "rho", "vf": false}, {"id": "b76", "sec": "Bacterial Termination", "kind": "basic", "front": "Where does rho bind?", "back": "The rut site on the RNA", "extra": "", "added": false, "viz": "rho", "vf": false}, {"id": "b77", "sec": "Bacterial Termination", "kind": "basic", "front": "In which direction does rho move along the RNA?", "back": "5\u2032 to 3\u2032", "extra": "Toward the paused RNA polymerase.", "added": false, "viz": "rho", "vf": false}, {"id": "b78", "sec": "Bacterial Termination", "kind": "basic", "front": "Which rho activity ends transcription?", "back": "Helicase activity", "extra": "It unwinds the RNA-DNA hybrid and releases the RNA.", "added": false, "viz": "rho", "vf": false}, {"id": "b79", "sec": "Bacterial Termination", "kind": "basic", "front": "What requirement defines rho-independent termination?", "back": "No additional protein factors", "extra": "It is an intrinsic process.", "added": false, "viz": "hairpin", "vf": false}, {"id": "b80", "sec": "Bacterial Termination", "kind": "basic", "front": "What follows the inverted repeat in a rho-independent terminator?", "back": "About six adenine nucleotides", "extra": "Transcribed as a string of U's in the RNA.", "added": false, "viz": "hairpin", "vf": false}, {"id": "b81", "sec": "Bacterial Termination", "kind": "basic", "front": "Inverted repeats in the RNA fold into what?", "back": "A hairpin", "extra": "By intramolecular base pairing.", "added": false, "viz": "hairpin", "vf": false}, {"id": "b82", "sec": "Bacterial Termination", "kind": "basic", "front": "In rho-independent termination, why does the RNA separate from the DNA?", "back": "U-A base pairs are weak", "extra": "The string of U's destabilizes the DNA-RNA pairing.", "added": false, "viz": "hairpin", "vf": false}, {"id": "b83", "sec": "Eukaryotic Initiation", "kind": "basic", "front": "Which eukaryotic RNA polymerase transcribes large rRNAs?", "back": "RNA polymerase I", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b84", "sec": "Eukaryotic Initiation", "kind": "basic", "front": "Which eukaryotic RNA polymerase transcribes pre-mRNA?", "back": "RNA polymerase II", "extra": "Also some snRNAs, snoRNAs and some miRNAs.", "added": false, "viz": "", "vf": false}, {"id": "b85", "sec": "Eukaryotic Initiation", "kind": "basic", "front": "Which eukaryotic RNA polymerase transcribes tRNAs?", "back": "RNA polymerase III", "extra": "Also small rRNAs, some snRNAs and some miRNAs.", "added": false, "viz": "", "vf": false}, {"id": "b86", "sec": "Eukaryotic Initiation", "kind": "basic", "front": "Which RNA polymerase, found in plants, transcribes some siRNAs?", "back": "RNA polymerase IV", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b87", "sec": "Eukaryotic Initiation", "kind": "basic", "front": "Which plant RNA polymerase makes RNAs for heterochromatin formation?", "back": "RNA polymerase V", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b88", "sec": "Eukaryotic Initiation", "kind": "basic", "front": "What makes up the basal transcription apparatus?", "back": "RNA polymerase plus general transcription factors", "extra": "", "added": false, "viz": "eprom", "vf": false}, {"id": "b89", "sec": "Eukaryotic Initiation", "kind": "basic", "front": "What are transcription factors?", "back": "Proteins that bind DNA and affect transcription levels", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b90", "sec": "Eukaryotic Initiation", "kind": "basic", "front": "In a Pol II core promoter, what are the conserved sequences?", "back": "Binding sites for general transcription factors", "extra": "", "added": false, "viz": "eprom", "vf": false}, {"id": "b91", "sec": "Eukaryotic Initiation", "kind": "basic", "front": "What is the TATA box sequence?", "back": "TATAAA", "extra": "At about \u221225.", "added": false, "viz": "eprom", "vf": false}, {"id": "b92", "sec": "Eukaryotic Initiation", "kind": "basic", "front": "Which general transcription factor binds the TATA box first?", "back": "TFIID", "extra": "Step 1 of preinitiation complex assembly.", "added": false, "viz": "eprom", "vf": false}, {"id": "b93", "sec": "Eukaryotic Initiation", "kind": "basic", "front": "What does TBP stand for?", "back": "TATA-binding protein", "extra": "A subunit of TFIID.", "added": false, "viz": "", "vf": false}, {"id": "b94", "sec": "Eukaryotic Initiation", "kind": "basic", "front": "TBP binds which groove of the DNA?", "back": "The minor groove", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b95", "sec": "Eukaryotic Initiation", "kind": "basic", "front": "What does TBP binding do to the DNA?", "back": "Bends and partly unwinds it", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b96", "sec": "Eukaryotic Initiation", "kind": "basic", "front": "Proteins bound to distant enhancers reach the basal apparatus how?", "back": "The DNA loops out", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b97", "sec": "Eukaryotic Initiation", "kind": "basic", "front": "Regulatory promoter transcription factors interact with the basal apparatus through what?", "back": "The mediator", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b98", "sec": "Eukaryotic Initiation", "kind": "basic", "front": "After initiation, what stays at the promoter?", "back": "The basal transcription factors", "extra": "RNA Pol II moves downstream.", "added": false, "viz": "", "vf": false}, {"id": "b99", "sec": "Eukaryotic Initiation", "kind": "basic", "front": "Where on RNA Pol II are nucleotides added to the 3\u2032 end?", "back": "The active site", "extra": "Entering DNA is gripped and unwound into the bubble first.", "added": false, "viz": "", "vf": false}, {"id": "b100", "sec": "Eukaryotic Termination", "kind": "basic", "front": "How does RNA polymerase I terminate transcription?", "back": "It requires a termination factor", "extra": "Similar to rho in bacteria.", "added": false, "viz": "", "vf": false}, {"id": "b101", "sec": "Eukaryotic Termination", "kind": "basic", "front": "How does RNA polymerase III terminate transcription?", "back": "It transcribes a terminator sequence", "extra": "Similar to rho-independent termination in bacteria.", "added": false, "viz": "", "vf": false}, {"id": "b102", "sec": "Eukaryotic Termination", "kind": "basic", "front": "Which mechanism terminates RNA polymerase II transcription?", "back": "The Rat1 exonuclease mechanism", "extra": "Not at specific sequences.", "added": false, "viz": "rat1", "vf": false}, {"id": "b103", "sec": "Eukaryotic Termination", "kind": "basic", "front": "What kind of enzyme is Rat1?", "back": "A 5\u2032 to 3\u2032 exonuclease", "extra": "", "added": false, "viz": "rat1", "vf": false}, {"id": "b104", "sec": "Eukaryotic Termination", "kind": "basic", "front": "How is the 3\u2032 end of a Pol II RNA generated?", "back": "The RNA is cleaved", "extra": "Pol II keeps transcribing past the cleavage site.", "added": false, "viz": "rat1", "vf": false}, {"id": "b105", "sec": "Eukaryotic Termination", "kind": "basic", "front": "Where does Rat1 bind?", "back": "The 5\u2032 end of the trailing RNA", "extra": "The RNA left after the cleavage site.", "added": false, "viz": "rat1", "vf": false}, {"id": "b106", "sec": "Eukaryotic Termination", "kind": "basic", "front": "When does Rat1-mediated termination occur?", "back": "When Rat1 reaches RNA Pol II", "extra": "It degrades the RNA as it goes.", "added": false, "viz": "rat1", "vf": false}, {"id": "c0_1", "sec": "RNA Structure", "kind": "cloze", "front": "A nucleotide is made of a <span class=\"cz gap\">?</span>, a sugar and a base.", "back": "A nucleotide is made of a <span class=\"cz\">phosphate</span>, a sugar and a base.", "extra": "", "added": false, "viz": "nucleotide", "vf": false}, {"id": "c0_2", "sec": "RNA Structure", "kind": "cloze", "front": "A nucleotide is made of a phosphate, a <span class=\"cz gap\">?</span> and a base.", "back": "A nucleotide is made of a phosphate, a <span class=\"cz\">sugar</span> and a base.", "extra": "", "added": false, "viz": "nucleotide", "vf": false}, {"id": "c0_3", "sec": "RNA Structure", "kind": "cloze", "front": "A nucleotide is made of a phosphate, a sugar and a <span class=\"cz gap\">?</span>.", "back": "A nucleotide is made of a phosphate, a sugar and a <span class=\"cz\">base</span>.", "extra": "", "added": false, "viz": "nucleotide", "vf": false}, {"id": "c1_1", "sec": "RNA Structure", "kind": "cloze", "front": "<div class=\"list\">Bases shared by DNA and RNA:<br><span class=\"cz gap\">?</span><br>Guanine<br>Cytosine</div>", "back": "<div class=\"list\">Bases shared by DNA and RNA:<br><span class=\"cz\">Adenine</span><br>Guanine<br>Cytosine</div>", "extra": "T is DNA-only; U is RNA-only.", "added": false, "viz": "bases", "vf": false}, {"id": "c1_2", "sec": "RNA Structure", "kind": "cloze", "front": "<div class=\"list\">Bases shared by DNA and RNA:<br>Adenine<br><span class=\"cz gap\">?</span><br>Cytosine</div>", "back": "<div class=\"list\">Bases shared by DNA and RNA:<br>Adenine<br><span class=\"cz\">Guanine</span><br>Cytosine</div>", "extra": "T is DNA-only; U is RNA-only.", "added": false, "viz": "bases", "vf": false}, {"id": "c1_3", "sec": "RNA Structure", "kind": "cloze", "front": "<div class=\"list\">Bases shared by DNA and RNA:<br>Adenine<br>Guanine<br><span class=\"cz gap\">?</span></div>", "back": "<div class=\"list\">Bases shared by DNA and RNA:<br>Adenine<br>Guanine<br><span class=\"cz\">Cytosine</span></div>", "extra": "T is DNA-only; U is RNA-only.", "added": false, "viz": "bases", "vf": false}, {"id": "c2_1", "sec": "RNA Structure", "kind": "cloze", "front": "Purines: <span class=\"cz gap\">?</span> and guanine", "back": "Purines: <span class=\"cz\">adenine</span> and guanine", "extra": "Mnemonic: pure as gold (Ag).", "added": false, "viz": "bases:purine", "vf": false}, {"id": "c2_2", "sec": "RNA Structure", "kind": "cloze", "front": "Purines: adenine and <span class=\"cz gap\">?</span>", "back": "Purines: adenine and <span class=\"cz\">guanine</span>", "extra": "Mnemonic: pure as gold (Ag).", "added": false, "viz": "bases:purine", "vf": false}, {"id": "c3_1", "sec": "RNA Structure", "kind": "cloze", "front": "Pyrimidines: <span class=\"cz gap\">?</span>, thymine and uracil", "back": "Pyrimidines: <span class=\"cz\">cytosine</span>, thymine and uracil", "extra": "Mnemonic: cut the pie (CUT, pyrimidines).", "added": false, "viz": "bases:pyrimidine", "vf": false}, {"id": "c3_2", "sec": "RNA Structure", "kind": "cloze", "front": "Pyrimidines: cytosine, <span class=\"cz gap\">?</span> and uracil", "back": "Pyrimidines: cytosine, <span class=\"cz\">thymine</span> and uracil", "extra": "Mnemonic: cut the pie (CUT, pyrimidines).", "added": false, "viz": "bases:pyrimidine", "vf": false}, {"id": "c3_3", "sec": "RNA Structure", "kind": "cloze", "front": "Pyrimidines: cytosine, thymine and <span class=\"cz gap\">?</span>", "back": "Pyrimidines: cytosine, thymine and <span class=\"cz\">uracil</span>", "extra": "Mnemonic: cut the pie (CUT, pyrimidines).", "added": false, "viz": "bases:pyrimidine", "vf": false}, {"id": "c4_1", "sec": "RNA Structure", "kind": "cloze", "front": "Transcription monomers are <span class=\"cz gap\">?</span>: ribonucleoside triphosphates.", "back": "Transcription monomers are <span class=\"cz\">rNTPs</span>: ribonucleoside triphosphates.", "extra": "A, U, G and C.", "added": false, "viz": "", "vf": false}, {"id": "c5_1", "sec": "Transcription Basics", "kind": "cloze", "front": "<div class=\"list\">Central dogma:<br>DNA is <span class=\"cz gap\">?</span> into RNA<br>RNA is translated into protein</div>", "back": "<div class=\"list\">Central dogma:<br>DNA is <span class=\"cz\">transcribed</span> into RNA<br>RNA is translated into protein</div>", "extra": "Flow of genetic information is linear, in one direction.", "added": false, "viz": "flow", "vf": false}, {"id": "c5_2", "sec": "Transcription Basics", "kind": "cloze", "front": "<div class=\"list\">Central dogma:<br>DNA is transcribed into RNA<br>RNA is <span class=\"cz gap\">?</span> into protein</div>", "back": "<div class=\"list\">Central dogma:<br>DNA is transcribed into RNA<br>RNA is <span class=\"cz\">translated</span> into protein</div>", "extra": "Flow of genetic information is linear, in one direction.", "added": false, "viz": "flow", "vf": false}, {"id": "c6_1", "sec": "Transcription Basics", "kind": "cloze", "front": "<div class=\"list\">Requirements for transcription:<br>1. A single-stranded <span class=\"cz gap\">?</span> strand<br>2. rNTPs<br>3. The transcription apparatus</div>", "back": "<div class=\"list\">Requirements for transcription:<br>1. A single-stranded <span class=\"cz\">DNA template</span> strand<br>2. rNTPs<br>3. The transcription apparatus</div>", "extra": "The apparatus is RNA polymerase plus other proteins.", "added": false, "viz": "", "vf": false}, {"id": "c6_2", "sec": "Transcription Basics", "kind": "cloze", "front": "<div class=\"list\">Requirements for transcription:<br>1. A single-stranded DNA template strand<br>2. <span class=\"cz gap\">?</span><br>3. The transcription apparatus</div>", "back": "<div class=\"list\">Requirements for transcription:<br>1. A single-stranded DNA template strand<br>2. <span class=\"cz\">rNTPs</span><br>3. The transcription apparatus</div>", "extra": "The apparatus is RNA polymerase plus other proteins.", "added": false, "viz": "", "vf": false}, {"id": "c6_3", "sec": "Transcription Basics", "kind": "cloze", "front": "<div class=\"list\">Requirements for transcription:<br>1. A single-stranded DNA template strand<br>2. rNTPs<br>3. The <span class=\"cz gap\">?</span></div>", "back": "<div class=\"list\">Requirements for transcription:<br>1. A single-stranded DNA template strand<br>2. rNTPs<br>3. The <span class=\"cz\">transcription apparatus</span></div>", "extra": "The apparatus is RNA polymerase plus other proteins.", "added": false, "viz": "", "vf": false}, {"id": "c7_1", "sec": "Transcription Basics", "kind": "cloze", "front": "<div class=\"list\">Gene structure, upstream to downstream:<br><span class=\"cz gap\">?</span><br>RNA-coding region<br>Terminator</div>", "back": "<div class=\"list\">Gene structure, upstream to downstream:<br><span class=\"cz\">Promoter</span><br>RNA-coding region<br>Terminator</div>", "extra": "", "added": false, "viz": "gene", "vf": false}, {"id": "c7_2", "sec": "Transcription Basics", "kind": "cloze", "front": "<div class=\"list\">Gene structure, upstream to downstream:<br>Promoter<br><span class=\"cz gap\">?</span><br>Terminator</div>", "back": "<div class=\"list\">Gene structure, upstream to downstream:<br>Promoter<br><span class=\"cz\">RNA-coding region</span><br>Terminator</div>", "extra": "", "added": false, "viz": "gene", "vf": false}, {"id": "c7_3", "sec": "Transcription Basics", "kind": "cloze", "front": "<div class=\"list\">Gene structure, upstream to downstream:<br>Promoter<br>RNA-coding region<br><span class=\"cz gap\">?</span></div>", "back": "<div class=\"list\">Gene structure, upstream to downstream:<br>Promoter<br>RNA-coding region<br><span class=\"cz\">Terminator</span></div>", "extra": "", "added": false, "viz": "gene", "vf": false}, {"id": "c8_1", "sec": "Bacterial Initiation", "kind": "cloze", "front": "Bacterial core polymerase subunits: 2 <span class=\"cz gap\">?</span>, \u03b2, \u03b2\u2032 and \u03c9", "back": "Bacterial core polymerase subunits: 2 <span class=\"cz\">\u03b1</span>, \u03b2, \u03b2\u2032 and \u03c9", "extra": "Five subunits total.", "added": false, "viz": "polymerase", "vf": false}, {"id": "c8_2", "sec": "Bacterial Initiation", "kind": "cloze", "front": "Bacterial core polymerase subunits: 2 \u03b1, <span class=\"cz gap\">?</span>, \u03b2\u2032 and \u03c9", "back": "Bacterial core polymerase subunits: 2 \u03b1, <span class=\"cz\">\u03b2</span>, \u03b2\u2032 and \u03c9", "extra": "Five subunits total.", "added": false, "viz": "polymerase", "vf": false}, {"id": "c8_3", "sec": "Bacterial Initiation", "kind": "cloze", "front": "Bacterial core polymerase subunits: 2 \u03b1, \u03b2, <span class=\"cz gap\">?</span> and \u03c9", "back": "Bacterial core polymerase subunits: 2 \u03b1, \u03b2, <span class=\"cz\">\u03b2\u2032</span> and \u03c9", "extra": "Five subunits total.", "added": false, "viz": "polymerase", "vf": false}, {"id": "c8_4", "sec": "Bacterial Initiation", "kind": "cloze", "front": "Bacterial core polymerase subunits: 2 \u03b1, \u03b2, \u03b2\u2032 and <span class=\"cz gap\">?</span>", "back": "Bacterial core polymerase subunits: 2 \u03b1, \u03b2, \u03b2\u2032 and <span class=\"cz\">\u03c9</span>", "extra": "Five subunits total.", "added": false, "viz": "polymerase", "vf": false}, {"id": "c9_1", "sec": "Bacterial Initiation", "kind": "cloze", "front": "Holoenzyme = <span class=\"cz gap\">?</span> + sigma factor", "back": "Holoenzyme = <span class=\"cz\">core enzyme</span> + sigma factor", "extra": "", "added": false, "viz": "polymerase:holo", "vf": false}, {"id": "c9_2", "sec": "Bacterial Initiation", "kind": "cloze", "front": "Holoenzyme = core enzyme + <span class=\"cz gap\">?</span>", "back": "Holoenzyme = core enzyme + <span class=\"cz\">sigma factor</span>", "extra": "", "added": false, "viz": "polymerase:holo", "vf": false}, {"id": "c10_1", "sec": "Bacterial Initiation", "kind": "cloze", "front": "<div class=\"list\">Bacterial initiation:<br>1. Sigma joins core to form the <span class=\"cz gap\">?</span><br>2. Holoenzyme binds the \u221235 and \u221210 sequences<br>3. Holoenzyme unwinds the DNA<br>4. An rNTP complementary to the start site is first<br>5. Two phosphates cleaved, nucleotide added to 3\u2032 end<br>6. Sigma released past the promoter</div>", "back": "<div class=\"list\">Bacterial initiation:<br>1. Sigma joins core to form the <span class=\"cz\">holoenzyme</span><br>2. Holoenzyme binds the \u221235 and \u221210 sequences<br>3. Holoenzyme unwinds the DNA<br>4. An rNTP complementary to the start site is first<br>5. Two phosphates cleaved, nucleotide added to 3\u2032 end<br>6. Sigma released past the promoter</div>", "extra": "Figure 13.12.", "added": false, "viz": "", "vf": false}, {"id": "c10_2", "sec": "Bacterial Initiation", "kind": "cloze", "front": "<div class=\"list\">Bacterial initiation:<br>1. Sigma joins core to form the holoenzyme<br>2. Holoenzyme binds the <span class=\"cz gap\">?</span> sequences<br>3. Holoenzyme unwinds the DNA<br>4. An rNTP complementary to the start site is first<br>5. Two phosphates cleaved, nucleotide added to 3\u2032 end<br>6. Sigma released past the promoter</div>", "back": "<div class=\"list\">Bacterial initiation:<br>1. Sigma joins core to form the holoenzyme<br>2. Holoenzyme binds the <span class=\"cz\">\u221235 and \u221210</span> sequences<br>3. Holoenzyme unwinds the DNA<br>4. An rNTP complementary to the start site is first<br>5. Two phosphates cleaved, nucleotide added to 3\u2032 end<br>6. Sigma released past the promoter</div>", "extra": "Figure 13.12.", "added": false, "viz": "", "vf": false}, {"id": "c10_3", "sec": "Bacterial Initiation", "kind": "cloze", "front": "<div class=\"list\">Bacterial initiation:<br>1. Sigma joins core to form the holoenzyme<br>2. Holoenzyme binds the \u221235 and \u221210 sequences<br>3. Holoenzyme <span class=\"cz gap\">?</span> the DNA<br>4. An rNTP complementary to the start site is first<br>5. Two phosphates cleaved, nucleotide added to 3\u2032 end<br>6. Sigma released past the promoter</div>", "back": "<div class=\"list\">Bacterial initiation:<br>1. Sigma joins core to form the holoenzyme<br>2. Holoenzyme binds the \u221235 and \u221210 sequences<br>3. Holoenzyme <span class=\"cz\">unwinds</span> the DNA<br>4. An rNTP complementary to the start site is first<br>5. Two phosphates cleaved, nucleotide added to 3\u2032 end<br>6. Sigma released past the promoter</div>", "extra": "Figure 13.12.", "added": false, "viz": "", "vf": false}, {"id": "c10_4", "sec": "Bacterial Initiation", "kind": "cloze", "front": "<div class=\"list\">Bacterial initiation:<br>1. Sigma joins core to form the holoenzyme<br>2. Holoenzyme binds the \u221235 and \u221210 sequences<br>3. Holoenzyme unwinds the DNA<br>4. An rNTP complementary to the <span class=\"cz gap\">?</span> is first<br>5. Two phosphates cleaved, nucleotide added to 3\u2032 end<br>6. Sigma released past the promoter</div>", "back": "<div class=\"list\">Bacterial initiation:<br>1. Sigma joins core to form the holoenzyme<br>2. Holoenzyme binds the \u221235 and \u221210 sequences<br>3. Holoenzyme unwinds the DNA<br>4. An rNTP complementary to the <span class=\"cz\">start site</span> is first<br>5. Two phosphates cleaved, nucleotide added to 3\u2032 end<br>6. Sigma released past the promoter</div>", "extra": "Figure 13.12.", "added": false, "viz": "", "vf": false}, {"id": "c10_5", "sec": "Bacterial Initiation", "kind": "cloze", "front": "<div class=\"list\">Bacterial initiation:<br>1. Sigma joins core to form the holoenzyme<br>2. Holoenzyme binds the \u221235 and \u221210 sequences<br>3. Holoenzyme unwinds the DNA<br>4. An rNTP complementary to the start site is first<br>5. Two <span class=\"cz gap\">?</span> cleaved, nucleotide added to 3\u2032 end<br>6. Sigma released past the promoter</div>", "back": "<div class=\"list\">Bacterial initiation:<br>1. Sigma joins core to form the holoenzyme<br>2. Holoenzyme binds the \u221235 and \u221210 sequences<br>3. Holoenzyme unwinds the DNA<br>4. An rNTP complementary to the start site is first<br>5. Two <span class=\"cz\">phosphates</span> cleaved, nucleotide added to 3\u2032 end<br>6. Sigma released past the promoter</div>", "extra": "Figure 13.12.", "added": false, "viz": "", "vf": false}, {"id": "c10_6", "sec": "Bacterial Initiation", "kind": "cloze", "front": "<div class=\"list\">Bacterial initiation:<br>1. Sigma joins core to form the holoenzyme<br>2. Holoenzyme binds the \u221235 and \u221210 sequences<br>3. Holoenzyme unwinds the DNA<br>4. An rNTP complementary to the start site is first<br>5. Two phosphates cleaved, nucleotide added to 3\u2032 end<br>6. <span class=\"cz gap\">?</span> released past the promoter</div>", "back": "<div class=\"list\">Bacterial initiation:<br>1. Sigma joins core to form the holoenzyme<br>2. Holoenzyme binds the \u221235 and \u221210 sequences<br>3. Holoenzyme unwinds the DNA<br>4. An rNTP complementary to the start site is first<br>5. Two phosphates cleaved, nucleotide added to 3\u2032 end<br>6. <span class=\"cz\">Sigma</span> released past the promoter</div>", "extra": "Figure 13.12.", "added": false, "viz": "", "vf": false}, {"id": "c11_1", "sec": "Bacterial Termination", "kind": "cloze", "front": "Bacteria terminate transcription by <span class=\"cz gap\">?</span> or rho-independent mechanisms.", "back": "Bacteria terminate transcription by <span class=\"cz\">rho-dependent</span> or rho-independent mechanisms.", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "c11_2", "sec": "Bacterial Termination", "kind": "cloze", "front": "Bacteria terminate transcription by rho-dependent or <span class=\"cz gap\">?</span> mechanisms.", "back": "Bacteria terminate transcription by rho-dependent or <span class=\"cz\">rho-independent</span> mechanisms.", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "c12_1", "sec": "Bacterial Termination", "kind": "cloze", "front": "<div class=\"list\">Rho-dependent:<br>1. Rho binds the <span class=\"cz gap\">?</span><br>2. RNA polymerase pauses downstream<br>3. Rho catches up<br>4. Its helicase activity releases the RNA</div>", "back": "<div class=\"list\">Rho-dependent:<br>1. Rho binds the <span class=\"cz\">rut site</span><br>2. RNA polymerase pauses downstream<br>3. Rho catches up<br>4. Its helicase activity releases the RNA</div>", "extra": "", "added": false, "viz": "rho", "vf": false}, {"id": "c12_2", "sec": "Bacterial Termination", "kind": "cloze", "front": "<div class=\"list\">Rho-dependent:<br>1. Rho binds the rut site<br>2. RNA polymerase <span class=\"cz gap\">?</span> downstream<br>3. Rho catches up<br>4. Its helicase activity releases the RNA</div>", "back": "<div class=\"list\">Rho-dependent:<br>1. Rho binds the rut site<br>2. RNA polymerase <span class=\"cz\">pauses</span> downstream<br>3. Rho catches up<br>4. Its helicase activity releases the RNA</div>", "extra": "", "added": false, "viz": "rho", "vf": false}, {"id": "c12_3", "sec": "Bacterial Termination", "kind": "cloze", "front": "<div class=\"list\">Rho-dependent:<br>1. Rho binds the rut site<br>2. RNA polymerase pauses downstream<br>3. Rho <span class=\"cz gap\">?</span><br>4. Its helicase activity releases the RNA</div>", "back": "<div class=\"list\">Rho-dependent:<br>1. Rho binds the rut site<br>2. RNA polymerase pauses downstream<br>3. Rho <span class=\"cz\">catches up</span><br>4. Its helicase activity releases the RNA</div>", "extra": "", "added": false, "viz": "rho", "vf": false}, {"id": "c12_4", "sec": "Bacterial Termination", "kind": "cloze", "front": "<div class=\"list\">Rho-dependent:<br>1. Rho binds the rut site<br>2. RNA polymerase pauses downstream<br>3. Rho catches up<br>4. Its <span class=\"cz gap\">?</span> activity releases the RNA</div>", "back": "<div class=\"list\">Rho-dependent:<br>1. Rho binds the rut site<br>2. RNA polymerase pauses downstream<br>3. Rho catches up<br>4. Its <span class=\"cz\">helicase</span> activity releases the RNA</div>", "extra": "", "added": false, "viz": "rho", "vf": false}, {"id": "c13_1", "sec": "Bacterial Termination", "kind": "cloze", "front": "Rho-independent terminator: an <span class=\"cz gap\">?</span> followed by about six adenine nucleotides.", "back": "Rho-independent terminator: an <span class=\"cz\">inverted repeat</span> followed by about six adenine nucleotides.", "extra": "In the RNA these become a hairpin and a string of U's.", "added": false, "viz": "hairpin", "vf": false}, {"id": "c13_2", "sec": "Bacterial Termination", "kind": "cloze", "front": "Rho-independent terminator: an inverted repeat followed by about six <span class=\"cz gap\">?</span> nucleotides.", "back": "Rho-independent terminator: an inverted repeat followed by about six <span class=\"cz\">adenine</span> nucleotides.", "extra": "In the RNA these become a hairpin and a string of U's.", "added": false, "viz": "hairpin", "vf": false}, {"id": "c14_1", "sec": "Eukaryotic Initiation", "kind": "cloze", "front": "<div class=\"list\">Pol II core promoter:<br><span class=\"cz gap\">?</span> at \u221235<br>TATA box at \u221225<br>Initiator element at +1<br>Downstream core-promoter element at +30</div>", "back": "<div class=\"list\">Pol II core promoter:<br><span class=\"cz\">BRE</span> at \u221235<br>TATA box at \u221225<br>Initiator element at +1<br>Downstream core-promoter element at +30</div>", "extra": "BRE = TFIIB recognition element.", "added": false, "viz": "eprom", "vf": false}, {"id": "c14_2", "sec": "Eukaryotic Initiation", "kind": "cloze", "front": "<div class=\"list\">Pol II core promoter:<br>BRE at \u221235<br><span class=\"cz gap\">?</span> at \u221225<br>Initiator element at +1<br>Downstream core-promoter element at +30</div>", "back": "<div class=\"list\">Pol II core promoter:<br>BRE at \u221235<br><span class=\"cz\">TATA box</span> at \u221225<br>Initiator element at +1<br>Downstream core-promoter element at +30</div>", "extra": "BRE = TFIIB recognition element.", "added": false, "viz": "eprom", "vf": false}, {"id": "c14_3", "sec": "Eukaryotic Initiation", "kind": "cloze", "front": "<div class=\"list\">Pol II core promoter:<br>BRE at \u221235<br>TATA box at \u221225<br><span class=\"cz gap\">?</span> at +1<br>Downstream core-promoter element at +30</div>", "back": "<div class=\"list\">Pol II core promoter:<br>BRE at \u221235<br>TATA box at \u221225<br><span class=\"cz\">Initiator element</span> at +1<br>Downstream core-promoter element at +30</div>", "extra": "BRE = TFIIB recognition element.", "added": false, "viz": "eprom", "vf": false}, {"id": "c14_4", "sec": "Eukaryotic Initiation", "kind": "cloze", "front": "<div class=\"list\">Pol II core promoter:<br>BRE at \u221235<br>TATA box at \u221225<br>Initiator element at +1<br><span class=\"cz gap\">?</span> at +30</div>", "back": "<div class=\"list\">Pol II core promoter:<br>BRE at \u221235<br>TATA box at \u221225<br>Initiator element at +1<br><span class=\"cz\">Downstream core-promoter element</span> at +30</div>", "extra": "BRE = TFIIB recognition element.", "added": false, "viz": "eprom", "vf": false}, {"id": "c15_1", "sec": "Eukaryotic Initiation", "kind": "cloze", "front": "<div class=\"list\">Eukaryotic RNA polymerases:<br>Pol I: <span class=\"cz gap\">?</span><br>Pol II: pre-mRNA<br>Pol III: tRNAs</div>", "back": "<div class=\"list\">Eukaryotic RNA polymerases:<br>Pol I: <span class=\"cz\">large rRNAs</span><br>Pol II: pre-mRNA<br>Pol III: tRNAs</div>", "extra": "Pol IV and V are found only in plants.", "added": false, "viz": "", "vf": false}, {"id": "c15_2", "sec": "Eukaryotic Initiation", "kind": "cloze", "front": "<div class=\"list\">Eukaryotic RNA polymerases:<br>Pol I: large rRNAs<br>Pol II: <span class=\"cz gap\">?</span><br>Pol III: tRNAs</div>", "back": "<div class=\"list\">Eukaryotic RNA polymerases:<br>Pol I: large rRNAs<br>Pol II: <span class=\"cz\">pre-mRNA</span><br>Pol III: tRNAs</div>", "extra": "Pol IV and V are found only in plants.", "added": false, "viz": "", "vf": false}, {"id": "c15_3", "sec": "Eukaryotic Initiation", "kind": "cloze", "front": "<div class=\"list\">Eukaryotic RNA polymerases:<br>Pol I: large rRNAs<br>Pol II: pre-mRNA<br>Pol III: <span class=\"cz gap\">?</span></div>", "back": "<div class=\"list\">Eukaryotic RNA polymerases:<br>Pol I: large rRNAs<br>Pol II: pre-mRNA<br>Pol III: <span class=\"cz\">tRNAs</span></div>", "extra": "Pol IV and V are found only in plants.", "added": false, "viz": "", "vf": false}, {"id": "c16_1", "sec": "Eukaryotic Termination", "kind": "cloze", "front": "<div class=\"list\">Eukaryotic termination:<br>Pol I: <span class=\"cz gap\">?</span><br>Pol II: Rat1 exonuclease<br>Pol III: terminator sequence</div>", "back": "<div class=\"list\">Eukaryotic termination:<br>Pol I: <span class=\"cz\">termination factor</span><br>Pol II: Rat1 exonuclease<br>Pol III: terminator sequence</div>", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "c16_2", "sec": "Eukaryotic Termination", "kind": "cloze", "front": "<div class=\"list\">Eukaryotic termination:<br>Pol I: termination factor<br>Pol II: <span class=\"cz gap\">?</span><br>Pol III: terminator sequence</div>", "back": "<div class=\"list\">Eukaryotic termination:<br>Pol I: termination factor<br>Pol II: <span class=\"cz\">Rat1 exonuclease</span><br>Pol III: terminator sequence</div>", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "c16_3", "sec": "Eukaryotic Termination", "kind": "cloze", "front": "<div class=\"list\">Eukaryotic termination:<br>Pol I: termination factor<br>Pol II: Rat1 exonuclease<br>Pol III: <span class=\"cz gap\">?</span></div>", "back": "<div class=\"list\">Eukaryotic termination:<br>Pol I: termination factor<br>Pol II: Rat1 exonuclease<br>Pol III: <span class=\"cz\">terminator sequence</span></div>", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "d_nucleotide_Phosphate", "sec": "RNA Structure", "kind": "diagram", "front": "Name the hidden part of the nucleotide.", "back": "Phosphate", "extra": "", "added": false, "viz": "nucleotide:Phosphate", "quiz": "Phosphate", "vf": true}, {"id": "d_nucleotide_Sugar", "sec": "RNA Structure", "kind": "diagram", "front": "Name the hidden part of the nucleotide.", "back": "Sugar", "extra": "", "added": false, "viz": "nucleotide:Sugar", "quiz": "Sugar", "vf": true}, {"id": "d_nucleotide_Base", "sec": "RNA Structure", "kind": "diagram", "front": "Name the hidden part of the nucleotide.", "back": "Base", "extra": "", "added": false, "viz": "nucleotide:Base", "quiz": "Base", "vf": true}, {"id": "d_gene_Promoter", "sec": "Transcription Basics", "kind": "diagram", "front": "Name the hidden region of the gene.", "back": "Promoter", "extra": "", "added": false, "viz": "gene:Promoter", "quiz": "Promoter", "vf": true}, {"id": "d_gene_RNA_coding_region", "sec": "Transcription Basics", "kind": "diagram", "front": "Name the hidden region of the gene.", "back": "RNA-coding region", "extra": "", "added": false, "viz": "gene:RNA-coding region", "quiz": "RNA-coding region", "vf": true}, {"id": "d_gene_Terminator", "sec": "Transcription Basics", "kind": "diagram", "front": "Name the hidden region of the gene.", "back": "Terminator", "extra": "", "added": false, "viz": "gene:Terminator", "quiz": "Terminator", "vf": true}, {"id": "d_bprom_TTGACA", "sec": "Bacterial Initiation", "kind": "diagram", "front": "Name the hidden bacterial consensus sequence.", "back": "TTGACA", "extra": "", "added": false, "viz": "bprom:TTGACA", "quiz": "TTGACA", "vf": true}, {"id": "d_bprom_TATAAT", "sec": "Bacterial Initiation", "kind": "diagram", "front": "Name the hidden bacterial consensus sequence.", "back": "TATAAT", "extra": "", "added": false, "viz": "bprom:TATAAT", "quiz": "TATAAT", "vf": true}, {"id": "d_eprom_BRE", "sec": "Eukaryotic Initiation", "kind": "diagram", "front": "Name the hidden Pol II core promoter element.", "back": "BRE", "extra": "", "added": false, "viz": "eprom:BRE", "quiz": "BRE", "vf": true}, {"id": "d_eprom_TATA_box", "sec": "Eukaryotic Initiation", "kind": "diagram", "front": "Name the hidden Pol II core promoter element.", "back": "TATA box", "extra": "", "added": false, "viz": "eprom:TATA box", "quiz": "TATA box", "vf": true}, {"id": "d_eprom_Initiator", "sec": "Eukaryotic Initiation", "kind": "diagram", "front": "Name the hidden Pol II core promoter element.", "back": "Initiator", "extra": "", "added": false, "viz": "eprom:Initiator", "quiz": "Initiator", "vf": true}, {"id": "d_eprom_DPE", "sec": "Eukaryotic Initiation", "kind": "diagram", "front": "Name the hidden Pol II core promoter element.", "back": "DPE", "extra": "", "added": false, "viz": "eprom:DPE", "quiz": "DPE", "vf": true}], "paths": {}};
 const CARDS = DATA.cards, P = DATA.paths;
 const SECS = ["RNA Structure", "RNA Classes", "Transcription Basics", "Consensus Sequences", "Bacterial Initiation", "Bacterial Termination", "Eukaryotic Initiation", "Eukaryotic Termination"];
@@ -166,10 +351,10 @@ function svgWrap(inner, h=340){ const id = "m"+(++uid);
 const INK="var(--ink)", ACC="var(--c)", MUT="var(--muted)";
 function label(x,y,t,o,anchor="middle"){
   const st = o.quiz===t ? "quiz" : (o.hideAll && o.quiz ? "blank" : (o.hl===t ? "hl":"show"));
-  const w = Math.max(28, t.length*13.4+20), x0 = anchor==="middle"? x-w/2 : anchor==="start"? x-8 : x-w+8;
+  const w = Math.max(28, t.length*15.5+20), x0 = anchor==="middle"? x-w/2 : anchor==="start"? x-8 : x-w+8;
   if (st==="quiz") return `<rect x="${x-30}" y="${y-22}" width="60" height="40" rx="9" style="fill:var(--c)"/><text x="${x}" y="${y+5}" text-anchor="middle" font-size="30" style="fill:var(--surface)">?</text>`;
   if (st==="blank") return `<rect x="${x0}" y="${y-19}" width="${w}" height="34" rx="8" style="fill:var(--soft);stroke:var(--line)"/>`;
-  return `<text x="${x}" y="${y+9}" text-anchor="${anchor}" font-size="${st==="hl"?31:28}" style="fill:${st==="hl"?ACC:INK}">${t}</text>`;
+  return `<text x="${x}" y="${y+9}" text-anchor="${anchor}" font-size="${st==="hl"?29:26}" style="fill:${st==="hl"?ACC:INK}">${t}</text>`;
 }
 const ln = (x1,y1,x2,y2,c=INK,w=2,extra="") => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" style="stroke:${c}" stroke-width="${w}" ${extra}/>`;
 const arr = (x1,y1,x2,y2,on) => ln(x1,y1,x2,y2,on?ACC:INK,on?5:3.5,`marker-end="${on?"MK_A":"MK_I"}"`);
@@ -274,8 +459,8 @@ const D = {
    <circle cx="300" cy="216" r="24" style="fill:color-mix(in srgb,var(--c) 30%,var(--surface));stroke:var(--c)" stroke-width="2.5"/><text x="300" y="223" text-anchor="middle" font-size="18" style="fill:var(--ink)">Rat1</text>
    ${arr(330,196,385,166,true)}<text x="590" y="262" text-anchor="end" font-size="21" style="fill:var(--c)">5′ to 3′ exonuclease degrades</text><text x="590" y="288" text-anchor="end" font-size="21" style="fill:var(--c)">the RNA until it reaches Pol II</text>`); },
  consensus(){ const rows=["TATAAAAG","TCCAATGC","AATAGCCG","TACAGGAC"], cons=["T","A","Y","A","R","N","A","C/G"];
-  let s=""; rows.forEach((r,i)=>{ [...r].forEach((ch,j)=>{ s+=`<text x="${150+j*52}" y="${60+i*42}" text-anchor="middle" font-size="26" style="fill:var(--ink);font-family:ui-monospace,Menlo,monospace">${ch}</text>`; }); });
-  cons.forEach((ch,j)=>{ s+=`<text x="${150+j*52}" y="${250}" text-anchor="middle" font-size="${ch.length>1?22:28}" style="fill:var(--c);font-family:ui-monospace,Menlo,monospace;font-weight:700">${ch}</text>`; });
+  let s=""; rows.forEach((r,i)=>{ [...r].forEach((ch,j)=>{ s+=`<text x="${150+j*52}" y="${60+i*42}" text-anchor="middle" font-size="26" style="fill:var(--ink);font-family:var(--font-mono)">${ch}</text>`; }); });
+  cons.forEach((ch,j)=>{ s+=`<text x="${150+j*52}" y="${250}" text-anchor="middle" font-size="${ch.length>1?22:28}" style="fill:var(--c);font-family:var(--font-mono);font-weight:700">${ch}</text>`; });
   return svgWrap(`${s}${ln(110,214,560,214,INK,2.5)}<text x="100" y="250" text-anchor="end" font-size="22" style="fill:var(--ink)">5′</text><text x="570" y="250" font-size="22" style="fill:var(--ink)">3′</text>
    <text x="300" y="300" text-anchor="middle" font-size="21" style="fill:var(--muted)">majority first. R = purine, Y = pyrimidine,</text>
    <text x="300" y="326" text-anchor="middle" font-size="21" style="fill:var(--muted)">N = any, C/G = split between groups</text>`); },
@@ -322,22 +507,25 @@ function home(){ S=null; Q=null; flipped=false;
   const startN = buildQueue().length, R = store.session;
   const label = {due:"cards ready to study", cram:"cards in this review", revisit:"cards to revisit"}[store.mode];
   const empty = {due:"Nothing due. Switch to test prep.", cram:"No sections selected.", revisit:"Nothing to revisit yet."}[store.mode];
-  app.innerHTML = `<a class="hub" href="../../">All decks</a><a class="hub" href="guide.html">Study guide</a><h1>Genetics Ch 13: Transcription</h1><p class="sub">RNA structure and classes, bacterial and eukaryotic transcription.</p>
-  ${R?`<div class="resume"><div><b>Session paused</b><span>${R.ids.length} of ${R.total} cards left, ${MODES[R.mode][0].toLowerCase()}</span></div>
-    <button class="go" id="resume">Resume</button><button class="link" id="discard">End it and see results</button></div>`:""}
-  <div class="launch"><div class="due"><b>${startN}</b><span>${label}</span></div>
+  app.innerHTML = `<header class="hero guides deckhero"><div class="band" aria-hidden="true"></div><div class="reading">
+    <nav class="toplinks"><a class="link quiet" href="../../">All decks</a><a class="link" href="guide.html">Study guide</a></nav>
+    <p class="label">Genetics</p><h1>Ch 13: Transcription</h1><p class="lead">RNA structure and classes, bacterial and eukaryotic transcription.</p></div></header>
+  <main class="reading overlap stack">
+  ${R?`<div class="card float resume rise"><h2>Session paused</h2><p class="hint num">${R.ids.length} of ${R.total} cards left, ${MODES[R.mode][0].toLowerCase()}</p>
+    <button class="btn block" id="resume">Resume</button><div class="center"><button class="link quiet" id="discard">End it and see results</button></div></div>`:""}
+  <div class="card float rise"><div class="due"><b class="num">${startN}</b><span>${label}</span></div>
    <div class="modes">${Object.entries(MODES).map(([k,[n,d]])=>`<button class="mode" data-mode="${k}" aria-pressed="${store.mode===k}">${n}<small>${d}</small></button>`).join("")}</div>
-   <button class="go${R?" alt":""}" id="go" ${startN?"":"disabled"}>${startN?(R?"Start a new session":"Start studying"):empty}</button></div>
+   <button class="btn block${R?" ghost":""}" id="go" ${startN?"":"disabled"}>${startN?(R?"Start a new session":"Start studying"):empty}</button></div>
   ${quizPanel()}
-  <div class="secs"><h2>Sections</h2>${SECS.map(s=>{const m=mastery(s);return `
-   <button class="sec" style="--c:${cvar(s)}" data-sec="${s}" aria-pressed="${store.secs.includes(s)}">
-    <span class="chk"></span><span class="secname">${s}</span><span class="secmeta">${m.m} of ${m.n} solid${m.p===null?"":` · ${m.p}% right`}</span>
-    <span class="bar"><i style="width:${m.m/m.n*100}%;background:${cvar(s)}"></i><i style="width:${m.l/m.n*100}%;background:color-mix(in srgb,${cvar(s)} 35%,transparent)"></i></span>
+  <div class="card secs"><h2>Sections</h2>${SECS.map(s=>{const m=mastery(s);return `
+   <button class="secrow" style="--c:${cvar(s)}" data-sec="${s}" aria-pressed="${store.secs.includes(s)}">
+    <span class="chk"></span><span class="secname">${s}</span><span class="secmeta num">${m.m} of ${m.n} solid${m.p===null?"":` · ${m.p}% right`}</span>
+    <span class="track"><i style="width:${m.m/m.n*100}%"></i><i style="width:${m.l/m.n*100}%;background:color-mix(in srgb,var(--c) 35%,transparent)"></i></span>
    </button>`}).join("")}
    <div class="legend"><span style="--sw:var(--ink)">Solid: answered right 3 times running</span><span style="--sw:color-mix(in srgb,var(--ink) 35%,transparent)">Learning</span><span class="nosw">% right: share of all your grades that were Good or Easy</span></div></div>
-  <div class="foot"><span>${CARDS.length} cards. Every grade saves on this device as you go.</span><button class="link" id="reset">Reset progress</button></div>`;
+  <div class="foot"><span>${CARDS.length} cards. Every grade saves on this device as you go.</span><button class="link quiet" id="reset">Reset progress</button></div></main>`;
   app.querySelectorAll(".mode").forEach(b=>b.onclick=()=>{store.mode=b.dataset.mode;save();home();});
-  app.querySelectorAll(".sec").forEach(b=>b.onclick=()=>{const s=b.dataset.sec; store.secs=store.secs.includes(s)?store.secs.filter(x=>x!==s):store.secs.concat(s); save(); home();});
+  app.querySelectorAll(".secrow").forEach(b=>b.onclick=()=>{const s=b.dataset.sec; store.secs=store.secs.includes(s)?store.secs.filter(x=>x!==s):store.secs.concat(s); save(); home();});
   document.getElementById("go").onclick=()=>{ if(R && !confirm("Start over? The paused session's grades are kept, but its remaining cards are dropped.")) return; start(buildQueue().map(c=>c.id), store.mode); };
   if(R){ document.getElementById("resume").onclick=()=>{ S=store.session; card(); };
     document.getElementById("discard").onclick=()=>{ S=store.session; finish(); }; }
@@ -347,25 +535,25 @@ function home(){ S=null; Q=null; flipped=false;
 }
 function start(ids, mode){ if(!ids.length) return;
   S = store.session = {ids, mode, total:ids.length, done:0, right:0, requeued:{}, first:{}}; save(); flipped=false; card(); }
-function head(){ return `<div class="top"><button class="back" id="pause" title="Save your place and come back later">Pause</button>
-  <div class="track"><i style="width:${S.done/S.total*100}%"></i></div><span class="count">${S.ids.length} left</span>
-  <button class="back" id="end" title="Stop now and see your results">End</button></div>`; }
+function head(){ return `<div class="top"><button class="link quiet" id="pause" title="Save your place and come back later">Pause</button>
+  <div class="track"><i style="width:${S.done/S.total*100}%"></i></div><span class="count num">${S.ids.length} left</span>
+  <button class="link quiet" id="end" title="Stop now and see your results">End</button></div>`; }
 function card(){
   if(!S.ids.length) return finish();
   const c=BYID[S.ids[0]], f=flipped, p=pct(c.id), s=st(c.id);
   const frontViz = c.vf ? viz(c.viz, c.kind==="diagram"&&!f?{quiz:c.quiz,hideAll:true}:{}) : "";
   const backViz = f ? (c.kind==="diagram" ? viz(c.viz,{hl:c.quiz}) : (c.vizBack? viz(c.vizBack) : (c.vf?"":viz(c.viz)))) : "";
-  app.innerHTML = head()+`<article class="card fadein" style="--c:${cvar(c.sec)}">
-   <div class="chip"><span class="dot"></span>${c.sec}${c.added?'<span class="add">Beyond the slides</span>':""}
-    <span class="score" title="Times you graded this card Good or Easy">${p===null?"New card":`${p}% right <small>(${s.right||0} of ${s.seen})</small>`}</span></div>
+  app.innerHTML = `<main class="reading study">`+head()+`<article class="card float accent fc rise" style="--c:${cvar(c.sec)}">
+   <div class="chip"><span class="tag sec">${c.sec}</span>${c.added?'<span class="tag">Beyond the slides</span>':""}
+    <span class="score num" title="Times you graded this card Good or Easy">${p===null?"New card":`${p}% right (${s.right||0} of ${s.seen})`}</span></div>
    <div class="prompt">${f&&c.kind==="cloze"?c.back:c.front}</div>
    ${(c.kind==="diagram"||c.vizBack)&&f?"":frontViz}
    ${f?`<div class="answer">${c.kind==="cloze"?"":`<div class="ans">${c.back}</div>`}${backViz}${c.extra?`<div class="extra">${c.extra}</div>`:""}</div>`:""}
    <div class="spacer"></div>
    ${f?`<div class="grades">${GRADES.map((n,k)=>`<button class="g" data-g="${k+1}" style="--gc:var(--${n.toLowerCase()})">${n}<small>${preview(c,k+1)}</small></button>`).join("")}</div>
      <div class="keys">Keys 1 to 4 to grade. Esc to pause.</div>`
-   :`<button class="reveal" id="flip">Show answer</button><div class="keys">Space to show the answer. Esc to pause.</div>`}
-  </article>`;
+   :`<button class="btn dark block no-chev" id="flip">Show answer</button><div class="keys">Space to show the answer. Esc to pause.</div>`}
+  </article></main>`;
   document.getElementById("pause").onclick=home;
   document.getElementById("end").onclick=()=>{ if(confirm(`End the session now? Your ${S.done} graded card${S.done===1?"":"s"} are saved; the ${S.ids.length} left stay for next time.`)) finish(); };
   if(f) app.querySelectorAll(".g").forEach(b=>b.onclick=()=>answer(+b.dataset.g));
@@ -383,16 +571,16 @@ function finish(){ const R=S, ids=Object.keys(R.first), n=ids.length, left=R.ids
   const counts=[0,0,0,0], bySec={}; ids.forEach(id=>{ const g=R.first[id], sec=BYID[id]?.sec; counts[g-1]++;
     if(sec){ const b=bySec[sec]=bySec[sec]||{n:0,r:0}; b.n++; if(g>=3) b.r++; } });
   const known=n?Math.round((counts[2]+counts[3])/n*100):0, missed=ids.filter(id=>R.first[id]<=2&&BYID[id]);
-  app.innerHTML=`<div class="done fadein"><h1>${R.ids.length?"Session ended":"Session complete"}</h1>
-  <p class="sub">Saved on this device. ${left?`${left} card${left===1?"":"s"} not reached; they stay due for next time.`:""}</p>
-  ${n?`<div class="result"><div class="big"><b>${known}%</b><span>right on the first try<br>${counts[2]+counts[3]} of ${n} cards</span></div>
+  app.innerHTML=`<main class="reading study done rise"><h1>${R.ids.length?"Session ended":"Session complete"}</h1>
+  <p class="hint">Saved on this device. ${left?`${left} card${left===1?"":"s"} not reached; they stay due for next time.`:""}</p>
+  ${n?`<div class="card"><div class="big"><b class="num">${known}%</b><span class="num">right on the first try, ${counts[2]+counts[3]} of ${n} cards</span></div>
    <div class="gbar">${counts.map((k,i)=>k?`<i style="flex:${k};background:var(--${GRADES[i].toLowerCase()})"></i>`:"").join("")}</div>
    <div class="glegend">${counts.map((k,i)=>`<span style="--sw:var(--${GRADES[i].toLowerCase()})">${GRADES[i]} ${k}</span>`).join("")}</div>
    <div class="bysec">${SECS.filter(s=>bySec[s]).map(s=>{const b=bySec[s],p=Math.round(b.r/b.n*100);return `
-    <div class="bs" style="--c:${cvar(s)}"><span>${s}</span><span class="secmeta">${p}% · ${b.r} of ${b.n}</span><span class="bar"><i style="width:${p}%;background:var(--c)"></i></span></div>`}).join("")}</div></div>`
+    <div class="bs" style="--c:${cvar(s)}"><span>${s}</span><span class="secmeta num">${p}% · ${b.r} of ${b.n}</span><span class="track"><i style="width:${p}%"></i></span></div>`}).join("")}</div></div>`
   :`<p>No cards graded this time.</p>`}
-  ${missed.length?`<button class="go" id="miss">Practice the ${missed.length} I missed</button>`:""}
-  <button class="go${missed.length?" alt":""}" id="h">Back to sections</button></div>`;
+  <div class="stack" style="margin-top:var(--sp-5)">${missed.length?`<button class="btn block" id="miss">Practice the ${missed.length} I missed</button>`:""}
+  <button class="btn block${missed.length?" ghost":""}" id="h">Back to sections</button></div></main>`;
   document.getElementById("h").onclick=home;
   if(missed.length) document.getElementById("miss").onclick=()=>start(shuffle(missed), "cram");
 }
@@ -416,33 +604,33 @@ function choices(c){
 function startQuiz(ids){ if(!ids.length) return; S=null; Q={qs:ids.map(id=>choices(BYID[id])), i:0, picks:[]}; renderQ(); }
 const LENS=[10,25,50,0];
 function quizPanel(){ const n=pool().length, len=store.qlen===undefined?25:store.qlen, take=len?Math.min(len,n):n, H=store.quizzes||[];
-  return `<div class="launch quizbox"><h2>Quiz</h2><p class="sub">Multiple choice from the selected sections. Scores are kept separate from your flashcards.</p>
+  return `<div class="card"><h2>Quiz</h2><p class="hint">Multiple choice from the selected sections. Scores are kept separate from your flashcards.</p>
    ${H.length?scoreChart(H):""}
    <div class="lens" role="group" aria-label="Quiz length">${LENS.map(l=>`<button class="len" data-len="${l}" aria-pressed="${len===l}">${l||"All"}</button>`).join("")}</div>
-   <button class="go" id="quiz" ${n?"":"disabled"}>${n?`Start a ${take}-question quiz`:"No sections selected."}</button></div>`; }
+   <button class="btn dark block" id="quiz" ${n?"":"disabled"}>${n?`Start a ${take}-question quiz`:"No sections selected."}</button></div>`; }
 function scoreChart(H){ const h=H.slice(-12), last=h[h.length-1], best=Math.max(...H.map(q=>Math.round(q.r/q.n*100)));
   const W=600, T=160, L=78, R=30, top=20, bot=20, X=i=>h.length<2?(L+W-R)/2:L+i*(W-L-R)/(h.length-1), Y=p=>top+(100-p)*(T-top-bot)/100;
   const pts=h.map((q,i)=>({x:X(i),y:Y(Math.round(q.r/q.n*100)),p:Math.round(q.r/q.n*100),q}));
   const day=t=>new Date(t).toLocaleDateString(undefined,{month:"short",day:"numeric"});
-  return `<div class="hist"><div class="histhead"><span><b>${pts[pts.length-1].p}%</b> last quiz</span><span>Best ${best}% · ${H.length} quiz${H.length===1?"":"zes"} taken</span></div>
+  return `<div class="hist"><div class="histhead"><span><b class="num">${pts[pts.length-1].p}%</b> last quiz</span><span class="num">Best ${best}% · ${H.length} quiz${H.length===1?"":"zes"} taken</span></div>
    <svg viewBox="0 0 ${W} ${T}" role="img" aria-label="Quiz scores, oldest to newest: ${pts.map(t=>t.p+"%").join(", ")}">
-   ${[0,50,100].map(v=>`<line x1="${L}" x2="${W-R+10}" y1="${Y(v)}" y2="${Y(v)}" style="stroke:var(--line)" vector-effect="non-scaling-stroke" stroke-width="1"/><text x="${L-10}" y="${Y(v)+7}" text-anchor="end" font-size="24" style="fill:var(--muted);font-weight:500">${v}%</text>`).join("")}
-   ${pts.length>1?`<polyline points="${pts.map(t=>t.x+","+t.y).join(" ")}" fill="none" style="stroke:var(--good)" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>`:""}
+   ${[0,50,100].map(v=>`<line x1="${L}" x2="${W-R+10}" y1="${Y(v)}" y2="${Y(v)}" style="stroke:var(--line)" vector-effect="non-scaling-stroke" stroke-width="1"/><text x="${L-10}" y="${Y(v)+7}" text-anchor="end" font-size="24" style="fill:var(--muted)">${v}%</text>`).join("")}
+   ${pts.length>1?`<polyline points="${pts.map(t=>t.x+","+t.y).join(" ")}" fill="none" style="stroke:var(--sky-ink)" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>`:""}
    ${pts.map(t=>`<g class="pt"><title>${day(t.q.t)}: ${t.p}% (${t.q.r} of ${t.q.n})</title><circle cx="${t.x}" cy="${t.y}" r="22" fill="transparent"/>
-     <circle cx="${t.x}" cy="${t.y}" r="8" style="fill:var(--good);stroke:var(--surface)" stroke-width="3"/></g>`).join("")}
+     <circle cx="${t.x}" cy="${t.y}" r="8" style="fill:var(--sky-ink);stroke:var(--surface)" stroke-width="3"/></g>`).join("")}
    </svg></div>`; }
-function qhead(){ return `<div class="top"><button class="back" id="qend">End</button><div class="track"><i style="width:${Q.picks.length/Q.qs.length*100}%"></i></div><span class="count">${Math.min(Q.i+1,Q.qs.length)} of ${Q.qs.length}</span></div>`; }
+function qhead(){ return `<div class="top"><button class="link quiet" id="qend">End</button><div class="track"><i style="width:${Q.picks.length/Q.qs.length*100}%"></i></div><span class="count num">${Math.min(Q.i+1,Q.qs.length)} of ${Q.qs.length}</span></div>`; }
 function renderQ(){ const q=Q.qs[Q.i], c=BYID[q.id], k=Q.picks[Q.i], done=k!==undefined;
   const v = c.kind==="diagram" ? viz(c.viz, done?{hl:c.quiz}:{quiz:c.quiz,hideAll:true}) : (c.vf||done ? viz(c.viz) : "");
-  app.innerHTML = qhead()+`<article class="card fadein" style="--c:${cvar(c.sec)}">
-   <div class="chip"><span class="dot"></span>${c.sec}</div>
+  app.innerHTML = `<main class="reading study">`+qhead()+`<article class="card float accent fc rise" style="--c:${cvar(c.sec)}">
+   <div class="chip"><span class="tag sec">${c.sec}</span></div>
    <div class="prompt">${done&&c.kind==="cloze"?c.back:c.front}</div>${v}
    <div class="opts">${q.opts.map((o,i)=>`<button class="opt${done?(i===q.ans?" ok":i===k?" bad":" dim"):""}" data-k="${i}" ${done?"disabled":""}>
      <span class="ltr">${done&&i===q.ans?"✓":done&&i===k?"✗":"ABCD"[i]}</span><span>${o}</span></button>`).join("")}</div>
    ${done?`<div class="verdict ${k===q.ans?"ok":"bad"}">${k===q.ans?"Correct":"Not quite"}</div>${c.extra?`<div class="extra">${c.extra}</div>`:""}`:""}
    <div class="spacer"></div>
-   ${done?`<button class="go" id="next">${Q.i+1<Q.qs.length?"Next question":"See results"}</button><div class="keys">Space for next</div>`
-     :`<div class="keys">Keys 1 to 4 or A to D to answer</div>`}</article>`;
+   ${done?`<button class="btn dark block" id="next">${Q.i+1<Q.qs.length?"Next question":"See results"}</button><div class="keys">Space for next</div>`
+     :`<div class="keys">Keys 1 to 4 or A to D to answer</div>`}</article></main>`;
   document.getElementById("qend").onclick=()=>{ if(!Q.picks.length) return home(); if(confirm(`End the quiz now? You'll be scored on the ${Q.picks.length} you answered.`)) quizResults(); };
   if(done) document.getElementById("next").onclick=nextQ;
   else app.querySelectorAll(".opt").forEach(b=>b.onclick=()=>pick(+b.dataset.k)); }
@@ -454,15 +642,15 @@ function quizResults(){ const done=Q.qs.filter((q,i)=>Q.picks[i]!==undefined), n
   if(n){ store.quizzes=(store.quizzes||[]).concat({t:Date.now(),n,r}).slice(-50);
     missed.forEach(q=>{ store.cards[q.id]=Object.assign({},st(q.id),{due:0,qm:1}); }); save(); }
   const ids=missed.map(q=>q.id), all=Q.qs.length; Q=null;
-  app.innerHTML=`<div class="done fadein"><h1>Quiz ${n<all?"ended":"complete"}</h1>
-  ${n?`<div class="result"><div class="big"><b>${p}%</b><span>${r} of ${n} correct</span></div>
+  app.innerHTML=`<main class="reading study done rise"><h1>Quiz ${n<all?"ended":"complete"}</h1>
+  ${n?`<div class="card"><div class="big"><b class="num">${p}%</b><span class="num">${r} of ${n} correct</span></div>
    <div class="bysec">${SECS.filter(s=>bySec[s]).map(s=>{const b=bySec[s],sp=Math.round(b.r/b.n*100);return `
-    <div class="bs" style="--c:${cvar(s)}"><span>${s}</span><span class="secmeta">${sp}% · ${b.r} of ${b.n}</span><span class="bar"><i style="width:${sp}%;background:var(--c)"></i></span></div>`}).join("")}</div></div>
-   ${missed.length?`<div class="result missed"><h2>Missed</h2><p class="sub">These come up first in your next Daily study.</p>${missed.map(q=>{const c=BYID[q.id];return `
+    <div class="bs" style="--c:${cvar(s)}"><span>${s}</span><span class="secmeta num">${sp}% · ${b.r} of ${b.n}</span><span class="track"><i style="width:${sp}%"></i></span></div>`}).join("")}</div></div>
+   ${missed.length?`<div class="card" style="margin-top:var(--sp-5)"><h2>Missed</h2><p class="hint">These come up first in your next Daily study.</p>${missed.map(q=>{const c=BYID[q.id];return `
     <div class="mq" style="--c:${cvar(c.sec)}"><div>${c.kind==="diagram"?`${plain(c.front)}`:c.front}</div><div class="ma">${answerOf(c)}</div></div>`}).join("")}</div>`:""}`
   :`<p>No questions answered.</p>`}
-  ${missed.length?`<button class="go" id="retake">Retake the ${missed.length} I missed</button>`:""}
-  <button class="go${missed.length?" alt":""}" id="h">Back to the deck</button></div>`;
+  <div class="stack" style="margin-top:var(--sp-5)">${missed.length?`<button class="btn block" id="retake">Retake the ${missed.length} I missed</button>`:""}
+  <button class="btn block${missed.length?" ghost":""}" id="h">Back to the deck</button></div></main>`;
   document.getElementById("h").onclick=home;
   if(missed.length) document.getElementById("retake").onclick=()=>startQuiz(shuffle(ids)); }
 
