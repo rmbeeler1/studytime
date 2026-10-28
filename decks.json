@@ -7,5 +7,14 @@
     "path": "aviation/u04-aerodynamics/",
     "cards": 127,
     "added": "2026-10-28"
+  },
+  {
+    "id": "genetics-ch13-transcription",
+    "subject": "Genetics",
+    "number": "Ch 13",
+    "topic": "Transcription",
+    "path": "genetics/ch13-transcription/",
+    "cards": 169,
+    "added": "2026-10-28"
   }
 ]

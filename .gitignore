@@ -1,0 +1,5 @@
+# Course slides and handouts stay local. This repo is public.
+_inbox/*
+!_inbox/.gitkeep
+.DS_Store
+__pycache__/
