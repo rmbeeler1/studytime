@@ -111,6 +111,32 @@ svg text{font-family:"Barlow Condensed","Barlow",sans-serif;font-weight:600}
 .bs .bar{grid-column:1/3;margin-top:2px}
 .done .go{margin-top:10px}
 @media (max-width:420px){.modes{gap:6px}.mode{padding:9px 8px;font-size:.9em}.chip{flex-wrap:wrap}}
+.quizbox{margin-top:14px}
+.quizbox h2{font-size:1.5rem;margin:0;line-height:1.1}
+.quizbox .sub{margin:.2em 0 .8em;font-size:.9em}
+.lens{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 0 12px}
+.len{padding:8px 0;border-radius:10px;border:1.5px solid var(--line);background:transparent;font-weight:600}
+.len[aria-pressed="true"]{border-color:var(--ink);background:var(--soft)}
+.hist{margin:0 0 14px}
+.histhead{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:.85em}
+.histhead b{font-family:"Barlow Condensed";font-size:1.6rem;color:var(--ink)}
+.hist svg{width:100%;height:auto;display:block;margin-top:4px}
+.opts{display:grid;gap:8px;margin-top:16px}
+.opt{display:flex;align-items:center;gap:12px;width:100%;padding:12px 14px;border-radius:12px;border:1.5px solid var(--line);background:transparent;text-align:start;line-height:1.3}
+.opt:not(:disabled):hover{border-color:var(--c)}
+.opt .ltr{flex:none;width:28px;height:28px;border-radius:8px;display:grid;place-items:center;background:var(--soft);font-weight:600;font-size:.85em}
+.opt:disabled{cursor:default}
+.opt.ok{border-color:var(--easy);background:color-mix(in srgb,var(--easy) 12%,transparent)}
+.opt.ok .ltr{background:var(--easy);color:var(--surface)}
+.opt.bad{border-color:var(--again);background:color-mix(in srgb,var(--again) 10%,transparent)}
+.opt.bad .ltr{background:var(--again);color:var(--surface)}
+.opt.dim{opacity:.55}
+.verdict{margin-top:14px;font-weight:600}
+.verdict.ok{color:var(--easy)}.verdict.bad{color:var(--again)}
+.missed h2{font-size:1.35rem;margin:0}
+.missed .sub{margin:.1em 0 .4em;font-size:.85em}
+.mq{border-top:1px solid var(--line);border-left:4px solid var(--c);padding:10px 0 10px 12px;font-size:.92em}
+.mq .ma{color:var(--c);font-weight:600;margin-top:2px}
 </style>
 </head>
 <body>
@@ -163,12 +189,13 @@ function buildQueue(){ let p = pool();
   if(store.mode==="revisit") return shuffle(p.filter(c=>st(c.id).right)).sort((a,b)=>pct(a.id)-pct(b.id));
   if(store.mode==="cram") return shuffle(p.slice());
   p=p.filter(isDue);
-  const seen=p.filter(c=>st(c.id).seen), fresh=p.filter(c=>!st(c.id).seen);
-  shuffle(seen); shuffle(fresh); return seen.concat(fresh.slice(0,30)); }
+  // qm = missed on a quiz: always comes up next, even if never studied as a flashcard.
+  const qm=p.filter(c=>st(c.id).qm), seen=p.filter(c=>st(c.id).seen&&!st(c.id).qm), fresh=p.filter(c=>!st(c.id).seen&&!st(c.id).qm);
+  shuffle(qm); shuffle(seen); shuffle(fresh); return qm.concat(seen, fresh.slice(0,30)); }
 function preview(c,g){ const s=st(c.id);
   if(g===1) return "again soon"; if(g===2) return "later this session";
   const b=Math.min(6,(s.box||0)+(g===3?1:2)); const d=INTERVALS[b]; return d===1?"1 day":d+" days"; }
-function grade(c,g){ const s=Object.assign({},st(c.id)); s.seen=(s.seen||0)+1; if(g>=3) s.right=(s.right||0)+1;
+function grade(c,g){ const s=Object.assign({},st(c.id)); s.seen=(s.seen||0)+1; if(g>=3) s.right=(s.right||0)+1; delete s.qm;
   if(g===1){ s.box=0; s.due=0; } else if(g===2){ s.box=Math.max(1,s.box||0); s.due=Date.now()+DAY*0.5; }
   else { s.box=Math.min(6,(s.box||0)+(g===3?1:2)); s.due=Date.now()+DAY*INTERVALS[s.box]-36e5; }
   store.cards[c.id]=s; save(); return s; }
@@ -176,14 +203,14 @@ function grade(c,g){ const s=Object.assign({},st(c.id)); s.seen=(s.seen||0)+1; i
 /* ---------- views ---------- */
 const app = document.getElementById("app");
 // The session lives in store.session so it survives Pause, closing the tab, or a dead battery.
-let S = null, flipped = false;
+let S = null, Q = null, flipped = false;
 if(store.session){ store.session.ids=store.session.ids.filter(id=>BYID[id]); if(!store.session.ids.length){ store.session=null; save(); } }
 function mastery(sec){ const cs=CARDS.filter(c=>c.sec===sec); let m=0,l=0,seen=0,right=0;
   cs.forEach(c=>{const s=st(c.id), b=s.box||0; if(b>=3)m++; else if(s.seen)l++; seen+=s.seen||0; right+=s.right||0;});
   return {n:cs.length,m,l,p:seen?Math.round(right/seen*100):null}; }
 const MODES = {due:["Daily study","Due cards plus up to 30 new"], cram:["Test prep","Every selected card, shuffled"],
   revisit:["Revisit","Cards you got right, lowest % first"]};
-function home(){ S=null; flipped=false;
+function home(){ S=null; Q=null; flipped=false;
   const startN = buildQueue().length, R = store.session;
   const label = {due:"cards ready to study", cram:"cards in this review", revisit:"cards to revisit"}[store.mode];
   const empty = {due:"Nothing due. Switch to test prep.", cram:"No sections selected.", revisit:"Nothing to revisit yet."}[store.mode];
@@ -193,6 +220,7 @@ function home(){ S=null; flipped=false;
   <div class="launch"><div class="due"><b>${startN}</b><span>${label}</span></div>
    <div class="modes">${Object.entries(MODES).map(([k,[n,d]])=>`<button class="mode" data-mode="${k}" aria-pressed="${store.mode===k}">${n}<small>${d}</small></button>`).join("")}</div>
    <button class="go${R?" alt":""}" id="go" ${startN?"":"disabled"}>${startN?(R?"Start a new session":"Start studying"):empty}</button></div>
+  ${quizPanel()}
   <div class="secs"><h2>Sections</h2>${SECS.map(s=>{const m=mastery(s);return `
    <button class="sec" style="--c:${cvar(s)}" data-sec="${s}" aria-pressed="${store.secs.includes(s)}">
     <span class="chk"></span><span class="secname">${s}</span><span class="secmeta">${m.m} of ${m.n} solid${m.p===null?"":` · ${m.p}% right`}</span>
@@ -205,7 +233,9 @@ function home(){ S=null; flipped=false;
   document.getElementById("go").onclick=()=>{ if(R && !confirm("Start over? The paused session's grades are kept, but its remaining cards are dropped.")) return; start(buildQueue().map(c=>c.id), store.mode); };
   if(R){ document.getElementById("resume").onclick=()=>{ S=store.session; card(); };
     document.getElementById("discard").onclick=()=>{ S=store.session; finish(); }; }
-  document.getElementById("reset").onclick=()=>{ if(confirm("Erase all progress on this device?")){store.cards={};store.session=null;save();home();} };
+  app.querySelectorAll(".len").forEach(b=>b.onclick=()=>{store.qlen=+b.dataset.len;save();home();});
+  document.getElementById("quiz").onclick=()=>startQuiz(shuffle(pool().slice()).slice(0,(store.qlen===undefined?25:store.qlen)||Infinity).map(c=>c.id));
+  document.getElementById("reset").onclick=()=>{ if(confirm("Erase all progress and quiz history on this device?")){store.cards={};store.session=null;store.quizzes=[];save();home();} };
 }
 function start(ids, mode){ if(!ids.length) return;
   S = store.session = {ids, mode, total:ids.length, done:0, right:0, requeued:{}, first:{}}; save(); flipped=false; card(); }
@@ -258,7 +288,82 @@ function finish(){ const R=S, ids=Object.keys(R.first), n=ids.length, left=R.ids
   document.getElementById("h").onclick=home;
   if(missed.length) document.getElementById("miss").onclick=()=>start(shuffle(missed), "cram");
 }
-document.addEventListener("keydown",e=>{ if(!S||!S.ids.length||e.metaKey||e.ctrlKey) return;
+/* ---------- quiz ---------- */
+// Multiple choice built from the cards. Kept apart from flashcard levels and % right;
+// the only link back is that missed questions come up first in the next Daily study.
+const plain = h => h.replace(/<[^>]+>/g," ").replace(/\s+/g," ").trim();
+const answerOf = c => { if(c.kind!=="cloze") return c.back; const m=c.back.match(/<span class="cz">(.*?)<\/span>/); return m?m[1]:c.back; };
+const family = c => c.kind==="cloze" ? c.id.split("_")[0] : c.kind==="diagram" ? c.viz.split(":")[0] : null;
+function choices(c){
+  const right=answerOf(c), key=a=>plain(a).toLowerCase(), used=new Set([key(right)]), out=[], shown=plain(c.front).toLowerCase();
+  // Skip any choice already visible in the question (the rest of a list, or a word the prompt itself uses).
+  const take=list=>{ for(const a of list){ if(out.length>=3) break; const k=key(a); if(k&&!used.has(k)&&!shown.includes(k)){ used.add(k); out.push(a); } } };
+  // Siblings first: the other gaps of the same list, or the other labels of the same diagram.
+  const fam=family(c); if(fam) take(shuffle(CARDS.filter(x=>x!==c&&family(x)===fam).map(answerOf)));
+  // Then lookalikes: same card kind, similar length, numbers with numbers, same section preferred.
+  const sh=a=>{const p=plain(a); return {w:p.split(" ").length, n:/\d/.test(p)};}, r=sh(right);
+  take(CARDS.filter(x=>x!==c&&x.kind===c.kind).map(x=>{const a=answerOf(x), s=sh(a);
+    return [a, Math.abs(s.w-r.w)*1.5+(s.n!==r.n?6:0)+(x.sec!==c.sec?2.5:0)+Math.random()*2];}).sort((a,b)=>a[1]-b[1]).map(x=>x[0]));
+  const opts=shuffle(out.concat([right])); return {id:c.id, opts, ans:opts.indexOf(right)}; }
+function startQuiz(ids){ if(!ids.length) return; S=null; Q={qs:ids.map(id=>choices(BYID[id])), i:0, picks:[]}; renderQ(); }
+const LENS=[10,25,50,0];
+function quizPanel(){ const n=pool().length, len=store.qlen===undefined?25:store.qlen, take=len?Math.min(len,n):n, H=store.quizzes||[];
+  return `<div class="launch quizbox"><h2>Quiz</h2><p class="sub">Multiple choice from the selected sections. Scores are kept separate from your flashcards.</p>
+   ${H.length?scoreChart(H):""}
+   <div class="lens" role="group" aria-label="Quiz length">${LENS.map(l=>`<button class="len" data-len="${l}" aria-pressed="${len===l}">${l||"All"}</button>`).join("")}</div>
+   <button class="go" id="quiz" ${n?"":"disabled"}>${n?`Start a ${take}-question quiz`:"No sections selected."}</button></div>`; }
+function scoreChart(H){ const h=H.slice(-12), last=h[h.length-1], best=Math.max(...H.map(q=>Math.round(q.r/q.n*100)));
+  const W=600, T=160, L=78, R=30, top=20, bot=20, X=i=>h.length<2?(L+W-R)/2:L+i*(W-L-R)/(h.length-1), Y=p=>top+(100-p)*(T-top-bot)/100;
+  const pts=h.map((q,i)=>({x:X(i),y:Y(Math.round(q.r/q.n*100)),p:Math.round(q.r/q.n*100),q}));
+  const day=t=>new Date(t).toLocaleDateString(undefined,{month:"short",day:"numeric"});
+  return `<div class="hist"><div class="histhead"><span><b>${pts[pts.length-1].p}%</b> last quiz</span><span>Best ${best}% · ${H.length} quiz${H.length===1?"":"zes"} taken</span></div>
+   <svg viewBox="0 0 ${W} ${T}" role="img" aria-label="Quiz scores, oldest to newest: ${pts.map(t=>t.p+"%").join(", ")}">
+   ${[0,50,100].map(v=>`<line x1="${L}" x2="${W-R+10}" y1="${Y(v)}" y2="${Y(v)}" style="stroke:var(--line)" vector-effect="non-scaling-stroke" stroke-width="1"/><text x="${L-10}" y="${Y(v)+7}" text-anchor="end" font-size="24" style="fill:var(--muted);font-weight:500">${v}%</text>`).join("")}
+   ${pts.length>1?`<polyline points="${pts.map(t=>t.x+","+t.y).join(" ")}" fill="none" style="stroke:var(--good)" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>`:""}
+   ${pts.map(t=>`<g class="pt"><title>${day(t.q.t)}: ${t.p}% (${t.q.r} of ${t.q.n})</title><circle cx="${t.x}" cy="${t.y}" r="22" fill="transparent"/>
+     <circle cx="${t.x}" cy="${t.y}" r="8" style="fill:var(--good);stroke:var(--surface)" stroke-width="3"/></g>`).join("")}
+   </svg></div>`; }
+function qhead(){ return `<div class="top"><button class="back" id="qend">End</button><div class="track"><i style="width:${Q.picks.length/Q.qs.length*100}%"></i></div><span class="count">${Math.min(Q.i+1,Q.qs.length)} of ${Q.qs.length}</span></div>`; }
+function renderQ(){ const q=Q.qs[Q.i], c=BYID[q.id], k=Q.picks[Q.i], done=k!==undefined;
+  const v = c.kind==="diagram" ? viz(c.viz, done?{hl:c.quiz}:{quiz:c.quiz,hideAll:true}) : (c.vf||done ? viz(c.viz) : "");
+  app.innerHTML = qhead()+`<article class="card fadein" style="--c:${cvar(c.sec)}">
+   <div class="chip"><span class="dot"></span>${c.sec}</div>
+   <div class="prompt">${done&&c.kind==="cloze"?c.back:c.front}</div>${v}
+   <div class="opts">${q.opts.map((o,i)=>`<button class="opt${done?(i===q.ans?" ok":i===k?" bad":" dim"):""}" data-k="${i}" ${done?"disabled":""}>
+     <span class="ltr">${done&&i===q.ans?"✓":done&&i===k?"✗":"ABCD"[i]}</span><span>${o}</span></button>`).join("")}</div>
+   ${done?`<div class="verdict ${k===q.ans?"ok":"bad"}">${k===q.ans?"Correct":"Not quite"}</div>${c.extra?`<div class="extra">${c.extra}</div>`:""}`:""}
+   <div class="spacer"></div>
+   ${done?`<button class="go" id="next">${Q.i+1<Q.qs.length?"Next question":"See results"}</button><div class="keys">Space for next</div>`
+     :`<div class="keys">Keys 1 to 4 or A to D to answer</div>`}</article>`;
+  document.getElementById("qend").onclick=()=>{ if(!Q.picks.length) return home(); if(confirm(`End the quiz now? You'll be scored on the ${Q.picks.length} you answered.`)) quizResults(); };
+  if(done) document.getElementById("next").onclick=nextQ;
+  else app.querySelectorAll(".opt").forEach(b=>b.onclick=()=>pick(+b.dataset.k)); }
+function pick(k){ Q.picks[Q.i]=k; renderQ(); }
+function nextQ(){ Q.i++; Q.i<Q.qs.length ? renderQ() : quizResults(); }
+function quizResults(){ const done=Q.qs.filter((q,i)=>Q.picks[i]!==undefined), n=done.length;
+  const missed=done.filter(q=>Q.picks[Q.qs.indexOf(q)]!==q.ans), r=n-missed.length, p=n?Math.round(r/n*100):0, bySec={};
+  done.forEach(q=>{const s=BYID[q.id].sec, b=bySec[s]=bySec[s]||{n:0,r:0}; b.n++; if(Q.picks[Q.qs.indexOf(q)]===q.ans) b.r++;});
+  if(n){ store.quizzes=(store.quizzes||[]).concat({t:Date.now(),n,r}).slice(-50);
+    missed.forEach(q=>{ store.cards[q.id]=Object.assign({},st(q.id),{due:0,qm:1}); }); save(); }
+  const ids=missed.map(q=>q.id), all=Q.qs.length; Q=null;
+  app.innerHTML=`<div class="done fadein"><h1>Quiz ${n<all?"ended":"complete"}</h1>
+  ${n?`<div class="result"><div class="big"><b>${p}%</b><span>${r} of ${n} correct</span></div>
+   <div class="bysec">${SECS.filter(s=>bySec[s]).map(s=>{const b=bySec[s],sp=Math.round(b.r/b.n*100);return `
+    <div class="bs" style="--c:${cvar(s)}"><span>${s}</span><span class="secmeta">${sp}% · ${b.r} of ${b.n}</span><span class="bar"><i style="width:${sp}%;background:var(--c)"></i></span></div>`}).join("")}</div></div>
+   ${missed.length?`<div class="result missed"><h2>Missed</h2><p class="sub">These come up first in your next Daily study.</p>${missed.map(q=>{const c=BYID[q.id];return `
+    <div class="mq" style="--c:${cvar(c.sec)}"><div>${c.kind==="diagram"?`${plain(c.front)}`:c.front}</div><div class="ma">${answerOf(c)}</div></div>`}).join("")}</div>`:""}`
+  :`<p>No questions answered.</p>`}
+  ${missed.length?`<button class="go" id="retake">Retake the ${missed.length} I missed</button>`:""}
+  <button class="go${missed.length?" alt":""}" id="h">Back to the deck</button></div>`;
+  document.getElementById("h").onclick=home;
+  if(missed.length) document.getElementById("retake").onclick=()=>startQuiz(shuffle(ids)); }
+
+document.addEventListener("keydown",e=>{ if(e.metaKey||e.ctrlKey) return;
+  if(Q){ const q=Q.qs[Q.i]; if(!q) return;
+    if(Q.picks[Q.i]===undefined){ const k=e.key.length===1?Math.max("1234".indexOf(e.key),"abcd".indexOf(e.key.toLowerCase())):-1; if(k>=0&&k<q.opts.length) pick(k); }
+    else if(e.key===" "||e.key==="Enter"){ e.preventDefault(); nextQ(); }
+    return; }
+  if(!S||!S.ids.length) return;
   if(e.key==="Escape"){ home(); return; }
   if(!flipped && (e.key===" "||e.key==="Enter")){ e.preventDefault(); flipped=true; card(); }
   else if(flipped && /^[1-4]$/.test(e.key)) answer(+e.key); });
