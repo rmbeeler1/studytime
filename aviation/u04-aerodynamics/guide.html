@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Aviation Unit 4: Aerodynamics Study Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#e9eef2; --surface:#ffffff; --ink:#15222c; --muted:#56656f; --line:#c9d3da; --soft:#dfe6eb;
+  --s-forces:#1d5fa8; --s-lift-theory:#7a3eb1; --s-airfoils:#0e7c6b; --s-lift-factors:#b0306a;
+  --s-stalls:#c2410c; --s-weight-and-balance:#4d7c0f; --s-propellers:#9a5b06; --s-drag:#475569;
+  --again:#b42318; --hard:#9a5b06; --good:#1d5fa8; --easy:#0e7c6b;
+  color-scheme: light;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0f1a22; --surface:#172530; --ink:#e4ebf0; --muted:#9aabb7; --line:#2c3d4a; --soft:#22323e;
+  --s-forces:#7fb2ec; --s-lift-theory:#c4a1ea; --s-airfoils:#5fd0bc; --s-lift-factors:#f08cbc;
+  --s-stalls:#fb9a6c; --s-weight-and-balance:#a8d46a; --s-propellers:#e8b45c; --s-drag:#a8b6c8;
+  --again:#f2867c; --hard:#e8b45c; --good:#7fb2ec; --easy:#5fd0bc; color-scheme: dark; }}
+:root[data-theme="dark"]{
+  --bg:#0f1a22; --surface:#172530; --ink:#e4ebf0; --muted:#9aabb7; --line:#2c3d4a; --soft:#22323e;
+  --s-forces:#7fb2ec; --s-lift-theory:#c4a1ea; --s-airfoils:#5fd0bc; --s-lift-factors:#f08cbc;
+  --s-stalls:#fb9a6c; --s-weight-and-balance:#a8d46a; --s-propellers:#e8b45c; --s-drag:#a8b6c8;
+  --again:#f2867c; --hard:#e8b45c; --good:#7fb2ec; --easy:#5fd0bc; color-scheme: dark; }
+
+html{scroll-padding-top:16px;scroll-behavior:smooth}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Barlow",-apple-system,"Segoe UI",Roboto,sans-serif;font-size:18px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding:20px 16px 56px}
+h1,h2,h3{font-family:"Barlow Condensed","Barlow",sans-serif;line-height:1.1}
+h1{font-size:2.5rem;margin:.35em 0 .1em;font-weight:700}
+.kicker{color:var(--muted);font-size:.85em;letter-spacing:.06em;text-transform:uppercase;font-weight:600}
+.sub{color:var(--muted);margin:0 0 1em}
+.nav{display:flex;gap:16px;flex-wrap:wrap;font-size:.85em}
+.nav a{color:var(--muted);text-decoration:none;border-bottom:1px solid var(--line)}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 6px}
+.btn{display:inline-block;padding:9px 14px;border-radius:10px;background:var(--ink);color:var(--surface);text-decoration:none;font-weight:600;font-size:.9em;border:0;font-family:inherit;cursor:pointer}
+.btn.alt{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.toc{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin:16px 0 8px}
+.toc h2{font-size:1.2rem;margin:0 0 8px}
+.toc ol{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:4px 16px}
+.toc a{display:flex;align-items:center;gap:8px;color:var(--ink);text-decoration:none;padding:3px 0}
+.toc a::before{content:"";width:10px;height:10px;border-radius:3px;background:var(--c);flex:none}
+section{--c:var(--ink);background:var(--surface);border:1px solid var(--line);border-top:6px solid var(--c);border-radius:18px;padding:6px 20px 18px;margin-top:18px}
+section>h2{font-size:1.8rem;margin:.55em 0 .3em;display:flex;align-items:baseline;gap:10px}
+section>h2 .n{color:var(--c);font-size:.75em}
+h3{font-size:1.25rem;margin:1.2em 0 .3em;color:var(--c)}
+p{margin:.5em 0}
+ul,ol{padding-left:1.3em;margin:.4em 0}
+li{margin:.2em 0}
+b,strong{font-weight:600}
+.term{font-weight:600;color:var(--c)}
+table{width:100%;border-collapse:collapse;margin:.7em 0;font-size:.92em}
+th,td{text-align:start;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:"Barlow Condensed";font-size:1.05em;color:var(--muted);font-weight:600;border-bottom:2px solid var(--line)}
+.tablewrap{overflow-x:auto}
+.viz{margin:12px 0 4px}
+.viz svg{width:100%;height:auto;max-height:420px;display:block}
+figure{margin:12px 0}
+figcaption{color:var(--muted);font-size:.85em;text-align:center}
+.box{border-radius:12px;padding:10px 14px;margin:12px 0;background:color-mix(in srgb,var(--c) 9%,transparent);border-left:4px solid var(--c)}
+.box>.lbl{display:block;font-family:"Barlow Condensed";font-weight:700;font-size:1.05em;color:var(--c);letter-spacing:.02em}
+.box.warn{--c:var(--again)}
+details.check{border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;margin:10px 0}
+details.check summary{cursor:pointer;font-weight:600;list-style:none}
+details.check summary::-webkit-details-marker{display:none}
+details.check summary::before{content:"Check yourself ";font-family:"Barlow Condensed";color:var(--c);font-weight:700}
+details.check summary::after{content:"Show answer";display:block;color:var(--muted);font-weight:400;font-size:.85em;margin-top:2px}
+details.check[open] summary::after{content:""}
+details.check .a{margin-top:8px;padding-top:8px;border-top:1px solid var(--line)}
+.math{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:.9em;background:var(--soft);padding:1px 5px;border-radius:5px}
+.end{margin-top:26px;text-align:center;color:var(--muted)}
+.top{display:block;text-align:end;font-size:.8em;margin-top:8px;color:var(--muted)}
+svg text{font-family:"Barlow Condensed","Barlow",sans-serif;font-weight:600}
+@media (max-width:420px){body{font-size:17px}section{padding:4px 14px 14px}h1{font-size:2.1rem}}
+@media print{
+  :root{--bg:#fff!important}
+  body{font-size:12pt}
+  .nav,.actions,.top,.end .btn{display:none!important}
+  section{break-inside:auto;border-radius:0;border-left:0;border-right:0;border-bottom:0}
+  figure,.box,table,details{break-inside:avoid}
+  details.check summary::after{content:""}
+  details.check .a{display:block!important}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="nav"><a href="../../">All decks</a><a href="./">Flashcards and quiz</a></div>
+<div class="kicker">Study guide</div>
+<h1>Aviation Unit 4: Aerodynamics</h1>
+<p class="sub">Forces, lift, stalls, weight and balance, propellers and drag.</p>
+<div class="actions"><a class="btn" href="./">Practice with flashcards</a><button class="btn alt" onclick="document.querySelectorAll('details').forEach(d=>d.open=true);print()">Print</button></div>
+<nav class="toc" aria-label="Sections"><h2>Sections</h2><ol id="toc"></ol></nav>
+<section data-sec="Forces">
+<h2>Forces</h2>
+<p>Four forces act on an airplane in flight: <b>lift</b>, <b>weight</b>, <b>thrust</b> and <b>drag</b>.</p>
+<figure><div data-viz="forces"></div></figure>
+<h3>Vectors</h3>
+<p>A <span class="term">vector</span> is a quantity with <b>direction</b> and <b>magnitude</b>. Vectors are drawn as arrows: the arrow points the direction, and its length shows the magnitude.</p>
+<figure><div data-viz="vector"></div></figure>
+<h3>Lift</h3>
+<ul>
+<li>The <b>wings</b> create lift, and lift overcomes <b>weight</b>.</li>
+<li>Lift acts <b>perpendicular to the relative wind</b>. Relative wind is the airflow the wing meets; lift points at 90° to it.</li>
+</ul>
+<h3>Balanced flight</h3>
+<p>In straight-and-level flight at constant airspeed, <b>lift equals weight</b> and <b>thrust equals drag</b>. When all forces are balanced, <b>neither airspeed nor altitude changes</b>.</p>
+<div class="box"><span class="lbl">Think in components</span>In steady flight it is not just lift versus weight. Every force has components: the sum of all <b>upward</b> components equals the sum of all <b>downward</b> components, and the sum of all <b>forward</b> components equals the sum of all <b>backward</b> components.</div>
+<h3>Newton's laws</h3>
+<ul>
+<li><b>First law (inertia):</b> an object keeps its motion unless an unbalanced force acts on it. Balanced flight illustrates this.</li>
+<li><b>Third law:</b> for every action there is an <b>equal and opposite reaction</b>. Examples: a rocket launch, or a propeller's torque reaction.</li>
+</ul>
+<details class="check"><summary>Balanced flight, with no change in speed or altitude, illustrates which of Newton's laws?</summary><div class="a">Newton's first law (inertia).</div></details>
+</section>
+
+<section data-sec="Lift Theory">
+<h2>Lift Theory</h2>
+<p>An airfoil's front is the <span class="term">leading edge</span> and its back is the <span class="term">trailing edge</span>.</p>
+<figure><div data-viz="airfoil"></div></figure>
+<div class="box warn"><span class="lbl">The slides say NO</span>The <b>longer path (equal transit time) theory</b> is false. It claims air over the top of the wing must travel faster to meet the lower air at the trailing edge, and uses that to explain low pressure on top.</div>
+<p>Its false assumption: that air splitting at the leading edge must rejoin. Molecules arriving at the leading edge at the same time do <b>not</b> have to reach the trailing edge at the same time.</p>
+</section>
+
+<section data-sec="Airfoils">
+<h2>Airfoils</h2>
+<p>Many surfaces on an airplane act as airfoils and create aerodynamic forces that help maneuver it.</p>
+<div class="tablewrap"><table>
+<tr><th>Airfoil</th><th>Provides</th></tr>
+<tr><td><b>Wings</b></td><td>Lift</td></tr>
+<tr><td><b>Propeller</b></td><td>Thrust</td></tr>
+<tr><td><b>Stabilizers</b></td><td>Stability and control</td></tr>
+<tr><td><b>Fuselage</b></td><td>Stability and (some) lift</td></tr>
+</table></div>
+<figure><div data-viz="parts"></div></figure>
+</section>
+
+<section data-sec="Lift Factors">
+<h2>Lift Factors</h2>
+<p>Four factors set how much lift a wing makes. A pilot controls three of them.</p>
+<div class="tablewrap"><table>
+<tr><th>Factor</th><th>Pilot controls it by</th><th>Effect on lift</th></tr>
+<tr><td><b>Angle of attack</b></td><td>Pitching up or down</td><td>Higher AOA forces more airflow downward: more lift</td></tr>
+<tr><td><b>Airspeed</b></td><td>Adjusting power, or climbing or descending</td><td>Exponential: double the velocity, quadruple the lift</td></tr>
+<tr><td><b>Camber</b></td><td>Extending or retracting flaps (the only way)</td><td>More curve: more lift</td></tr>
+<tr><td><b>Wing surface area</b></td><td>Generally not controllable</td><td>Linear: double the area, double the lift</td></tr>
+</table></div>
+<h3>Angle of attack</h3>
+<p><span class="term">Angle of attack</span> (α, alpha, or AOA) is the angle between the <b>chord line</b> and the <b>relative wind</b>.</p>
+<figure><div data-viz="airfoil:angle of attack"></div></figure>
+<h3>Airspeed</h3>
+<ul>
+<li>Airspeed is measured relative to <b>the air the aircraft is moving through</b>, not the ground.</li>
+<li>Higher airspeed means the airfoil contacts more air molecules, so it makes more lift.</li>
+<li>Aircraft usually make their own relative wind by creating <b>thrust</b>. Not always: a strong wind alone can create enough lift to make an aircraft fly.</li>
+<li>A change in airspeed changes the <b>velocity</b> term in the lift equation. Its effect is <b>exponential, not linear</b>.</li>
+</ul>
+<figure><div data-viz="curve"></div></figure>
+<h3>Camber</h3>
+<p><span class="term">Camber</span> is an airfoil's curvature. Flaps are lift-enhancing devices: <b>flaps down = more camber</b>. Pilots change the camber of the horizontal and vertical stabilizers by moving the <b>elevator and rudder</b>; deflecting a control surface curves the stabilizer's airfoil and changes its lift.</p>
+<figure><div data-viz="camber"></div></figure>
+<h3>Wing surface area</h3>
+<p>The area of the wing exposed to airflow. Its effect is linear.</p>
+<details class="check"><summary>Doubling an aircraft's velocity does what to lift?</summary><div class="a">Quadruples it (4×).</div></details>
+<details class="check"><summary>Which lift factor can a pilot generally NOT control?</summary><div class="a">Wing surface area.</div></details>
+</section>
+
+<section data-sec="Stalls">
+<h2>Stalls</h2>
+<p>As angle of attack increases, the <b>coefficient of lift increases</b> until the <span class="term">critical angle of attack</span>. Beyond it the wing <b>stalls</b>: airflow separates from the top of the wing and lift drops.</p>
+<figure><div data-viz="liftcurve"></div></figure>
+<ul>
+<li>For a given airplane and configuration (such as flap setting), a stall always occurs at the <b>same angle of attack</b>, set by the aircraft's design. It can still happen at different airspeeds.</li>
+<li>Angle of attack is a variable the pilot can control, by pitching up or down.</li>
+</ul>
+<h3>Normal vs. accelerated stalls</h3>
+<div class="tablewrap"><table>
+<tr><th></th><th>Normal stall</th><th>Accelerated stall</th></tr>
+<tr><td>Load factor</td><td>1G (what you feel sitting in your chair)</td><td>More than 1G</td></tr>
+<tr><td>Airspeed</td><td></td><td>Higher than a normal stall</td></tr>
+<tr><td>Example</td><td></td><td>A steep turn or a quick pull-up</td></tr>
+</table></div>
+<h3>Designing for safer stalls</h3>
+<p>Designers want stalls to:</p>
+<ol><li>Keep the aircraft <b>controllable</b> as long as possible</li><li>Be <b>delayed</b> as long as possible</li><li>Give pilots <b>warning</b></li></ol>
+<p>Predictable stall characteristics make aircraft safer and easier to control. Stall mitigation tools: <b>wing washout</b>, <b>camber</b>, <b>vortex generators</b> and <b>planform selection</b>.</p>
+<h3>Washout</h3>
+<p>The wing is twisted so the <b>tip has a lower AOA</b> than the root. The <b>root (inboard section) stalls first</b> and the tip stalls last, which keeps the <b>ailerons</b> effective and warns the pilot the whole wing is about to stall.</p>
+<figure><div data-viz="washout"></div></figure>
+</section>
+
+<section data-sec="Weight and Balance">
+<h2>Weight and Balance</h2>
+<h3>Center of lift</h3>
+<p>The <span class="term">center of lift</span>, also called the <span class="term">center of pressure</span>, is where lift forces are concentrated. For balance it sits <b>slightly aft (behind) the CG</b>.</p>
+<figure><div data-viz="cg"></div></figure>
+<h3>Arms, moments and the datum</h3>
+<ul>
+<li>The <span class="term">datum</span> (reference datum) is the point all arm measurements are taken from. The <b>manufacturer</b> chooses it; it is an arbitrary point.</li>
+<li>An <span class="term">arm</span> is measured in inches from the datum.</li>
+<li><span class="term">Moment</span> = arm × weight.</li>
+<li>In a balanced aircraft, positive plus negative moments at the CG equal <b>zero</b>.</li>
+<li><span class="math">CG = total moment ÷ total weight</span></li>
+</ul>
+<h3>Four steps to find CG</h3>
+<ol><li>Find each weight's arm in inches from the datum.</li><li>Multiply arm by weight to get each moment.</li><li>Total all weights and all moments.</li><li>Divide total moment by total weight.</li></ol>
+<div class="box"><span class="lbl">Worked example</span>Weights of 100 at +50, 100 at +90 and 200 at +150 inches.<br>Moments: 5,000 + 9,000 + 30,000 = 44,000. Total weight: 400.<br>CG = 44,000 ÷ 400 = <b>+110 inches from the datum</b>.</div>
+<figure><div data-viz="lever:solved"></div></figure>
+<h3>CG out of limits</h3>
+<div class="tablewrap"><table>
+<tr><th>CG too far</th><th>Danger</th></tr>
+<tr><td><b>Forward</b></td><td>Not enough elevator nose-up force to flare for landing</td></tr>
+<tr><td><b>Aft</b></td><td>Not enough nose-down force for stall recovery, especially at low airspeed</td></tr>
+</table></div>
+<figure><div data-viz="cg:fwd"></div><figcaption>CG too far forward.</figcaption></figure>
+<figure><div data-viz="cg:aft"></div><figcaption>CG too far aft.</figcaption></figure>
+<ul>
+<li>An airplane can be within its allowable <b>weight limit</b> but outside its <b>CG limit</b>. Pilots may discover this during preflight.</li>
+<li>Correct an out-of-limit CG by <b>shifting or removing weight</b>.</li>
+<li>Weight changes in flight (fuel burn, skydiving operations, passengers moving themselves or luggage) can shift the CG.</li>
+</ul>
+</section>
+
+<section data-sec="Propellers">
+<h2>Propellers</h2>
+<h3>Torque reaction</h3>
+<p>A <b>clockwise</b>-spinning propeller causes a <b>counterclockwise</b> reaction from the airplane, giving it a <b>left-turning</b> tendency. This is Newton's third law: engine torque is the <b>action</b>; the left gear forced downward is the <b>reaction</b>.</p>
+<figure><div data-viz="torque"></div></figure>
+<div class="tablewrap"><table>
+<tr><th>Torque effect is</th><th>When</th><th>Why</th></tr>
+<tr><td><b>Strongest</b></td><td>Low speed with high power, like takeoff</td><td></td></tr>
+<tr><td>Weaker</td><td>Higher airspeed</td><td>Airflow over control surfaces counters it</td></tr>
+<tr><td>Weaker</td><td>Lower power setting</td><td>The propeller spins slower</td></tr>
+</table></div>
+<h3>Variable-pitch propellers</h3>
+<p>Blade angle is the propeller's <span class="term">pitch</span>. Changing it in flight keeps the <b>most efficient AOA at any speed</b>. The most common type is the <span class="term">constant-speed propeller</span>. It adjusts its blades with <b>oil pressure from the engine</b>, and the control is a knob or lever <b>next to the throttle</b>.</p>
+<div class="tablewrap"><table>
+<tr><th>Phase</th><th>Pitch</th><th>RPM</th></tr>
+<tr><td>Takeoff</td><td><b>Low</b></td><td>High</td></tr>
+<tr><td>Cruise</td><td><b>High</b></td><td>Low</td></tr>
+</table></div>
+</section>
+
+<section data-sec="Drag">
+<h2>Drag</h2>
+<h3>Parasite drag</h3>
+<p>Three types: <b>form</b>, <b>interference</b> and <b>skin friction</b>. Parasite drag varies with the <b>square of the airspeed</b>.</p>
+<figure><div data-viz="curve:drag"></div></figure>
+<div class="box"><span class="lbl">Worked example</span>Parasite drag at 160 knots is <b>4 times</b> that at 80 knots: double the airspeed, square the effect, 2² = 4.</div>
+<h3>Skin friction drag</h3>
+<p>Created by air resistance moving across the airplane's surface: the skin catches air particles and tries to pull the air along. Even a smooth surface makes some, because it is rough at the microscopic level. To reduce it, use <b>smooth skin</b> (especially composite aircraft) and <b>flush rivets</b>. Both improve performance and fuel efficiency.</p>
+<h3>L/D ratio</h3>
+<p><span class="math">L/D = C<sub>L</sub> ÷ C<sub>D</sub></span>: lift produced divided by drag created. The lift and drag equations differ only by this coefficient, so the ratio uses just that term. A <b>higher L/D</b> means the aircraft produces lift more efficiently.</p>
+<h3>Ground effect</h3>
+<p>The ground interferes with the <b>wingtip vortices</b>, which cannot create as much downwash. Less downwash means less <b>induced drag</b>, so ground effect is really a reduction of induced drag. It is most pronounced within <b>half a wingspan</b> of the ground and feels like a <b>cushion of air</b>.</p>
+<figure><div data-viz="ground"></div></figure>
+<details class="check"><summary>Ground effect is actually a reduction of which type of drag?</summary><div class="a">Induced drag.</div></details>
+</section>
+
+<div class="end"><p>Done reading? Test what stuck.</p><a class="btn" href="./">Open flashcards and quiz</a></div>
+</div>
+<script>
+const P = {"aoa": "M493.5 212.0 L488.8 209.6 L484.1 207.2 L479.4 204.9 L474.7 202.6 L470.0 200.3 L465.3 198.1 L460.6 195.9 L455.8 193.7 L451.1 191.5 L446.3 189.4 L441.6 187.3 L436.8 185.3 L432.1 183.2 L427.3 181.2 L422.5 179.3 L417.7 177.3 L412.9 175.4 L408.1 173.5 L403.3 171.7 L398.5 169.9 L393.7 168.1 L388.9 166.3 L384.0 164.6 L379.2 162.9 L374.3 161.3 L369.5 159.6 L364.6 158.1 L359.8 156.5 L354.9 155.0 L350.0 153.5 L345.1 152.1 L340.2 150.7 L335.3 149.3 L330.4 148.0 L325.5 146.7 L320.5 145.4 L315.6 144.3 L310.6 143.2 L305.6 142.2 L300.6 141.2 L295.6 140.3 L290.6 139.5 L285.5 138.8 L280.5 138.2 L275.4 137.7 L270.3 137.2 L265.2 136.9 L260.0 136.7 L254.8 136.5 L249.7 136.5 L244.4 136.6 L239.2 136.9 L233.9 137.3 L228.6 137.9 L223.2 138.7 L217.7 139.9 L212.2 141.4 L206.5 143.7 L200.0 150.0 L200.0 150.0 L203.8 156.5 L208.5 159.0 L213.3 160.9 L218.2 162.4 L223.1 163.8 L228.0 165.0 L233.0 166.1 L238.0 167.1 L243.0 168.0 L248.0 168.9 L253.0 169.8 L258.0 170.7 L263.0 171.5 L268.0 172.3 L273.1 173.1 L278.1 173.9 L283.1 174.8 L288.1 175.6 L293.2 176.4 L298.2 177.2 L303.2 178.0 L308.2 178.9 L313.2 179.7 L318.3 180.6 L323.3 181.5 L328.3 182.3 L333.3 183.2 L338.3 184.0 L343.3 184.9 L348.4 185.7 L353.4 186.6 L358.4 187.4 L363.4 188.3 L368.4 189.2 L373.4 190.0 L378.4 190.9 L383.5 191.8 L388.5 192.7 L393.5 193.5 L398.5 194.4 L403.5 195.3 L408.5 196.2 L413.5 197.2 L418.5 198.1 L423.5 199.0 L428.5 199.9 L433.5 200.9 L438.5 201.8 L443.5 202.8 L448.5 203.8 L453.5 204.7 L458.5 205.7 L463.5 206.7 L468.4 207.7 L473.4 208.7 L478.4 209.7 L483.4 210.7 L488.4 211.7 L493.4 212.7Z", "up": "M280.0 129.7 L275.8 128.5 L271.5 127.4 L267.3 126.3 L263.1 125.3 L258.8 124.2 L254.6 123.2 L250.3 122.2 L246.1 121.3 L241.9 120.4 L237.6 119.5 L233.4 118.6 L229.2 117.7 L224.9 116.9 L220.7 116.1 L216.4 115.3 L212.2 114.6 L208.0 113.8 L203.7 113.1 L199.5 112.5 L195.3 111.8 L191.0 111.2 L186.8 110.6 L182.5 110.0 L178.3 109.5 L174.1 109.0 L169.8 108.5 L165.6 108.0 L161.4 107.6 L157.1 107.2 L152.9 106.9 L148.6 106.5 L144.4 106.2 L140.2 106.0 L135.9 105.7 L131.7 105.6 L127.5 105.4 L123.2 105.3 L119.0 105.3 L114.7 105.3 L110.5 105.4 L106.3 105.6 L102.0 105.8 L97.8 106.1 L93.6 106.4 L89.3 106.9 L85.1 107.4 L80.8 108.0 L76.6 108.7 L72.4 109.5 L68.1 110.4 L63.9 111.4 L59.7 112.5 L55.4 113.8 L51.2 115.2 L46.9 116.8 L42.7 118.7 L38.5 120.9 L34.2 123.7 L30.0 130.0 L30.0 130.0 L34.2 134.6 L38.5 135.9 L42.7 136.6 L46.9 137.0 L51.2 137.2 L55.4 137.3 L59.7 137.4 L63.9 137.3 L68.1 137.3 L72.4 137.1 L76.6 137.0 L80.8 136.8 L85.1 136.6 L89.3 136.4 L93.6 136.2 L97.8 136.0 L102.0 135.8 L106.3 135.6 L110.5 135.4 L114.7 135.2 L119.0 135.0 L123.2 134.8 L127.5 134.6 L131.7 134.4 L135.9 134.3 L140.2 134.1 L144.4 133.9 L148.6 133.8 L152.9 133.6 L157.1 133.4 L161.4 133.3 L165.6 133.1 L169.8 132.9 L174.1 132.7 L178.3 132.6 L182.5 132.4 L186.8 132.3 L191.0 132.1 L195.3 132.0 L199.5 131.8 L203.7 131.7 L208.0 131.6 L212.2 131.4 L216.4 131.3 L220.7 131.2 L224.9 131.1 L229.2 131.0 L233.4 130.9 L237.6 130.8 L241.9 130.8 L246.1 130.7 L250.3 130.6 L254.6 130.6 L258.8 130.5 L263.1 130.5 L267.3 130.4 L271.5 130.4 L275.8 130.3 L280.0 130.3Z", "upc": "M30.0 130.0 L34.2 129.2 L38.5 128.4 L42.7 127.6 L46.9 126.9 L51.2 126.2 L55.4 125.6 L59.7 124.9 L63.9 124.4 L68.1 123.8 L72.4 123.3 L76.6 122.9 L80.8 122.4 L85.1 122.0 L89.3 121.7 L93.6 121.3 L97.8 121.0 L102.0 120.8 L106.3 120.6 L110.5 120.4 L114.7 120.2 L119.0 120.1 L123.2 120.0 L127.5 120.0 L131.7 120.0 L135.9 120.0 L140.2 120.0 L144.4 120.1 L148.6 120.2 L152.9 120.2 L157.1 120.3 L161.4 120.4 L165.6 120.6 L169.8 120.7 L174.1 120.9 L178.3 121.0 L182.5 121.2 L186.8 121.4 L191.0 121.7 L195.3 121.9 L199.5 122.1 L203.7 122.4 L208.0 122.7 L212.2 123.0 L216.4 123.3 L220.7 123.7 L224.9 124.0 L229.2 124.4 L233.4 124.8 L237.6 125.1 L241.9 125.6 L246.1 126.0 L250.3 126.4 L254.6 126.9 L258.8 127.4 L263.1 127.9 L267.3 128.4 L271.5 128.9 L275.8 129.4 L280.0 130.0", "down": "M553.6 174.7 L550.4 170.8 L547.1 167.0 L543.9 163.2 L540.6 159.4 L537.4 155.6 L534.1 151.9 L530.9 148.2 L527.7 144.5 L524.4 140.8 L521.2 137.2 L517.9 133.6 L514.7 130.0 L511.4 126.5 L508.2 123.0 L504.9 119.5 L501.7 116.0 L498.0 113.8 L493.7 113.1 L489.5 112.5 L485.3 111.8 L481.0 111.2 L476.8 110.6 L472.5 110.0 L468.3 109.5 L464.1 109.0 L459.8 108.5 L455.6 108.0 L451.4 107.6 L447.1 107.2 L442.9 106.9 L438.6 106.5 L434.4 106.2 L430.2 106.0 L425.9 105.7 L421.7 105.6 L417.5 105.4 L413.2 105.3 L409.0 105.3 L404.7 105.3 L400.5 105.4 L396.3 105.6 L392.0 105.8 L387.8 106.1 L383.6 106.4 L379.3 106.9 L375.1 107.4 L370.8 108.0 L366.6 108.7 L362.4 109.5 L358.1 110.4 L353.9 111.4 L349.7 112.5 L345.4 113.8 L341.2 115.2 L336.9 116.8 L332.7 118.7 L328.5 120.9 L324.2 123.7 L320.0 130.0 L320.0 130.0 L324.2 134.6 L328.5 135.9 L332.7 136.6 L336.9 137.0 L341.2 137.2 L345.4 137.3 L349.7 137.4 L353.9 137.3 L358.1 137.3 L362.4 137.1 L366.6 137.0 L370.8 136.8 L375.1 136.6 L379.3 136.4 L383.6 136.2 L387.8 136.0 L392.0 135.8 L396.3 135.6 L400.5 135.4 L404.7 135.2 L409.0 135.0 L413.2 134.8 L417.5 134.6 L421.7 134.4 L425.9 134.3 L430.2 134.1 L434.4 133.9 L438.6 133.8 L442.9 133.6 L447.1 133.4 L451.4 133.3 L455.6 133.1 L459.8 132.9 L464.1 132.7 L468.3 132.6 L472.5 132.4 L476.8 132.3 L481.0 132.1 L485.3 132.0 L489.5 131.8 L493.7 131.7 L498.0 131.6 L501.7 132.9 L504.9 135.5 L508.2 138.1 L511.4 140.7 L514.7 143.3 L517.9 146.0 L521.2 148.6 L524.4 151.2 L527.7 153.9 L530.9 156.6 L534.1 159.2 L537.4 161.9 L540.6 164.6 L543.9 167.2 L547.1 169.9 L550.4 172.6 L553.6 175.3Z", "downc": "M320.0 130.0 L324.2 129.2 L328.5 128.4 L332.7 127.6 L336.9 126.9 L341.2 126.2 L345.4 125.6 L349.7 124.9 L353.9 124.4 L358.1 123.8 L362.4 123.3 L366.6 122.9 L370.8 122.4 L375.1 122.0 L379.3 121.7 L383.6 121.3 L387.8 121.0 L392.0 120.8 L396.3 120.6 L400.5 120.4 L404.7 120.2 L409.0 120.1 L413.2 120.0 L417.5 120.0 L421.7 120.0 L425.9 120.0 L430.2 120.0 L434.4 120.1 L438.6 120.2 L442.9 120.2 L447.1 120.3 L451.4 120.4 L455.6 120.6 L459.8 120.7 L464.1 120.9 L468.3 121.0 L472.5 121.2 L476.8 121.4 L481.0 121.7 L485.3 121.9 L489.5 122.1 L493.7 122.4 L498.0 122.7 L501.7 124.4 L504.9 127.5 L508.2 130.5 L511.4 133.6 L514.7 136.7 L517.9 139.8 L521.2 142.9 L524.4 146.0 L527.7 149.2 L530.9 152.4 L534.1 155.6 L537.4 158.8 L540.6 162.0 L543.9 165.2 L547.1 168.4 L550.4 171.7 L553.6 175.0", "root": "M190.0 265.7 L188.1 264.5 L186.1 263.3 L184.1 262.2 L182.2 261.0 L180.2 259.9 L178.2 258.8 L176.2 257.7 L174.3 256.6 L172.3 255.5 L170.3 254.5 L168.3 253.4 L166.3 252.4 L164.3 251.4 L162.3 250.4 L160.3 249.4 L158.3 248.4 L156.3 247.4 L154.3 246.5 L152.2 245.5 L150.2 244.6 L148.2 243.7 L146.1 242.8 L144.1 241.9 L142.1 241.0 L140.0 240.1 L138.0 239.3 L135.9 238.5 L133.9 237.6 L131.8 236.8 L129.7 236.0 L127.7 235.3 L125.6 234.5 L123.5 233.8 L121.4 233.1 L119.3 232.4 L117.2 231.7 L115.1 231.0 L113.0 230.4 L110.9 229.8 L108.8 229.2 L106.6 228.7 L104.5 228.2 L102.3 227.8 L100.1 227.3 L98.0 227.0 L95.8 226.6 L93.6 226.3 L91.3 226.0 L89.1 225.8 L86.9 225.7 L84.6 225.6 L82.3 225.5 L80.0 225.5 L77.7 225.6 L75.4 225.8 L73.0 226.2 L70.5 226.7 L68.0 227.5 L65.0 230.0 L65.0 230.0 L66.5 232.9 L68.4 234.2 L70.4 235.1 L72.5 235.9 L74.6 236.6 L76.7 237.3 L78.8 237.9 L80.9 238.5 L83.0 239.1 L85.2 239.6 L87.3 240.2 L89.4 240.7 L91.6 241.2 L93.7 241.7 L95.9 242.2 L98.0 242.7 L100.2 243.2 L102.3 243.7 L104.5 244.2 L106.6 244.7 L108.8 245.2 L110.9 245.7 L113.1 246.3 L115.2 246.8 L117.3 247.3 L119.5 247.8 L121.6 248.4 L123.8 248.9 L125.9 249.4 L128.0 249.9 L130.2 250.5 L132.3 251.0 L134.5 251.5 L136.6 252.0 L138.8 252.5 L140.9 253.1 L143.0 253.6 L145.2 254.1 L147.3 254.7 L149.5 255.2 L151.6 255.8 L153.7 256.3 L155.9 256.8 L158.0 257.4 L160.1 257.9 L162.3 258.5 L164.4 259.1 L166.5 259.6 L168.7 260.2 L170.8 260.8 L172.9 261.3 L175.0 261.9 L177.2 262.5 L179.3 263.1 L181.4 263.6 L183.5 264.2 L185.7 264.8 L187.8 265.4 L189.9 266.0Z", "tip": "M504.9 244.1 L503.6 243.6 L502.2 243.2 L500.9 242.8 L499.6 242.4 L498.2 242.0 L496.9 241.6 L495.5 241.2 L494.2 240.8 L492.9 240.5 L491.5 240.1 L490.2 239.8 L488.8 239.4 L487.5 239.1 L486.2 238.7 L484.8 238.4 L483.5 238.1 L482.1 237.8 L480.8 237.5 L479.5 237.2 L478.1 237.0 L476.8 236.7 L475.4 236.4 L474.1 236.2 L472.7 235.9 L471.4 235.7 L470.0 235.5 L468.7 235.3 L467.4 235.0 L466.0 234.9 L464.7 234.7 L463.3 234.5 L462.0 234.3 L460.6 234.2 L459.3 234.0 L457.9 233.9 L456.6 233.8 L455.2 233.7 L453.8 233.6 L452.5 233.5 L451.1 233.5 L449.8 233.5 L448.4 233.5 L447.1 233.5 L445.7 233.5 L444.3 233.6 L443.0 233.7 L441.6 233.8 L440.3 234.0 L438.9 234.2 L437.5 234.4 L436.1 234.6 L434.8 234.9 L433.4 235.2 L432.0 235.6 L430.6 236.1 L429.3 236.6 L427.9 237.2 L426.5 238.1 L425.0 240.0 L425.0 240.0 L426.3 241.6 L427.6 242.0 L429.0 242.3 L430.3 242.5 L431.6 242.7 L433.0 242.8 L434.4 242.9 L435.7 242.9 L437.1 243.0 L438.4 243.0 L439.8 243.0 L441.1 243.0 L442.5 243.0 L443.8 243.0 L445.2 243.0 L446.6 243.1 L447.9 243.1 L449.3 243.1 L450.6 243.1 L452.0 243.1 L453.4 243.1 L454.7 243.1 L456.1 243.1 L457.4 243.1 L458.8 243.1 L460.1 243.2 L461.5 243.2 L462.9 243.2 L464.2 243.2 L465.6 243.2 L466.9 243.2 L468.3 243.3 L469.6 243.3 L471.0 243.3 L472.3 243.3 L473.7 243.3 L475.1 243.4 L476.4 243.4 L477.8 243.4 L479.1 243.4 L480.5 243.5 L481.8 243.5 L483.2 243.5 L484.6 243.5 L485.9 243.6 L487.3 243.6 L488.6 243.7 L490.0 243.7 L491.3 243.7 L492.7 243.8 L494.0 243.8 L495.4 243.9 L496.8 243.9 L498.1 244.0 L499.5 244.1 L500.8 244.1 L502.2 244.2 L503.5 244.2 L504.9 244.3Z"};
+/* ---------- diagrams ---------- */
+let uid = 0;
+function svgWrap(inner, h=340){ const id = "m"+(++uid);
+  return `<svg viewBox="0 0 600 ${h}" role="img" aria-label="diagram"><defs>
+  <marker id="${id}i" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" style="fill:var(--ink)"/></marker>
+  <marker id="${id}a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" style="fill:var(--c)"/></marker>
+  </defs>${inner.replace(/MK_I/g,`url(#${id}i)`).replace(/MK_A/g,`url(#${id}a)`)}</svg>`; }
+const INK="var(--ink)", ACC="var(--c)", MUT="var(--muted)";
+function label(x,y,t,o,anchor="middle"){
+  const st = o.quiz===t ? "quiz" : (o.hideAll && o.quiz ? "blank" : (o.hl===t ? "hl":"show"));
+  const w = Math.max(28, t.length*13.4+20), x0 = anchor==="middle"? x-w/2 : anchor==="start"? x-8 : x-w+8;
+  if (st==="quiz") return `<rect x="${x-30}" y="${y-22}" width="60" height="40" rx="9" style="fill:var(--c)"/><text x="${x}" y="${y+5}" text-anchor="middle" font-size="30" style="fill:var(--surface)">?</text>`;
+  if (st==="blank") return `<rect x="${x0}" y="${y-19}" width="${w}" height="34" rx="8" style="fill:var(--soft);stroke:var(--line)"/>`;
+  return `<text x="${x}" y="${y+9}" text-anchor="${anchor}" font-size="${st==="hl"?31:28}" style="fill:${st==="hl"?ACC:INK}">${t}</text>`;
+}
+const ln = (x1,y1,x2,y2,c=INK,w=2,extra="") => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" style="stroke:${c}" stroke-width="${w}" ${extra}/>`;
+const arr = (x1,y1,x2,y2,on) => ln(x1,y1,x2,y2,on?ACC:INK,on?5:3.5,`marker-end="${on?"MK_A":"MK_I"}"`);
+const D = {
+ forces(o){ const on=t=>o.hl===t||o.quiz===t;
+  return svgWrap(`<ellipse cx="300" cy="170" rx="112" ry="26" style="fill:var(--soft);stroke:var(--ink)" stroke-width="2"/>
+   <path d="M270 172 L340 172 L330 196 L262 196Z" style="fill:var(--surface);stroke:var(--ink)" stroke-width="2"/>
+   <path d="M378 158 L398 118 L414 118 L402 160Z" style="fill:var(--surface);stroke:var(--ink)" stroke-width="2"/>
+   ${ln(186,140,186,200,INK,4)}
+   ${arr(300,140,300,52,on("Lift"))}${arr(300,200,300,290,on("Weight"))}${arr(184,170,72,170,on("Thrust"))}${arr(414,170,528,170,on("Drag"))}
+   ${label(300,30,"Lift",o)}${label(300,318,"Weight",o)}${label(112,140,"Thrust",o)}${label(490,140,"Drag",o)}`); },
+ airfoil(o){ const h=t=>o.hl===t||o.quiz===t;
+  return svgWrap(`<path d="${P.aoa}" style="fill:var(--soft);stroke:var(--ink)" stroke-width="2"/>
+   ${ln(200,150,493.4,212.4,h("chord line")?ACC:INK,h("chord line")?3.5:2,'stroke-dasharray="8 6"')}
+   ${ln(53.3,118.8,200,150,MUT,1.5)}
+   ${arr(30,150,182,150,h("relative wind"))}
+   <path d="M100 150 A100 100 0 0 1 102.2 129.2" style="fill:none;stroke:${h("angle of attack")?ACC:INK}" stroke-width="${h("angle of attack")?4:2.5}"/>
+   ${ln(150,82,102,132,INK,1.2)}${ln(360,108,350,180,INK,1.2)}${ln(205,262,200,156,INK,1.2)}${ln(512,268,494,216,INK,1.2)}
+   ${label(150,70,"angle of attack",o)}${label(95,180,"relative wind",o)}${label(370,96,"chord line",o)}
+   ${label(205,282,"leading edge",o)}${label(512,288,"trailing edge",o)}`); },
+ parts(o){ const f=t=>(o.hl===t||o.quiz===t)?"fill:color-mix(in srgb,var(--c) 30%,var(--surface));stroke:var(--c)":"fill:var(--soft);stroke:var(--ink)";
+  return svgWrap(`<path d="M220 30 L268 30 L272 310 L220 310Z" style="${f("Wing")}" stroke-width="2"/>
+   <path d="M112 154 L112 186 L482 176 L482 164Z" style="${f("Fuselage")}" stroke-width="2"/>
+   <path d="M440 112 L468 112 L474 228 L440 228Z" style="${f("Horizontal stabilizer")}" stroke-width="2"/>
+   <path d="M100 126 L106 126 L106 214 L100 214Z" style="${f("Propeller")}" stroke-width="2"/>
+   ${ln(103,124,110,72,INK,1.2)}${ln(268,50,330,50,INK,1.2)}${ln(360,166,360,122,INK,1.2)}${ln(457,229,457,272,INK,1.2)}
+   ${label(110,58,"Propeller",o)}${label(386,50,"Wing",o)}${label(360,104,"Fuselage",o)}${label(430,300,"Horizontal stabilizer",o)}`); },
+ camber(){ return svgWrap(`<path d="${P.up}" style="fill:var(--soft);stroke:var(--ink)" stroke-width="2"/><path d="${P.upc}" style="fill:none;stroke:var(--c)" stroke-width="2.5" stroke-dasharray="6 5"/>
+   <path d="${P.down}" style="fill:var(--soft);stroke:var(--ink)" stroke-width="2"/><path d="${P.downc}" style="fill:none;stroke:var(--c)" stroke-width="2.5" stroke-dasharray="6 5"/>
+   <text x="155" y="70" text-anchor="middle" font-size="29" style="fill:var(--ink)">Flaps up</text>
+   <text x="445" y="70" text-anchor="middle" font-size="29" style="fill:var(--ink)">Flaps down</text>
+   <text x="300" y="270" text-anchor="middle" font-size="26" style="fill:var(--c)">dashed line = camber line</text>
+   <text x="445" y="230" text-anchor="middle" font-size="26" style="fill:var(--muted)">more curve, more lift</text>`,290); },
+ liftcurve(){ return svgWrap(`${ln(70,290,560,290)}${ln(70,290,70,30)}
+   <path d="M70 270 L410 80 Q440 60 462 78 Q478 92 500 150" style="fill:none;stroke:var(--c)" stroke-width="4"/>
+   <circle cx="440" cy="68" r="7" style="fill:var(--c)"/>
+   ${ln(440,75,440,290,MUT,1.5,'stroke-dasharray="5 5"')}
+   <text x="440" y="46" text-anchor="middle" font-size="28" style="fill:var(--ink)">critical AOA</text>
+   <text x="512" y="176" text-anchor="middle" font-size="28" style="fill:var(--c)">stall</text>
+   <text x="315" y="322" text-anchor="middle" font-size="26" style="fill:var(--muted)">angle of attack</text>
+   <text x="40" y="160" text-anchor="middle" font-size="26" style="fill:var(--muted)" transform="rotate(-90 40 160)">lift</text>`); },
+ curve(o){ const k=o.hl==="drag"?"parasite drag":"lift"; let d="M80 290";
+  for(let v=0;v<=1.0001;v+=.05){ d+=` L${80+v*440} ${290-v*v*240}`; }
+  return svgWrap(`${ln(80,290,560,290)}${ln(80,290,80,30)}<path d="${d}" style="fill:none;stroke:var(--c)" stroke-width="4"/>
+   <circle cx="300" cy="230" r="7" style="fill:var(--ink)"/><circle cx="520" cy="50" r="7" style="fill:var(--c)"/>
+   ${ln(300,230,300,290,MUT,1.5,'stroke-dasharray="5 5"')}${ln(520,50,520,290,MUT,1.5,'stroke-dasharray="5 5"')}
+   <text x="300" y="214" text-anchor="middle" font-size="28" style="fill:var(--ink)">1×</text>
+   <text x="490" y="56" text-anchor="end" font-size="28" style="fill:var(--c)">4×</text>
+   <text x="300" y="316" text-anchor="middle" font-size="26" style="fill:var(--muted)">${o.hl==="drag"?"80 kt":"speed"}</text>
+   <text x="520" y="316" text-anchor="middle" font-size="26" style="fill:var(--muted)">${o.hl==="drag"?"160 kt":"2× speed"}</text>
+   <text x="48" y="160" text-anchor="middle" font-size="26" style="fill:var(--muted)" transform="rotate(-90 48 160)">${k}</text>`); },
+ lever(o){ const X=i=>60+i*3, solved=o.hl==="solved";
+  const w=(i,r,t,n)=>`${ln(60,48+n*26,X(i),48+n*26,MUT,8,'stroke-linecap="round" opacity=".35"')}<text x="${X(i)+8}" y="${54+n*26}" font-size="25" style="fill:var(--ink)">+${i}</text>
+   <circle cx="${X(i)}" cy="${196-r}" r="${r}" style="fill:var(--soft);stroke:var(--ink)" stroke-width="2"/><text x="${X(i)}" y="${202-r}" text-anchor="middle" font-size="26" style="fill:var(--ink)">${t}</text>`;
+  return svgWrap(`${ln(60,30,60,320,INK,2)}<text x="66" y="318" font-size="25" style="fill:var(--muted)">datum</text>
+   ${w(50,24,"100",0)}${w(90,24,"100",1)}${w(150,32,"200",2)}
+   <rect x="64" y="196" width="490" height="9" rx="4" style="fill:var(--ink)"/>
+   <path d="M390 205 L372 240 L408 240Z" style="fill:var(--c)"/>
+   <text x="390" y="264" text-anchor="middle" font-size="28" style="fill:var(--c)">CG</text>
+   ${ln(60,286,384,286,ACC,3,'marker-end="MK_A"')}
+   <text x="225" y="278" text-anchor="middle" font-size="28" style="fill:var(--c)">${solved?"+110 in":"? in"}</text>`); },
+ cg(o){ const pos=o.hl==="fwd"?170:o.hl==="aft"?400:258, bad=o.hl==="fwd"||o.hl==="aft";
+  return svgWrap(`<path d="M90 170 Q110 140 200 140 L470 150 L540 120 L555 120 L545 170 L470 175 Q300 196 140 192 Q95 190 90 170Z" style="fill:var(--soft);stroke:var(--ink)" stroke-width="2"/>
+   <rect x="220" y="236" width="110" height="10" rx="5" style="fill:color-mix(in srgb,var(--c) 30%,transparent)"/>
+   <text x="275" y="272" text-anchor="middle" font-size="25" style="fill:var(--muted)">CG range</text>
+   <circle cx="${pos}" cy="168" r="15" style="fill:${bad?"var(--c)":"var(--ink)"}"/><text x="${pos}" y="174" text-anchor="middle" font-size="22" style="fill:var(--surface)">CG</text>
+   <circle cx="300" cy="168" r="15" style="fill:none;stroke:var(--ink)" stroke-width="2.5"/><text x="300" y="174" text-anchor="middle" font-size="22" style="fill:var(--ink)">CL</text>
+   ${arr(300,150,300,62,false)}<text x="300" y="50" text-anchor="middle" font-size="26" style="fill:var(--ink)">lift</text>
+   ${ln(pos,186,pos,236,MUT,1.5,'stroke-dasharray="4 4"')}
+   ${o.hl==="fwd"?`${arr(530,112,530,62,true)}<text x="300" y="322" text-anchor="middle" font-size="25" style="fill:var(--c)">not enough nose-up force to flare</text>`:""}
+   ${o.hl==="aft"?`${arr(530,180,530,240,true)}<text x="300" y="322" text-anchor="middle" font-size="25" style="fill:var(--c)">not enough nose-down force to recover</text>`:""}
+   ${!bad?`<text x="300" y="322" text-anchor="middle" font-size="25" style="fill:var(--muted)">CL sits slightly aft of CG</text>`:""}`); },
+ torque(){ return svgWrap(`${ln(80,190,520,190,INK,5,'stroke-linecap="round"')}
+   <circle cx="300" cy="190" r="34" style="fill:var(--soft);stroke:var(--ink)" stroke-width="2"/>
+   ${ln(300,110,300,270,INK,4)}
+   <path d="M240 120 A90 90 0 0 1 368 128" style="fill:none;stroke:var(--ink)" stroke-width="3.5" marker-end="MK_I"/>
+   <text x="300" y="86" text-anchor="middle" font-size="28" style="fill:var(--ink)">propeller turns clockwise (action)</text>
+   <path d="M470 236 A190 190 0 0 1 130 236" style="fill:none;stroke:var(--c)" stroke-width="4" marker-end="MK_A"/>
+   <text x="300" y="320" text-anchor="middle" font-size="28" style="fill:var(--c)">airplane rolls left (reaction)</text>`); },
+ ground(){ const v=(x,y,r)=>`<circle cx="${x}" cy="${y}" r="${r}" style="fill:none;stroke:var(--c)" stroke-width="2.5" stroke-dasharray="6 4"/>`;
+  return svgWrap(`${ln(40,86,260,86,INK,4)}${v(40,94,26)}${v(260,94,26)}<text x="150" y="40" text-anchor="middle" font-size="26" style="fill:var(--ink)">high above ground</text>
+   ${ln(340,252,560,252,INK,4)}${v(340,258,12)}${v(560,258,12)}<text x="450" y="200" text-anchor="middle" font-size="26" style="fill:var(--ink)">within half a wingspan</text>
+   ${ln(20,282,580,282,INK,3)}<text x="300" y="320" text-anchor="middle" font-size="25" style="fill:var(--c)">smaller vortices, less induced drag</text>`); },
+ washout(){ return svgWrap(`<path d="M60 40 L540 80 L540 130 L60 170Z" style="fill:var(--soft);stroke:var(--ink)" stroke-width="2"/>
+   <text x="70" y="30" font-size="25" style="fill:var(--ink)">wing root</text><text x="536" y="70" text-anchor="end" font-size="25" style="fill:var(--ink)">wing tip</text>
+   <path d="${P.root}" style="fill:color-mix(in srgb,var(--c) 30%,var(--surface));stroke:var(--c)" stroke-width="2"/>
+   <path d="${P.tip}" style="fill:var(--surface);stroke:var(--ink)" stroke-width="2"/>
+   <text x="130" y="306" text-anchor="middle" font-size="24" style="fill:var(--c)">higher AOA</text><text x="130" y="332" text-anchor="middle" font-size="24" style="fill:var(--c)">stalls first</text>
+   <text x="465" y="306" text-anchor="middle" font-size="24" style="fill:var(--muted)">lower AOA</text><text x="465" y="332" text-anchor="middle" font-size="24" style="fill:var(--muted)">ailerons still work</text>`); },
+ vector(){ return svgWrap(`${ln(110,230,470,110,ACC,5,'marker-end="MK_A"')}
+   ${ln(100,262,456,143,MUT,1.5)}<text x="250" y="240" font-size="28" style="fill:var(--ink)" transform="rotate(-18 250 240)">length = magnitude</text>
+   <text x="560" y="70" text-anchor="end" font-size="28" style="fill:var(--ink)">arrowhead = direction</text>`,300); },
+};
+function viz(spec, extra={}){ if(!spec) return ""; const [k,arg]=spec.split(":");
+  const o = Object.assign({}, extra); if(arg){ if(k==="curve"||k==="lever"||k==="cg") o.hl=arg; else if(!o.quiz) o.hl=arg; }
+  return D[k] ? `<div class="viz">${D[k](o)}</div>` : ""; }
+
+
+const slug = s => s.toLowerCase().replace(/ /g,"-");
+document.querySelectorAll("section[data-sec]").forEach((s,i)=>{
+  const name=s.dataset.sec; s.id=slug(name); s.style.setProperty("--c",`var(--s-${slug(name)})`);
+  const h=s.querySelector("h2"); if(h) h.insertAdjacentHTML("afterbegin",`<span class="n">${i+1}</span>`);
+  s.insertAdjacentHTML("beforeend",'<a class="top" href="#toc">Back to sections</a>');
+  document.getElementById("toc").insertAdjacentHTML("beforeend",`<li><a href="#${s.id}" style="--c:var(--s-${slug(name)})">${name}</a></li>`);
+});
+document.querySelectorAll("[data-viz]").forEach(el=>{ el.outerHTML = viz(el.dataset.viz) || ""; });
+</script>
+</body>
+</html>

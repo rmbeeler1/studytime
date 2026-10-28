@@ -137,6 +137,7 @@ svg text{font-family:"Barlow Condensed","Barlow",sans-serif;font-weight:600}
 .missed .sub{margin:.1em 0 .4em;font-size:.85em}
 .mq{border-top:1px solid var(--line);border-left:4px solid var(--c);padding:10px 0 10px 12px;font-size:.92em}
 .mq .ma{color:var(--c);font-weight:600;margin-top:2px}
+.hub+.hub{margin-left:16px}
 </style>
 </head>
 <body>
@@ -214,7 +215,7 @@ function home(){ S=null; Q=null; flipped=false;
   const startN = buildQueue().length, R = store.session;
   const label = {due:"cards ready to study", cram:"cards in this review", revisit:"cards to revisit"}[store.mode];
   const empty = {due:"Nothing due. Switch to test prep.", cram:"No sections selected.", revisit:"Nothing to revisit yet."}[store.mode];
-  app.innerHTML = `<a class="hub" href="../../">All decks</a><h1>__TITLE__</h1><p class="sub">__SUB__</p>
+  app.innerHTML = `<a class="hub" href="../../">All decks</a>__GUIDELINK__<h1>__TITLE__</h1><p class="sub">__SUB__</p>
   ${R?`<div class="resume"><div><b>Session paused</b><span>${R.ids.length} of ${R.total} cards left, ${MODES[R.mode][0].toLowerCase()}</span></div>
     <button class="go" id="resume">Resume</button><button class="link" id="discard">End it and see results</button></div>`:""}
   <div class="launch"><div class="due"><b>${startN}</b><span>${label}</span></div>

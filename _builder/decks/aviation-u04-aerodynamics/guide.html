@@ -1,0 +1,165 @@
+<section data-sec="Forces">
+<h2>Forces</h2>
+<p>Four forces act on an airplane in flight: <b>lift</b>, <b>weight</b>, <b>thrust</b> and <b>drag</b>.</p>
+<figure><div data-viz="forces"></div></figure>
+<h3>Vectors</h3>
+<p>A <span class="term">vector</span> is a quantity with <b>direction</b> and <b>magnitude</b>. Vectors are drawn as arrows: the arrow points the direction, and its length shows the magnitude.</p>
+<figure><div data-viz="vector"></div></figure>
+<h3>Lift</h3>
+<ul>
+<li>The <b>wings</b> create lift, and lift overcomes <b>weight</b>.</li>
+<li>Lift acts <b>perpendicular to the relative wind</b>. Relative wind is the airflow the wing meets; lift points at 90° to it.</li>
+</ul>
+<h3>Balanced flight</h3>
+<p>In straight-and-level flight at constant airspeed, <b>lift equals weight</b> and <b>thrust equals drag</b>. When all forces are balanced, <b>neither airspeed nor altitude changes</b>.</p>
+<div class="box"><span class="lbl">Think in components</span>In steady flight it is not just lift versus weight. Every force has components: the sum of all <b>upward</b> components equals the sum of all <b>downward</b> components, and the sum of all <b>forward</b> components equals the sum of all <b>backward</b> components.</div>
+<h3>Newton's laws</h3>
+<ul>
+<li><b>First law (inertia):</b> an object keeps its motion unless an unbalanced force acts on it. Balanced flight illustrates this.</li>
+<li><b>Third law:</b> for every action there is an <b>equal and opposite reaction</b>. Examples: a rocket launch, or a propeller's torque reaction.</li>
+</ul>
+<details class="check"><summary>Balanced flight, with no change in speed or altitude, illustrates which of Newton's laws?</summary><div class="a">Newton's first law (inertia).</div></details>
+</section>
+
+<section data-sec="Lift Theory">
+<h2>Lift Theory</h2>
+<p>An airfoil's front is the <span class="term">leading edge</span> and its back is the <span class="term">trailing edge</span>.</p>
+<figure><div data-viz="airfoil"></div></figure>
+<div class="box warn"><span class="lbl">The slides say NO</span>The <b>longer path (equal transit time) theory</b> is false. It claims air over the top of the wing must travel faster to meet the lower air at the trailing edge, and uses that to explain low pressure on top.</div>
+<p>Its false assumption: that air splitting at the leading edge must rejoin. Molecules arriving at the leading edge at the same time do <b>not</b> have to reach the trailing edge at the same time.</p>
+</section>
+
+<section data-sec="Airfoils">
+<h2>Airfoils</h2>
+<p>Many surfaces on an airplane act as airfoils and create aerodynamic forces that help maneuver it.</p>
+<div class="tablewrap"><table>
+<tr><th>Airfoil</th><th>Provides</th></tr>
+<tr><td><b>Wings</b></td><td>Lift</td></tr>
+<tr><td><b>Propeller</b></td><td>Thrust</td></tr>
+<tr><td><b>Stabilizers</b></td><td>Stability and control</td></tr>
+<tr><td><b>Fuselage</b></td><td>Stability and (some) lift</td></tr>
+</table></div>
+<figure><div data-viz="parts"></div></figure>
+</section>
+
+<section data-sec="Lift Factors">
+<h2>Lift Factors</h2>
+<p>Four factors set how much lift a wing makes. A pilot controls three of them.</p>
+<div class="tablewrap"><table>
+<tr><th>Factor</th><th>Pilot controls it by</th><th>Effect on lift</th></tr>
+<tr><td><b>Angle of attack</b></td><td>Pitching up or down</td><td>Higher AOA forces more airflow downward: more lift</td></tr>
+<tr><td><b>Airspeed</b></td><td>Adjusting power, or climbing or descending</td><td>Exponential: double the velocity, quadruple the lift</td></tr>
+<tr><td><b>Camber</b></td><td>Extending or retracting flaps (the only way)</td><td>More curve: more lift</td></tr>
+<tr><td><b>Wing surface area</b></td><td>Generally not controllable</td><td>Linear: double the area, double the lift</td></tr>
+</table></div>
+<h3>Angle of attack</h3>
+<p><span class="term">Angle of attack</span> (α, alpha, or AOA) is the angle between the <b>chord line</b> and the <b>relative wind</b>.</p>
+<figure><div data-viz="airfoil:angle of attack"></div></figure>
+<h3>Airspeed</h3>
+<ul>
+<li>Airspeed is measured relative to <b>the air the aircraft is moving through</b>, not the ground.</li>
+<li>Higher airspeed means the airfoil contacts more air molecules, so it makes more lift.</li>
+<li>Aircraft usually make their own relative wind by creating <b>thrust</b>. Not always: a strong wind alone can create enough lift to make an aircraft fly.</li>
+<li>A change in airspeed changes the <b>velocity</b> term in the lift equation. Its effect is <b>exponential, not linear</b>.</li>
+</ul>
+<figure><div data-viz="curve"></div></figure>
+<h3>Camber</h3>
+<p><span class="term">Camber</span> is an airfoil's curvature. Flaps are lift-enhancing devices: <b>flaps down = more camber</b>. Pilots change the camber of the horizontal and vertical stabilizers by moving the <b>elevator and rudder</b>; deflecting a control surface curves the stabilizer's airfoil and changes its lift.</p>
+<figure><div data-viz="camber"></div></figure>
+<h3>Wing surface area</h3>
+<p>The area of the wing exposed to airflow. Its effect is linear.</p>
+<details class="check"><summary>Doubling an aircraft's velocity does what to lift?</summary><div class="a">Quadruples it (4×).</div></details>
+<details class="check"><summary>Which lift factor can a pilot generally NOT control?</summary><div class="a">Wing surface area.</div></details>
+</section>
+
+<section data-sec="Stalls">
+<h2>Stalls</h2>
+<p>As angle of attack increases, the <b>coefficient of lift increases</b> until the <span class="term">critical angle of attack</span>. Beyond it the wing <b>stalls</b>: airflow separates from the top of the wing and lift drops.</p>
+<figure><div data-viz="liftcurve"></div></figure>
+<ul>
+<li>For a given airplane and configuration (such as flap setting), a stall always occurs at the <b>same angle of attack</b>, set by the aircraft's design. It can still happen at different airspeeds.</li>
+<li>Angle of attack is a variable the pilot can control, by pitching up or down.</li>
+</ul>
+<h3>Normal vs. accelerated stalls</h3>
+<div class="tablewrap"><table>
+<tr><th></th><th>Normal stall</th><th>Accelerated stall</th></tr>
+<tr><td>Load factor</td><td>1G (what you feel sitting in your chair)</td><td>More than 1G</td></tr>
+<tr><td>Airspeed</td><td></td><td>Higher than a normal stall</td></tr>
+<tr><td>Example</td><td></td><td>A steep turn or a quick pull-up</td></tr>
+</table></div>
+<h3>Designing for safer stalls</h3>
+<p>Designers want stalls to:</p>
+<ol><li>Keep the aircraft <b>controllable</b> as long as possible</li><li>Be <b>delayed</b> as long as possible</li><li>Give pilots <b>warning</b></li></ol>
+<p>Predictable stall characteristics make aircraft safer and easier to control. Stall mitigation tools: <b>wing washout</b>, <b>camber</b>, <b>vortex generators</b> and <b>planform selection</b>.</p>
+<h3>Washout</h3>
+<p>The wing is twisted so the <b>tip has a lower AOA</b> than the root. The <b>root (inboard section) stalls first</b> and the tip stalls last, which keeps the <b>ailerons</b> effective and warns the pilot the whole wing is about to stall.</p>
+<figure><div data-viz="washout"></div></figure>
+</section>
+
+<section data-sec="Weight and Balance">
+<h2>Weight and Balance</h2>
+<h3>Center of lift</h3>
+<p>The <span class="term">center of lift</span>, also called the <span class="term">center of pressure</span>, is where lift forces are concentrated. For balance it sits <b>slightly aft (behind) the CG</b>.</p>
+<figure><div data-viz="cg"></div></figure>
+<h3>Arms, moments and the datum</h3>
+<ul>
+<li>The <span class="term">datum</span> (reference datum) is the point all arm measurements are taken from. The <b>manufacturer</b> chooses it; it is an arbitrary point.</li>
+<li>An <span class="term">arm</span> is measured in inches from the datum.</li>
+<li><span class="term">Moment</span> = arm × weight.</li>
+<li>In a balanced aircraft, positive plus negative moments at the CG equal <b>zero</b>.</li>
+<li><span class="math">CG = total moment ÷ total weight</span></li>
+</ul>
+<h3>Four steps to find CG</h3>
+<ol><li>Find each weight's arm in inches from the datum.</li><li>Multiply arm by weight to get each moment.</li><li>Total all weights and all moments.</li><li>Divide total moment by total weight.</li></ol>
+<div class="box"><span class="lbl">Worked example</span>Weights of 100 at +50, 100 at +90 and 200 at +150 inches.<br>Moments: 5,000 + 9,000 + 30,000 = 44,000. Total weight: 400.<br>CG = 44,000 ÷ 400 = <b>+110 inches from the datum</b>.</div>
+<figure><div data-viz="lever:solved"></div></figure>
+<h3>CG out of limits</h3>
+<div class="tablewrap"><table>
+<tr><th>CG too far</th><th>Danger</th></tr>
+<tr><td><b>Forward</b></td><td>Not enough elevator nose-up force to flare for landing</td></tr>
+<tr><td><b>Aft</b></td><td>Not enough nose-down force for stall recovery, especially at low airspeed</td></tr>
+</table></div>
+<figure><div data-viz="cg:fwd"></div><figcaption>CG too far forward.</figcaption></figure>
+<figure><div data-viz="cg:aft"></div><figcaption>CG too far aft.</figcaption></figure>
+<ul>
+<li>An airplane can be within its allowable <b>weight limit</b> but outside its <b>CG limit</b>. Pilots may discover this during preflight.</li>
+<li>Correct an out-of-limit CG by <b>shifting or removing weight</b>.</li>
+<li>Weight changes in flight (fuel burn, skydiving operations, passengers moving themselves or luggage) can shift the CG.</li>
+</ul>
+</section>
+
+<section data-sec="Propellers">
+<h2>Propellers</h2>
+<h3>Torque reaction</h3>
+<p>A <b>clockwise</b>-spinning propeller causes a <b>counterclockwise</b> reaction from the airplane, giving it a <b>left-turning</b> tendency. This is Newton's third law: engine torque is the <b>action</b>; the left gear forced downward is the <b>reaction</b>.</p>
+<figure><div data-viz="torque"></div></figure>
+<div class="tablewrap"><table>
+<tr><th>Torque effect is</th><th>When</th><th>Why</th></tr>
+<tr><td><b>Strongest</b></td><td>Low speed with high power, like takeoff</td><td></td></tr>
+<tr><td>Weaker</td><td>Higher airspeed</td><td>Airflow over control surfaces counters it</td></tr>
+<tr><td>Weaker</td><td>Lower power setting</td><td>The propeller spins slower</td></tr>
+</table></div>
+<h3>Variable-pitch propellers</h3>
+<p>Blade angle is the propeller's <span class="term">pitch</span>. Changing it in flight keeps the <b>most efficient AOA at any speed</b>. The most common type is the <span class="term">constant-speed propeller</span>. It adjusts its blades with <b>oil pressure from the engine</b>, and the control is a knob or lever <b>next to the throttle</b>.</p>
+<div class="tablewrap"><table>
+<tr><th>Phase</th><th>Pitch</th><th>RPM</th></tr>
+<tr><td>Takeoff</td><td><b>Low</b></td><td>High</td></tr>
+<tr><td>Cruise</td><td><b>High</b></td><td>Low</td></tr>
+</table></div>
+</section>
+
+<section data-sec="Drag">
+<h2>Drag</h2>
+<h3>Parasite drag</h3>
+<p>Three types: <b>form</b>, <b>interference</b> and <b>skin friction</b>. Parasite drag varies with the <b>square of the airspeed</b>.</p>
+<figure><div data-viz="curve:drag"></div></figure>
+<div class="box"><span class="lbl">Worked example</span>Parasite drag at 160 knots is <b>4 times</b> that at 80 knots: double the airspeed, square the effect, 2² = 4.</div>
+<h3>Skin friction drag</h3>
+<p>Created by air resistance moving across the airplane's surface: the skin catches air particles and tries to pull the air along. Even a smooth surface makes some, because it is rough at the microscopic level. To reduce it, use <b>smooth skin</b> (especially composite aircraft) and <b>flush rivets</b>. Both improve performance and fuel efficiency.</p>
+<h3>L/D ratio</h3>
+<p><span class="math">L/D = C<sub>L</sub> ÷ C<sub>D</sub></span>: lift produced divided by drag created. The lift and drag equations differ only by this coefficient, so the ratio uses just that term. A <b>higher L/D</b> means the aircraft produces lift more efficiently.</p>
+<h3>Ground effect</h3>
+<p>The ground interferes with the <b>wingtip vortices</b>, which cannot create as much downwash. Less downwash means less <b>induced drag</b>, so ground effect is really a reduction of induced drag. It is most pronounced within <b>half a wingspan</b> of the ground and feels like a <b>cushion of air</b>.</p>
+<figure><div data-viz="ground"></div></figure>
+<details class="check"><summary>Ground effect is actually a reduction of which type of drag?</summary><div class="a">Induced drag.</div></details>
+</section>

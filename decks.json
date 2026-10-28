@@ -6,7 +6,10 @@
     "topic": "Aerodynamics",
     "path": "aviation/u04-aerodynamics/",
     "cards": 127,
-    "added": "2026-10-28"
+    "added": "2026-10-28",
+    "v": "902834e7",
+    "guide": "guide.html",
+    "gv": "2fed7857"
   },
   {
     "id": "genetics-ch13-transcription",
@@ -15,6 +18,9 @@
     "topic": "Transcription",
     "path": "genetics/ch13-transcription/",
     "cards": 169,
-    "added": "2026-10-28"
+    "added": "2026-10-28",
+    "v": "03063f5a",
+    "guide": "guide.html",
+    "gv": "9182d4f9"
   }
 ]

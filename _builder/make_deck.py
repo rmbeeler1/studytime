@@ -1,6 +1,7 @@
 """Build one deck: python _builder/make_deck.py <deck-id>
 Reads _builder/decks/<deck-id>/deck.py and diagrams.js, writes <path>/index.html, upserts decks.json."""
 import json, re, sys, importlib.util, datetime, pathlib
+import make_guide
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 B = ROOT / "_builder"
 
@@ -52,7 +53,8 @@ def main(deck_id):
     title = f"{meta['subject']} {meta['number']}: {meta['topic']}"
     html = (B / "deck_template.html").read_text()
     html = (html.replace("__SECVARS_L__", L).replace("__SECVARS_D__", D).replace("__SECS__", json.dumps(m.SECTIONS and [x[0] for x in m.SECTIONS]))
-            .replace("__ID__", deck_id).replace("__TITLE__", title).replace("__SUB__", meta.get("subtitle", ""))
+            .replace("__ID__", deck_id)
+            .replace("__GUIDELINK__", '<a class="hub" href="guide.html">Study guide</a>' if (B / "decks" / deck_id / "guide.html").exists() else "").replace("__TITLE__", title).replace("__SUB__", meta.get("subtitle", ""))
             .replace("__DIAGRAMS__", diagrams.read_text() if diagrams.exists() else "{}")
             .replace("__DATA__", json.dumps(dict(cards=cards, paths=getattr(m, "PATHS", {})))))
     if "\u2014" in html: problems.append("em-dash found")
@@ -67,6 +69,9 @@ def main(deck_id):
     decks = [d for d in decks if d["id"] != deck_id] + [entry]
     dj.write_text(json.dumps(decks, indent=2) + "\n")
     print(f"Built {title}: {len(cards)} cards -> {out.relative_to(ROOT)}")
+    # The guide takes colors and diagrams from the deck page, so it is rebuilt after it.
+    if (B / "decks" / deck_id / "guide.html").exists(): make_guide.main(deck_id)
+    else: make_guide.stamp(deck_id)
 
 if __name__ == "__main__":
     if len(sys.argv) != 2: sys.exit("usage: python _builder/make_deck.py <deck-id>")

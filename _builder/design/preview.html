@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Study Time Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<style>
+/* preview-only layout; everything visual comes from tokens.css */
+.bar{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:10px var(--gutter);background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.bar b{color:var(--ink);font-size:var(--fs-small)}
+.seg{display:inline-flex;gap:2px;padding:3px;border-radius:var(--r-pill);background:var(--sunken)}
+.seg button{border:0;background:none;font:inherit;font-size:var(--fs-caption);font-weight:600;color:var(--muted);padding:4px 12px;border-radius:var(--r-pill);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow-xs)}
+.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:var(--sp-7);align-items:end}
+.mock{width:min(100%,360px);justify-self:end}
+.mock .q{color:var(--ink);font-weight:600;font-size:1.25rem;line-height:1.35;letter-spacing:-.015em;margin:var(--sp-3) 0 var(--sp-4)}
+.mock .a{color:var(--c);font-weight:600;border-top:1px solid var(--line);padding-top:var(--sp-3)}
+.mock .x{color:var(--text);font-size:var(--fs-small);margin:4px 0 var(--sp-4)}
+@media (max-width:820px){.hero-grid{grid-template-columns:1fr}.mock{justify-self:start}}
+@media (max-width:639px){.mock{display:none}}
+
+.panes{display:grid;grid-template-columns:1fr 1fr}
+@media (max-width:900px){.panes{grid-template-columns:1fr}}
+.pane{background:var(--bg);color:var(--text);padding:var(--sp-7) var(--gutter) var(--sp-8);min-width:0}
+.pane>h2.pt{display:flex;align-items:baseline;gap:10px;font-size:var(--fs-h3)}
+.pane>h2.pt small{color:var(--muted);font-weight:500;font-size:var(--fs-small);letter-spacing:0}
+.blk{margin-top:var(--sp-7)}
+.blk>h3{font-size:1.0625rem;margin-bottom:var(--sp-3)}
+.sw{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:var(--sp-3)}
+.chipc{background:var(--surface);border-radius:var(--r-md);box-shadow:var(--shadow-sm);overflow:hidden;font-size:var(--fs-caption);line-height:1.45}
+.chipc .s{height:48px;border-bottom:1px solid var(--line)}
+.chipc .t{padding:8px 10px}
+.chipc code{color:var(--ink);font-weight:600;font-family:var(--font-sans)}
+.chipc .h{color:var(--muted);font-family:var(--font-mono);font-size:12px}
+.chipc .cr{display:inline-block;margin-top:2px;font-weight:600}
+.chipc .cr.ok{color:var(--easy)}.chipc .cr.no{color:var(--again)}
+.secs{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:var(--sp-3)}
+.secrow{display:flex;align-items:center;gap:10px;background:var(--surface);border-radius:var(--r-md);box-shadow:var(--shadow-sm);padding:10px 12px;font-size:var(--fs-small);min-width:0}
+.secrow .dot{width:22px;height:22px;border-radius:var(--r-sm);background:var(--c);flex:none;display:grid;place-items:center;color:var(--surface);font-size:12px;font-weight:700}
+.secrow .nm{color:var(--c);font-weight:600}
+.secrow .cr{margin-left:auto;color:var(--muted);font-size:var(--fs-caption);white-space:nowrap}
+.type>*{margin:0 0 var(--sp-4)}
+.type .meta{display:block;color:var(--muted);font-size:var(--fs-caption);font-weight:500;letter-spacing:0;margin-bottom:2px}
+.sp{display:grid;gap:6px}
+.sp div{display:flex;align-items:center;gap:12px;font-size:var(--fs-caption);color:var(--muted)}
+.sp i{display:block;height:12px;background:var(--accent);border-radius:2px}
+.sp code{width:64px;color:var(--ink);font-family:var(--font-sans);font-weight:600}
+.rads,.shads{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:var(--sp-5)}
+.rads div,.shads div{height:84px;background:var(--surface);display:grid;place-items:end start;padding:8px 10px;font-size:var(--fs-caption);color:var(--ink);font-weight:600}
+.rads div{border:1.5px solid var(--accent);background:var(--accent-tint)}
+.row{display:flex;flex-wrap:wrap;gap:var(--sp-3);align-items:center}
+.mini-hero{position:relative;overflow:hidden;border-radius:var(--r-lg);background:var(--bg);border:1px solid var(--line);padding:var(--sp-6) var(--sp-5) calc(var(--band-height) * .6 + var(--sp-7));--content-max:100%;--band-height:110px;--band-angle:-7deg}
+.mini-hero>:not(.band){position:relative}
+.mini-hero .band{bottom:calc(var(--band-height) * -.4)}
+.mini-hero .display{color:var(--ink);font-size:clamp(2rem,1.4rem + 2.4vw,3rem);line-height:var(--lh-tight);letter-spacing:var(--track-display);font-weight:700;max-width:12ch;margin:0 0 .3em}
+.mini-hero .lead{font-size:var(--fs-body)}
+.fc{--c:var(--sec-teal);max-width:var(--reading-max)}
+.fc .card{border-top:4px solid var(--c);box-shadow:var(--shadow-lg)}
+.fc .q{color:var(--ink);font-size:1.375rem;font-weight:600;line-height:1.35;letter-spacing:-.018em;margin:var(--sp-3) 0}
+.fc .ans{border-top:1px solid var(--line);margin-top:var(--sp-4);padding-top:var(--sp-4)}
+.fc .ans b{color:var(--c);font-size:1.25rem;font-weight:600}
+.fc .ans p{font-size:var(--fs-small);margin:.3em 0 0}
+.grades{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:var(--sp-5)}
+.g{border:0;border-radius:var(--r-md);background:var(--soft);border-bottom:3px solid var(--gc);padding:8px 4px;font:inherit;font-weight:600;color:var(--ink);line-height:1.2;font-size:var(--fs-small);cursor:pointer}
+.g small{display:block;color:var(--muted);font-weight:400;font-size:12px}
+.opt{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:var(--r-md);border:1.5px solid var(--line-strong);margin-top:8px;color:var(--ink);font-size:var(--fs-small)}
+.opt .l{width:28px;height:28px;border-radius:var(--r-sm);display:grid;place-items:center;background:var(--soft);font-weight:600;flex:none}
+.opt.ok{border-color:var(--easy);background:color-mix(in srgb,var(--easy) 12%,transparent)}.opt.ok .l{background:var(--easy);color:var(--surface)}
+.opt.bad{border-color:var(--again);background:color-mix(in srgb,var(--again) 10%,transparent)}.opt.bad .l{background:var(--again);color:var(--surface)}
+.deckrow{display:grid;grid-template-columns:auto 1fr auto;gap:2px 14px;align-items:center;text-decoration:none;color:inherit;padding:var(--sp-4) var(--sp-5)}
+.deckrow .n{grid-row:1/3;color:var(--c);font-weight:700;font-size:var(--fs-small)}
+.deckrow .tp{color:var(--ink);font-weight:600}
+.deckrow .m{color:var(--muted);font-size:var(--fs-small)}
+.deckrow .p{grid-row:1/3;grid-column:3;color:var(--ink);font-weight:700;font-size:1.25rem;text-align:end;line-height:1.1}
+.deckrow .p small{display:block;color:var(--muted);font-weight:500;font-size:12px}
+.deckrow .track{grid-column:1/4;margin-top:10px}
+.box{border-radius:var(--r-md);padding:12px 16px;background:color-mix(in srgb,var(--c) 9%,transparent);border-left:4px solid var(--c);font-size:var(--fs-small)}
+.box .lb{display:block;color:var(--c);font-weight:700;margin-bottom:2px}
+.motion{display:flex;gap:var(--sp-3);flex-wrap:wrap}
+.motion .card{padding:var(--sp-4);font-size:var(--fs-caption);color:var(--muted)}
+.motion .card b{display:block;color:var(--ink);font-size:var(--fs-small)}
+.dd{display:grid;grid-template-columns:1fr 1fr;gap:var(--sp-4)}
+@media (max-width:520px){.dd{grid-template-columns:1fr}}
+.dd ul{margin:0;padding-left:1.1em;font-size:var(--fs-small)}
+.dd h4{font-size:var(--fs-small);margin-bottom:6px}
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <b>Study Time design system</b>
+  <div class="seg" role="group" aria-label="Theme of the top section">
+    <button data-t="" aria-pressed="true">Auto</button><button data-t="light" aria-pressed="false">Light</button><button data-t="dark" aria-pressed="false">Dark</button>
+  </div>
+</div>
+
+<header class="hero guides">
+  <div class="band" aria-hidden="true"></div>
+  <div class="container hero-grid">
+    <div>
+      <p class="label">Design system</p>
+      <h1 class="display">Study with a calmer, clearer page.</h1>
+      <p class="lead">One set of colors, type, spacing and components for every deck, study guide and the home page. Built to read well on a phone at midnight before an exam.</p>
+      <div class="row" style="margin-top:var(--sp-6)">
+        <a class="btn" href="#tokens">See the tokens</a>
+        <a class="link" href="DESIGN.md">Read the guide</a>
+      </div>
+    </div>
+    <div class="panel mock" style="--c:var(--sec-teal)">
+      <div class="panel-head"><span>Genetics Ch 13</span><span class="tag sec">Transcription Basics</span></div>
+      <div class="panel-body">
+        <div class="track"><i style="width:42%"></i></div>
+        <p class="q">Which enzyme carries out transcription?</p>
+        <div class="a">RNA polymerase</div>
+        <p class="x">DNA replication uses DNA polymerase.</p>
+        <button class="btn dark block no-chev">Next card</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="panes" id="tokens">
+  <section class="pane" data-theme="light"></section>
+  <section class="pane" data-theme="dark"></section>
+</main>
+
+<template id="spec">
+  <h2 class="pt">THEME <small>mode</small></h2>
+
+  <div class="blk"><h3>Surfaces and text</h3><div class="sw" data-sw="--bg --surface --sunken --soft --line --line-strong --guide --ink --text --muted"></div></div>
+  <div class="blk"><h3>Brand</h3><div class="sw" data-sw="--accent --accent-hover --accent-tint --sky --sky-ink --sky-tint --band-from --band-to"></div></div>
+  <div class="blk"><h3>Grades</h3><div class="sw" data-sw="--again --hard --good --easy"></div></div>
+  <div class="blk"><h3>Section accents</h3><div class="secs" data-secs="blue violet teal rose orange amber green slate"></div></div>
+
+  <div class="blk type"><h3>Type: Inter</h3>
+    <div><span class="meta">Display · fs-display · 700 · −0.04em</span><div style="font-size:clamp(2.25rem,1.4rem + 3vw,3.75rem);line-height:var(--lh-tight);letter-spacing:var(--track-display);font-weight:700;color:var(--ink)">Remember more</div></div>
+    <div><span class="meta">H1 · fs-h1</span><h1 style="margin:0">Genetics Ch 13</h1></div>
+    <div><span class="meta">H2 · fs-h2</span><h2 style="margin:0">Bacterial initiation</h2></div>
+    <div><span class="meta">H3 · fs-h3</span><h3 style="margin:0">The sigma factor</h3></div>
+    <div><span class="meta">Lead · fs-lead</span><p class="lead" style="margin:0">RNA structure and classes, bacterial and eukaryotic transcription.</p></div>
+    <div><span class="meta">Body · fs-body · 1.65</span><p style="margin:0">RNA polymerase binds the promoter and unwinds a short stretch of DNA. Only one strand, the template strand, is read, and no primer is needed.</p></div>
+    <div><span class="meta">Small · fs-small</span><p style="margin:0;font-size:var(--fs-small)">169 cards · 8 sections · progress saves on this device</p></div>
+    <div><span class="meta">Caption · fs-caption</span><p style="margin:0;font-size:var(--fs-caption);color:var(--muted)">Figure 2. A hairpin forms by intramolecular base pairing.</p></div>
+    <div><span class="meta">Tabular numbers · .num</span><p class="num" style="margin:0;color:var(--ink);font-weight:700;font-size:1.5rem">111 · 42% · 07:30</p></div>
+  </div>
+
+  <div class="blk"><h3>Spacing</h3><div class="sp" data-sp="1 2 3 4 5 6 7 8 9 10"></div></div>
+  <div class="blk"><h3>Radii</h3><div class="rads">
+    <div style="border-radius:var(--r-xs)">xs 4</div><div style="border-radius:var(--r-sm)">sm 6</div><div style="border-radius:var(--r-md)">md 10</div>
+    <div style="border-radius:var(--r-lg)">lg 16</div><div style="border-radius:var(--r-xl)">xl 24</div><div style="border-radius:var(--r-pill)">pill</div></div></div>
+  <div class="blk"><h3>Shadows</h3><div class="shads" style="padding:8px 0 24px">
+    <div style="border-radius:var(--r-lg);box-shadow:var(--shadow-xs)">xs</div><div style="border-radius:var(--r-lg);box-shadow:var(--shadow-sm)">sm</div>
+    <div style="border-radius:var(--r-lg);box-shadow:var(--shadow-md)">md</div><div style="border-radius:var(--r-lg);box-shadow:var(--shadow-lg)">lg</div>
+    <div style="border-radius:var(--r-lg);box-shadow:var(--shadow-xl)">xl</div></div></div>
+
+  <div class="blk"><h3>Label, band and guides</h3>
+    <div class="mini-hero guides">
+      <div class="band" aria-hidden="true"></div>
+      <p class="label">Aviation</p>
+      <p class="display">Unit 4: Aerodynamics</p>
+      <p class="lead">Lift, drag, stability and the four forces.</p>
+    </div>
+    <div class="row" style="margin-top:var(--sp-4)"><span class="label" style="margin:0">Violet label</span><span class="label sky" style="margin:0">Sky label</span><span class="label sec" style="margin:0;--c:var(--sec-rose)">Section label</span><span class="tag">New</span><span class="tag sec" style="--c:var(--sec-green)">Eukaryotic Initiation</span></div>
+  </div>
+
+  <div class="blk"><h3>Buttons and links</h3>
+    <div class="row"><button class="btn">Start studying</button><button class="btn dark">Show answer</button><button class="btn ghost">Study guide</button></div>
+    <div class="row" style="margin-top:var(--sp-3)"><button class="btn sm">Small</button><button class="btn no-chev">No chevron</button><button class="btn" disabled>Disabled</button></div>
+    <div class="row" style="margin-top:var(--sp-3)"><a class="link" href="#">Open the study guide</a><a class="link quiet" href="#">Reset progress</a></div>
+    <p style="margin-top:var(--sp-3);font-size:var(--fs-small)">Inline prose link: see the <a href="#">Chapter 13 guide</a> for the full diagram.</p>
+  </div>
+
+  <div class="blk"><h3>Cards</h3>
+    <div class="card" style="--c:var(--sec-blue);padding:0">
+      <a class="deckrow" href="#"><span class="n">Ch 13</span><span class="tp">Transcription</span><span class="m">169 cards</span><span class="p num">42%<small>solid</small></span><span class="track"><i style="width:42%"></i></span></a>
+    </div>
+    <div class="card accent" style="--c:var(--sec-orange);margin-top:var(--sp-4)">
+      <h3 style="margin:0 0 .3em">Card with accent stripe</h3>
+      <p style="margin:0;font-size:var(--fs-small)">A study-guide section: white, 16 px radius, medium shadow, 4 px stripe in the section color.</p>
+      <div class="box" style="margin-top:var(--sp-4)"><span class="lb">Worked example</span>Promoter at −10 and −35 relative to +1.</div>
+    </div>
+  </div>
+
+  <div class="blk fc"><h3>Flashcard (study mode)</h3>
+    <div class="card">
+      <span class="tag sec">Transcription Basics</span>
+      <p class="q">What primer does transcription require?</p>
+      <div class="ans"><b>None</b><p>DNA replication needs a primer; transcription does not.</p></div>
+      <div class="grades">
+        <button class="g" style="--gc:var(--again)">Again<small>soon</small></button><button class="g" style="--gc:var(--hard)">Hard<small>later</small></button>
+        <button class="g" style="--gc:var(--good)">Good<small>2 days</small></button><button class="g" style="--gc:var(--easy)">Easy<small>4 days</small></button>
+      </div>
+    </div>
+    <div class="opt ok"><span class="l">A</span>RNA polymerase</div>
+    <div class="opt bad"><span class="l">B</span>DNA polymerase</div>
+    <div class="opt"><span class="l">C</span>Primase</div>
+  </div>
+
+  <div class="blk"><h3>Motion (hover the cards)</h3>
+    <div class="motion">
+      <div class="card lift"><b>fast · 150 ms</b>hover, chevron</div>
+      <div class="card lift"><b>base · 240 ms</b>enter, lift</div>
+      <div class="card lift"><b>slow · 420 ms</b>progress fill</div>
+    </div>
+  </div>
+
+  <div class="blk"><h3>Do and don't</h3>
+    <div class="dd">
+      <div class="card flat"><h4 style="color:var(--easy)">Do</h4><ul><li>One violet button per view</li><li>Float cards on shadows</li><li>Left-align text</li></ul></div>
+      <div class="card flat"><h4 style="color:var(--again)">Don't</h4><ul><li>Sky blue as text on light</li><li>Text on the band</li><li>Shadow and border together</li></ul></div>
+    </div>
+  </div>
+</template>
+
+<script>
+const tpl = document.getElementById("spec").innerHTML;
+const toHex = c => { const m = c.match(/[\d.]+/g); if(!m) return c; return "#"+m.slice(0,3).map(v=>(+v|0).toString(16).padStart(2,"0")).join(""); };
+const lum = h => { const c=[1,3,5].map(i=>parseInt(h.substr(i,2),16)/255).map(x=>x<=.03928?x/12.92:((x+.055)/1.055)**2.4); return .2126*c[0]+.7152*c[1]+.0722*c[2]; };
+const ratio = (a,b) => { const x=lum(a), y=lum(b); return (Math.max(x,y)+.05)/(Math.min(x,y)+.05); };
+const TEXTISH = ["--ink","--text","--muted","--accent","--accent-hover","--sky","--sky-ink","--again","--hard","--good","--easy"];
+document.querySelectorAll(".pane").forEach(p => {
+  const dark = p.dataset.theme === "dark";
+  p.innerHTML = tpl.replace("THEME", dark ? "Dark" : "Light").replace("mode", dark ? "data-theme=\"dark\"" : "data-theme=\"light\"");
+  // resolve a custom property to a hex in this pane by painting a probe
+  const probe = document.createElement("i"); p.appendChild(probe);
+  const val = v => { probe.style.color = `var(${v})`; return toHex(getComputedStyle(probe).color); };
+  const surf = val("--surface"), bg = val("--bg");
+  p.querySelectorAll("[data-sw]").forEach(g => g.innerHTML = g.dataset.sw.split(" ").map(v => {
+    const h = val(v), r = Math.min(ratio(h,surf), ratio(h,bg)), cr = TEXTISH.includes(v)
+      ? `<span class="cr ${r>=4.5?"ok":"no"}">${r.toFixed(1)}:1 ${r>=4.5?"AA":"fill only"}</span>` : "";
+    return `<div class="chipc"><div class="s" style="background:var(${v})"></div><div class="t"><code>${v}</code><br><span class="h">${h}</span><br>${cr}</div></div>`;
+  }).join(""));
+  p.querySelectorAll("[data-secs]").forEach(g => g.innerHTML = g.dataset.secs.split(" ").map((s,i) => {
+    const h = val("--sec-"+s), r = Math.min(ratio(h,surf), ratio(h,bg));
+    return `<div class="secrow" style="--c:var(--sec-${s})"><span class="dot">${i+1}</span><span><span class="nm">${s}</span><br><span class="h" style="font-family:var(--font-mono);font-size:12px;color:var(--muted)">${h}</span></span><span class="cr">${r.toFixed(1)}:1</span></div>`;
+  }).join(""));
+  p.querySelectorAll("[data-sp]").forEach(g => g.innerHTML = g.dataset.sp.split(" ").map(n =>
+    `<div><code>--sp-${n}</code><i style="width:var(--sp-${n})"></i>${getComputedStyle(p).getPropertyValue("--sp-"+n).trim()}</div>`).join(""));
+  probe.remove();
+});
+document.querySelectorAll(".seg button").forEach(b => b.onclick = () => {
+  document.querySelectorAll(".seg button").forEach(x => x.setAttribute("aria-pressed", x===b));
+  if (b.dataset.t) document.documentElement.dataset.theme = b.dataset.t; else delete document.documentElement.dataset.theme;
+});
+</script>
+</body>
+</html>

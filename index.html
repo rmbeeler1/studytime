@@ -29,6 +29,12 @@ a.deck:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
 .bar{grid-column:1/4;height:6px;border-radius:3px;background:var(--soft);overflow:hidden;margin-top:6px}
 .bar i{display:block;height:100%;background:var(--acc)}
 .empty{color:var(--muted)}
+.item{margin-bottom:10px}
+.item a.deck{margin-bottom:0}
+.item.has-guide a.deck{border-radius:16px 16px 0 0}
+a.guide{display:flex;align-items:center;justify-content:space-between;gap:10px;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-top:0;border-radius:0 0 16px 16px;padding:10px 16px;font-size:.9em;font-weight:500}
+a.guide span{color:var(--muted);font-weight:400;font-size:.9em}
+a.guide:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
 </style>
 </head>
 <body>
@@ -47,9 +53,12 @@ fetch("decks.json",{cache:"no-store"}).then(r=>r.json()).then(decks=>{
   const html=Object.keys(by).sort().map(sub=>`<h2>${sub}</h2>`+by[sub]
     .sort((a,b)=>a.path.localeCompare(b.path))
     .map(d=>{const n=solid(d.id), p=Math.round(n/d.cards*100);
-      return `<a class="deck" href="${d.path}"><span class="num">${d.number}</span><span class="topic">${d.topic}</span>
+      // ?v= changes whenever a page is rebuilt, so phones never show a stale copy after an update.
+      const v=x=>x?`?v=${x}`:"";
+      return `<div class="item${d.guide?" has-guide":""}"><a class="deck" href="${d.path}${v(d.v)}"><span class="num">${d.number}</span><span class="topic">${d.topic}</span>
       <span class="meta">${d.cards} cards</span><span class="pct">${p}%<small>solid</small></span>
-      <span class="bar"><i style="width:${p}%"></i></span></a>`}).join("")).join("");
+      <span class="bar"><i style="width:${p}%"></i></span></a>
+      ${d.guide?`<a class="guide" href="${d.path}${d.guide}${v(d.gv)}">Study guide <span>Read the notes</span></a>`:""}</div>`}).join("")).join("");
   document.getElementById("list").innerHTML=html||'<p class="empty">No decks yet.</p>';
 }).catch(()=>{document.getElementById("list").innerHTML='<p class="empty">Could not load the deck list. Open this page from its GitHub Pages link, not as a downloaded file.</p>';});
 </script>

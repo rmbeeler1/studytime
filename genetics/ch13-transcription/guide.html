@@ -1,0 +1,477 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Genetics Ch 13: Transcription Study Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#e9eef2; --surface:#ffffff; --ink:#15222c; --muted:#56656f; --line:#c9d3da; --soft:#dfe6eb;
+  --s-rna-structure:#1d5fa8; --s-rna-classes:#7a3eb1; --s-transcription-basics:#0e7c6b; --s-consensus-sequences:#b0306a; --s-bacterial-initiation:#c2410c; --s-bacterial-termination:#9a5b06; --s-eukaryotic-initiation:#4d7c0f; --s-eukaryotic-termination:#475569; 
+  --again:#b42318; --hard:#9a5b06; --good:#1d5fa8; --easy:#0e7c6b;
+  color-scheme: light;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0f1a22; --surface:#172530; --ink:#e4ebf0; --muted:#9aabb7; --line:#2c3d4a; --soft:#22323e;
+  --s-rna-structure:#7fb2ec; --s-rna-classes:#c4a1ea; --s-transcription-basics:#5fd0bc; --s-consensus-sequences:#f08cbc; --s-bacterial-initiation:#fb9a6c; --s-bacterial-termination:#e8b45c; --s-eukaryotic-initiation:#a8d46a; --s-eukaryotic-termination:#a8b6c8; 
+  --again:#f2867c; --hard:#e8b45c; --good:#7fb2ec; --easy:#5fd0bc; color-scheme: dark; }}
+:root[data-theme="dark"]{
+  --bg:#0f1a22; --surface:#172530; --ink:#e4ebf0; --muted:#9aabb7; --line:#2c3d4a; --soft:#22323e;
+  --s-rna-structure:#7fb2ec; --s-rna-classes:#c4a1ea; --s-transcription-basics:#5fd0bc; --s-consensus-sequences:#f08cbc; --s-bacterial-initiation:#fb9a6c; --s-bacterial-termination:#e8b45c; --s-eukaryotic-initiation:#a8d46a; --s-eukaryotic-termination:#a8b6c8; 
+  --again:#f2867c; --hard:#e8b45c; --good:#7fb2ec; --easy:#5fd0bc; color-scheme: dark; }
+
+html{scroll-padding-top:16px;scroll-behavior:smooth}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Barlow",-apple-system,"Segoe UI",Roboto,sans-serif;font-size:18px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding:20px 16px 56px}
+h1,h2,h3{font-family:"Barlow Condensed","Barlow",sans-serif;line-height:1.1}
+h1{font-size:2.5rem;margin:.35em 0 .1em;font-weight:700}
+.kicker{color:var(--muted);font-size:.85em;letter-spacing:.06em;text-transform:uppercase;font-weight:600}
+.sub{color:var(--muted);margin:0 0 1em}
+.nav{display:flex;gap:16px;flex-wrap:wrap;font-size:.85em}
+.nav a{color:var(--muted);text-decoration:none;border-bottom:1px solid var(--line)}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 6px}
+.btn{display:inline-block;padding:9px 14px;border-radius:10px;background:var(--ink);color:var(--surface);text-decoration:none;font-weight:600;font-size:.9em;border:0;font-family:inherit;cursor:pointer}
+.btn.alt{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.toc{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin:16px 0 8px}
+.toc h2{font-size:1.2rem;margin:0 0 8px}
+.toc ol{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:4px 16px}
+.toc a{display:flex;align-items:center;gap:8px;color:var(--ink);text-decoration:none;padding:3px 0}
+.toc a::before{content:"";width:10px;height:10px;border-radius:3px;background:var(--c);flex:none}
+section{--c:var(--ink);background:var(--surface);border:1px solid var(--line);border-top:6px solid var(--c);border-radius:18px;padding:6px 20px 18px;margin-top:18px}
+section>h2{font-size:1.8rem;margin:.55em 0 .3em;display:flex;align-items:baseline;gap:10px}
+section>h2 .n{color:var(--c);font-size:.75em}
+h3{font-size:1.25rem;margin:1.2em 0 .3em;color:var(--c)}
+p{margin:.5em 0}
+ul,ol{padding-left:1.3em;margin:.4em 0}
+li{margin:.2em 0}
+b,strong{font-weight:600}
+.term{font-weight:600;color:var(--c)}
+table{width:100%;border-collapse:collapse;margin:.7em 0;font-size:.92em}
+th,td{text-align:start;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:"Barlow Condensed";font-size:1.05em;color:var(--muted);font-weight:600;border-bottom:2px solid var(--line)}
+.tablewrap{overflow-x:auto}
+.viz{margin:12px 0 4px}
+.viz svg{width:100%;height:auto;max-height:420px;display:block}
+figure{margin:12px 0}
+figcaption{color:var(--muted);font-size:.85em;text-align:center}
+.box{border-radius:12px;padding:10px 14px;margin:12px 0;background:color-mix(in srgb,var(--c) 9%,transparent);border-left:4px solid var(--c)}
+.box>.lbl{display:block;font-family:"Barlow Condensed";font-weight:700;font-size:1.05em;color:var(--c);letter-spacing:.02em}
+.box.warn{--c:var(--again)}
+details.check{border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;margin:10px 0}
+details.check summary{cursor:pointer;font-weight:600;list-style:none}
+details.check summary::-webkit-details-marker{display:none}
+details.check summary::before{content:"Check yourself ";font-family:"Barlow Condensed";color:var(--c);font-weight:700}
+details.check summary::after{content:"Show answer";display:block;color:var(--muted);font-weight:400;font-size:.85em;margin-top:2px}
+details.check[open] summary::after{content:""}
+details.check .a{margin-top:8px;padding-top:8px;border-top:1px solid var(--line)}
+.math{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:.9em;background:var(--soft);padding:1px 5px;border-radius:5px}
+.end{margin-top:26px;text-align:center;color:var(--muted)}
+.top{display:block;text-align:end;font-size:.8em;margin-top:8px;color:var(--muted)}
+svg text{font-family:"Barlow Condensed","Barlow",sans-serif;font-weight:600}
+@media (max-width:420px){body{font-size:17px}section{padding:4px 14px 14px}h1{font-size:2.1rem}}
+@media print{
+  :root{--bg:#fff!important}
+  body{font-size:12pt}
+  .nav,.actions,.top,.end .btn{display:none!important}
+  section{break-inside:auto;border-radius:0;border-left:0;border-right:0;border-bottom:0}
+  figure,.box,table,details{break-inside:avoid}
+  details.check summary::after{content:""}
+  details.check .a{display:block!important}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="nav"><a href="../../">All decks</a><a href="./">Flashcards and quiz</a></div>
+<div class="kicker">Study guide</div>
+<h1>Genetics Ch 13: Transcription</h1>
+<p class="sub">RNA structure and classes, bacterial and eukaryotic transcription.</p>
+<div class="actions"><a class="btn" href="./">Practice with flashcards</a><button class="btn alt" onclick="document.querySelectorAll('details').forEach(d=>d.open=true);print()">Print</button></div>
+<nav class="toc" aria-label="Sections"><h2>Sections</h2><ol id="toc"></ol></nav>
+<section data-sec="RNA Structure">
+<h2>RNA Structure</h2>
+<p>RNA is a chain of <span class="term">nucleotides</span>. Each nucleotide has three parts: a <b>phosphate</b>, a <b>sugar</b> and a <b>base</b>.</p>
+<figure><div data-viz="nucleotide"></div><figcaption>The three parts of a nucleotide.</figcaption></figure>
+
+<h3>The sugar: ribose</h3>
+<p>RNA's sugar is <span class="term">ribose</span>; DNA uses deoxyribose. The difference is at the <b>2′ carbon</b>: ribose has an <b>OH (hydroxyl) group</b> there, while deoxyribose has just an H.</p>
+<div class="box"><span class="lbl">Why it matters</span>The 2′ OH is chemically more reactive, which makes RNA <b>less stable</b> than DNA. RNA is easily degraded; DNA is stable.</div>
+<figure><div data-viz="sugar"></div></figure>
+
+<h3>The bases</h3>
+<div class="tablewrap"><table>
+<tr><th>Group</th><th>Rings</th><th>Bases</th><th>Remember</th></tr>
+<tr><td><b>Purines</b></td><td>Two</td><td>Adenine, guanine</td><td>Pure as gold (Ag)</td></tr>
+<tr><td><b>Pyrimidines</b></td><td>One</td><td>Cytosine, thymine, uracil</td><td>Cut the pie (CUT)</td></tr>
+</table></div>
+<ul>
+<li>Shared by DNA and RNA: <b>adenine, guanine, cytosine</b>.</li>
+<li><b>Uracil (U)</b> is in RNA but not DNA. <b>Thymine (T)</b> is in DNA but not RNA.</li>
+</ul>
+<figure><div data-viz="bases"></div></figure>
+
+<h3>Backbone and shape</h3>
+<ul>
+<li>Nucleotides are joined by <span class="term">phosphodiester bonds</span>.</li>
+<li>The backbone alternates <b>phosphate groups and ribose sugars</b>, with a 5′ to 3′ direction.</li>
+<li>RNA is <b>usually single-stranded</b>; DNA is usually double-stranded.</li>
+<li>The monomers used to build RNA are <span class="term">rNTPs</span> (ribonucleoside triphosphates): A, U, G and C.</li>
+</ul>
+
+<h3>Secondary structure</h3>
+<p>DNA's secondary structure is a double helix. RNA can take <b>many types</b> of secondary structure, created by <span class="term">intramolecular base pairing</span>: the strand folds back and pairs with itself. In those pairs, <b>A pairs with U</b> and <b>G pairs with C</b>.</p>
+<p>An RNA's <b>base sequence</b> determines its secondary structure, so different RNAs assume different structures. That matters because <b>secondary structure provides function</b>.</p>
+<figure><div data-viz="hairpin"></div><figcaption>A strand folding back on itself to form a hairpin.</figcaption></figure>
+<details class="check"><summary>Why is RNA less stable than DNA?</summary><div class="a">Ribose's 2′ OH is chemically more reactive.</div></details>
+</section>
+
+<section data-sec="RNA Classes">
+<h2>RNA Classes</h2>
+<p>All eukaryotic RNAs are synthesized <b>in the nucleus</b>.</p>
+<div class="tablewrap"><table>
+<tr><th>RNA</th><th>Function</th><th>Found in</th></tr>
+<tr><td><b>mRNA</b> (messenger)</td><td>Encodes proteins</td><td>Nucleus and cytoplasm</td></tr>
+<tr><td><b>tRNA</b> (transfer)</td><td>Adaptor between mRNA and amino acids; helps incorporate amino acids into the polypeptide chain (Ch 15)</td><td></td></tr>
+<tr><td><b>rRNA</b> (ribosomal)</td><td>Structural and functional parts of the ribosome (Ch 14)</td><td></td></tr>
+<tr><td><b>snRNA</b> (small nuclear)</td><td>Processes pre-mRNA</td><td>Eukaryotic, nucleus</td></tr>
+<tr><td><b>snoRNA</b> (small nucleolar)</td><td>Processes and assembles rRNA</td><td>Eukaryotic, nucleus</td></tr>
+<tr><td><b>miRNA</b> (micro)</td><td>Inhibits translation of mRNA</td><td>Eukaryotic, nucleus and cytoplasm</td></tr>
+<tr><td><b>siRNA</b> (small interfering)</td><td>Triggers degradation of other RNA molecules</td><td>Eukaryotic, nucleus and cytoplasm</td></tr>
+<tr><td><b>piRNA</b> (Piwi-interacting)</td><td>Suppresses transcription of transposable elements in reproductive cells</td><td></td></tr>
+<tr><td><b>crRNA</b> (CRISPR)</td><td>Assists destruction of foreign DNA</td><td><b>Prokaryotic only</b></td></tr>
+<tr><td><b>lncRNA</b> (long noncoding)</td><td>A variety of functions</td><td>Eukaryotic, nucleus and cytoplasm</td></tr>
+</table></div>
+<div class="box"><span class="lbl">Exam favorite</span>The only class in Table 13.2 found only in prokaryotes is <b>CRISPR RNA (crRNA)</b>.</div>
+</section>
+
+<section data-sec="Transcription Basics">
+<h2>Transcription Basics</h2>
+<p>The <span class="term">central dogma</span>: DNA is <b>transcribed</b> into RNA, and RNA is <b>translated</b> into protein. The flow of genetic information is linear, in one direction.</p>
+<figure><div data-viz="flow"></div></figure>
+
+<h3>Transcription vs. DNA replication</h3>
+<div class="tablewrap"><table>
+<tr><th></th><th>Transcription</th><th>DNA replication</th></tr>
+<tr><td>Enzyme</td><td>RNA polymerase</td><td>DNA polymerase</td></tr>
+<tr><td>Template</td><td>One strand (the template strand)</td><td>Both strands</td></tr>
+<tr><td>Primer</td><td>None needed</td><td>Needs a primer</td></tr>
+<tr><td>Pairs with A in template</td><td>Uracil (no thymine in RNA)</td><td></td></tr>
+<tr><td>Product</td><td>A single-stranded RNA molecule, such as mRNA</td><td>Two identical dsDNA molecules</td></tr>
+<tr><td>Direction</td><td>5′ to 3′</td><td>5′ to 3′</td></tr>
+</table></div>
+
+<h3>Requirements</h3>
+<ol><li>A single-stranded <b>DNA template</b> strand</li><li><b>rNTPs</b></li><li>The <b>transcription apparatus</b> (RNA polymerase plus other proteins)</li></ol>
+
+<h3>The two DNA strands</h3>
+<ul>
+<li>New nucleotides are always added to the <b>3′ end</b> of the RNA.</li>
+<li>The <span class="term">template strand</span> is <b>complementary and antiparallel</b> to the RNA.</li>
+<li>The <span class="term">nontemplate strand</span> has the <b>same sequence as the RNA</b> (with T instead of U). It is not transcribed.</li>
+<li><b>Either strand</b> can serve as a gene's template. Whichever is used, the RNA is always antiparallel to it.</li>
+</ul>
+<figure><div data-viz="template"></div></figure>
+<div class="box"><span class="lbl">Worked example</span>Template DNA is <span class="math">5′-AGGCTAG-3′</span>. The RNA is complementary and antiparallel: <span class="math">3′-UCCGAUC-5′</span>, which read 5′ to 3′ is <span class="math">5′-CUAGCCU-3′</span>.</div>
+
+<h3>Gene structure</h3>
+<p>Upstream to downstream, a gene has three parts:</p>
+<ul>
+<li><span class="term">Promoter</span>: DNA just <b>upstream</b> of the start site, where the transcription apparatus binds.</li>
+<li><span class="term">RNA-coding region</span>: the template for RNA synthesis.</li>
+<li><span class="term">Terminator</span>: the sequence that causes transcription to stop. It is usually part of the RNA.</li>
+</ul>
+<figure><div data-viz="gene"></div></figure>
+<p>Gene structure, especially the promoter, determines where and how transcription is initiated.</p>
+<details class="check"><summary>Which is NOT a promoter function: bind the apparatus, set the start, pick the strand, or signal where transcription ends?</summary><div class="a">Signaling where transcription ends. That is the terminator's job. (Concept Check 1)</div></details>
+</section>
+
+<section data-sec="Consensus Sequences">
+<h2>Consensus Sequences</h2>
+<p>A <span class="term">consensus sequence</span> lists the most common nucleotides at a specific location in DNA or RNA.</p>
+<div class="tablewrap"><table>
+<tr><th>Symbol</th><th>Means</th></tr>
+<tr><td><b>R</b></td><td>A purine (A or G)</td></tr>
+<tr><td><b>Y</b></td><td>A pyrimidine (C, T or U)</td></tr>
+<tr><td><b>N</b></td><td>Any nucleotide</td></tr>
+<tr><td><b>C/G</b></td><td>Split between the two groups, so list both</td></tr>
+</table></div>
+<h3>How to build one</h3>
+<ol><li><b>Go by majority</b> first.</li><li>If a position is split within one group, use <b>R</b> or <b>Y</b>.</li><li>If it is split between the groups, list both (for example C/G).</li><li>No majority and no single group: <b>N</b>.</li></ol>
+<div class="tablewrap"><table>
+<tr><th>Position reads</th><th>Consensus</th><th>Why</th></tr>
+<tr><td>T, C, T, C</td><td><b>Y</b></td><td>Both pyrimidines</td></tr>
+<tr><td>A, A, G, G</td><td><b>R</b></td><td>Both purines</td></tr>
+<tr><td>A, T, C, G</td><td><b>N</b></td><td>No majority and no single group</td></tr>
+</table></div>
+<figure><div data-viz="consensus"></div></figure>
+<div class="box"><span class="lbl">Worked example</span>Sequences TATAAAAG, TCCAATGC, AATAGCCG and TACAGGAC give <span class="math">5′-TAYARNA(C/G)-3′</span>. Position by position: T, A, Y, A, R, N, A, C/G.</div>
+</section>
+
+<section data-sec="Bacterial Initiation">
+<h2>Bacterial Initiation</h2>
+<h3>RNA polymerase</h3>
+<ul>
+<li>The <span class="term">core enzyme</span> has <b>five subunits</b>: 2 α, β, β′ and ω. It synthesizes RNA.</li>
+<li>The <span class="term">sigma (σ) factor</span> guides the core enzyme to promoters to start transcription.</li>
+<li><span class="term">Holoenzyme</span> = core enzyme + sigma factor. The holoenzyme is the form that first binds the promoter.</li>
+</ul>
+<figure><div data-viz="polymerase:holo"></div></figure>
+
+<h3>Bacterial promoter</h3>
+<div class="tablewrap"><table>
+<tr><th>Element</th><th>Consensus</th><th>Position</th></tr>
+<tr><td>−35 sequence</td><td><b>TTGACA</b></td><td>35 bp upstream of the start site</td></tr>
+<tr><td>−10 sequence</td><td><b>TATAAT</b></td><td>10 bp upstream of the start site</td></tr>
+<tr><td>Start site</td><td></td><td><b>+1</b></td></tr>
+</table></div>
+<figure><div data-viz="bprom"></div></figure>
+
+<h3>Initiation, step by step (Figure 13.12)</h3>
+<ol>
+<li>Sigma joins the core to form the <b>holoenzyme</b>.</li>
+<li>The holoenzyme binds the <b>−35 and −10</b> sequences.</li>
+<li>The holoenzyme changes conformation and <b>unwinds</b> the DNA, forming the transcription bubble.</li>
+<li>The first rNTP is complementary to the template at the <b>start site</b>. It keeps <b>all three</b> phosphates.</li>
+<li>For each later rNTP, <b>two phosphates</b> are cleaved and the nucleotide is added to the 3′ end. The remaining phosphate is in the phosphodiester bond.</li>
+<li><b>Sigma is released</b> as RNA polymerase moves beyond the promoter; the core enzyme continues alone.</li>
+</ol>
+<details class="check"><summary>What binds the −10 consensus sequence in most bacterial promoters?</summary><div class="a">The holoenzyme (core enzyme + sigma). (Concept Check 2)</div></details>
+</section>
+
+<section data-sec="Bacterial Termination">
+<h2>Bacterial Elongation and Termination</h2>
+<h3>Elongation</h3>
+<ul>
+<li>The <b>core enzyme</b> moves downstream; sigma is already released.</li>
+<li>About <b>18 bp</b> are unwound in the transcription bubble.</li>
+<li>Certain DNA sequences or RNA secondary structures can make RNA polymerase <b>pause</b>.</li>
+<li>After adding a wrong nucleotide, RNA polymerase pauses, backs up and cuts the last few nucleotides, then continues.</li>
+</ul>
+<p>Bacteria terminate transcription by <b>rho-dependent</b> or <b>rho-independent</b> mechanisms.</p>
+
+<h3>Rho-dependent termination</h3>
+<ol>
+<li>Rho binds the <span class="term">rut site</span> (rho utilization) on the RNA.</li>
+<li>RNA polymerase <b>pauses</b> downstream.</li>
+<li>Rho moves 5′ to 3′ along the RNA and <b>catches up</b>.</li>
+<li>Its <b>helicase</b> activity unwinds the RNA-DNA hybrid and releases the RNA.</li>
+</ol>
+<figure><div data-viz="rho"></div></figure>
+
+<h3>Rho-independent (intrinsic) termination</h3>
+<p>Needs <b>no additional protein factors</b>. The terminator is an <b>inverted repeat</b> followed by about <b>six adenine</b> nucleotides.</p>
+<ul>
+<li>In the RNA, the inverted repeats fold into a <b>hairpin</b> by intramolecular base pairing.</li>
+<li>The adenines are transcribed as a <b>string of U's</b>. U-A base pairs are weak, so the RNA separates from the DNA.</li>
+</ul>
+<figure><div data-viz="hairpin"></div></figure>
+</section>
+
+<section data-sec="Eukaryotic Initiation">
+<h2>Eukaryotic Initiation</h2>
+<h3>Five RNA polymerases</h3>
+<div class="tablewrap"><table>
+<tr><th>Polymerase</th><th>Transcribes</th></tr>
+<tr><td><b>Pol I</b></td><td>Large rRNAs</td></tr>
+<tr><td><b>Pol II</b></td><td>Pre-mRNA, some snRNAs, snoRNAs and some miRNAs</td></tr>
+<tr><td><b>Pol III</b></td><td>tRNAs, small rRNAs, some snRNAs and some miRNAs</td></tr>
+<tr><td><b>Pol IV</b> (plants only)</td><td>Some siRNAs</td></tr>
+<tr><td><b>Pol V</b> (plants only)</td><td>RNAs for heterochromatin formation</td></tr>
+</table></div>
+
+<h3>The players</h3>
+<ul>
+<li><span class="term">Transcription factors</span>: proteins that bind DNA and affect transcription levels.</li>
+<li><span class="term">Basal transcription apparatus</span>: RNA polymerase plus general transcription factors.</li>
+</ul>
+
+<h3>Pol II core promoter</h3>
+<p>Its conserved sequences are binding sites for general transcription factors.</p>
+<div class="tablewrap"><table>
+<tr><th>Element</th><th>Position</th></tr>
+<tr><td><b>BRE</b> (TFIIB recognition element)</td><td>−35</td></tr>
+<tr><td><b>TATA box</b> (TATAAA)</td><td>−25</td></tr>
+<tr><td><b>Initiator element</b></td><td>+1</td></tr>
+<tr><td><b>Downstream core-promoter element</b> (DPE)</td><td>+30</td></tr>
+</table></div>
+<figure><div data-viz="eprom"></div></figure>
+
+<h3>Assembly</h3>
+<ul>
+<li><b>TFIID</b> binds the TATA box first (step 1 of preinitiation complex assembly).</li>
+<li><span class="term">TBP</span> (TATA-binding protein) is a subunit of TFIID. It binds the <b>minor groove</b> and <b>bends and partly unwinds</b> the DNA.</li>
+<li>Proteins bound to distant enhancers reach the basal apparatus because the <b>DNA loops out</b>.</li>
+<li>Regulatory promoter transcription factors interact with the basal apparatus through the <span class="term">mediator</span>.</li>
+<li>After initiation, the <b>basal transcription factors stay at the promoter</b> and RNA Pol II moves downstream.</li>
+<li>Entering DNA is gripped and unwound into the bubble; nucleotides are added to the 3′ end at Pol II's <b>active site</b>.</li>
+</ul>
+<div class="box warn"><span class="lbl">Don't mix these up</span>TFIID is the general transcription factor that binds the TATA box first. TBP is the subunit of TFIID that does the binding.</div>
+</section>
+
+<section data-sec="Eukaryotic Termination">
+<h2>Eukaryotic Termination</h2>
+<div class="tablewrap"><table>
+<tr><th>Polymerase</th><th>How it terminates</th><th>Bacterial parallel</th></tr>
+<tr><td><b>Pol I</b></td><td>Requires a <b>termination factor</b></td><td>Similar to rho</td></tr>
+<tr><td><b>Pol II</b></td><td><b>Rat1 exonuclease</b> mechanism, not at specific sequences</td><td></td></tr>
+<tr><td><b>Pol III</b></td><td>Transcribes a <b>terminator sequence</b></td><td>Similar to rho-independent</td></tr>
+</table></div>
+<h3>The Rat1 mechanism (Pol II)</h3>
+<ol>
+<li>The RNA is <b>cleaved</b>, generating its 3′ end. Pol II keeps transcribing past the cleavage site.</li>
+<li><span class="term">Rat1</span>, a <b>5′ to 3′ exonuclease</b>, binds the 5′ end of the <b>trailing RNA</b> (the RNA left after the cleavage site).</li>
+<li>Rat1 degrades the RNA as it goes. Termination occurs <b>when Rat1 reaches RNA Pol II</b>.</li>
+</ol>
+<details class="check"><summary>Which eukaryotic polymerase terminates most like bacterial rho-independent termination?</summary><div class="a">RNA polymerase III, which transcribes a terminator sequence.</div></details>
+</section>
+
+<div class="end"><p>Done reading? Test what stuck.</p><a class="btn" href="./">Open flashcards and quiz</a></div>
+</div>
+<script>
+const P = {};
+/* ---------- diagrams ---------- */
+let uid = 0;
+function svgWrap(inner, h=340){ const id = "m"+(++uid);
+  return `<svg viewBox="0 0 600 ${h}" role="img" aria-label="diagram"><defs>
+  <marker id="${id}i" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" style="fill:var(--ink)"/></marker>
+  <marker id="${id}a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" style="fill:var(--c)"/></marker>
+  </defs>${inner.replace(/MK_I/g,`url(#${id}i)`).replace(/MK_A/g,`url(#${id}a)`)}</svg>`; }
+const INK="var(--ink)", ACC="var(--c)", MUT="var(--muted)";
+function label(x,y,t,o,anchor="middle"){
+  const st = o.quiz===t ? "quiz" : (o.hideAll && o.quiz ? "blank" : (o.hl===t ? "hl":"show"));
+  const w = Math.max(28, t.length*13.4+20), x0 = anchor==="middle"? x-w/2 : anchor==="start"? x-8 : x-w+8;
+  if (st==="quiz") return `<rect x="${x-30}" y="${y-22}" width="60" height="40" rx="9" style="fill:var(--c)"/><text x="${x}" y="${y+5}" text-anchor="middle" font-size="30" style="fill:var(--surface)">?</text>`;
+  if (st==="blank") return `<rect x="${x0}" y="${y-19}" width="${w}" height="34" rx="8" style="fill:var(--soft);stroke:var(--line)"/>`;
+  return `<text x="${x}" y="${y+9}" text-anchor="${anchor}" font-size="${st==="hl"?31:28}" style="fill:${st==="hl"?ACC:INK}">${t}</text>`;
+}
+const ln = (x1,y1,x2,y2,c=INK,w=2,extra="") => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" style="stroke:${c}" stroke-width="${w}" ${extra}/>`;
+const arr = (x1,y1,x2,y2,on) => ln(x1,y1,x2,y2,on?ACC:INK,on?5:3.5,`marker-end="${on?"MK_A":"MK_I"}"`);
+const D = {
+ nucleotide(o){ const f=t=>(o.hl===t||o.quiz===t)?"fill:color-mix(in srgb,var(--c) 30%,var(--surface));stroke:var(--c)":"fill:var(--soft);stroke:var(--ink)";
+  return svgWrap(`${ln(205,170,250,170)}${ln(250,170,262,196)}${ln(352,196,420,128)}
+   <circle cx="150" cy="170" r="55" style="${f("Phosphate")}" stroke-width="2.5"/>
+   <path d="M307 150 L360 190 L340 252 L274 252 L254 190Z" style="${f("Sugar")}" stroke-width="2.5"/>
+   <rect x="400" y="60" width="140" height="70" rx="4" style="${f("Base")}" stroke-width="2.5"/>
+   ${label(150,268,"Phosphate",o)}${label(307,296,"Sugar",o)}${label(470,165,"Base",o)}`); },
+ sugar(){ const pent=(x,lab,two)=>`<path d="M${x} 80 L${x+75} 135 L${x+48} 222 L${x-48} 222 L${x-75} 135Z" style="fill:var(--soft);stroke:var(--ink)" stroke-width="2.5"/>
+   <text x="${x}" y="75" text-anchor="middle" font-size="24" style="fill:var(--ink)">O</text>
+   <text x="${x+40}" y="250" text-anchor="middle" font-size="22" style="fill:var(--muted)">2′</text>
+   <rect x="${x+16}" y="258" width="70" height="40" rx="8" style="fill:color-mix(in srgb,var(--c) ${two==="OH"?35:12}%,var(--surface));stroke:var(--c)" stroke-width="2"/>
+   <text x="${x+51}" y="287" text-anchor="middle" font-size="26" style="fill:var(--ink)">${two}</text>
+   <text x="${x}" y="40" text-anchor="middle" font-size="28" style="fill:var(--ink)">${lab}</text>`;
+  return svgWrap(pent(160,"Ribose (RNA)","OH")+pent(440,"Deoxyribose (DNA)","H")+`<text x="300" y="330" text-anchor="middle" font-size="22" style="fill:var(--c)">the 2′ OH makes RNA more reactive</text>`); },
+ bases(o){ const hx=(cx,cy,r)=>{let p=[];for(let i=0;i<6;i++){const a=Math.PI/180*(60*i+30);p.push((cx+r*Math.cos(a)).toFixed(1)+" "+(cy+r*Math.sin(a)).toFixed(1));}return "M"+p.join(" L")+"Z";};
+  const pu=(cx,l)=>{const on=o.hl==="purine"||o.hl===l, st=on?"fill:color-mix(in srgb,var(--c) 30%,var(--surface));stroke:var(--c)":"fill:var(--soft);stroke:var(--ink)";
+    return `<path d="${hx(cx,170,34)}" style="${st}" stroke-width="2.5"/><path d="M${cx+29} 153 L${cx+70} 140 L${cx+86} 170 L${cx+70} 200 L${cx+29} 187Z" style="${st}" stroke-width="2.5"/><text x="${cx+20}" y="248" text-anchor="middle" font-size="30" style="fill:var(--ink)">${l}</text>`;};
+  const py=(cx,l,n)=>{const on=o.hl==="pyrimidine"||o.hl===l, st=on?"fill:color-mix(in srgb,var(--c) 30%,var(--surface));stroke:var(--c)":"fill:var(--soft);stroke:var(--ink)";
+    return `<path d="${hx(cx,170,34)}" style="${st}" stroke-width="2.5"/><text x="${cx}" y="248" text-anchor="middle" font-size="30" style="fill:var(--ink)">${l}</text><text x="${cx}" y="280" text-anchor="middle" font-size="18" style="fill:var(--muted)">${n}</text>`;};
+  return svgWrap(`<text x="130" y="70" text-anchor="middle" font-size="26" style="fill:var(--ink)">Purines: 2 rings</text>
+   <text x="430" y="70" text-anchor="middle" font-size="26" style="fill:var(--ink)">Pyrimidines: 1 ring</text>
+   ${pu(50,"A")}${pu(170,"G")}${py(340,"C","both")}${py(430,"T","DNA only")}${py(520,"U","RNA only")}
+   <text x="300" y="325" text-anchor="middle" font-size="22" style="fill:var(--muted)">A, G and C are shared by DNA and RNA</text>`); },
+ flow(){ const box=(y,t,on)=>`<rect x="230" y="${y}" width="140" height="48" rx="8" style="fill:${on?"var(--c)":"var(--soft)"};stroke:var(--ink)" stroke-width="2"/><text x="300" y="${y+33}" text-anchor="middle" font-size="26" style="fill:${on?"var(--surface)":"var(--ink)"}">${t}</text>`;
+  return svgWrap(`${box(20,"DNA",false)}${box(146,"RNA",true)}${box(272,"Protein",false)}
+   ${arr(300,70,300,140,true)}${arr(300,196,300,266,false)}
+   <text x="320" y="112" font-size="24" style="fill:var(--c)">transcription</text><text x="320" y="238" font-size="24" style="fill:var(--ink)">translation</text>
+   <path d="M228 56 C150 70 150 0 228 30" style="fill:none;stroke:var(--muted)" stroke-width="2.5" marker-end="MK_I"/>
+   <text x="160" y="110" text-anchor="end" font-size="22" style="fill:var(--muted)">replication</text>`); },
+ template(o){ const h=t=>o.hl===t;
+  return svgWrap(`${ln(60,90,540,90,INK,6)}${ln(60,220,540,220,INK,6)}
+   <text x="40" y="98" text-anchor="end" font-size="24" style="fill:var(--ink)">5′</text><text x="560" y="98" font-size="24" style="fill:var(--ink)">3′</text>
+   <text x="40" y="228" text-anchor="end" font-size="24" style="fill:var(--ink)">3′</text><text x="560" y="228" font-size="24" style="fill:var(--ink)">5′</text>
+   <text x="300" y="60" text-anchor="middle" font-size="${h("nontemplate")?28:24}" style="fill:${h("nontemplate")?ACC:INK}">nontemplate strand (same sequence as RNA)</text>
+   <text x="300" y="268" text-anchor="middle" font-size="${h("template")?28:24}" style="fill:${h("template")?ACC:INK}">template strand (read 3′ to 5′)</text>
+   ${ln(100,170,470,170,ACC,6,'marker-end="MK_A"')}
+   <text x="82" y="178" text-anchor="end" font-size="24" style="fill:var(--c)">5′</text><text x="492" y="178" font-size="24" style="fill:var(--c)">3′</text>
+   <text x="300" y="150" text-anchor="middle" font-size="22" style="fill:var(--c)">RNA grows 5′ to 3′, antiparallel to template</text>
+   <text x="300" y="320" text-anchor="middle" font-size="21" style="fill:var(--muted)">new nucleotides always join the 3′ end</text>`); },
+ gene(o){ const f=t=>(o.hl===t||o.quiz===t)?"fill:var(--c)":"fill:var(--soft)";
+  return svgWrap(`<text x="300" y="40" text-anchor="middle" font-size="22" style="fill:var(--muted)">upstream ← → downstream</text>
+   <rect x="40" y="140" width="140" height="34" style="${f("Promoter")};stroke:var(--ink)" stroke-width="2"/>
+   <rect x="180" y="140" width="250" height="34" style="${f("RNA-coding region")};stroke:var(--ink)" stroke-width="2"/>
+   <rect x="430" y="140" width="80" height="34" style="${f("Terminator")};stroke:var(--ink)" stroke-width="2"/>
+   ${ln(510,157,570,157,INK,2)}${ln(20,157,40,157,INK,2)}
+   ${ln(180,174,180,200,INK,2.5)}${ln(180,200,214,200,INK,2.5,'marker-end="MK_I"')}
+   <text x="180" y="230" text-anchor="middle" font-size="20" style="fill:var(--muted)">start site</text>
+   ${label(95,110,"Promoter",o)}${label(330,110,"RNA-coding region",o)}${label(470,232,"Terminator",o)}
+   <rect x="180" y="276" width="330" height="18" rx="4" style="fill:color-mix(in srgb,var(--c) 40%,var(--surface))"/>
+   <text x="170" y="292" text-anchor="end" font-size="20" style="fill:var(--ink)">RNA 5′</text><text x="518" y="292" font-size="20" style="fill:var(--ink)">3′</text>`); },
+ bprom(o){ const f=t=>(o.quiz===t)?"fill:color-mix(in srgb,var(--c) 30%,var(--surface));stroke:var(--c)":"fill:var(--soft);stroke:var(--ink)";
+  return svgWrap(`<text x="245" y="44" text-anchor="middle" font-size="22" style="fill:var(--muted)">promoter</text>${ln(40,58,450,58,MUT,2)}
+   ${ln(20,150,580,150,INK,3)}
+   <rect x="100" y="130" width="120" height="40" rx="4" style="${f("TTGACA")}" stroke-width="2"/>
+   <rect x="280" y="130" width="120" height="40" rx="4" style="${f("TATAAT")}" stroke-width="2"/>
+   ${label(160,104,"TTGACA",o)}${label(340,104,"TATAAT",o)}
+   <text x="160" y="210" text-anchor="middle" font-size="28" style="fill:var(--ink)">−35</text>
+   <text x="340" y="210" text-anchor="middle" font-size="28" style="fill:var(--ink)">−10</text>
+   ${ln(470,150,470,240,INK,2.5)}${ln(470,240,520,240,INK,2.5,'marker-end="MK_I"')}
+   <text x="470" y="275" text-anchor="middle" font-size="26" style="fill:var(--ink)">+1 start</text>
+   <text x="300" y="322" text-anchor="middle" font-size="21" style="fill:var(--muted)">sigma lets the holoenzyme recognize these</text>`); },
+ eprom(o){ const f=t=>(o.hl===t||o.quiz===t)?"fill:color-mix(in srgb,var(--c) 30%,var(--surface));stroke:var(--c)":"fill:var(--soft);stroke:var(--ink)";
+  const el=(x,t,pos)=>`<rect x="${x-48}" y="140" width="96" height="40" rx="4" style="${f(t)}" stroke-width="2"/><text x="${x}" y="222" text-anchor="middle" font-size="26" style="fill:var(--ink)">${pos}</text>`;
+  return svgWrap(`${ln(10,160,590,160,INK,3)}${el(75,"BRE","−35")}${el(215,"TATA box","−25")}${el(375,"Initiator","+1")}${el(525,"DPE","+30")}
+   ${label(75,110,"BRE",o)}${label(215,110,"TATA box",o)}${label(375,110,"Initiator",o)}${label(525,110,"DPE",o)}
+   <text x="300" y="275" text-anchor="middle" font-size="22" style="fill:var(--muted)">core promoter: binding sites for general TFs</text>
+   <text x="300" y="315" text-anchor="middle" font-size="22" style="fill:var(--c)">TFIID (via TBP) binds the TATA box first</text>`); },
+ polymerase(o){ const sub=(x,y,r,t,on)=>`<circle cx="${x}" cy="${y}" r="${r}" style="fill:${on?"color-mix(in srgb,var(--c) 30%,var(--surface))":"var(--soft)"};stroke:${on?"var(--c)":"var(--ink)"}" stroke-width="2"/><text x="${x}" y="${y+9}" text-anchor="middle" font-size="26" style="fill:var(--ink)">${t}</text>`;
+  const core=(cx,on)=>sub(cx-48,165,36,"β′",on)+sub(cx+48,165,36,"β",on)+sub(cx,118,32,"α",on)+sub(cx,212,32,"α",on)+sub(cx,165,22,"ω",on);
+  const holo=o.hl==="holo", sig=o.hl==="sigma";
+  return svgWrap(`${core(120,false)}<text x="120" y="290" text-anchor="middle" font-size="24" style="fill:var(--ink)">core enzyme</text>
+   ${sub(300,90,30,"σ",sig)}<text x="300" y="50" text-anchor="middle" font-size="22" style="fill:${sig?ACC:INK}">sigma factor</text>
+   ${arr(240,165,340,165,false)}
+   ${core(440,holo)}${sub(510,165,30,"σ",holo||sig)}<text x="460" y="290" text-anchor="middle" font-size="24" style="fill:${holo?ACC:INK}">holoenzyme</text>
+   <text x="300" y="330" text-anchor="middle" font-size="21" style="fill:var(--muted)">core makes RNA; sigma finds the promoter</text>`); },
+ rho(){ return svgWrap(`${ln(20,80,580,80,INK,3)}${ln(20,104,580,104,INK,3)}
+   <ellipse cx="450" cy="100" rx="100" ry="44" style="fill:var(--soft);stroke:var(--ink)" stroke-width="2"/>
+   <text x="450" y="40" text-anchor="middle" font-size="22" style="fill:var(--ink)">RNA polymerase (paused)</text>
+   <path d="M60 300 Q250 260 470 106" style="fill:none;stroke:var(--c)" stroke-width="6"/>
+   <text x="40" y="308" text-anchor="end" font-size="22" style="fill:var(--c)">5′</text><text x="480" y="136" font-size="22" style="fill:var(--c)">3′</text>
+   <rect x="120" y="262" width="80" height="20" rx="6" style="fill:none;stroke:var(--muted)" stroke-width="2" stroke-dasharray="5 4"/>
+   <text x="160" y="320" text-anchor="middle" font-size="22" style="fill:var(--muted)">rut site</text>
+   <circle cx="300" cy="230" r="26" style="fill:color-mix(in srgb,var(--c) 30%,var(--surface));stroke:var(--c)" stroke-width="2.5"/>
+   <text x="300" y="238" text-anchor="middle" font-size="22" style="fill:var(--ink)">rho</text>
+   ${arr(330,212,390,172,true)}<text x="590" y="250" text-anchor="end" font-size="21" style="fill:var(--c)">moves 5′ to 3′; its helicase</text><text x="590" y="276" text-anchor="end" font-size="21" style="fill:var(--c)">releases the RNA</text>`); },
+ hairpin(){ let pairs=""; for(let i=0;i<4;i++){ pairs+=ln(270,200-i*28,330,200-i*28,MUT,2); }
+  return svgWrap(`<path d="M60 230 L270 230 L270 110 A30 30 0 1 1 330 110 L330 230 L430 230" style="fill:none;stroke:var(--c)" stroke-width="6"/>${pairs}
+   <text x="40" y="238" text-anchor="end" font-size="22" style="fill:var(--c)">5′</text>
+   <text x="438" y="238" font-size="24" style="fill:var(--ink)">UUUUUU 3′</text>
+   <text x="160" y="140" text-anchor="middle" font-size="24" style="fill:var(--ink)">hairpin from</text><text x="160" y="168" text-anchor="middle" font-size="24" style="fill:var(--ink)">inverted repeats</text>
+   <text x="300" y="290" text-anchor="middle" font-size="22" style="fill:var(--muted)">intramolecular base pairing makes the stem</text>
+   <text x="300" y="322" text-anchor="middle" font-size="22" style="fill:var(--c)">weak U-A pairs let the RNA fall off</text>`); },
+ rat1(){ return svgWrap(`${ln(20,80,580,80,INK,3)}${ln(20,104,580,104,INK,3)}
+   <ellipse cx="470" cy="94" rx="80" ry="38" style="fill:var(--soft);stroke:var(--ink)" stroke-width="2"/><text x="470" y="40" text-anchor="middle" font-size="22" style="fill:var(--ink)">RNA Pol II keeps going</text>
+   ${ln(40,280,200,280,ACC,6)}<text x="30" y="288" text-anchor="end" font-size="20" style="fill:var(--c)">5′</text><text x="208" y="288" font-size="20" style="fill:var(--c)">3′</text>
+   <text x="120" y="320" text-anchor="middle" font-size="21" style="fill:var(--muted)">released pre-mRNA</text>
+   <path d="M250 240 Q360 200 470 112" style="fill:none;stroke:var(--c)" stroke-width="6" stroke-dasharray="2 0"/>
+   <text x="232" y="230" text-anchor="end" font-size="20" style="fill:var(--muted)">cleavage site</text>
+   <circle cx="300" cy="216" r="24" style="fill:color-mix(in srgb,var(--c) 30%,var(--surface));stroke:var(--c)" stroke-width="2.5"/><text x="300" y="223" text-anchor="middle" font-size="18" style="fill:var(--ink)">Rat1</text>
+   ${arr(330,196,385,166,true)}<text x="590" y="262" text-anchor="end" font-size="21" style="fill:var(--c)">5′ to 3′ exonuclease degrades</text><text x="590" y="288" text-anchor="end" font-size="21" style="fill:var(--c)">the RNA until it reaches Pol II</text>`); },
+ consensus(){ const rows=["TATAAAAG","TCCAATGC","AATAGCCG","TACAGGAC"], cons=["T","A","Y","A","R","N","A","C/G"];
+  let s=""; rows.forEach((r,i)=>{ [...r].forEach((ch,j)=>{ s+=`<text x="${150+j*52}" y="${60+i*42}" text-anchor="middle" font-size="26" style="fill:var(--ink);font-family:ui-monospace,Menlo,monospace">${ch}</text>`; }); });
+  cons.forEach((ch,j)=>{ s+=`<text x="${150+j*52}" y="${250}" text-anchor="middle" font-size="${ch.length>1?22:28}" style="fill:var(--c);font-family:ui-monospace,Menlo,monospace;font-weight:700">${ch}</text>`; });
+  return svgWrap(`${s}${ln(110,214,560,214,INK,2.5)}<text x="100" y="250" text-anchor="end" font-size="22" style="fill:var(--ink)">5′</text><text x="570" y="250" font-size="22" style="fill:var(--ink)">3′</text>
+   <text x="300" y="300" text-anchor="middle" font-size="21" style="fill:var(--muted)">majority first. R = purine, Y = pyrimidine,</text>
+   <text x="300" y="326" text-anchor="middle" font-size="21" style="fill:var(--muted)">N = any, C/G = split between groups</text>`); },
+}
+;
+function viz(spec, extra={}){ if(!spec) return ""; const [k,arg]=spec.split(":");
+  const o = Object.assign({}, extra); if(arg && !o.quiz) o.hl=arg;
+  return D[k] ? `<div class="viz">${D[k](o)}</div>` : ""; }
+
+
+const slug = s => s.toLowerCase().replace(/ /g,"-");
+document.querySelectorAll("section[data-sec]").forEach((s,i)=>{
+  const name=s.dataset.sec; s.id=slug(name); s.style.setProperty("--c",`var(--s-${slug(name)})`);
+  const h=s.querySelector("h2"); if(h) h.insertAdjacentHTML("afterbegin",`<span class="n">${i+1}</span>`);
+  s.insertAdjacentHTML("beforeend",'<a class="top" href="#toc">Back to sections</a>');
+  document.getElementById("toc").insertAdjacentHTML("beforeend",`<li><a href="#${s.id}" style="--c:var(--s-${slug(name)})">${name}</a></li>`);
+});
+document.querySelectorAll("[data-viz]").forEach(el=>{ el.outerHTML = viz(el.dataset.viz) || ""; });
+</script>
+</body>
+</html>
