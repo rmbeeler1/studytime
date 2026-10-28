@@ -90,6 +90,27 @@ h1{font-size:2.4rem;line-height:1.05;margin:.4em 0 .15em;font-weight:700;letter-
 .fadein{animation:fi .22s ease-out}
 @keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 svg text{font-family:"Barlow Condensed","Barlow",sans-serif;font-weight:600}
+.mode{min-width:0}
+.go.alt{background:transparent;color:var(--ink);border:1.5px solid var(--line);margin-top:10px}
+.resume{background:var(--surface);border:1.5px solid var(--ink);border-radius:18px;padding:18px 20px;margin-bottom:14px;display:grid;gap:10px}
+.resume b{display:block;font-family:"Barlow Condensed";font-size:1.5rem;line-height:1.1}
+.resume span{color:var(--muted);font-size:.9em}
+.resume .link{justify-self:center;font-size:.85em}
+.legend .nosw::before{display:none}
+.chip .score{margin-left:auto;color:var(--muted);font-weight:500;white-space:nowrap}
+.chip .score small{font-size:.85em}
+.result{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px;margin:18px 0;text-align:start}
+.big{display:flex;align-items:center;gap:14px}
+.big b{font-family:"Barlow Condensed";font-size:3.4rem;line-height:1}
+.big span{color:var(--muted);font-size:.9em;line-height:1.3}
+.gbar{display:flex;height:12px;border-radius:6px;overflow:hidden;margin:16px 0 8px;background:var(--soft)}
+.glegend{display:flex;gap:14px;flex-wrap:wrap;color:var(--muted);font-size:.8em}
+.glegend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px;vertical-align:-1px;background:var(--sw)}
+.bysec{margin-top:14px}
+.bs{display:grid;grid-template-columns:1fr auto;gap:2px 10px;padding:8px 0;border-top:1px solid var(--line)}
+.bs .bar{grid-column:1/3;margin-top:2px}
+.done .go{margin-top:10px}
+@media (max-width:420px){.modes{gap:6px}.mode{padding:9px 8px;font-size:.9em}.chip{flex-wrap:wrap}}
 </style>
 </head>
 <body>
@@ -131,80 +152,116 @@ function viz(spec, extra={}){ if(!spec) return ""; const [k,arg]=spec.split(":")
   return D[k] ? `<div class="viz">${D[k](o)}</div>` : ""; }
 
 /* ---------- scheduling ---------- */
+const BYID = Object.fromEntries(CARDS.map(c=>[c.id,c]));
+const GRADES = ["Again","Hard","Good","Easy"];
 function isDue(c){ const s=st(c.id); return s.due<=Date.now(); }
 function pool(){ return CARDS.filter(c=>store.secs.includes(c.sec)); }
 function shuffle(a){ for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];} return a; }
-function buildQueue(){ let p = pool(); if(store.mode==="due") p=p.filter(isDue);
+// Share of past grades that were Good or Easy; null if never studied.
+function pct(id){ const s=st(id); return s.seen ? Math.round((s.right||0)/s.seen*100) : null; }
+function buildQueue(){ let p = pool();
+  if(store.mode==="revisit") return shuffle(p.filter(c=>st(c.id).right)).sort((a,b)=>pct(a.id)-pct(b.id));
+  if(store.mode==="cram") return shuffle(p.slice());
+  p=p.filter(isDue);
   const seen=p.filter(c=>st(c.id).seen), fresh=p.filter(c=>!st(c.id).seen);
-  shuffle(seen); shuffle(fresh); return store.mode==="due" ? seen.concat(fresh.slice(0,30)) : shuffle(p.slice()); }
+  shuffle(seen); shuffle(fresh); return seen.concat(fresh.slice(0,30)); }
 function preview(c,g){ const s=st(c.id);
   if(g===1) return "again soon"; if(g===2) return "later this session";
   const b=Math.min(6,(s.box||0)+(g===3?1:2)); const d=INTERVALS[b]; return d===1?"1 day":d+" days"; }
-function grade(c,g){ const s=Object.assign({},st(c.id)); s.seen=(s.seen||0)+1;
+function grade(c,g){ const s=Object.assign({},st(c.id)); s.seen=(s.seen||0)+1; if(g>=3) s.right=(s.right||0)+1;
   if(g===1){ s.box=0; s.due=0; } else if(g===2){ s.box=Math.max(1,s.box||0); s.due=Date.now()+DAY*0.5; }
   else { s.box=Math.min(6,(s.box||0)+(g===3?1:2)); s.due=Date.now()+DAY*INTERVALS[s.box]-36e5; }
   store.cards[c.id]=s; save(); return s; }
 
 /* ---------- views ---------- */
 const app = document.getElementById("app");
-let S = null; // session
-function mastery(sec){ const cs=CARDS.filter(c=>c.sec===sec); let m=0,l=0;
-  cs.forEach(c=>{const b=st(c.id).box||0, seen=st(c.id).seen; if(b>=3)m++; else if(seen)l++;}); return {n:cs.length,m,l}; }
-function home(){ S=null;
-  const dueN = pool().filter(isDue).length, totalSel=pool().length;
-  const startN = store.mode==="due" ? Math.min(dueN, pool().filter(c=>isDue(c)&&st(c.id).seen).length + Math.min(30,pool().filter(c=>!st(c.id).seen).length)) : totalSel;
+// The session lives in store.session so it survives Pause, closing the tab, or a dead battery.
+let S = null, flipped = false;
+if(store.session){ store.session.ids=store.session.ids.filter(id=>BYID[id]); if(!store.session.ids.length){ store.session=null; save(); } }
+function mastery(sec){ const cs=CARDS.filter(c=>c.sec===sec); let m=0,l=0,seen=0,right=0;
+  cs.forEach(c=>{const s=st(c.id), b=s.box||0; if(b>=3)m++; else if(s.seen)l++; seen+=s.seen||0; right+=s.right||0;});
+  return {n:cs.length,m,l,p:seen?Math.round(right/seen*100):null}; }
+const MODES = {due:["Daily study","Due cards plus up to 30 new"], cram:["Test prep","Every selected card, shuffled"],
+  revisit:["Revisit","Cards you got right, lowest % first"]};
+function home(){ S=null; flipped=false;
+  const startN = buildQueue().length, R = store.session;
+  const label = {due:"cards ready to study", cram:"cards in this review", revisit:"cards to revisit"}[store.mode];
+  const empty = {due:"Nothing due. Switch to test prep.", cram:"No sections selected.", revisit:"Nothing to revisit yet."}[store.mode];
   app.innerHTML = `<a class="hub" href="../../">All decks</a><h1>__TITLE__</h1><p class="sub">__SUB__</p>
-  <div class="launch"><div class="due"><b>${startN}</b><span>${store.mode==="due"?"cards ready to study":"cards in this review"}</span></div>
-   <div class="modes">
-    <button class="mode" data-mode="due" aria-pressed="${store.mode==="due"}">Daily study<small>Due cards plus up to 30 new</small></button>
-    <button class="mode" data-mode="cram" aria-pressed="${store.mode==="cram"}">Test prep<small>Every selected card, shuffled</small></button>
-   </div>
-   <button class="go" id="go" ${startN?"":"disabled"}>${startN?"Start studying":"Nothing due. Switch to test prep."}</button></div>
+  ${R?`<div class="resume"><div><b>Session paused</b><span>${R.ids.length} of ${R.total} cards left, ${MODES[R.mode][0].toLowerCase()}</span></div>
+    <button class="go" id="resume">Resume</button><button class="link" id="discard">End it and see results</button></div>`:""}
+  <div class="launch"><div class="due"><b>${startN}</b><span>${label}</span></div>
+   <div class="modes">${Object.entries(MODES).map(([k,[n,d]])=>`<button class="mode" data-mode="${k}" aria-pressed="${store.mode===k}">${n}<small>${d}</small></button>`).join("")}</div>
+   <button class="go${R?" alt":""}" id="go" ${startN?"":"disabled"}>${startN?(R?"Start a new session":"Start studying"):empty}</button></div>
   <div class="secs"><h2>Sections</h2>${SECS.map(s=>{const m=mastery(s);return `
    <button class="sec" style="--c:${cvar(s)}" data-sec="${s}" aria-pressed="${store.secs.includes(s)}">
-    <span class="chk"></span><span class="secname">${s}</span><span class="secmeta">${m.m} of ${m.n} solid</span>
+    <span class="chk"></span><span class="secname">${s}</span><span class="secmeta">${m.m} of ${m.n} solid${m.p===null?"":` · ${m.p}% right`}</span>
     <span class="bar"><i style="width:${m.m/m.n*100}%;background:${cvar(s)}"></i><i style="width:${m.l/m.n*100}%;background:color-mix(in srgb,${cvar(s)} 35%,transparent)"></i></span>
    </button>`}).join("")}
-   <div class="legend"><span style="--sw:var(--ink)">Solid: answered right 3 times running</span><span style="--sw:color-mix(in srgb,var(--ink) 35%,transparent)">Learning</span></div></div>
-  <div class="foot"><span>${CARDS.length} cards. Progress saves on this device.</span><button class="link" id="reset">Reset progress</button></div>`;
+   <div class="legend"><span style="--sw:var(--ink)">Solid: answered right 3 times running</span><span style="--sw:color-mix(in srgb,var(--ink) 35%,transparent)">Learning</span><span class="nosw">% right: share of all your grades that were Good or Easy</span></div></div>
+  <div class="foot"><span>${CARDS.length} cards. Every grade saves on this device as you go.</span><button class="link" id="reset">Reset progress</button></div>`;
   app.querySelectorAll(".mode").forEach(b=>b.onclick=()=>{store.mode=b.dataset.mode;save();home();});
   app.querySelectorAll(".sec").forEach(b=>b.onclick=()=>{const s=b.dataset.sec; store.secs=store.secs.includes(s)?store.secs.filter(x=>x!==s):store.secs.concat(s); save(); home();});
-  document.getElementById("go").onclick=start;
-  document.getElementById("reset").onclick=()=>{ if(confirm("Erase all progress on this device?")){store.cards={};save();home();} };
+  document.getElementById("go").onclick=()=>{ if(R && !confirm("Start over? The paused session's grades are kept, but its remaining cards are dropped.")) return; start(buildQueue().map(c=>c.id), store.mode); };
+  if(R){ document.getElementById("resume").onclick=()=>{ S=store.session; card(); };
+    document.getElementById("discard").onclick=()=>{ S=store.session; finish(); }; }
+  document.getElementById("reset").onclick=()=>{ if(confirm("Erase all progress on this device?")){store.cards={};store.session=null;save();home();} };
 }
-function start(){ const q=buildQueue(); if(!q.length) return; S={q, i:0, total:q.length, done:0, flipped:false, right:0, requeued:{}}; card(); }
-function head(){ return `<div class="top"><button class="back" id="quit">Done</button><div class="track"><i style="width:${S.done/S.total*100}%"></i></div><span class="count">${S.q.length} left</span></div>`; }
+function start(ids, mode){ if(!ids.length) return;
+  S = store.session = {ids, mode, total:ids.length, done:0, right:0, requeued:{}, first:{}}; save(); flipped=false; card(); }
+function head(){ return `<div class="top"><button class="back" id="pause" title="Save your place and come back later">Pause</button>
+  <div class="track"><i style="width:${S.done/S.total*100}%"></i></div><span class="count">${S.ids.length} left</span>
+  <button class="back" id="end" title="Stop now and see your results">End</button></div>`; }
 function card(){
-  if(!S.q.length) return finish();
-  const c=S.q[0], f=S.flipped, quiz=c.kind==="diagram"?{quiz:c.quiz,hideAll:!f}:{};
+  if(!S.ids.length) return finish();
+  const c=BYID[S.ids[0]], f=flipped, p=pct(c.id), s=st(c.id);
   const frontViz = c.vf ? viz(c.viz, c.kind==="diagram"&&!f?{quiz:c.quiz,hideAll:true}:{}) : "";
   const backViz = f ? (c.kind==="diagram" ? viz(c.viz,{hl:c.quiz}) : (c.vizBack? viz(c.vizBack) : (c.vf?"":viz(c.viz)))) : "";
   app.innerHTML = head()+`<article class="card fadein" style="--c:${cvar(c.sec)}">
-   <div class="chip"><span class="dot"></span>${c.sec}${c.added?'<span class="add">Beyond the slides</span>':""}</div>
+   <div class="chip"><span class="dot"></span>${c.sec}${c.added?'<span class="add">Beyond the slides</span>':""}
+    <span class="score" title="Times you graded this card Good or Easy">${p===null?"New card":`${p}% right <small>(${s.right||0} of ${s.seen})</small>`}</span></div>
    <div class="prompt">${f&&c.kind==="cloze"?c.back:c.front}</div>
    ${(c.kind==="diagram"||c.vizBack)&&f?"":frontViz}
    ${f?`<div class="answer">${c.kind==="cloze"?"":`<div class="ans">${c.back}</div>`}${backViz}${c.extra?`<div class="extra">${c.extra}</div>`:""}</div>`:""}
    <div class="spacer"></div>
-   ${f?`<div class="grades">${["Again","Hard","Good","Easy"].map((n,k)=>`<button class="g" data-g="${k+1}" style="--gc:var(--${n.toLowerCase()})">${n}<small>${preview(c,k+1)}</small></button>`).join("")}</div>
-     <div class="keys">Keys 1 to 4 to grade</div>`
-   :`<button class="reveal" id="flip">Show answer</button><div class="keys">Space to show the answer</div>`}
+   ${f?`<div class="grades">${GRADES.map((n,k)=>`<button class="g" data-g="${k+1}" style="--gc:var(--${n.toLowerCase()})">${n}<small>${preview(c,k+1)}</small></button>`).join("")}</div>
+     <div class="keys">Keys 1 to 4 to grade. Esc to pause.</div>`
+   :`<button class="reveal" id="flip">Show answer</button><div class="keys">Space to show the answer. Esc to pause.</div>`}
   </article>`;
-  document.getElementById("quit").onclick=home;
+  document.getElementById("pause").onclick=home;
+  document.getElementById("end").onclick=()=>{ if(confirm(`End the session now? Your ${S.done} graded card${S.done===1?"":"s"} are saved; the ${S.ids.length} left stay for next time.`)) finish(); };
   if(f) app.querySelectorAll(".g").forEach(b=>b.onclick=()=>answer(+b.dataset.g));
-  else document.getElementById("flip").onclick=()=>{S.flipped=true;card();};
+  else document.getElementById("flip").onclick=()=>{flipped=true;card();};
 }
-function answer(g){ const c=S.q.shift(); grade(c,g); S.flipped=false;
-  if(g===1){ S.q.splice(Math.min(3,S.q.length),0,c); }
-  else if(g===2 && !S.requeued[c.id]){ S.requeued[c.id]=1; S.q.splice(Math.min(8,S.q.length),0,c); }
+function answer(g){ const id=S.ids.shift(); grade(BYID[id],g); flipped=false;
+  if(!(id in S.first)) S.first[id]=g;
+  if(g===1){ S.ids.splice(Math.min(3,S.ids.length),0,id); }
+  else if(g===2 && !S.requeued[id]){ S.requeued[id]=1; S.ids.splice(Math.min(8,S.ids.length),0,id); }
   else { S.done++; if(g>=3) S.right++; }
   if(S.done>S.total) S.total=S.done;
-  card(); }
-function finish(){ app.innerHTML=`<div class="done fadein"><h1>Session complete</h1>
-  <p class="sub">${S.total} cards cleared. ${S.right} answered Good or Easy on the way out.</p>
-  <button class="go" id="h">Back to sections</button></div>`; document.getElementById("h").onclick=home; }
-document.addEventListener("keydown",e=>{ if(!S||!S.q.length||e.metaKey||e.ctrlKey) return;
-  if(!S.flipped && (e.key===" "||e.key==="Enter")){ e.preventDefault(); S.flipped=true; card(); }
-  else if(S.flipped && /^[1-4]$/.test(e.key)) answer(+e.key); });
+  save(); card(); }
+function finish(){ const R=S, ids=Object.keys(R.first), n=ids.length, left=R.ids.filter(id=>!(id in R.first)).length;
+  store.session=null; save(); S=null; flipped=false;
+  const counts=[0,0,0,0], bySec={}; ids.forEach(id=>{ const g=R.first[id], sec=BYID[id]?.sec; counts[g-1]++;
+    if(sec){ const b=bySec[sec]=bySec[sec]||{n:0,r:0}; b.n++; if(g>=3) b.r++; } });
+  const known=n?Math.round((counts[2]+counts[3])/n*100):0, missed=ids.filter(id=>R.first[id]<=2&&BYID[id]);
+  app.innerHTML=`<div class="done fadein"><h1>${R.ids.length?"Session ended":"Session complete"}</h1>
+  <p class="sub">Saved on this device. ${left?`${left} card${left===1?"":"s"} not reached; they stay due for next time.`:""}</p>
+  ${n?`<div class="result"><div class="big"><b>${known}%</b><span>right on the first try<br>${counts[2]+counts[3]} of ${n} cards</span></div>
+   <div class="gbar">${counts.map((k,i)=>k?`<i style="flex:${k};background:var(--${GRADES[i].toLowerCase()})"></i>`:"").join("")}</div>
+   <div class="glegend">${counts.map((k,i)=>`<span style="--sw:var(--${GRADES[i].toLowerCase()})">${GRADES[i]} ${k}</span>`).join("")}</div>
+   <div class="bysec">${SECS.filter(s=>bySec[s]).map(s=>{const b=bySec[s],p=Math.round(b.r/b.n*100);return `
+    <div class="bs" style="--c:${cvar(s)}"><span>${s}</span><span class="secmeta">${p}% · ${b.r} of ${b.n}</span><span class="bar"><i style="width:${p}%;background:var(--c)"></i></span></div>`}).join("")}</div></div>`
+  :`<p>No cards graded this time.</p>`}
+  ${missed.length?`<button class="go" id="miss">Practice the ${missed.length} I missed</button>`:""}
+  <button class="go${missed.length?" alt":""}" id="h">Back to sections</button></div>`;
+  document.getElementById("h").onclick=home;
+  if(missed.length) document.getElementById("miss").onclick=()=>start(shuffle(missed), "cram");
+}
+document.addEventListener("keydown",e=>{ if(!S||!S.ids.length||e.metaKey||e.ctrlKey) return;
+  if(e.key==="Escape"){ home(); return; }
+  if(!flipped && (e.key===" "||e.key==="Enter")){ e.preventDefault(); flipped=true; card(); }
+  else if(flipped && /^[1-4]$/.test(e.key)) answer(+e.key); });
 home();
 </script>
 </body>
