@@ -155,8 +155,11 @@ a{color:var(--accent)}
 @media (max-width:639px){ .guides::before{background-image:var(--dash),var(--dash);background-position:0 0,100% 0} }
 
 /* ---------- hero and diagonal band ---------- */
-/* Bottom padding clears the band: text never sits on it. */
-.hero{position:relative;overflow:hidden;padding-block:var(--sp-9) calc(var(--band-height) * .6 + var(--sp-8))}
+/* Bottom padding clears the band: text never sits on it. The band rises to the right,
+   so the padding also adds that rise out to --hero-reach, the right edge of the hero's text column. */
+.hero{position:relative;overflow:hidden;--hero-reach:min(100%,50% + var(--content-max) / 2);
+  --band-clear:calc(var(--band-height) * .6 + (var(--hero-reach) + 2%) * -1 * tan(var(--band-angle)));
+  padding-block:var(--sp-9) calc(var(--band-clear) + var(--sp-8))}
 .hero>:not(.band){position:relative}
 .band{position:absolute;left:-2%;right:-2%;bottom:calc(var(--band-height) * -.4);height:var(--band-height);pointer-events:none;
   transform:skewY(var(--band-angle));transform-origin:0 100%;
@@ -165,7 +168,7 @@ a{color:var(--accent)}
 .display{color:var(--ink)}
 .hero .display{font-size:var(--fs-display);line-height:var(--lh-tight);letter-spacing:var(--track-display);font-weight:var(--fw-bold);max-width:14ch;margin-bottom:.35em}
 .lead{font-size:var(--fs-lead);line-height:1.6;color:var(--text);max-width:36ch}
-@media (max-width:639px){ .hero{padding-block:var(--sp-7) calc(var(--band-height) * .6 + var(--sp-7))} }
+@media (max-width:639px){ .hero{padding-block:var(--sp-7) calc(var(--band-clear) + var(--sp-7))} }
 
 /* ---------- eyebrow label ---------- */
 .label{display:inline-block;color:var(--accent);font-size:var(--fs-label);font-weight:var(--fw-semibold);letter-spacing:-.01em;margin:0 0 var(--sp-4)}
@@ -221,7 +224,7 @@ a{color:var(--accent)}
 :root{ --s-forces:var(--sec-blue); --s-lift-theory:var(--sec-violet); --s-airfoils:var(--sec-teal); --s-lift-factors:var(--sec-rose); --s-stalls:var(--sec-orange); --s-weight-and-balance:var(--sec-amber); --s-propellers:var(--sec-green); --s-drag:var(--sec-slate);  --deck-c:var(--sec-blue); }
 html{scroll-padding-top:var(--sp-4);scroll-behavior:smooth}
 svg text{font-family:var(--font-sans);font-weight:var(--fw-semibold);letter-spacing:-.01em}
-.deckhero{--band-from:var(--deck-c);padding-top:max(var(--sp-6),env(safe-area-inset-top,0px))}
+.deckhero{--band-from:var(--deck-c);--hero-reach:min(100%,50% + var(--reading-max) / 2);padding-top:max(var(--sp-6),env(safe-area-inset-top,0px))}
 @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .deckhero{--band-from:color-mix(in oklch,var(--deck-c) 62%,var(--bg))} }
 :root[data-theme="dark"] .deckhero{--band-from:color-mix(in oklch,var(--deck-c) 62%,var(--bg))}
 .deckhero h1{margin-bottom:var(--sp-3)}

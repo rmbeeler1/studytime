@@ -181,6 +181,7 @@ A wide band of color that cuts across the background at about −9°, low in the
 - Gradient from `--band-from` (sky) to `--band-to` (violet). `.band.solid` uses sky only.
 - On a deck or study guide, set `--band-from` to the deck's first section accent to tie the page to its subject.
 - Text never sits on the band. Floating panels and cards can overlap it; that overlap is the point.
+- `.hero` clears the band for you: its bottom padding adds the band's rise out to `--hero-reach`, the right edge of the hero's text column (the `.container` by default). A hero whose text sits in a `.reading` column sets `--hero-reach:min(100%,50% + var(--reading-max) / 2)`.
 - One band per page, always behind the top hero. Never repeat it lower down.
 
 ---

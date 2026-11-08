@@ -8,9 +8,9 @@
     "cards": 169,
     "accent": "sec-blue",
     "added": "2026-10-28",
-    "v": "79348bc6",
+    "v": "c3b8f2eb",
     "guide": "guide.html",
-    "gv": "27328cf3"
+    "gv": "fd67a201"
   },
   {
     "id": "aviation-u04-aerodynamics",
@@ -21,9 +21,9 @@
     "cards": 127,
     "accent": "sec-blue",
     "added": "2026-10-28",
-    "v": "d8fc0c62",
+    "v": "1fcb4de7",
     "guide": "guide.html",
-    "gv": "7f83cb5c"
+    "gv": "4d474c4e"
   },
   {
     "id": "genetics-ch14-rna-processing",
@@ -34,9 +34,9 @@
     "cards": 216,
     "accent": "sec-blue",
     "added": "2026-11-07",
-    "v": "433dcd38",
+    "v": "03a3186d",
     "guide": "guide.html",
-    "gv": "328638d0"
+    "gv": "0d254c95"
   },
   {
     "id": "genetics-ch15-genetic-code-translation",
@@ -47,9 +47,9 @@
     "cards": 239,
     "accent": "sec-blue",
     "added": "2026-11-07",
-    "v": "3e9d301c",
+    "v": "55172546",
     "guide": "guide.html",
-    "gv": "33ba332e"
+    "gv": "3b2a90af"
   },
   {
     "id": "genetics-ch18-mutations-dna-repair",
@@ -60,8 +60,8 @@
     "cards": 220,
     "accent": "sec-blue",
     "added": "2026-11-07",
-    "v": "5d93f5ee",
+    "v": "35d9a380",
     "guide": "guide.html",
-    "gv": "ac17361f"
+    "gv": "06a18c01"
   }
 ]
