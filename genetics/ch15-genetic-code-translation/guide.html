@@ -1,0 +1,649 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Genetics Ch 15: Genetic Code and Translation Study Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* Study Time design tokens and components. Source of truth: _builder/design/DESIGN.md
+   Decks are self-contained pages, so builders inline this file rather than linking it.
+   Load the font in <head>:
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"> */
+
+/* ---------- tokens: light ---------- */
+/* [data-theme] on any element scopes a theme to that subtree (used by preview.html). */
+:root,[data-theme="light"]{
+  /* surfaces */
+  --bg:#f6f8fc;            /* page: cool off-white */
+  --surface:#ffffff;       /* raised panels and cards */
+  --sunken:#eef2f8;        /* wells, inputs, progress tracks */
+  --soft:#eef2f8;          /* alias of --sunken; diagrams and decks use it */
+  --line:#e1e7f0;          /* hairlines and card borders */
+  --line-strong:#c9d3e1;   /* input borders, dividers that must be seen */
+  --guide:#d3dbe8;         /* dashed column guides */
+  /* text */
+  --ink:#0c2340;           /* headings, key numbers, diagram strokes */
+  --text:#425672;          /* body copy */
+  --muted:#5b6b82;         /* captions, meta, helper text */
+  --on-accent:#ffffff;     /* text on --accent fills */
+  /* brand */
+  --accent:#5332e6;        /* violet: links, primary buttons, eyebrow labels */
+  --accent-hover:#4322cf;
+  --accent-tint:#efecfe;   /* violet wash behind selected items */
+  --sky:#0aa5f0;           /* bright sky: bands, fills, illustration only (not text) */
+  --sky-ink:#0068a8;       /* sky as text */
+  --sky-tint:#e3f4fd;
+  --band-from:#0aa5f0;     /* diagonal hero band */
+  --band-to:#5332e6;
+  /* feedback (flashcard grades) */
+  --again:#b42318; --hard:#985a00; --good:#2152c4; --easy:#0b7a5f;
+  /* section accents: decks map their 6 to 8 sections onto these, in order */
+  --sec-blue:#1f5bc4; --sec-violet:#7d3fc8; --sec-teal:#08776b; --sec-rose:#be2b6a;
+  --sec-orange:#bd4310; --sec-amber:#946000; --sec-green:#3d7a17; --sec-slate:#4d5d76;
+
+  /* type */
+  --font-sans:"Inter",ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+  --font-mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  --fs-display:clamp(2.75rem,1.6rem + 5vw,5.25rem);  /* hero headline */
+  --fs-h1:clamp(2.25rem,1.6rem + 2.8vw,3.5rem);
+  --fs-h2:clamp(1.625rem,1.3rem + 1.4vw,2.25rem);
+  --fs-h3:1.375rem;
+  --fs-lead:clamp(1.125rem,1rem + .5vw,1.375rem);    /* intro paragraph under a headline */
+  --fs-body:1.0625rem;     /* 17px */
+  --fs-small:.9375rem;     /* 15px */
+  --fs-caption:.8125rem;   /* 13px */
+  --fs-label:1rem;         /* eyebrow label */
+  --lh-tight:1.04; --lh-heading:1.15; --lh-body:1.65;
+  --track-display:-.04em; --track-heading:-.025em; --track-body:-.006em;
+  --fw-regular:400; --fw-medium:500; --fw-semibold:600; --fw-bold:700; --fw-black:800;
+
+  /* spacing: 4px base */
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:24px; --sp-6:32px;
+  --sp-7:48px; --sp-8:64px; --sp-9:96px; --sp-10:128px;
+  --gutter:16px;           /* side gutter on phones; 24px from 640px, 32px from 1024px */
+  --content-max:1080px;    /* wide grid for home page and heroes */
+  --reading-max:680px;     /* one column of prose or one flashcard */
+  --columns:4;             /* dashed guides; 2 on phones */
+
+  /* radii */
+  --r-xs:4px; --r-sm:6px; --r-md:10px; --r-lg:16px; --r-xl:24px; --r-pill:999px;
+
+  /* shadows: two layers each, tinted with navy, never pure black */
+  --shadow-xs:0 1px 2px rgba(12,35,64,.06),0 1px 1px rgba(12,35,64,.04);
+  --shadow-sm:0 2px 5px -1px rgba(30,40,90,.10),0 1px 3px -1px rgba(12,35,64,.10);
+  --shadow-md:0 13px 27px -5px rgba(30,40,90,.16),0 8px 16px -8px rgba(12,35,64,.18);
+  --shadow-lg:0 30px 60px -12px rgba(30,40,90,.22),0 18px 36px -18px rgba(12,35,64,.26);
+  --shadow-xl:0 50px 100px -20px rgba(30,40,90,.24),0 30px 60px -30px rgba(12,35,64,.30);
+
+  /* motion */
+  --ease-out:cubic-bezier(.2,.7,.2,1);
+  --ease-in-out:cubic-bezier(.65,0,.35,1);
+  --dur-fast:150ms; --dur-base:240ms; --dur-slow:420ms;
+
+  /* diagonal band */
+  --band-angle:-9deg;
+  --band-height:clamp(180px,32vw,380px);
+
+  color-scheme:light;
+}
+
+/* ---------- tokens: dark ---------- */
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --bg:#0a1524; --surface:#122036; --sunken:#0e1a2d; --soft:#1a2a44; --line:#22344f; --line-strong:#33496a; --guide:#22344f;
+  --ink:#f2f6fc; --text:#b6c3d6; --muted:#93a3ba; --on-accent:#0a1524;
+  --accent:#a99cff; --accent-hover:#c0b6ff; --accent-tint:#221f4d;
+  --sky:#38bdf8; --sky-ink:#5ec8ff; --sky-tint:#0d2a40; --band-from:#0b6fae; --band-to:#4b35c9;
+  --again:#ff8b80; --hard:#f2bd5c; --good:#86b1ff; --easy:#4fd6ad;
+  --sec-blue:#86b4ff; --sec-violet:#caa7f7; --sec-teal:#4fd2bf; --sec-rose:#f892c1;
+  --sec-orange:#ffa173; --sec-amber:#f0bf5e; --sec-green:#a6d86c; --sec-slate:#b0bdd2;
+  --shadow-xs:0 1px 2px rgba(0,0,0,.30);
+  --shadow-sm:0 2px 5px -1px rgba(0,0,0,.40),0 1px 3px -1px rgba(0,0,0,.30);
+  --shadow-md:0 13px 27px -5px rgba(0,0,0,.45),0 8px 16px -8px rgba(0,0,0,.40);
+  --shadow-lg:0 30px 60px -12px rgba(0,0,0,.55),0 18px 36px -18px rgba(0,0,0,.50);
+  --shadow-xl:0 50px 100px -20px rgba(0,0,0,.60),0 30px 60px -30px rgba(0,0,0,.55);
+  color-scheme:dark;
+}}
+:root[data-theme="dark"],[data-theme="dark"]{
+  --bg:#0a1524; --surface:#122036; --sunken:#0e1a2d; --soft:#1a2a44; --line:#22344f; --line-strong:#33496a; --guide:#22344f;
+  --ink:#f2f6fc; --text:#b6c3d6; --muted:#93a3ba; --on-accent:#0a1524;
+  --accent:#a99cff; --accent-hover:#c0b6ff; --accent-tint:#221f4d;
+  --sky:#38bdf8; --sky-ink:#5ec8ff; --sky-tint:#0d2a40; --band-from:#0b6fae; --band-to:#4b35c9;
+  --again:#ff8b80; --hard:#f2bd5c; --good:#86b1ff; --easy:#4fd6ad;
+  --sec-blue:#86b4ff; --sec-violet:#caa7f7; --sec-teal:#4fd2bf; --sec-rose:#f892c1;
+  --sec-orange:#ffa173; --sec-amber:#f0bf5e; --sec-green:#a6d86c; --sec-slate:#b0bdd2;
+  --shadow-xs:0 1px 2px rgba(0,0,0,.30);
+  --shadow-sm:0 2px 5px -1px rgba(0,0,0,.40),0 1px 3px -1px rgba(0,0,0,.30);
+  --shadow-md:0 13px 27px -5px rgba(0,0,0,.45),0 8px 16px -8px rgba(0,0,0,.40);
+  --shadow-lg:0 30px 60px -12px rgba(0,0,0,.55),0 18px 36px -18px rgba(0,0,0,.50);
+  --shadow-xl:0 50px 100px -20px rgba(0,0,0,.60),0 30px 60px -30px rgba(0,0,0,.55);
+  color-scheme:dark;
+}
+:root,[data-theme]{--focus-ring:0 0 0 3px color-mix(in srgb,var(--accent) 45%,transparent)}
+@media (min-width:640px){ :root{ --gutter:24px; } }
+@media (min-width:1024px){ :root{ --gutter:32px; } }
+@media (max-width:639px){ :root{ --columns:2; } }
+
+/* ---------- base ---------- */
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font-sans);font-size:var(--fs-body);
+  line-height:var(--lh-body);letter-spacing:var(--track-body);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2,h3,h4{color:var(--ink);font-weight:var(--fw-bold);line-height:var(--lh-heading);letter-spacing:var(--track-heading);margin:0 0 .4em;text-wrap:balance}
+h1{font-size:var(--fs-h1)} h2{font-size:var(--fs-h2)} h3{font-size:var(--fs-h3)}
+p{margin:0 0 1em;text-wrap:pretty}
+a{color:var(--accent)}
+:focus-visible{outline:none;box-shadow:var(--focus-ring);border-radius:var(--r-sm)}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---------- layout ---------- */
+.container{max-width:calc(var(--content-max) + 2*var(--gutter));margin-inline:auto;padding-inline:var(--gutter)}
+.reading{max-width:calc(var(--reading-max) + 2*var(--gutter));margin-inline:auto;padding-inline:var(--gutter)}
+
+/* Dashed vertical column guides. Put .guides on a positioned wrapper; content above it needs position:relative. */
+.guides{position:relative;isolation:isolate}
+.guides::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  width:min(100% - 2*var(--gutter),var(--content-max));margin-inline:auto;
+  --dash:linear-gradient(to bottom,var(--guide) 0 4px,transparent 4px 8px);
+  background-image:var(--dash),var(--dash),var(--dash),var(--dash),var(--dash);
+  background-size:1px 8px;background-repeat:repeat-y;
+  background-position:0 0,33.333% 0,50% 0,66.667% 0,100% 0}
+@media (min-width:640px){ .guides::before{background-position:0 0,25% 0,50% 0,75% 0,100% 0} }
+@media (max-width:639px){ .guides::before{background-image:var(--dash),var(--dash);background-position:0 0,100% 0} }
+
+/* ---------- hero and diagonal band ---------- */
+/* Bottom padding clears the band: text never sits on it. */
+.hero{position:relative;overflow:hidden;padding-block:var(--sp-9) calc(var(--band-height) * .6 + var(--sp-8))}
+.hero>:not(.band){position:relative}
+.band{position:absolute;left:-2%;right:-2%;bottom:calc(var(--band-height) * -.4);height:var(--band-height);pointer-events:none;
+  transform:skewY(var(--band-angle));transform-origin:0 100%;
+  background:linear-gradient(100deg,var(--band-from) 0%,var(--band-from) 50%,var(--band-to) 100%)}
+.band.solid{background:var(--band-from)}
+.display{color:var(--ink)}
+.hero .display{font-size:var(--fs-display);line-height:var(--lh-tight);letter-spacing:var(--track-display);font-weight:var(--fw-bold);max-width:14ch;margin-bottom:.35em}
+.lead{font-size:var(--fs-lead);line-height:1.6;color:var(--text);max-width:36ch}
+@media (max-width:639px){ .hero{padding-block:var(--sp-7) calc(var(--band-height) * .6 + var(--sp-7))} }
+
+/* ---------- eyebrow label ---------- */
+.label{display:inline-block;color:var(--accent);font-size:var(--fs-label);font-weight:var(--fw-semibold);letter-spacing:-.01em;margin:0 0 var(--sp-4)}
+.label.sky{color:var(--sky-ink)}
+.label.sec{color:var(--c,var(--accent))}
+.tag{display:inline-flex;align-items:center;gap:6px;padding:2px 10px;border-radius:var(--r-pill);background:var(--accent-tint);
+  color:var(--accent);font-size:var(--fs-caption);font-weight:var(--fw-semibold);line-height:1.6}
+.tag.sec{background:color-mix(in srgb,var(--c) 12%,transparent);color:var(--c)}
+
+/* ---------- buttons and links (both carry a chevron) ---------- */
+.btn,.link{--chev:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M3 1.5 6.5 5 3 8.5' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+.btn::after,.link::after{content:"";width:.7em;height:.7em;flex:none;background:currentColor;
+  -webkit-mask:var(--chev) center/contain no-repeat;mask:var(--chev) center/contain no-repeat;
+  transition:transform var(--dur-fast) var(--ease-out)}
+.btn:hover::after,.link:hover::after{transform:translateX(3px)}
+.btn.no-chev::after{display:none}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4em;min-height:44px;padding:10px 20px 10px 22px;
+  border:0;border-radius:var(--r-pill);background:var(--accent);color:var(--on-accent);
+  font:inherit;font-weight:var(--fw-semibold);font-size:var(--fs-body);line-height:1.2;text-decoration:none;cursor:pointer;
+  transition:background var(--dur-fast) var(--ease-out),box-shadow var(--dur-fast) var(--ease-out),transform var(--dur-fast) var(--ease-out)}
+.btn:hover{background:var(--accent-hover)}
+.btn:active{transform:translateY(1px)}
+.btn:disabled{opacity:.45;cursor:default}
+.btn.dark{background:var(--ink);color:var(--surface)}
+.btn.dark:hover{background:color-mix(in srgb,var(--ink) 86%,var(--accent))}
+.btn.ghost{background:var(--surface);color:var(--ink);box-shadow:var(--shadow-sm)}
+.btn.ghost:hover{box-shadow:var(--shadow-md)}
+.btn.block{width:100%}
+.btn.sm{min-height:36px;padding:6px 14px 6px 16px;font-size:var(--fs-small)}
+.link{display:inline-flex;align-items:center;gap:.3em;padding:6px 2px;color:var(--accent);font-weight:var(--fw-semibold);text-decoration:none;cursor:pointer;background:none;border:0;font:inherit;font-weight:var(--fw-semibold)}
+.link:hover{color:var(--accent-hover)}
+.link.quiet{color:var(--muted);font-weight:var(--fw-medium)}
+
+/* ---------- cards and panels ---------- */
+.card{position:relative;background:var(--surface);border-radius:var(--r-lg);box-shadow:var(--shadow-md);padding:var(--sp-5)}
+.card.flat{box-shadow:none;border:1px solid var(--line)}
+.card.float{box-shadow:var(--shadow-lg)}
+.card.lift{transition:box-shadow var(--dur-base) var(--ease-out),transform var(--dur-base) var(--ease-out)}
+.card.lift:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+.card.accent{border-top:4px solid var(--c,var(--accent))}
+.panel{background:var(--surface);border-radius:var(--r-md);box-shadow:var(--shadow-xl);overflow:hidden}
+.panel-head{display:flex;align-items:center;justify-content:space-between;padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--line);font-size:var(--fs-small);color:var(--ink);font-weight:var(--fw-semibold)}
+.panel-body{padding:var(--sp-4)}
+.track{height:6px;border-radius:var(--r-pill);background:var(--sunken);overflow:hidden}
+.track>i{display:block;height:100%;background:var(--c,var(--accent));border-radius:inherit;transition:width var(--dur-slow) var(--ease-out)}
+
+/* ---------- motion ---------- */
+.rise{animation:rise var(--dur-base) var(--ease-out) both}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* ---------- study guide: DESIGN.md section 11. Tokens only; no raw colors, sizes, radii or shadows. ---------- */
+:root{ --s-proteins:var(--sec-blue); --s-one-gene-one-enzyme:var(--sec-violet); --s-the-genetic-code:var(--sec-teal); --s-degeneracy-and-wobble:var(--sec-rose); --s-translation-basics:var(--sec-orange); --s-initiation:var(--sec-amber); --s-elongation:var(--sec-green); --s-termination:var(--sec-slate);  --deck-c:var(--sec-blue); }
+html{scroll-padding-top:var(--sp-4);scroll-behavior:smooth}
+svg text{font-family:var(--font-sans);font-weight:var(--fw-semibold);letter-spacing:-.01em}
+.deckhero{--band-from:var(--deck-c);padding-top:max(var(--sp-6),env(safe-area-inset-top,0px))}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .deckhero{--band-from:color-mix(in oklch,var(--deck-c) 62%,var(--bg))} }
+:root[data-theme="dark"] .deckhero{--band-from:color-mix(in oklch,var(--deck-c) 62%,var(--bg))}
+.deckhero h1{margin-bottom:var(--sp-3)}
+.deckhero .label{margin-bottom:var(--sp-2)}
+.deckhero .lead{max-width:40ch;margin:0}
+.toplinks{display:flex;gap:var(--sp-5);flex-wrap:wrap;margin:0 0 var(--sp-6)}
+.overlap{position:relative;margin-top:calc(var(--band-height) * -.5);padding-bottom:var(--sp-8)}
+.toc h2{font-size:var(--fs-h3);margin-bottom:var(--sp-3)}
+.toc ol{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--sp-1) var(--sp-5)}
+.toc a{display:flex;align-items:center;gap:var(--sp-2);color:var(--ink);text-decoration:none;font-weight:var(--fw-medium);padding:var(--sp-1) 0;line-height:1.35}
+.toc a:hover{color:var(--accent)}
+.toc a::before{content:"";width:10px;height:10px;border-radius:var(--r-xs);background:var(--c);flex:none}
+.tocfoot{display:flex;justify-content:space-between;align-items:center;gap:var(--sp-3);margin-top:var(--sp-4);padding-top:var(--sp-3);border-top:1px solid var(--line)}
+section.card{margin-top:var(--sp-6)}
+section>h2{display:flex;align-items:baseline;gap:var(--sp-3);margin:var(--sp-2) 0 var(--sp-3)}
+section>h2 .n{color:var(--c)}
+h3{color:var(--ink);margin:var(--sp-6) 0 var(--sp-2)}
+section p,section li{max-width:var(--reading-max)}
+ul,ol{padding-left:1.3em;margin:0 0 1em}
+li{margin:var(--sp-1) 0}
+b,strong{font-weight:var(--fw-semibold);color:var(--ink)}
+.term{font-weight:var(--fw-semibold);color:var(--c)}
+.tablewrap{overflow-x:auto;margin:var(--sp-3) 0 var(--sp-4)}
+table{width:100%;border-collapse:collapse;font-size:var(--fs-small)}
+th,td{text-align:start;padding:var(--sp-2) var(--sp-3) var(--sp-2) 0;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:var(--fw-semibold)}
+td{color:var(--text)}
+.viz{margin:var(--sp-4) 0 var(--sp-2)}
+.viz svg{width:100%;height:auto;max-height:420px;display:block}
+figure{margin:var(--sp-4) 0}
+figcaption{color:var(--muted);font-size:var(--fs-caption)}
+.box{--bar:var(--c);border-radius:var(--r-md);padding:var(--sp-3) var(--sp-4);margin:var(--sp-4) 0;background:color-mix(in srgb,var(--bar) 9%,var(--surface));border-left:4px solid var(--bar)}
+.box.warn{--bar:var(--again)}
+.box>.lbl{display:block;font-weight:var(--fw-bold);color:var(--bar);margin-bottom:var(--sp-1)}
+details.check{border:1.5px solid var(--line-strong);border-radius:var(--r-md);padding:var(--sp-3) var(--sp-4);margin:var(--sp-3) 0}
+details.check summary{cursor:pointer;list-style:none;color:var(--ink);font-weight:var(--fw-semibold)}
+details.check summary::-webkit-details-marker{display:none}
+details.check summary .link{padding:0 0 var(--sp-1)}
+details.check summary .link::after{transition:transform var(--dur-fast) var(--ease-out)}
+details.check[open] summary .link::after{transform:rotate(90deg)}
+details.check .a{margin-top:var(--sp-3);padding-top:var(--sp-3);border-top:1px solid var(--line);color:var(--text)}
+.math{font-family:var(--font-mono);font-size:.92em;background:var(--sunken);padding:1px var(--sp-1);border-radius:var(--r-xs);color:var(--ink)}
+.backtop{display:flex;justify-content:flex-end;margin-top:var(--sp-3)}
+.end{margin-top:var(--sp-7)}
+.end h2{font-size:var(--fs-h3)}
+@media (max-width:520px){.toc ol{grid-template-columns:1fr}}
+@media (max-width:420px){.card{padding:var(--sp-4)}}
+@media print{
+  :root{--bg:var(--surface)}
+  .band,.toplinks,.tocfoot,.backtop,.end{display:none!important}
+  .guides::before{display:none}
+  .hero{padding-block:0 var(--sp-4)}
+  .overlap{margin-top:0;padding-bottom:0}
+  .card{box-shadow:none}
+  section.card{break-inside:auto}
+  figure,.box,table,details{break-inside:avoid}
+  details.check summary .link::after{display:none}
+}
+</style>
+</head>
+<body>
+<header class="hero guides deckhero"><div class="band" aria-hidden="true"></div><div class="reading">
+  <nav class="toplinks"><a class="link quiet" href="../../">Back to all decks</a><a class="link" href="./">Study the flashcards</a></nav>
+  <p class="label">Genetics study guide</p><h1>Ch 15: Genetic Code and Translation</h1><p class="lead">Proteins, one gene one enzyme, cracking the code, and how ribosomes translate mRNA.</p></div></header>
+<main class="reading overlap">
+<nav class="card float toc" id="toc" aria-label="Sections"><h2>Contents</h2><ol id="toclist"></ol>
+  <div class="tocfoot"><span class="hint">Every fact here is also a flashcard.</span><button class="btn ghost sm no-chev" onclick="document.querySelectorAll('details').forEach(d=>d.open=true);print()">Print</button></div></nav>
+<section data-sec="Proteins">
+<h2>Proteins</h2>
+<h3>Amino acids</h3>
+<p><b>20 common amino acids</b> are found in proteins. All share a common structure around the α carbon (an <b>amino group</b>, a <b>carboxyl group</b>, a <b>hydrogen</b>) but differ at the <span class="term">R (radical) group</span>, or side chain. The R group is unique to each amino acid and determines its chemical properties. Notice the polarity: the amino group is positive (+H3N), the carboxyl group negative (COO−).</p>
+<figure><div data-viz="aminoacid"></div><figcaption>Fig. 15.5.</figcaption></figure>
+<div class="tablewrap"><table>
+<tr><th>R group</th><th>Property</th><th>Amino acids</th></tr>
+<tr><td><b>Nonpolar, aliphatic</b></td><td>Side chains mostly carbon and hydrogen; hydrophobic</td><td>Gly, Ala, Val, Leu, Ile, Met</td></tr>
+<tr><td><b>Polar, uncharged</b></td><td>Contain electronegative atoms like oxygen or nitrogen; hydrophilic</td><td>Ser, Thr, Cys, Pro, Asn, Gln</td></tr>
+<tr><td><b>Aromatic</b></td><td></td><td>Phe, Tyr, Trp</td></tr>
+<tr><td><b>Positively charged</b></td><td>Interact with negatively charged groups</td><td>Lys, Arg, His</td></tr>
+<tr><td><b>Negatively charged</b></td><td>Interact with positively charged groups</td><td>Asp, Glu</td></tr>
+</table></div>
+<div class="box"><span class="lbl">Reminder</span>DNA and RNA are negatively charged because of their phosphate backbone. <b>Lysine and arginine</b> especially interact with RNA and DNA.</div>
+
+<h3>Peptide bonds and polypeptides</h3>
+<p>Amino acids are joined by <span class="term">peptide bonds</span>: the carboxyl group of one amino acid is covalently bound to the amino group of another, releasing water (Fig. 15.6).</p>
+<figure><div data-viz="peptide"></div></figure>
+<p>A <span class="term">polypeptide</span> is a long, continuous chain of amino acids linked by peptide bonds (10 to 50+ amino acids). It has polarity:</p>
+<ul>
+<li><span class="term">N-terminus</span>: free amino group (+ charge).</li>
+<li><span class="term">C-terminus</span>: free carboxyl group (− charge).</li>
+</ul>
+<figure><div data-viz="polarity"></div></figure>
+
+<h3>Protein structure (Fig. 15.7)</h3>
+<p>The amino acid sequence determines the 3D structure and function of the protein, because different R groups have different properties.</p>
+<ul>
+<li><b>Primary</b>: the sequence of amino acids.</li>
+<li><b>Secondary</b>: interactions between amino acids fold the primary structure, for example into an alpha helix.</li>
+<li><b>Tertiary</b>: the secondary structure folds further.</li>
+<li><b>Quaternary</b>: two or more polypeptide chains associate.</li>
+</ul>
+<h3>Functions</h3>
+<ul>
+<li><span class="term">Enzymes</span>: biological catalysts that drive the chemical reactions of a cell.</li>
+<li><span class="term">Structural</span>: provide shape, rigidity and strength to cells, tissues and organs.</li>
+<li>And many more: defense and immunity, transport and storage, signaling and regulation.</li>
+</ul>
+</section>
+
+<section data-sec="One Gene One Enzyme">
+<h2>One Gene One Enzyme</h2>
+<p>The <span class="term">one gene, one enzyme hypothesis</span> proposed that each gene in an organism encodes a single enzyme (protein). Beadle and Tatum shared the 1958 Nobel Prize for it.</p>
+<h3>Neurospora and auxotrophs</h3>
+<ul>
+<li><i>Neurospora</i> is a filamentous fungus. It can grow in rich media (all amino acids supplied) or in minimal media with no amino acids, where it synthesizes all required amino acids and other essential biomolecules using enzymes.</li>
+<li><span class="term">Auxotrophic</span>: unable to produce a particular nutrient.</li>
+<li>Key to success: the main vegetative part of the fungus is <b>haploid</b> (one copy of each chromosome).</li>
+<li>Spores were mutated with X-rays, grown on complete medium, then tested on minimal medium. A mutant that grows on minimal medium supplemented with arginine must be defective for arginine production.</li>
+</ul>
+
+<h3>Arginine synthesis</h3>
+<p>Arginine is produced stepwise from a precursor: precursor → <b>ornithine</b> → <b>citrulline</b> → <b>arginine</b>. An auxotrophic mutant <b>cannot grow on a compound that comes before the blocked step</b>, but can grow on anything after it.</p>
+<figure><div data-viz="pathway:2"></div><figcaption>A step 2 block: the mutant grows on citrulline or arginine.</figcaption></figure>
+<p>Srb and Horowitz recovered several arginine auxotrophs (Table 15.1; + means growth, − no growth):</p>
+<div class="tablewrap"><table>
+<tr><th>Mutant</th><th>Ornithine</th><th>Citrulline</th><th>Arginine</th></tr>
+<tr><td><b>Group I</b></td><td>+</td><td>+</td><td>+</td></tr>
+<tr><td><b>Group II</b></td><td>−</td><td>+</td><td>+</td></tr>
+<tr><td><b>Group III</b></td><td>−</td><td>−</td><td>+</td></tr>
+</table></div>
+<p>Group I blocks a step before ornithine, Group II a step before citrulline, and Group III a step before arginine.</p>
+<div class="box"><span class="lbl">Conclusion</span>Each gene encodes a separate protein, in this case an enzyme: gene A, B and C each make the enzyme for one step. One gene codes for one enzyme!</div>
+
+<h3>Concept Check</h3>
+<p>Auxotrophic mutation 103 grows on minimal medium supplemented with A, B or C. Mutation 106 grows on A and C, but not B. Mutation 102 grows only on C. What is the order of A, B and C?</p>
+<div class="box"><span class="lbl">Worked example</span>Treat it like Table 15.1: 103 grows on everything, so it is Group I (earliest block); 106 is Group II; 102 is Group III. C must be last, since it rescues all three. B rescues only 103, so it comes first. Order: <span class="math">precursor → B → A → C</span>, made by enzymes 103, 106 and 102.</div>
+<figure><div data-viz="cc103"></div></figure>
+</section>
+
+<section data-sec="The Genetic Code">
+<h2>The Genetic Code</h2>
+<p>DNA and RNA are made of nucleotides; proteins are made of amino acids. A <span class="term">codon</span> is the set of nucleotides that encodes a single amino acid. There are 4 nucleotides but 20 amino acids:</p>
+<div class="tablewrap"><table>
+<tr><th>Codon length</th><th>Combinations</th></tr>
+<tr><td>1 nucleotide</td><td>1 × 4 = 4</td></tr>
+<tr><td>2 nucleotides</td><td>4 × 4 = 16</td></tr>
+<tr><td>3 nucleotides</td><td>4 × 4 × 4 = 64</td></tr>
+</table></div>
+<p>The genetic code is a <b>triplet code</b>!</p>
+
+<h3>Cracking it: two methods</h3>
+<ol>
+<li><b>Homopolymers</b> (Nirenberg and Matthaei, Fig. 15.8). In vitro translation of RNA homopolymers such as poly(U), 5′-UUUUUUUUUUUU-3′, made with polynucleotide phosphorylase. Each of 20 tubes had a different radioactively labeled amino acid; they saw which one was incorporated into polypeptide. <b>UUU encodes phenylalanine</b>; in other experiments AAA encoded lysine and CCC encoded proline.</li>
+<li><b>Ribosome-bound tRNAs</b> (Nirenberg and Leder, Fig. 15.9). Add a 3-nucleotide RNA of known sequence to ribosomes, add tRNAs carrying a specific radioactively labeled amino acid, and find which aminoacyl-tRNA binds the ribosome + RNA. The mixture is passed through a filter: tRNAs paired with ribosome-bound mRNA stick, unbound tRNAs pass. With GUU, the bound tRNAs carried valine, so <b>GUU specifies valine</b>. The anticodon of the tRNA base pairs complementarily with the mRNA.</li>
+</ol>
+
+<h3>The codon table</h3>
+<div class="tablewrap"><table>
+<tr><th>First two bases</th><th>Codons</th><th>Amino acid</th></tr>
+<tr><td><b>UU</b></td><td>UUU, UUC</td><td>Phe</td></tr>
+<tr><td><b></b></td><td>UUA, UUG</td><td>Leu</td></tr>
+<tr><td><b>UC</b></td><td>UCU, UCC, UCA, UCG</td><td>Ser</td></tr>
+<tr><td><b>UA</b></td><td>UAU, UAC</td><td>Tyr</td></tr>
+<tr><td><b></b></td><td>UAA, UAG</td><td><b>Stop</b></td></tr>
+<tr><td><b>UG</b></td><td>UGU, UGC</td><td>Cys</td></tr>
+<tr><td><b></b></td><td>UGA</td><td><b>Stop</b></td></tr>
+<tr><td><b></b></td><td>UGG</td><td>Trp</td></tr>
+<tr><td><b>CU</b></td><td>CUU, CUC, CUA, CUG</td><td>Leu</td></tr>
+<tr><td><b>CC</b></td><td>CCU, CCC, CCA, CCG</td><td>Pro</td></tr>
+<tr><td><b>CA</b></td><td>CAU, CAC</td><td>His</td></tr>
+<tr><td><b></b></td><td>CAA, CAG</td><td>Gln</td></tr>
+<tr><td><b>CG</b></td><td>CGU, CGC, CGA, CGG</td><td>Arg</td></tr>
+<tr><td><b>AU</b></td><td>AUU, AUC, AUA</td><td>Ile</td></tr>
+<tr><td><b></b></td><td><b>AUG</b></td><td><b>Met (start)</b></td></tr>
+<tr><td><b>AC</b></td><td>ACU, ACC, ACA, ACG</td><td>Thr</td></tr>
+<tr><td><b>AA</b></td><td>AAU, AAC</td><td>Asn</td></tr>
+<tr><td><b></b></td><td>AAA, AAG</td><td>Lys</td></tr>
+<tr><td><b>AG</b></td><td>AGU, AGC</td><td>Ser</td></tr>
+<tr><td><b></b></td><td>AGA, AGG</td><td>Arg</td></tr>
+<tr><td><b>GU</b></td><td>GUU, GUC, GUA, GUG</td><td>Val</td></tr>
+<tr><td><b>GC</b></td><td>GCU, GCC, GCA, GCG</td><td>Ala</td></tr>
+<tr><td><b>GA</b></td><td>GAU, GAC</td><td>Asp</td></tr>
+<tr><td><b></b></td><td>GAA, GAG</td><td>Glu</td></tr>
+<tr><td><b>GG</b></td><td>GGU, GGC, GGA, GGG</td><td>Gly</td></tr>
+</table></div>
+<p>Properties: <b>64 codons</b> in total, <b>universal</b>, <b>triplet</b>, <b>degenerate</b> (redundant) and <b>non-overlapping</b>. AUG codes for methionine and is the start codon; UAA, UAG and UGA are stop codons.</p>
+<details class="check"><summary>What amino acids do CCU, GAG, AUG and UGA code for?</summary><div class="a">CCU = Pro, GAG = Glu, AUG = Met, UGA = Stop.</div></details>
+<div class="box"><span class="lbl">Worked example</span>Nontemplate DNA <span class="math">3′-AAA ATG GGC-5′</span>, template <span class="math">5′-TTT TAC CCG-3′</span>. Transcribe: RNA <span class="math">3′-AAA AUG GGC-5′</span>. Translate reading 5′ to 3′: CGG, GUA, AAA = <b>Arg, Val, Lys</b> (N-terminus Arg, C-terminus Lys).</div>
+</section>
+
+<section data-sec="Degeneracy and Wobble">
+<h2>Degeneracy and Wobble</h2>
+<p><span class="term">Degeneracy</span>: multiple three-letter codons can encode the same single amino acid.</p>
+<ul>
+<li><span class="term">Isoaccepting tRNAs</span>: tRNAs with different anticodons attached to the same amino acid. For example, GUU, GUC, GUA and GUG all encode Val.</li>
+<li><span class="term">Wobble</span>: flexibility of base pairing between the 3rd base of the codon and a base in the anticodon allows some tRNAs to base pair with more than one codon. Pairing at the third codon position is relaxed: it does not have to be perfectly matched.</li>
+<li>Example (Fig. 15.11): a G in the anticodon can pair with C or with U. The tRNA with anticodon 3′-AGG-5′ reads both UCC and UCU, which both encode Ser.</li>
+</ul>
+<figure><div data-viz="wobble"></div></figure>
+<p>In Fig. 15.14, tRNA positions in <b>blue</b> are the same in all tRNAs and cannot be used to differentiate them; positions in <b>red</b> are important in recognition by one synthetase; positions in <b>yellow</b> are used by more than one synthetase.</p>
+
+<h3>Non-overlapping</h3>
+<p>The code is a series of consecutive, distinct, 3-base codons. The <b>AUG start codon determines the reading frame</b>. AUACGAGUC reads AUA CGA GUC = Ile, Arg, Val. An overlapping code would instead read AUA, UAC, ACG = Ile, Tyr, Thr.</p>
+<figure><div data-viz="overlap"></div></figure>
+</section>
+
+<section data-sec="Translation Basics">
+<h2>Translation Basics</h2>
+<p><span class="term">Translation</span> is the process by which a protein is assembled from the information contained in an mRNA. The mRNA is read 5′ to 3′ and the polypeptide grows from its N-terminus to its C-terminus (Fig. 15.12).</p>
+<figure><div data-viz="translation"></div></figure>
+<p>Tools: <b>mRNA</b>, <b>"charged" tRNAs</b> and the <b>ribosome</b>. Steps: <b>initiation, elongation, termination</b>.</p>
+<h3>tRNAs are the code-breakers</h3>
+<ul>
+<li>Amino acids are attached to the <b>3′ ends</b> of tRNAs.</li>
+<li>tRNAs are "adapter" molecules connecting the language of nucleic acids to the language of proteins.</li>
+<li><span class="term">Aminoacyl-tRNA synthetase</span> attaches a specific amino acid to its corresponding tRNA. ATP provides the energy.</li>
+<li>A tRNA attached to its amino acid is <span class="term">charged</span>.</li>
+</ul>
+<h3>Ribosomes</h3>
+<p>Ribosomes are the sites of polypeptide synthesis: rRNA plus many proteins, in a small and a large subunit. Bacterial ribosomes are 70S (50S + 30S); eukaryotic ribosomes are 80S (60S + 40S) (Table 14.3).</p>
+</section>
+
+<section data-sec="Initiation">
+<h2>Initiation</h2>
+<h3>Bacteria: find the AUG</h3>
+<p>The <span class="term">Shine-Dalgarno sequence</span>, a consensus sequence in the 5′ untranslated region of the mRNA, base pairs with part of the <b>16S rRNA</b>. This positions the initiation codon at the correct place on the small subunit.</p>
+<figure><div data-viz="sd"></div><figcaption>Fig. 15.16.</figcaption></figure>
+<ol>
+<li>The ribosome consists of two subunits (50S and 30S).</li>
+<li><b>IF-3</b> binds the small subunit, preventing the large subunit from binding,</li>
+<li>which allows the small subunit to attach to the mRNA.</li>
+<li>A tRNA charged with <b>N-formylmethionine</b> forms a complex with <b>IF-2</b> and GTP,</li>
+<li>which binds the initiation codon while <b>IF-1</b> joins the small subunit: the <b>30S initiation complex</b>.</li>
+<li>All initiation factors dissociate, and GTP is hydrolyzed to GDP.</li>
+<li>The large subunit joins to create the <b>70S initiation complex</b>.</li>
+</ol>
+<div class="box"><span class="lbl">Conclusion</span>At the end of initiation, the ribosome is assembled on the mRNA and the first tRNA is attached to the initiation codon.</div>
+<div class="tablewrap"><table>
+<tr><th>Factor</th><th>Function (Table 15.4)</th></tr>
+<tr><td><b>IF-1</b></td><td>Enhances dissociation of large and small subunits</td></tr>
+<tr><td><b>IF-2</b></td><td>Binds GTP; delivers fMet-tRNA to the initiation codon</td></tr>
+<tr><td><b>IF-3</b></td><td>Binds the 30S subunit and prevents association with 50S</td></tr>
+</table></div>
+
+<h3>Eukaryotes</h3>
+<ul>
+<li><b>Cap-binding proteins</b> bind the 5′ cap; proteins attached to the 3′ poly(A) tail interact with them and enhance binding of the ribosome to the 5′ end of the mRNA (they recruit the ribosome).</li>
+<li>Only the <b>small subunit</b> binds at first.</li>
+<li>The initiation complex <b>scans</b> along the mRNA 5′ to 3′ until it reaches the initiation codon.</li>
+<li>The <span class="term">Kozak sequence</span>, <span class="math">5′-ACCAUGG-3′</span>, surrounds the start codon and is detected by the small subunit.</li>
+</ul>
+<figure><div data-viz="euinit"></div></figure>
+<p>The Ch 15 version of Table 14.2 adds: the 5′ cap also enhances RNA splicing; the poly(A) tail also aids export of mRNA from the nucleus; and internal RNA modifications influence splicing, mRNA degradation and translation.</p>
+</section>
+
+<section data-sec="Elongation">
+<h2>Elongation</h2>
+<p>tRNAs may occupy three sites in a ribosome: the <span class="term">aminoacyl (A) site</span> for incoming codons, the <span class="term">peptidyl (P) site</span> and the <span class="term">exit (E) site</span>. At the start, fMet-tRNA occupies the <b>P site</b> of the 70S initiation complex.</p>
+<figure><div data-viz="sites"></div></figure>
+<ol>
+<li><b>EF-Tu-GTP</b> brings a charged tRNA to the A site (EF-Tu, GTP and the charged tRNA form a complex).</li>
+<li>After the tRNA is placed in the A site, GTP is cleaved to GDP and EF-Tu-GDP is released. <b>EF-Ts</b> regenerates EF-Tu-GTP.</li>
+<li><b>rRNA in the large ribosomal subunit</b> catalyzes the peptide bond between the amino acid in the A site and the amino acid on the tRNA in the P site. The P-site tRNA releases its amino acid; the <b>dipeptide is now attached to the tRNA in the A site</b>.</li>
+<li><span class="term">Translocation</span>: hydrolysis of GTP bound to <b>EF-G</b> moves the ribosome <b>3 nucleotides</b> along the mRNA, 5′ to 3′. The tRNA without an amino acid moves to the E site and exits to the cytoplasm, the peptidyl-tRNA is in the P site, and the next codon is in the A site.</li>
+</ol>
+<div class="box"><span class="lbl">Conclusion</span>At the end of each cycle, the amino acid that was in the A site has been added to the chain and the A site is free for another tRNA. The steps repeat along the length of the mRNA. Reading frame: set by the AUG start codon, read in triplets, non-overlapping.</div>
+<details class="check"><summary>In elongation, the creation of peptide bonds between amino acids is catalyzed by: rRNA, protein in the small subunit, protein in the large subunit, or tRNA?</summary><div class="a">rRNA, in the large subunit. (Concept Check)</div></details>
+<p>In the 3D ribosome, the growing polypeptide leaves through the ribosomal exit tunnel in the large (50S) subunit.</p>
+</section>
+
+<section data-sec="Termination">
+<h2>Termination</h2>
+<p>A <b>stop codon</b> enters the A site. It is not recognized by a charged tRNA (no tRNA has a matching anticodon), but it is recognized by a <span class="term">release factor (RF)</span>.</p>
+<ol>
+<li><b>RF-1</b> attaches to the A site,</li>
+<li>and <b>RF-3</b> forms a complex with GTP and binds the ribosome.</li>
+<li>The polypeptide is released from the tRNA in the P site.</li>
+<li>The GTP associated with RF-3 is hydrolyzed to GDP.</li>
+<li>The tRNA, mRNA and release factors are released from the ribosome.</li>
+</ol>
+<figure><div data-viz="term"></div></figure>
+<div class="box"><span class="lbl">Summary</span>tRNA charging, initiation, elongation, termination and peptide release generate a polypeptide chain specified by the mRNA codons (Fig. 15.19).</div>
+<h3>Polyribosomes</h3>
+<p>A <span class="term">polyribosome</span> is an mRNA with multiple ribosomes, so the cell can make lots of protein all the time. In the bacterial image, ribosomes are already translating an RNA that is still being transcribed from the DNA.</p>
+<figure><div data-viz="polysome"></div></figure>
+</section>
+
+<div class="card end"><h2>Done reading?</h2><p>Test what stuck with the flashcards and the quiz.</p><a class="btn block" href="./">Open flashcards and quiz</a></div>
+</main>
+<script>
+const P = {};
+/* ---------- diagrams ---------- */
+let uid = 0;
+function svgWrap(inner, h=340){ const id = "m"+(++uid);
+  return `<svg viewBox="0 0 600 ${h}" role="img" aria-label="diagram"><defs>
+  <marker id="${id}i" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" style="fill:var(--ink)"/></marker>
+  <marker id="${id}a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" style="fill:var(--c)"/></marker>
+  </defs>${inner.replace(/MK_I/g,`url(#${id}i)`).replace(/MK_A/g,`url(#${id}a)`)}</svg>`; }
+const INK="var(--ink)", ACC="var(--c)", MUT="var(--muted)";
+function label(x,y,t,o,anchor="middle"){
+  const st = o.quiz===t ? "quiz" : (o.hideAll && o.quiz ? "blank" : (o.hl===t ? "hl":"show"));
+  const w = Math.max(28, t.length*15.5+20), x0 = anchor==="middle"? x-w/2 : anchor==="start"? x-8 : x-w+8;
+  if (st==="quiz") return `<rect x="${x-30}" y="${y-22}" width="60" height="40" rx="9" style="fill:var(--c)"/><text x="${x}" y="${y+5}" text-anchor="middle" font-size="30" style="fill:var(--surface)">?</text>`;
+  if (st==="blank") return `<rect x="${x0}" y="${y-19}" width="${w}" height="34" rx="8" style="fill:var(--soft);stroke:var(--line)"/>`;
+  return `<text x="${x}" y="${y+9}" text-anchor="${anchor}" font-size="${st==="hl"?29:26}" style="fill:${st==="hl"?ACC:INK}">${t}</text>`;
+}
+const ln = (x1,y1,x2,y2,c=INK,w=2,extra="") => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" style="stroke:${c}" stroke-width="${w}" ${extra}/>`;
+const arr = (x1,y1,x2,y2,on) => ln(x1,y1,x2,y2,on?ACC:INK,on?5:3.5,`marker-end="${on?"MK_A":"MK_I"}"`);
+const D = {
+ aminoacid(o){ const t=(x,y,s,sz)=>`<text x="${x}" y="${y}" text-anchor="middle" font-size="${sz||30}" style="fill:var(--ink)">${s}</text>`;
+  return svgWrap(`${t(300,182,"Cα")}${ln(240,172,272,172,INK,3)}${ln(330,172,366,172,INK,3)}${ln(300,140,300,110,INK,3)}${ln(300,190,300,226,INK,3)}
+   ${t(192,182,"+H3N")}${t(418,182,"COO−")}${t(300,100,"H")}
+   <text x="300" y="258" text-anchor="middle" font-size="32" style="fill:var(--c)">R</text>
+   ${label(160,232,"Amino group",o)}${label(450,232,"Carboxyl group",o)}${label(300,48,"Hydrogen",o)}${label(300,300,"R group",o)}`); },
+ peptide(){ const aa=(x,y,r,col)=>`<text x="${x}" y="${y}" text-anchor="middle" font-size="22" style="fill:var(--ink);font-family:var(--font-mono)">${r}</text>`;
+  return svgWrap(`<text x="40" y="44" font-size="22" style="fill:var(--ink)">two amino acids</text>
+   <text x="40" y="96" font-size="22" style="fill:var(--ink);font-family:var(--font-mono)">H3N-CH(R1)-C<tspan style="fill:var(--c)">OOH</tspan> + <tspan style="fill:var(--c)">H</tspan>-NH-CH(R2)-COO</text>
+   ${arr(300,120,300,190,true)}<text x="320" y="164" font-size="22" style="fill:var(--c)">− H2O</text>
+   <text x="40" y="236" font-size="22" style="fill:var(--ink);font-family:var(--font-mono)">H3N-CH(R1)-<tspan style="fill:var(--c);font-weight:700">CO-NH</tspan>-CH(R2)-COO</text>
+   <text x="300" y="282" text-anchor="middle" font-size="22" style="fill:var(--c)">peptide bond (C-N)</text>
+   <text x="300" y="322" text-anchor="middle" font-size="21" style="fill:var(--muted)">carboxyl of one joins amino of the next</text>`); },
+ polarity(){ let beads=""; for(let i=0;i<7;i++){ const x=110+i*64; beads+=`<circle cx="${x}" cy="160" r="24" style="fill:color-mix(in srgb,var(--c) 30%,var(--surface));stroke:var(--ink)" stroke-width="2"/><text x="${x}" y="167" text-anchor="middle" font-size="18" style="fill:var(--ink)">aa${i+1}</text>`; if(i<6) beads+=ln(x+24,160,x+40,160,INK,3); }
+  return svgWrap(`${beads}
+   <text x="110" y="100" text-anchor="middle" font-size="24" style="fill:var(--ink)">N-terminus</text><text x="110" y="232" text-anchor="middle" font-size="22" style="fill:var(--c)">free amino, +</text>
+   <text x="494" y="100" text-anchor="middle" font-size="24" style="fill:var(--ink)">C-terminus</text><text x="494" y="232" text-anchor="middle" font-size="22" style="fill:var(--c)">free carboxyl, −</text>
+   <text x="300" y="300" text-anchor="middle" font-size="21" style="fill:var(--muted)">amino acids joined by peptide bonds</text>`); },
+ pathway(o){ const xs=[60,220,380,540], names=["precursor","ornithine","citrulline","arginine"], b=o.hl;
+  let s=names.map((n,i)=>`<text x="${xs[i]}" y="176" text-anchor="middle" font-size="${i?22:20}" style="fill:var(--ink)">${n}</text>`).join("");
+  for(let i=0;i<3;i++){ const x1=xs[i]+(i?56:50), x2=xs[i+1]-58, mid=(x1+x2)/2, blocked=b===String(i+1);
+   s+=ln(x1,168,x2,168,blocked?ACC:INK,3,`marker-end="${blocked?"MK_A":"MK_I"}"`);
+   s+=`<text x="${mid}" y="120" text-anchor="middle" font-size="20" style="fill:var(--muted)">step ${i+1}</text><text x="${mid}" y="226" text-anchor="middle" font-size="20" style="fill:var(--muted)">gene ${"ABC"[i]}</text>`;
+   if(blocked) s+=ln(mid-14,154,mid+14,182,ACC,5)+ln(mid+14,154,mid-14,182,ACC,5); }
+  const grows={"1":"grows on ornithine, citrulline or arginine","2":"grows on citrulline or arginine","3":"grows on arginine only"};
+  return svgWrap(`${s}<text x="300" y="300" text-anchor="middle" font-size="22" style="fill:${b?ACC:MUT}">${b?`step ${b} blocked: ${grows[b]}`:"each step needs its own enzyme"}</text>`); },
+ cc103(){ const xs=[60,240,390,540], names=["precursor","B","A","C"], enz=["103","106","102"];
+  let s=names.map((n,i)=>`<text x="${xs[i]}" y="176" text-anchor="middle" font-size="${i?30:22}" style="fill:${i?ACC:INK}">${n}</text>`).join("");
+  for(let i=0;i<3;i++){ const x1=xs[i]+(i?24:62), x2=xs[i+1]-26; s+=ln(x1,166,x2,166,INK,3,'marker-end="MK_I"')+`<text x="${(x1+x2)/2}" y="128" text-anchor="middle" font-size="20" style="fill:var(--muted)">enzyme ${enz[i]}</text>`; }
+  return svgWrap(`${s}<text x="300" y="246" text-anchor="middle" font-size="21" style="fill:var(--muted)">103 grows on A, B or C: earliest block</text>
+   <text x="300" y="280" text-anchor="middle" font-size="21" style="fill:var(--muted)">106 grows on A or C; 102 only on C</text>`); },
+ wobble(){ const pair=(x,cod)=>`<text x="${x}" y="110" text-anchor="middle" font-size="26" style="fill:var(--ink);font-family:var(--font-mono)">3′ AG<tspan style="fill:var(--c);font-weight:700">G</tspan> 5′</text>
+   ${ln(x-36,124,x-36,146,MUT,2)}${ln(x,124,x,146,MUT,2)}${ln(x+36,124,x+36,146,ACC,3)}
+   <text x="${x}" y="178" text-anchor="middle" font-size="26" style="fill:var(--ink);font-family:var(--font-mono)">5′ UC<tspan style="fill:var(--c);font-weight:700">${cod}</tspan> 3′</text>`;
+  return svgWrap(`<text x="40" y="60" font-size="20" style="fill:var(--muted)">anticodon</text>
+   ${pair(170,"C")}${pair(430,"U")}
+   <text x="40" y="226" font-size="20" style="fill:var(--muted)">codon</text>
+   <text x="170" y="226" text-anchor="middle" font-size="22" style="fill:var(--ink)">Ser</text><text x="430" y="226" text-anchor="middle" font-size="22" style="fill:var(--ink)">Ser</text>
+   <text x="300" y="282" text-anchor="middle" font-size="21" style="fill:var(--c)">G in the anticodon pairs with C or U</text>
+   <text x="300" y="316" text-anchor="middle" font-size="21" style="fill:var(--muted)">third codon position is the wobble position</text>`); },
+ overlap(){ const seq="AUACGAGUC", x0=150, dx=44; let s="";
+  [...seq].forEach((c,i)=>{ s+=`<text x="${x0+i*dx}" y="60" text-anchor="middle" font-size="26" style="fill:var(--ink);font-family:var(--font-mono)">${c}</text>`; });
+  ["Ile","Arg","Val"].forEach((a,i)=>{ const xa=x0+i*3*dx-14, xb=x0+(i*3+2)*dx+14; s+=ln(xa,76,xb,76,ACC,3)+`<text x="${(xa+xb)/2}" y="108" text-anchor="middle" font-size="22" style="fill:var(--c)">${a}</text>`; });
+  ["Ile","Tyr","Thr"].forEach((a,i)=>{ const xa=x0+i*dx-14, xb=x0+(i+2)*dx+14, y=176+i*48; s+=ln(xa,y,xb,y,MUT,3)+`<text x="${xb+12}" y="${y+8}" font-size="22" style="fill:var(--muted)">${a}</text>`; });
+  return svgWrap(`<text x="20" y="108" font-size="20" style="fill:var(--c)">real code</text><text x="20" y="160" font-size="20" style="fill:var(--muted)">if overlapping</text>${s}
+   <text x="300" y="326" text-anchor="middle" font-size="21" style="fill:var(--muted)">AUG start codon sets the reading frame</text>`); },
+ translation(){ return svgWrap(`${ln(40,190,560,190,ACC,8)}<text x="30" y="198" text-anchor="end" font-size="20" style="fill:var(--ink)">5′</text><text x="566" y="198" font-size="20" style="fill:var(--ink)">3′</text>
+   <rect x="120" y="178" width="56" height="24" rx="4" style="fill:var(--surface);stroke:var(--c)" stroke-width="2"/><text x="148" y="196" text-anchor="middle" font-size="16" style="fill:var(--ink);font-family:var(--font-mono)">AUG</text>
+   <ellipse cx="380" cy="150" rx="70" ry="44" style="fill:var(--soft);stroke:var(--ink)" stroke-width="2"/><ellipse cx="380" cy="222" rx="66" ry="24" style="fill:var(--soft);stroke:var(--ink)" stroke-width="2"/>
+   <text x="380" y="156" text-anchor="middle" font-size="20" style="fill:var(--ink)">ribosome</text>
+   ${[0,1,2,3,4,5].map(i=>`<circle cx="${180+i*30}" cy="${80-Math.sin(i)*14}" r="12" style="fill:color-mix(in srgb,var(--c) 40%,var(--surface));stroke:var(--ink)" stroke-width="1.5"/>`).join("")}
+   <text x="150" y="70" text-anchor="end" font-size="22" style="fill:var(--ink)">N</text><text x="350" y="92" font-size="20" style="fill:var(--ink)">C</text>
+   ${arr(460,150,540,150,false)}<text x="500" y="128" text-anchor="middle" font-size="20" style="fill:var(--muted)">reads 5′→3′</text>
+   <text x="300" y="300" text-anchor="middle" font-size="21" style="fill:var(--muted)">initiation, elongation, termination</text>`); },
+ sd(){ const dx=18, row=(str,x0,y,hot)=>[...str].map((c,i)=>`<text x="${x0+i*dx}" y="${y}" text-anchor="middle" font-size="24" style="fill:${hot(i)?"var(--c)":"var(--ink)"};font-family:var(--font-mono);font-weight:${hot(i)?700:400}">${c}</text>`).join("");
+  const m="AUGUACUAAGGAGGUUGUAUGGAACAAG", x0=60, X=i=>x0+i*dx;
+  return svgWrap(`<text x="${X(0)-18}" y="120" text-anchor="end" font-size="20" style="fill:var(--ink)">5′</text>
+   ${row(m,x0,120,i=>(i>=6&&i<=14)||(i>=18&&i<=20))}<text x="${X(27)+16}" y="120" font-size="20" style="fill:var(--ink)">3′</text>
+   ${ln(X(6)-8,86,X(14)+8,86,ACC,2.5)}<text x="${X(10)}" y="72" text-anchor="middle" font-size="20" style="fill:var(--c)">Shine-Dalgarno</text>
+   ${ln(X(18)-8,132,X(20)+8,132,ACC,2.5)}<text x="${X(19)}" y="160" text-anchor="middle" font-size="20" style="fill:var(--c)">initiation codon</text>
+   ${row("AUUCCUCCA",X(6),196,()=>false)}
+   <text x="${X(6)-18}" y="196" text-anchor="end" font-size="20" style="fill:var(--ink)">3′</text><text x="${X(14)+16}" y="196" font-size="20" style="fill:var(--ink)">5′</text>
+   <text x="${X(10)}" y="236" text-anchor="middle" font-size="20" style="fill:var(--ink)">16S rRNA</text>
+   <text x="300" y="300" text-anchor="middle" font-size="21" style="fill:var(--muted)">pairing places AUG on the small subunit</text>`); },
+ euinit(){ return svgWrap(`${ln(60,170,500,170,ACC,8)}
+   <circle cx="56" cy="170" r="20" style="fill:color-mix(in srgb,var(--c) 30%,var(--surface));stroke:var(--ink)" stroke-width="2"/>
+   <text x="74" y="120" text-anchor="middle" font-size="20" style="fill:var(--ink)">cap-binding</text><text x="74" y="144" text-anchor="middle" font-size="20" style="fill:var(--ink)">proteins</text>
+   <rect x="230" y="158" width="58" height="24" rx="4" style="fill:var(--surface);stroke:var(--c)" stroke-width="2"/><text x="259" y="176" text-anchor="middle" font-size="16" style="fill:var(--ink);font-family:var(--font-mono)">AUG</text>
+   <text x="504" y="176" font-size="18" style="fill:var(--c);font-family:var(--font-mono);font-weight:700">AAAA</text>
+   <ellipse cx="520" cy="134" rx="22" ry="16" style="fill:var(--soft);stroke:var(--ink)" stroke-width="2"/><ellipse cx="562" cy="134" rx="22" ry="16" style="fill:var(--soft);stroke:var(--ink)" stroke-width="2"/>
+   <text x="516" y="100" text-anchor="middle" font-size="20" style="fill:var(--ink)">poly(A) proteins</text>
+   <ellipse cx="140" cy="200" rx="48" ry="20" style="fill:var(--soft);stroke:var(--ink)" stroke-width="2"/><text x="140" y="250" text-anchor="middle" font-size="20" style="fill:var(--ink)">small subunit</text>
+   ${arr(196,212,240,212,true)}<text x="300" y="250" font-size="20" style="fill:var(--c)">scans 5′ to 3′</text>
+   <text x="300" y="306" text-anchor="middle" font-size="21" style="fill:var(--muted)">cap and poly(A) proteins recruit the ribosome</text>`); },
+ kozak(){ return svgWrap(`<text x="300" y="70" text-anchor="middle" font-size="24" style="fill:var(--ink)">Kozak sequence</text>
+   <text x="300" y="160" text-anchor="middle" font-size="46" style="fill:var(--ink);font-family:var(--font-mono)">5′-ACC<tspan style="fill:var(--c);font-weight:700">AUG</tspan>G-3′</text>
+   ${ln(310,180,310,220,ACC,3)}<text x="310" y="250" text-anchor="middle" font-size="24" style="fill:var(--c)">start codon</text>
+   <text x="300" y="310" text-anchor="middle" font-size="21" style="fill:var(--muted)">detected by the small subunit</text>`); },
+ sites(o){ const box=(x,t)=>{const on=o.hl===t||o.quiz===t; return `<rect x="${x}" y="110" width="90" height="120" rx="8" style="fill:${on?"color-mix(in srgb,var(--c) 30%,var(--surface))":"var(--surface)"};stroke:${on?"var(--c)":"var(--ink)"}" stroke-width="2.5"/>`;};
+  return svgWrap(`<path d="M140 230 L140 120 Q140 50 300 50 Q460 50 460 120 L460 230" style="fill:var(--soft);stroke:var(--ink)" stroke-width="2"/>
+   ${box(160,"E site")}${box(255,"P site")}${box(350,"A site")}
+   ${label(205,172,"E site",o)}${label(300,172,"P site",o)}${label(395,172,"A site",o)}
+   ${ln(40,250,560,250,ACC,8)}<text x="30" y="258" text-anchor="end" font-size="20" style="fill:var(--ink)">5′</text><text x="566" y="258" font-size="20" style="fill:var(--ink)">3′</text>
+   <rect x="140" y="266" width="320" height="30" rx="10" style="fill:var(--soft);stroke:var(--ink)" stroke-width="2"/>
+   ${arr(470,300,550,300,false)}<text x="510" y="330" text-anchor="middle" font-size="18" style="fill:var(--muted)">moves 3 nt</text>
+   <text x="300" y="34" text-anchor="middle" font-size="18" style="fill:var(--muted)">large subunit: rRNA makes the peptide bond</text>`); },
+ term(){ return svgWrap(`<path d="M170 230 L170 120 Q170 60 300 60 Q430 60 430 120 L430 230" style="fill:var(--soft);stroke:var(--ink)" stroke-width="2"/>
+   <rect x="190" y="110" width="100" height="120" rx="8" style="fill:var(--surface);stroke:var(--ink)" stroke-width="2"/><rect x="310" y="110" width="100" height="120" rx="8" style="fill:color-mix(in srgb,var(--c) 30%,var(--surface));stroke:var(--c)" stroke-width="2.5"/>
+   <text x="240" y="152" text-anchor="middle" font-size="22" style="fill:var(--ink)">P</text><text x="360" y="152" text-anchor="middle" font-size="22" style="fill:var(--ink)">A</text>
+   <text x="240" y="190" text-anchor="middle" font-size="18" style="fill:var(--ink)">tRNA +</text><text x="240" y="212" text-anchor="middle" font-size="18" style="fill:var(--ink)">chain</text>
+   <rect x="330" y="166" width="60" height="52" rx="10" style="fill:var(--c)"/><text x="360" y="198" text-anchor="middle" font-size="18" style="fill:var(--surface)">RF-1</text>
+   ${ln(40,250,560,250,ACC,8)}<text x="345" y="280" font-size="22" style="fill:var(--c);font-family:var(--font-mono);font-weight:700">UAG</text>
+   <text x="300" y="34" text-anchor="middle" font-size="20" style="fill:var(--muted)">stop codon in the A site: no tRNA matches</text>
+   <text x="300" y="318" text-anchor="middle" font-size="21" style="fill:var(--muted)">release factor frees the polypeptide</text>`); },
+ polysome(){ let s=""; for(let i=0;i<5;i++){ const x=110+i*95, len=i*1.2; s+=`<ellipse cx="${x}" cy="190" rx="34" ry="22" style="fill:var(--soft);stroke:var(--ink)" stroke-width="2"/>`;
+   for(let k=0;k<Math.round(len);k++) s+=`<circle cx="${x}" cy="${160-k*20}" r="8" style="fill:color-mix(in srgb,var(--c) 40%,var(--surface));stroke:var(--ink)" stroke-width="1.5"/>`; }
+  return svgWrap(`${ln(40,212,560,212,ACC,8)}<text x="30" y="220" text-anchor="end" font-size="20" style="fill:var(--ink)">5′</text><text x="566" y="220" font-size="20" style="fill:var(--ink)">3′</text>${s}
+   ${arr(120,260,480,260,false)}<text x="300" y="292" text-anchor="middle" font-size="20" style="fill:var(--muted)">direction of translation; chains grow longer</text>
+   <text x="300" y="44" text-anchor="middle" font-size="22" style="fill:var(--ink)">one mRNA, many ribosomes</text>`); },
+}
+;
+function viz(spec, extra={}){ if(!spec) return ""; const [k,arg]=spec.split(":");
+  const o = Object.assign({}, extra); if(arg && !o.quiz) o.hl=arg;
+  return D[k] ? `<div class="viz">${D[k](o)}</div>` : ""; }
+
+
+const slug = s => s.toLowerCase().replace(/ /g,"-");
+document.querySelectorAll("section[data-sec]").forEach((s,i)=>{
+  const name=s.dataset.sec, c=`var(--s-${slug(name)})`; s.id=slug(name); s.classList.add("card","accent"); s.style.setProperty("--c",c);
+  const h=s.querySelector("h2"); if(h) h.insertAdjacentHTML("afterbegin",`<span class="n num">${i+1}</span>`);
+  s.insertAdjacentHTML("beforeend",'<div class="backtop"><a class="link quiet" href="#toc">Back to contents</a></div>');
+  document.getElementById("toclist").insertAdjacentHTML("beforeend",`<li><a href="#${s.id}" style="--c:${c}">${name}</a></li>`);
+});
+document.querySelectorAll("details.check summary").forEach(s=>{ s.innerHTML=`<span class="link">Check yourself</span><span>${s.innerHTML}</span>`; s.style.display="grid"; });
+document.querySelectorAll("[data-viz]").forEach(el=>{ el.outerHTML = viz(el.dataset.viz) || ""; });
+</script>
+</body>
+</html>

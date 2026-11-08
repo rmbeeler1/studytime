@@ -37,5 +37,18 @@
     "v": "433dcd38",
     "guide": "guide.html",
     "gv": "328638d0"
+  },
+  {
+    "id": "genetics-ch15-genetic-code-translation",
+    "subject": "Genetics",
+    "number": "Ch 15",
+    "topic": "Genetic Code and Translation",
+    "path": "genetics/ch15-genetic-code-translation/",
+    "cards": 239,
+    "accent": "sec-blue",
+    "added": "2026-11-07",
+    "v": "3e9d301c",
+    "guide": "guide.html",
+    "gv": "33ba332e"
   }
 ]
