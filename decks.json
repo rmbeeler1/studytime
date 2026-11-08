@@ -24,5 +24,18 @@
     "v": "d8fc0c62",
     "guide": "guide.html",
     "gv": "7f83cb5c"
+  },
+  {
+    "id": "genetics-ch14-rna-processing",
+    "subject": "Genetics",
+    "number": "Ch 14",
+    "topic": "RNA Processing",
+    "path": "genetics/ch14-rna-processing/",
+    "cards": 216,
+    "accent": "sec-blue",
+    "added": "2026-11-07",
+    "v": "433dcd38",
+    "guide": "guide.html",
+    "gv": "328638d0"
   }
 ]

@@ -1,0 +1,721 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Genetics Ch 14: RNA Processing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* Study Time design tokens and components. Source of truth: _builder/design/DESIGN.md
+   Decks are self-contained pages, so builders inline this file rather than linking it.
+   Load the font in <head>:
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"> */
+
+/* ---------- tokens: light ---------- */
+/* [data-theme] on any element scopes a theme to that subtree (used by preview.html). */
+:root,[data-theme="light"]{
+  /* surfaces */
+  --bg:#f6f8fc;            /* page: cool off-white */
+  --surface:#ffffff;       /* raised panels and cards */
+  --sunken:#eef2f8;        /* wells, inputs, progress tracks */
+  --soft:#eef2f8;          /* alias of --sunken; diagrams and decks use it */
+  --line:#e1e7f0;          /* hairlines and card borders */
+  --line-strong:#c9d3e1;   /* input borders, dividers that must be seen */
+  --guide:#d3dbe8;         /* dashed column guides */
+  /* text */
+  --ink:#0c2340;           /* headings, key numbers, diagram strokes */
+  --text:#425672;          /* body copy */
+  --muted:#5b6b82;         /* captions, meta, helper text */
+  --on-accent:#ffffff;     /* text on --accent fills */
+  /* brand */
+  --accent:#5332e6;        /* violet: links, primary buttons, eyebrow labels */
+  --accent-hover:#4322cf;
+  --accent-tint:#efecfe;   /* violet wash behind selected items */
+  --sky:#0aa5f0;           /* bright sky: bands, fills, illustration only (not text) */
+  --sky-ink:#0068a8;       /* sky as text */
+  --sky-tint:#e3f4fd;
+  --band-from:#0aa5f0;     /* diagonal hero band */
+  --band-to:#5332e6;
+  /* feedback (flashcard grades) */
+  --again:#b42318; --hard:#985a00; --good:#2152c4; --easy:#0b7a5f;
+  /* section accents: decks map their 6 to 8 sections onto these, in order */
+  --sec-blue:#1f5bc4; --sec-violet:#7d3fc8; --sec-teal:#08776b; --sec-rose:#be2b6a;
+  --sec-orange:#bd4310; --sec-amber:#946000; --sec-green:#3d7a17; --sec-slate:#4d5d76;
+
+  /* type */
+  --font-sans:"Inter",ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+  --font-mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  --fs-display:clamp(2.75rem,1.6rem + 5vw,5.25rem);  /* hero headline */
+  --fs-h1:clamp(2.25rem,1.6rem + 2.8vw,3.5rem);
+  --fs-h2:clamp(1.625rem,1.3rem + 1.4vw,2.25rem);
+  --fs-h3:1.375rem;
+  --fs-lead:clamp(1.125rem,1rem + .5vw,1.375rem);    /* intro paragraph under a headline */
+  --fs-body:1.0625rem;     /* 17px */
+  --fs-small:.9375rem;     /* 15px */
+  --fs-caption:.8125rem;   /* 13px */
+  --fs-label:1rem;         /* eyebrow label */
+  --lh-tight:1.04; --lh-heading:1.15; --lh-body:1.65;
+  --track-display:-.04em; --track-heading:-.025em; --track-body:-.006em;
+  --fw-regular:400; --fw-medium:500; --fw-semibold:600; --fw-bold:700; --fw-black:800;
+
+  /* spacing: 4px base */
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:24px; --sp-6:32px;
+  --sp-7:48px; --sp-8:64px; --sp-9:96px; --sp-10:128px;
+  --gutter:16px;           /* side gutter on phones; 24px from 640px, 32px from 1024px */
+  --content-max:1080px;    /* wide grid for home page and heroes */
+  --reading-max:680px;     /* one column of prose or one flashcard */
+  --columns:4;             /* dashed guides; 2 on phones */
+
+  /* radii */
+  --r-xs:4px; --r-sm:6px; --r-md:10px; --r-lg:16px; --r-xl:24px; --r-pill:999px;
+
+  /* shadows: two layers each, tinted with navy, never pure black */
+  --shadow-xs:0 1px 2px rgba(12,35,64,.06),0 1px 1px rgba(12,35,64,.04);
+  --shadow-sm:0 2px 5px -1px rgba(30,40,90,.10),0 1px 3px -1px rgba(12,35,64,.10);
+  --shadow-md:0 13px 27px -5px rgba(30,40,90,.16),0 8px 16px -8px rgba(12,35,64,.18);
+  --shadow-lg:0 30px 60px -12px rgba(30,40,90,.22),0 18px 36px -18px rgba(12,35,64,.26);
+  --shadow-xl:0 50px 100px -20px rgba(30,40,90,.24),0 30px 60px -30px rgba(12,35,64,.30);
+
+  /* motion */
+  --ease-out:cubic-bezier(.2,.7,.2,1);
+  --ease-in-out:cubic-bezier(.65,0,.35,1);
+  --dur-fast:150ms; --dur-base:240ms; --dur-slow:420ms;
+
+  /* diagonal band */
+  --band-angle:-9deg;
+  --band-height:clamp(180px,32vw,380px);
+
+  color-scheme:light;
+}
+
+/* ---------- tokens: dark ---------- */
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --bg:#0a1524; --surface:#122036; --sunken:#0e1a2d; --soft:#1a2a44; --line:#22344f; --line-strong:#33496a; --guide:#22344f;
+  --ink:#f2f6fc; --text:#b6c3d6; --muted:#93a3ba; --on-accent:#0a1524;
+  --accent:#a99cff; --accent-hover:#c0b6ff; --accent-tint:#221f4d;
+  --sky:#38bdf8; --sky-ink:#5ec8ff; --sky-tint:#0d2a40; --band-from:#0b6fae; --band-to:#4b35c9;
+  --again:#ff8b80; --hard:#f2bd5c; --good:#86b1ff; --easy:#4fd6ad;
+  --sec-blue:#86b4ff; --sec-violet:#caa7f7; --sec-teal:#4fd2bf; --sec-rose:#f892c1;
+  --sec-orange:#ffa173; --sec-amber:#f0bf5e; --sec-green:#a6d86c; --sec-slate:#b0bdd2;
+  --shadow-xs:0 1px 2px rgba(0,0,0,.30);
+  --shadow-sm:0 2px 5px -1px rgba(0,0,0,.40),0 1px 3px -1px rgba(0,0,0,.30);
+  --shadow-md:0 13px 27px -5px rgba(0,0,0,.45),0 8px 16px -8px rgba(0,0,0,.40);
+  --shadow-lg:0 30px 60px -12px rgba(0,0,0,.55),0 18px 36px -18px rgba(0,0,0,.50);
+  --shadow-xl:0 50px 100px -20px rgba(0,0,0,.60),0 30px 60px -30px rgba(0,0,0,.55);
+  color-scheme:dark;
+}}
+:root[data-theme="dark"],[data-theme="dark"]{
+  --bg:#0a1524; --surface:#122036; --sunken:#0e1a2d; --soft:#1a2a44; --line:#22344f; --line-strong:#33496a; --guide:#22344f;
+  --ink:#f2f6fc; --text:#b6c3d6; --muted:#93a3ba; --on-accent:#0a1524;
+  --accent:#a99cff; --accent-hover:#c0b6ff; --accent-tint:#221f4d;
+  --sky:#38bdf8; --sky-ink:#5ec8ff; --sky-tint:#0d2a40; --band-from:#0b6fae; --band-to:#4b35c9;
+  --again:#ff8b80; --hard:#f2bd5c; --good:#86b1ff; --easy:#4fd6ad;
+  --sec-blue:#86b4ff; --sec-violet:#caa7f7; --sec-teal:#4fd2bf; --sec-rose:#f892c1;
+  --sec-orange:#ffa173; --sec-amber:#f0bf5e; --sec-green:#a6d86c; --sec-slate:#b0bdd2;
+  --shadow-xs:0 1px 2px rgba(0,0,0,.30);
+  --shadow-sm:0 2px 5px -1px rgba(0,0,0,.40),0 1px 3px -1px rgba(0,0,0,.30);
+  --shadow-md:0 13px 27px -5px rgba(0,0,0,.45),0 8px 16px -8px rgba(0,0,0,.40);
+  --shadow-lg:0 30px 60px -12px rgba(0,0,0,.55),0 18px 36px -18px rgba(0,0,0,.50);
+  --shadow-xl:0 50px 100px -20px rgba(0,0,0,.60),0 30px 60px -30px rgba(0,0,0,.55);
+  color-scheme:dark;
+}
+:root,[data-theme]{--focus-ring:0 0 0 3px color-mix(in srgb,var(--accent) 45%,transparent)}
+@media (min-width:640px){ :root{ --gutter:24px; } }
+@media (min-width:1024px){ :root{ --gutter:32px; } }
+@media (max-width:639px){ :root{ --columns:2; } }
+
+/* ---------- base ---------- */
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font-sans);font-size:var(--fs-body);
+  line-height:var(--lh-body);letter-spacing:var(--track-body);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2,h3,h4{color:var(--ink);font-weight:var(--fw-bold);line-height:var(--lh-heading);letter-spacing:var(--track-heading);margin:0 0 .4em;text-wrap:balance}
+h1{font-size:var(--fs-h1)} h2{font-size:var(--fs-h2)} h3{font-size:var(--fs-h3)}
+p{margin:0 0 1em;text-wrap:pretty}
+a{color:var(--accent)}
+:focus-visible{outline:none;box-shadow:var(--focus-ring);border-radius:var(--r-sm)}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---------- layout ---------- */
+.container{max-width:calc(var(--content-max) + 2*var(--gutter));margin-inline:auto;padding-inline:var(--gutter)}
+.reading{max-width:calc(var(--reading-max) + 2*var(--gutter));margin-inline:auto;padding-inline:var(--gutter)}
+
+/* Dashed vertical column guides. Put .guides on a positioned wrapper; content above it needs position:relative. */
+.guides{position:relative;isolation:isolate}
+.guides::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  width:min(100% - 2*var(--gutter),var(--content-max));margin-inline:auto;
+  --dash:linear-gradient(to bottom,var(--guide) 0 4px,transparent 4px 8px);
+  background-image:var(--dash),var(--dash),var(--dash),var(--dash),var(--dash);
+  background-size:1px 8px;background-repeat:repeat-y;
+  background-position:0 0,33.333% 0,50% 0,66.667% 0,100% 0}
+@media (min-width:640px){ .guides::before{background-position:0 0,25% 0,50% 0,75% 0,100% 0} }
+@media (max-width:639px){ .guides::before{background-image:var(--dash),var(--dash);background-position:0 0,100% 0} }
+
+/* ---------- hero and diagonal band ---------- */
+/* Bottom padding clears the band: text never sits on it. */
+.hero{position:relative;overflow:hidden;padding-block:var(--sp-9) calc(var(--band-height) * .6 + var(--sp-8))}
+.hero>:not(.band){position:relative}
+.band{position:absolute;left:-2%;right:-2%;bottom:calc(var(--band-height) * -.4);height:var(--band-height);pointer-events:none;
+  transform:skewY(var(--band-angle));transform-origin:0 100%;
+  background:linear-gradient(100deg,var(--band-from) 0%,var(--band-from) 50%,var(--band-to) 100%)}
+.band.solid{background:var(--band-from)}
+.display{color:var(--ink)}
+.hero .display{font-size:var(--fs-display);line-height:var(--lh-tight);letter-spacing:var(--track-display);font-weight:var(--fw-bold);max-width:14ch;margin-bottom:.35em}
+.lead{font-size:var(--fs-lead);line-height:1.6;color:var(--text);max-width:36ch}
+@media (max-width:639px){ .hero{padding-block:var(--sp-7) calc(var(--band-height) * .6 + var(--sp-7))} }
+
+/* ---------- eyebrow label ---------- */
+.label{display:inline-block;color:var(--accent);font-size:var(--fs-label);font-weight:var(--fw-semibold);letter-spacing:-.01em;margin:0 0 var(--sp-4)}
+.label.sky{color:var(--sky-ink)}
+.label.sec{color:var(--c,var(--accent))}
+.tag{display:inline-flex;align-items:center;gap:6px;padding:2px 10px;border-radius:var(--r-pill);background:var(--accent-tint);
+  color:var(--accent);font-size:var(--fs-caption);font-weight:var(--fw-semibold);line-height:1.6}
+.tag.sec{background:color-mix(in srgb,var(--c) 12%,transparent);color:var(--c)}
+
+/* ---------- buttons and links (both carry a chevron) ---------- */
+.btn,.link{--chev:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M3 1.5 6.5 5 3 8.5' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+.btn::after,.link::after{content:"";width:.7em;height:.7em;flex:none;background:currentColor;
+  -webkit-mask:var(--chev) center/contain no-repeat;mask:var(--chev) center/contain no-repeat;
+  transition:transform var(--dur-fast) var(--ease-out)}
+.btn:hover::after,.link:hover::after{transform:translateX(3px)}
+.btn.no-chev::after{display:none}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4em;min-height:44px;padding:10px 20px 10px 22px;
+  border:0;border-radius:var(--r-pill);background:var(--accent);color:var(--on-accent);
+  font:inherit;font-weight:var(--fw-semibold);font-size:var(--fs-body);line-height:1.2;text-decoration:none;cursor:pointer;
+  transition:background var(--dur-fast) var(--ease-out),box-shadow var(--dur-fast) var(--ease-out),transform var(--dur-fast) var(--ease-out)}
+.btn:hover{background:var(--accent-hover)}
+.btn:active{transform:translateY(1px)}
+.btn:disabled{opacity:.45;cursor:default}
+.btn.dark{background:var(--ink);color:var(--surface)}
+.btn.dark:hover{background:color-mix(in srgb,var(--ink) 86%,var(--accent))}
+.btn.ghost{background:var(--surface);color:var(--ink);box-shadow:var(--shadow-sm)}
+.btn.ghost:hover{box-shadow:var(--shadow-md)}
+.btn.block{width:100%}
+.btn.sm{min-height:36px;padding:6px 14px 6px 16px;font-size:var(--fs-small)}
+.link{display:inline-flex;align-items:center;gap:.3em;padding:6px 2px;color:var(--accent);font-weight:var(--fw-semibold);text-decoration:none;cursor:pointer;background:none;border:0;font:inherit;font-weight:var(--fw-semibold)}
+.link:hover{color:var(--accent-hover)}
+.link.quiet{color:var(--muted);font-weight:var(--fw-medium)}
+
+/* ---------- cards and panels ---------- */
+.card{position:relative;background:var(--surface);border-radius:var(--r-lg);box-shadow:var(--shadow-md);padding:var(--sp-5)}
+.card.flat{box-shadow:none;border:1px solid var(--line)}
+.card.float{box-shadow:var(--shadow-lg)}
+.card.lift{transition:box-shadow var(--dur-base) var(--ease-out),transform var(--dur-base) var(--ease-out)}
+.card.lift:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+.card.accent{border-top:4px solid var(--c,var(--accent))}
+.panel{background:var(--surface);border-radius:var(--r-md);box-shadow:var(--shadow-xl);overflow:hidden}
+.panel-head{display:flex;align-items:center;justify-content:space-between;padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--line);font-size:var(--fs-small);color:var(--ink);font-weight:var(--fw-semibold)}
+.panel-body{padding:var(--sp-4)}
+.track{height:6px;border-radius:var(--r-pill);background:var(--sunken);overflow:hidden}
+.track>i{display:block;height:100%;background:var(--c,var(--accent));border-radius:inherit;transition:width var(--dur-slow) var(--ease-out)}
+
+/* ---------- motion ---------- */
+.rise{animation:rise var(--dur-base) var(--ease-out) both}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* ---------- deck page: DESIGN.md section 10. Tokens only; no raw colors, sizes, radii or shadows. ---------- */
+:root{ --s-pre-mrna-basics:var(--sec-blue); --s-capping:var(--sec-violet); --s-polyadenylation:var(--sec-teal); --s-introns-and-exons:var(--sec-rose); --s-splicing:var(--sec-orange); --s-alternative-processing:var(--sec-amber); --s-trna-processing:var(--sec-green); --s-rrna-processing:var(--sec-slate);  --deck-c:var(--sec-blue); }
+body{padding-bottom:env(safe-area-inset-bottom,0px)}
+button{font:inherit;color:inherit}
+svg text{font-family:var(--font-sans);font-weight:var(--fw-semibold);letter-spacing:-.01em}
+/* home hero: band starts in the deck's first section color; darkened in dark mode so it doesn't glare */
+.deckhero{--band-from:var(--deck-c);padding-top:max(var(--sp-6),env(safe-area-inset-top,0px))}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .deckhero{--band-from:color-mix(in oklch,var(--deck-c) 62%,var(--bg))} }
+:root[data-theme="dark"] .deckhero{--band-from:color-mix(in oklch,var(--deck-c) 62%,var(--bg))}
+.deckhero h1{margin-bottom:var(--sp-3)}
+.deckhero .label{margin-bottom:var(--sp-2)}
+.deckhero .lead{max-width:40ch;margin:0}
+.toplinks{display:flex;gap:var(--sp-5);flex-wrap:wrap;margin:0 0 var(--sp-6)}
+.overlap{position:relative;margin-top:calc(var(--band-height) * -.5);padding-bottom:var(--sp-8)}
+.stack>*+*{margin-top:var(--sp-5)}
+.card h2{font-size:var(--fs-h3);margin-bottom:var(--sp-1)}
+.hint{color:var(--muted);font-size:var(--fs-small);margin:0 0 var(--sp-4)}
+.resume{border-top:4px solid var(--accent)}
+.center{display:flex;justify-content:center;margin-top:var(--sp-2)}
+/* launch */
+.due{display:flex;align-items:baseline;gap:var(--sp-3);flex-wrap:wrap}
+.due b{font-size:var(--fs-h1);line-height:1;letter-spacing:var(--track-display);color:var(--ink);font-weight:var(--fw-bold)}
+.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-2);margin:var(--sp-5) 0}
+.mode{min-width:0;padding:var(--sp-3);border-radius:var(--r-md);border:1.5px solid var(--line-strong);background:var(--surface);text-align:start;line-height:var(--lh-heading);
+  color:var(--ink);font-weight:var(--fw-semibold);font-size:var(--fs-small);cursor:pointer;transition:border-color var(--dur-fast) var(--ease-out),background var(--dur-fast) var(--ease-out)}
+.mode small{display:block;color:var(--muted);font-weight:var(--fw-regular);font-size:var(--fs-caption);margin-top:var(--sp-1);line-height:1.4}
+.mode:hover,.len:hover{border-color:var(--accent)}
+.mode[aria-pressed="true"],.len[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-tint)}
+/* quiz length and history */
+.lens{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-2);margin:0 0 var(--sp-4)}
+.len{min-height:44px;border-radius:var(--r-pill);border:1.5px solid var(--line-strong);background:var(--surface);font-weight:var(--fw-semibold);color:var(--ink);cursor:pointer}
+.hist{margin:0 0 var(--sp-5)}
+.histhead{display:flex;justify-content:space-between;align-items:baseline;gap:var(--sp-3);flex-wrap:wrap;color:var(--muted);font-size:var(--fs-small)}
+.histhead b{font-size:var(--fs-h3);color:var(--ink);margin-right:var(--sp-1)}
+.hist svg{width:100%;height:auto;display:block;margin-top:var(--sp-2)}
+.hist svg text{font-weight:var(--fw-medium)}
+/* sections */
+.secs{padding:var(--sp-2) var(--sp-5)}
+.secs h2{margin:var(--sp-4) 0 var(--sp-2)}
+.secrow{display:grid;grid-template-columns:22px 1fr auto;gap:var(--sp-1) var(--sp-3);align-items:center;width:100%;padding:var(--sp-3) 0;background:none;border:0;border-top:1px solid var(--line);text-align:start;cursor:pointer;color:var(--ink)}
+.chk{width:22px;height:22px;border-radius:var(--r-sm);border:2px solid var(--c);display:grid;place-items:center}
+.secrow[aria-pressed="true"] .chk{background:var(--c)}
+.secrow[aria-pressed="true"] .chk::after{content:"";width:10px;height:5px;border:2.5px solid var(--surface);border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px)}
+.secname{font-weight:var(--fw-semibold)}
+.secmeta{color:var(--muted);font-size:var(--fs-caption);white-space:nowrap}
+.secrow .track,.bs .track{grid-column:2/4;display:flex}
+.bs .track{grid-column:1/3}
+.track>i+i{border-radius:0}
+.legend{display:flex;gap:var(--sp-2) var(--sp-4);color:var(--muted);font-size:var(--fs-caption);flex-wrap:wrap;padding:var(--sp-3) 0 var(--sp-4);border-top:1px solid var(--line)}
+.legend span::before,.glegend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:var(--r-xs);margin-right:var(--sp-1);vertical-align:-1px;background:var(--sw)}
+.legend .nosw::before{display:none}
+.foot{display:flex;justify-content:space-between;align-items:center;gap:var(--sp-3);color:var(--muted);font-size:var(--fs-small)}
+/* study mode: no band, no guides, one card */
+.study{padding-top:max(var(--sp-4),env(safe-area-inset-top,0px));padding-bottom:var(--sp-7)}
+.top{display:flex;align-items:center;gap:var(--sp-3)}
+.top .track{flex:1}
+.top .track>i{background:var(--accent)}
+.count{color:var(--muted);font-size:var(--fs-small);white-space:nowrap}
+.fc{--c:var(--ink);margin-top:var(--sp-4);min-height:360px;display:flex;flex-direction:column}
+.chip{display:flex;align-items:center;gap:var(--sp-2);flex-wrap:wrap}
+.score{margin-left:auto;color:var(--muted);font-size:var(--fs-caption);font-weight:var(--fw-medium);white-space:nowrap}
+.prompt{color:var(--ink);font-size:var(--fs-h3);font-weight:var(--fw-semibold);line-height:1.35;letter-spacing:-.015em;margin:var(--sp-4) 0 var(--sp-1)}
+.list{display:inline-block;text-align:start}
+.cz{color:var(--c);font-weight:var(--fw-bold)}
+.cz.gap{display:inline-block;min-width:3.2em;padding:0 var(--sp-2);border-radius:var(--r-sm);background:color-mix(in srgb,var(--c) 12%,transparent);border-bottom:2.5px solid var(--c);text-align:center;font-weight:var(--fw-semibold)}
+.viz{margin:var(--sp-3) 0 var(--sp-1)}
+.viz svg{width:100%;height:auto;max-height:46vh;display:block}
+.answer{border-top:1px solid var(--line);margin-top:var(--sp-4);padding-top:var(--sp-4)}
+.ans{font-size:var(--fs-h3);line-height:1.35;font-weight:var(--fw-semibold);color:var(--c);letter-spacing:-.015em}
+.extra{color:var(--text);font-size:var(--fs-small);margin-top:var(--sp-2)}
+.spacer{flex:1}
+.fc .btn{margin-top:var(--sp-5)}
+.grades{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-2);margin-top:var(--sp-5)}
+.g{min-height:56px;padding:var(--sp-2) var(--sp-1);border-radius:var(--r-md);border:0;background:var(--soft);border-bottom:3px solid var(--gc);color:var(--ink);font-weight:var(--fw-semibold);line-height:1.2;cursor:pointer;
+  transition:transform var(--dur-fast) var(--ease-out)}
+.g:active{transform:translateY(1px)}
+.g small{display:block;font-weight:var(--fw-regular);color:var(--muted);font-size:var(--fs-caption);margin-top:2px}
+.keys{color:var(--muted);font-size:var(--fs-caption);margin-top:var(--sp-3)}
+@media (hover:none){.keys{display:none}}
+/* quiz */
+.opts{display:grid;gap:var(--sp-2);margin-top:var(--sp-4)}
+.opt{display:flex;align-items:center;gap:var(--sp-3);width:100%;min-height:52px;padding:var(--sp-3) var(--sp-4);border-radius:var(--r-md);border:1.5px solid var(--line-strong);background:var(--surface);
+  text-align:start;line-height:1.35;color:var(--ink);cursor:pointer;transition:border-color var(--dur-fast) var(--ease-out)}
+.opt:not(:disabled):hover{border-color:var(--accent)}
+.opt .ltr{flex:none;width:28px;height:28px;border-radius:var(--r-sm);display:grid;place-items:center;background:var(--soft);font-weight:var(--fw-semibold);font-size:var(--fs-caption)}
+.opt:disabled{cursor:default}
+.opt.ok{border-color:var(--easy);background:color-mix(in srgb,var(--easy) 12%,var(--surface))}
+.opt.ok .ltr{background:var(--easy);color:var(--surface)}
+.opt.bad{border-color:var(--again);background:color-mix(in srgb,var(--again) 12%,var(--surface))}
+.opt.bad .ltr{background:var(--again);color:var(--surface)}
+.opt.dim{opacity:.55}
+.verdict{margin-top:var(--sp-4);font-weight:var(--fw-semibold)}
+.verdict.ok{color:var(--easy)}.verdict.bad{color:var(--again)}
+/* results */
+.done h1{margin-top:var(--sp-5)}
+.big{text-align:center;padding:var(--sp-2) 0 var(--sp-4)}
+.big b{display:block;font-size:var(--fs-display);line-height:var(--lh-tight);letter-spacing:var(--track-display);color:var(--ink)}
+.big span{color:var(--muted);font-size:var(--fs-small)}
+.gbar{display:flex;gap:2px;height:10px;border-radius:var(--r-pill);overflow:hidden;margin:var(--sp-2) 0;background:var(--sunken)}
+.glegend{display:flex;gap:var(--sp-2) var(--sp-4);flex-wrap:wrap;color:var(--muted);font-size:var(--fs-caption)}
+.bysec{margin-top:var(--sp-4)}
+.bs{display:grid;grid-template-columns:1fr auto;gap:var(--sp-1) var(--sp-3);padding:var(--sp-3) 0;border-top:1px solid var(--line);color:var(--ink);font-weight:var(--fw-medium)}
+.mq{border-top:1px solid var(--line);border-left:4px solid var(--c);padding:var(--sp-3) 0 var(--sp-3) var(--sp-3);font-size:var(--fs-small);color:var(--text)}
+.mq .ma{color:var(--c);font-weight:var(--fw-semibold);margin-top:2px}
+@media (max-width:420px){.modes{gap:var(--sp-1)}.mode{padding:var(--sp-2)}.card{padding:var(--sp-4)}.secs{padding:var(--sp-1) var(--sp-4)}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+
+const DATA = {"cards": [{"id": "b0", "sec": "Pre-mRNA Basics", "kind": "basic", "front": "All RNA is transcribed from what kind of template?", "back": "A DNA template", "extra": "DNA is transcribed into RNA; mRNA is translated into protein.", "added": false, "viz": "", "vf": false}, {"id": "b1", "sec": "Pre-mRNA Basics", "kind": "basic", "front": "In eukaryotes, where does transcription occur?", "back": "In the nucleus", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b2", "sec": "Pre-mRNA Basics", "kind": "basic", "front": "In eukaryotes, where does translation occur?", "back": "In the cytoplasm", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b3", "sec": "Pre-mRNA Basics", "kind": "basic", "front": "Why can a eukaryotic transcript be modified before it is translated?", "back": "Transcription and translation are separated in time and space", "extra": "Transcription in the nucleus, translation in the cytoplasm.", "added": false, "viz": "", "vf": false}, {"id": "b4", "sec": "Pre-mRNA Basics", "kind": "basic", "front": "What is precursor mRNA (pre-mRNA)?", "back": "The initial, direct transcription product of a DNA template", "extra": "Made inside the nucleus.", "added": false, "viz": "processing", "vf": false}, {"id": "b5", "sec": "Pre-mRNA Basics", "kind": "basic", "front": "What is messenger RNA (mRNA)?", "back": "Processed, mature mRNA, moved to the cytoplasm", "extra": "It is moved to the cytoplasm for translation.", "added": false, "viz": "processing", "vf": false}, {"id": "b6", "sec": "Pre-mRNA Basics", "kind": "basic", "front": "What is an untranslated region (UTR)?", "back": "Part of an mRNA not translated into protein", "extra": "", "added": false, "viz": "mrna", "vf": false}, {"id": "b7", "sec": "Pre-mRNA Basics", "kind": "basic", "front": "What is the protein-coding region of an mRNA?", "back": "The sequence that is translated into protein", "extra": "", "added": false, "viz": "mrna:Coding region", "vf": false}, {"id": "b8", "sec": "Pre-mRNA Basics", "kind": "basic", "front": "What flanks the protein-coding region of a mature mRNA?", "back": "The 5\u2032 and 3\u2032 untranslated regions", "extra": "", "added": false, "viz": "mrna", "vf": false}, {"id": "b9", "sec": "Pre-mRNA Basics", "kind": "basic", "front": "Which codon marks the start of the protein-coding region?", "back": "The start codon", "extra": "The stop codon marks its end.", "added": false, "viz": "mrna", "vf": false}, {"id": "b10", "sec": "Pre-mRNA Basics", "kind": "basic", "front": "Which pre-mRNA modification alters the mRNA's nucleotide sequence?", "back": "RNA editing", "extra": "Table 14.2. The slides skip RNA editing details this term.", "added": false, "viz": "", "vf": false}, {"id": "b11", "sec": "Pre-mRNA Basics", "kind": "basic", "front": "What are the changes made to eukaryotic pre-mRNA called?", "back": "Posttranscriptional modifications", "extra": "Table 14.2.", "added": false, "viz": "", "vf": false}, {"id": "b12", "sec": "Capping", "kind": "basic", "front": "When is the 5\u2032 cap added to a pre-mRNA?", "back": "Soon after transcription initiation", "extra": "", "added": false, "viz": "cap", "vf": false}, {"id": "b13", "sec": "Capping", "kind": "basic", "front": "How many phosphates does the first nucleotide of a pre-mRNA have?", "back": "Three", "extra": "Later nucleotides each keep one phosphate in the backbone.", "added": false, "viz": "cap", "vf": false}, {"id": "b14", "sec": "Capping", "kind": "basic", "front": "Capping step 1: what is removed from the 5\u2032 end?", "back": "One of the three phosphate groups", "extra": "Released as Pi.", "added": false, "viz": "cap", "vf": false}, {"id": "b15", "sec": "Capping", "kind": "basic", "front": "Capping step 2: what is added to the 5\u2032 end?", "back": "A guanine nucleotide, with its phosphate group", "extra": "It comes from GTP, releasing PPi.", "added": false, "viz": "cap:G", "vf": false}, {"id": "b16", "sec": "Capping", "kind": "basic", "front": "Capping step 3: where is the guanine methylated?", "back": "Position 7 of its base", "extra": "This makes the terminal nucleotide 7-methylguanosine.", "added": false, "viz": "cap:G", "vf": false}, {"id": "b17", "sec": "Capping", "kind": "basic", "front": "What is the methylated terminal nucleotide of the cap called?", "back": "7-methylguanosine", "extra": "", "added": false, "viz": "cap:G", "vf": false}, {"id": "b18", "sec": "Capping", "kind": "basic", "front": "What unusual bond joins the cap guanine to the mRNA?", "back": "A 5\u2032-5\u2032 bond", "extra": "The slides call it a unique 5\u2032-5\u2032 bond, through three phosphates.", "added": false, "viz": "cap:bond", "vf": false}, {"id": "b19", "sec": "Capping", "kind": "basic", "front": "Capping step 4: which other position gets methyl groups?", "back": "The 2\u2032 sugar position of nucleotide 2, sometimes 3", "extra": "The 2\u2032 position of the sugar in the second and sometimes third nucleotides.", "added": false, "viz": "cap:methyl", "vf": false}, {"id": "b20", "sec": "Capping", "kind": "basic", "front": "Capping step 5: if the second nucleotide's base is A, what may happen?", "back": "That base may also be methylated", "extra": "", "added": false, "viz": "cap:methyl", "vf": false}, {"id": "b21", "sec": "Capping", "kind": "basic", "front": "What proteins bind the 5\u2032 cap?", "back": "The Cap Binding Complex (CBC)", "extra": "", "added": false, "viz": "cap", "vf": false}, {"id": "b22", "sec": "Capping", "kind": "basic", "front": "Cap plus CBC facilitates binding of what to the mRNA's 5\u2032 end?", "back": "The ribosome", "extra": "So the cap promotes translation. Clearer in Chapter 15.", "added": false, "viz": "cap", "vf": false}, {"id": "b23", "sec": "Capping", "kind": "basic", "front": "How does the 5\u2032 cap affect mRNA stability?", "back": "It increases mRNA stability", "extra": "", "added": false, "viz": "cap", "vf": false}, {"id": "b24", "sec": "Capping", "kind": "basic", "front": "Cap plus CBC block which class of enzymes?", "back": "5\u2032 to 3\u2032 exonucleases", "extra": "Chapter 13 connection.", "added": false, "viz": "cap", "vf": false}, {"id": "b25", "sec": "Capping", "kind": "basic", "front": "Which Chapter 13 exonuclease does CBC block?", "back": "Rat1", "extra": "Rat1 is a 5\u2032 to 3\u2032 exonuclease used in Pol II termination.", "added": false, "viz": "", "vf": false}, {"id": "b26", "sec": "Capping", "kind": "basic", "front": "Why does CBC blocking Rat1 matter?", "back": "It prevents degrading the mRNA that was just made", "extra": "From the handwritten note on the Rat1 slide.", "added": false, "viz": "", "vf": false}, {"id": "b27", "sec": "Capping", "kind": "basic", "front": "In Pol II termination, where does Rat1 attach?", "back": "The 5\u2032 end of the trailing RNA", "extra": "After cleavage generates the 3\u2032 end of the pre-mRNA. Fig. 13.19.", "added": false, "viz": "", "vf": false}, {"id": "b28", "sec": "Polyadenylation", "kind": "basic", "front": "What is the poly(A) tail?", "back": "50 to 250 adenine nucleotides added at the 3\u2032 end", "extra": "", "added": false, "viz": "polya", "vf": false}, {"id": "b29", "sec": "Polyadenylation", "kind": "basic", "front": "How many adenine nucleotides make up a poly(A) tail?", "back": "50 to 250", "extra": "", "added": false, "viz": "polya", "vf": false}, {"id": "b30", "sec": "Polyadenylation", "kind": "basic", "front": "Are the poly(A) tail's adenines encoded in the DNA?", "back": "No, they are added after transcription", "extra": "", "added": false, "viz": "polya", "vf": false}, {"id": "b31", "sec": "Polyadenylation", "kind": "basic", "front": "What consensus sequence in pre-mRNA signals 3\u2032 cleavage?", "back": "AAUAAA", "extra": "Fig. 14.7.", "added": false, "viz": "polya", "vf": false}, {"id": "b32", "sec": "Polyadenylation", "kind": "basic", "front": "How far downstream of the consensus sequence is pre-mRNA cleaved?", "back": "11 to 30 nucleotides", "extra": "", "added": false, "viz": "polya", "vf": false}, {"id": "b33", "sec": "Polyadenylation", "kind": "basic", "front": "In which region of the pre-mRNA does 3\u2032 cleavage occur?", "back": "The 3\u2032 untranslated region", "extra": "", "added": false, "viz": "polya", "vf": false}, {"id": "b34", "sec": "Polyadenylation", "kind": "basic", "front": "What sequence lies just downstream of the 3\u2032 cleavage site?", "back": "A U-rich sequence", "extra": "Fig. 14.7.", "added": false, "viz": "polya", "vf": false}, {"id": "b35", "sec": "Polyadenylation", "kind": "basic", "front": "What is adding adenines to the new 3\u2032 end called?", "back": "Polyadenylation", "extra": "", "added": false, "viz": "polya", "vf": false}, {"id": "b36", "sec": "Polyadenylation", "kind": "basic", "front": "What proteins bind the poly(A) tail?", "back": "Poly(A) binding proteins (PBPs)", "extra": "", "added": false, "viz": "polya", "vf": false}, {"id": "b37", "sec": "Polyadenylation", "kind": "basic", "front": "How does the poly(A) tail affect mRNA stability?", "back": "It increases mRNA stability", "extra": "Table 14.2.", "added": false, "viz": "", "vf": false}, {"id": "b38", "sec": "Polyadenylation", "kind": "basic", "front": "Besides stability, what does the poly(A) tail facilitate?", "back": "Binding of the ribosome to the mRNA", "extra": "Table 14.2.", "added": false, "viz": "", "vf": false}, {"id": "b39", "sec": "Introns and Exons", "kind": "basic", "front": "How do gene, mRNA and polypeptide relate in many prokaryotic genes?", "back": "They are colinear", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b40", "sec": "Introns and Exons", "kind": "basic", "front": "With colinearity, a gene's nucleotide count is proportional to what?", "back": "The protein's number of amino acids", "extra": "Fig. 14.1.", "added": false, "viz": "", "vf": false}, {"id": "b41", "sec": "Introns and Exons", "kind": "basic", "front": "Are most eukaryotic genes colinear?", "back": "No", "extra": "Surprise! Most are not colinear.", "added": false, "viz": "exons", "vf": false}, {"id": "b42", "sec": "Introns and Exons", "kind": "basic", "front": "When DNA is hybridized with its mRNA, how do noncoding regions appear?", "back": "As loops", "extra": "DNA was mixed with complementary mRNA, heated, then cooled so complementary sequences paired. Fig. 14.2.", "added": false, "viz": "", "vf": false}, {"id": "b43", "sec": "Introns and Exons", "kind": "basic", "front": "What did the DNA-mRNA hybrid loops reveal?", "back": "Some internal gene sequences are not present in RNA", "extra": "Coding sequences in a gene may be interrupted by noncoding sequences.", "added": false, "viz": "", "vf": false}, {"id": "b44", "sec": "Introns and Exons", "kind": "basic", "front": "What are exons?", "back": "Sequences that are present in mRNA", "extra": "", "added": false, "viz": "exons:exon", "vf": false}, {"id": "b45", "sec": "Introns and Exons", "kind": "basic", "front": "What are introns?", "back": "Gene sequences that are not present in mRNA", "extra": "", "added": false, "viz": "exons:intron", "vf": false}, {"id": "b46", "sec": "Introns and Exons", "kind": "basic", "front": "How many exons and introns does the ovalbumin gene have?", "back": "8 exons, 7 introns", "extra": "Fig. 14.3.", "added": false, "viz": "", "vf": false}, {"id": "b47", "sec": "Introns and Exons", "kind": "basic", "front": "How many exons and introns does the cytochrome b gene have?", "back": "5 exons, 4 introns", "extra": "Fig. 14.3.", "added": false, "viz": "", "vf": false}, {"id": "b48", "sec": "Introns and Exons", "kind": "basic", "front": "How are intron sequences removed?", "back": "By RNA splicing", "extra": "", "added": false, "viz": "exons", "vf": false}, {"id": "b49", "sec": "Introns and Exons", "kind": "basic", "front": "What splicing mechanism do nuclear pre-mRNA introns use?", "back": "Spliceosomal", "extra": "Table 14.1.", "added": false, "viz": "", "vf": false}, {"id": "b50", "sec": "Introns and Exons", "kind": "basic", "front": "Where are nuclear pre-mRNA introns found?", "back": "Protein-encoding genes in the nucleus of eukaryotes", "extra": "Table 14.1.", "added": false, "viz": "", "vf": false}, {"id": "b51", "sec": "Introns and Exons", "kind": "basic", "front": "What splicing mechanism do tRNA introns use?", "back": "Enzymatic", "extra": "Table 14.1.", "added": false, "viz": "", "vf": false}, {"id": "b52", "sec": "Introns and Exons", "kind": "basic", "front": "Where are tRNA introns found?", "back": "tRNA genes of bacteria, archaea and eukaryotes", "extra": "Table 14.1.", "added": false, "viz": "", "vf": false}, {"id": "b53", "sec": "Introns and Exons", "kind": "basic", "front": "In the human interleukin 2 gene, what occupies large parts of the gene?", "back": "Noncoding introns", "extra": "Fig. 14.17.", "added": false, "viz": "", "vf": false}, {"id": "b54", "sec": "Introns and Exons", "kind": "basic", "front": "The interleukin 2 exons encode how many amino acids?", "back": "Fewer than 165, a small protein", "extra": "Fig. 14.17.", "added": false, "viz": "", "vf": false}, {"id": "b55", "sec": "Splicing", "kind": "basic", "front": "Which intron sequence at the 5\u2032 splice site is critical?", "back": "GU", "extra": "At the intron-exon junction. Fig. 14.8.", "added": false, "viz": "splicesites:5\u2032 splice site", "vf": false}, {"id": "b56", "sec": "Splicing", "kind": "basic", "front": "Which intron sequence at the 3\u2032 splice site is critical?", "back": "AG", "extra": "At the intron-exon junction. Fig. 14.8.", "added": false, "viz": "splicesites:3\u2032 splice site", "vf": false}, {"id": "b57", "sec": "Splicing", "kind": "basic", "front": "Which nucleotide sits at the branch point?", "back": "Adenine (A)", "extra": "", "added": false, "viz": "splicesites:Branch point", "vf": false}, {"id": "b58", "sec": "Splicing", "kind": "basic", "front": "Where is the branch point located?", "back": "18 to 40 bp upstream of the 3\u2032 splice site", "extra": "Within the intron.", "added": false, "viz": "splicesites:Branch point", "vf": false}, {"id": "b59", "sec": "Splicing", "kind": "basic", "front": "Splicing step 1: where is the pre-mRNA cut first?", "back": "At the 5\u2032 splice site", "extra": "Fig. 14.9.", "added": false, "viz": "lariat", "vf": false}, {"id": "b60", "sec": "Splicing", "kind": "basic", "front": "After the 5\u2032 cut, what does the intron's 5\u2032 end attach to?", "back": "The branch point", "extra": "", "added": false, "viz": "lariat", "vf": false}, {"id": "b61", "sec": "Splicing", "kind": "basic", "front": "What structure forms when the intron's 5\u2032 end attaches to the branch point?", "back": "A lariat", "extra": "", "added": false, "viz": "lariat", "vf": false}, {"id": "b62", "sec": "Splicing", "kind": "basic", "front": "In lariat formation, which group of the intron's G attaches?", "back": "Its 5\u2032 phosphate group", "extra": "It attaches to the 2\u2032 OH of the branch-point A.", "added": false, "viz": "lariat", "vf": false}, {"id": "b63", "sec": "Splicing", "kind": "basic", "front": "The intron's G attaches to which group of the branch-point A?", "back": "The 2\u2032 OH group", "extra": "", "added": false, "viz": "lariat", "vf": false}, {"id": "b64", "sec": "Splicing", "kind": "basic", "front": "After the lariat forms, where is the next cut made?", "back": "At the 3\u2032 splice site", "extra": "", "added": false, "viz": "lariat", "vf": false}, {"id": "b65", "sec": "Splicing", "kind": "basic", "front": "What happens to the two exons after the 3\u2032 cut?", "back": "They are joined covalently together", "extra": "", "added": false, "viz": "lariat", "vf": false}, {"id": "b66", "sec": "Splicing", "kind": "basic", "front": "What happens to the released intron lariat?", "back": "Its bond is broken and the linear intron is degraded", "extra": "", "added": false, "viz": "lariat", "vf": false}, {"id": "b67", "sec": "Splicing", "kind": "basic", "front": "After splicing, what happens to the mRNA?", "back": "It is exported to the cytoplasm and translated", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b68", "sec": "Splicing", "kind": "basic", "front": "What facilitates splicing of nuclear pre-mRNA?", "back": "The spliceosome", "extra": "", "added": false, "viz": "spliceosome", "vf": false}, {"id": "b69", "sec": "Splicing", "kind": "basic", "front": "How many snRNPs make up the spliceosome?", "back": "Five", "extra": "U1, U2, U4, U5 and U6.", "added": false, "viz": "spliceosome", "vf": false}, {"id": "b70", "sec": "Splicing", "kind": "basic", "front": "What is an snRNP?", "back": "A small nuclear RNA plus associated proteins", "extra": "snRNP = small ribonuclear particle.", "added": false, "viz": "", "vf": false}, {"id": "b71", "sec": "Splicing", "kind": "basic", "front": "What is special about snRNAs?", "back": "They base pair complementarily with pre-mRNA", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b72", "sec": "Splicing", "kind": "basic", "front": "Which snRNP attaches to the 5\u2032 splice site?", "back": "U1", "extra": "Step 1 of spliceosome assembly. Fig. 14.10.", "added": false, "viz": "spliceosome:U1", "vf": false}, {"id": "b73", "sec": "Splicing", "kind": "basic", "front": "Which snRNP attaches to the branch point?", "back": "U2", "extra": "Step 2.", "added": false, "viz": "spliceosome:U2", "vf": false}, {"id": "b74", "sec": "Splicing", "kind": "basic", "front": "Which snRNPs join the spliceosome together as a complex?", "back": "U4, U5 and U6", "extra": "Step 3.", "added": false, "viz": "spliceosome:U4/U5/U6", "vf": false}, {"id": "b75", "sec": "Splicing", "kind": "basic", "front": "Which snRNPs are released after the lariat forms?", "back": "U1 and U4", "extra": "Step 5.", "added": false, "viz": "", "vf": false}, {"id": "b76", "sec": "Splicing", "kind": "basic", "front": "Which snRNPs leave with the intron lariat?", "back": "U2, U5 and U6", "extra": "Step 7. The snRNPs then dissociate and the lariat is degraded.", "added": false, "viz": "", "vf": false}, {"id": "b77", "sec": "Splicing", "kind": "basic", "front": "How do snRNPs assemble on pre-mRNA?", "back": "In a stepwise fashion", "extra": "Fig. 14.10.", "added": false, "viz": "spliceosome", "vf": false}, {"id": "b78", "sec": "Splicing", "kind": "basic", "front": "If the 5\u2032 splice site sequence were mutated, what would happen to splicing?", "back": "The intron is retained in the mature mRNA", "extra": "Concept Check. Handwritten note: the 5\u2032 end (U1) would not bind to the branch point.", "added": false, "viz": "splicesites:5\u2032 splice site", "vf": false}, {"id": "b79", "sec": "Splicing", "kind": "basic", "front": "A 5\u2032 splice site mutation keeps an intron. Effect on the protein?", "back": "A different (wrong) protein is produced", "extra": "Concept Check, slide 36.", "added": false, "viz": "", "vf": false}, {"id": "b80", "sec": "Splicing", "kind": "basic", "front": "Besides removing introns, what does splicing facilitate?", "back": "Export of mRNA to the cytoplasm", "extra": "Table 14.2.", "added": false, "viz": "", "vf": false}, {"id": "b81", "sec": "Splicing", "kind": "basic", "front": "Which RNA class processes pre-mRNA?", "back": "Small nuclear RNA (snRNA)", "extra": "Table 13.2. Eukaryotic, nucleus.", "added": false, "viz": "", "vf": false}, {"id": "b82", "sec": "Alternative Processing", "kind": "basic", "front": "What is alternative processing?", "back": "One pre-mRNA producing multiple mRNAs", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b83", "sec": "Alternative Processing", "kind": "basic", "front": "What does alternative splicing allow a cell to produce?", "back": "Multiple proteins from one pre-mRNA", "extra": "Table 14.2.", "added": false, "viz": "altsplice", "vf": false}, {"id": "b84", "sec": "Alternative Processing", "kind": "basic", "front": "A pre-mRNA has 3 exons. Which mRNA results if both introns are removed?", "back": "Exons 1, 2 and 3", "extra": "Fig. 14.12a.", "added": false, "viz": "altsplice:123", "vf": false}, {"id": "b85", "sec": "Alternative Processing", "kind": "basic", "front": "A pre-mRNA has 3 exons. Which mRNA results if exon 2 is also removed?", "back": "Exons 1 and 3", "extra": "Both introns and exon 2 are removed. Fig. 14.12a.", "added": false, "viz": "altsplice:13", "vf": false}, {"id": "b86", "sec": "Alternative Processing", "kind": "basic", "front": "In the multiple 3\u2032 cleavage example, what does exon 2 contain?", "back": "Two possible 3\u2032 cleavage sites", "extra": "Fig. 14.12b.", "added": false, "viz": "multi3", "vf": false}, {"id": "b87", "sec": "Alternative Processing", "kind": "basic", "front": "What does multiple 3\u2032 cleavage produce?", "back": "mRNA products of different length", "extra": "", "added": false, "viz": "multi3", "vf": false}, {"id": "b88", "sec": "Alternative Processing", "kind": "basic", "front": "Can one gene undergo both alternative splicing and alternative 3\u2032 cleavage?", "back": "Yes", "extra": "", "added": false, "viz": "calca", "vf": false}, {"id": "b89", "sec": "Alternative Processing", "kind": "basic", "front": "In thyroid cells, which 3\u2032 cleavage site does CALCA use?", "back": "The site in exon 4", "extra": "Fig. 14.13.", "added": false, "viz": "calca:thyroid", "vf": false}, {"id": "b90", "sec": "Alternative Processing", "kind": "basic", "front": "Which exons are in the thyroid CALCA mRNA?", "back": "Exons 1, 2, 3 and 4", "extra": "", "added": false, "viz": "calca:thyroid", "vf": false}, {"id": "b91", "sec": "Alternative Processing", "kind": "basic", "front": "What does the thyroid CALCA mRNA encode?", "back": "Calcitonin", "extra": "", "added": false, "viz": "calca:thyroid", "vf": false}, {"id": "b92", "sec": "Alternative Processing", "kind": "basic", "front": "In brain cells, which 3\u2032 cleavage site does CALCA use?", "back": "The site in exon 6", "extra": "", "added": false, "viz": "calca:brain", "vf": false}, {"id": "b93", "sec": "Alternative Processing", "kind": "basic", "front": "Which CALCA exon is removed by splicing in brain cells?", "back": "Exon 4", "extra": "", "added": false, "viz": "calca:brain", "vf": false}, {"id": "b94", "sec": "Alternative Processing", "kind": "basic", "front": "Which exons are in the brain CALCA mRNA?", "back": "Exons 1, 2, 3, 5 and 6", "extra": "", "added": false, "viz": "calca:brain", "vf": false}, {"id": "b95", "sec": "Alternative Processing", "kind": "basic", "front": "What does the brain CALCA mRNA encode?", "back": "Calcitonin-gene-related peptide (CGRP)", "extra": "", "added": false, "viz": "calca:brain", "vf": false}, {"id": "b96", "sec": "Alternative Processing", "kind": "basic", "front": "CALCA making different mRNAs in thyroid and brain is an example of what?", "back": "Tissue-specific alternative processing", "extra": "", "added": false, "viz": "calca", "vf": false}, {"id": "b97", "sec": "tRNA Processing", "kind": "basic", "front": "What job do tRNAs do?", "back": "Adapters connecting three-letter mRNA sequences to amino acids", "extra": "They connect each three-letter mRNA sequence to its corresponding amino acid.", "added": false, "viz": "trna", "vf": false}, {"id": "b98", "sec": "tRNA Processing", "kind": "basic", "front": "Which part of a tRNA is complementary to mRNA?", "back": "The anticodon", "extra": "Located on the anticodon arm.", "added": false, "viz": "trna:Anticodon arm", "vf": false}, {"id": "b99", "sec": "tRNA Processing", "kind": "basic", "front": "Where on a tRNA is the amino acid attachment site?", "back": "At the 3\u2032 end", "extra": "", "added": false, "viz": "trna:Acceptor arm", "vf": false}, {"id": "b100", "sec": "tRNA Processing", "kind": "basic", "front": "What sequence is always at a tRNA's 3\u2032 end?", "back": "5\u2032-CCA-3\u2032", "extra": "The amino acid attachment site is always CCA.", "added": false, "viz": "trna:Acceptor arm", "vf": false}, {"id": "b101", "sec": "tRNA Processing", "kind": "basic", "front": "What holds the tRNA's folded structure together?", "back": "Intramolecular base pairing", "extra": "Hydrogen bonds between paired bases.", "added": false, "viz": "trna", "vf": false}, {"id": "b102", "sec": "tRNA Processing", "kind": "basic", "front": "Which tRNA arm varies in size?", "back": "The extra arm", "extra": "", "added": false, "viz": "trna:Extra arm", "vf": false}, {"id": "b103", "sec": "tRNA Processing", "kind": "basic", "front": "In eukaryotic cells, where do tRNAs function?", "back": "In the cytoplasm", "extra": "Table 13.2. Found in prokaryotes and eukaryotes.", "added": false, "viz": "", "vf": false}, {"id": "b104", "sec": "tRNA Processing", "kind": "basic", "front": "What is tRNA's function, per Table 13.2?", "back": "Helps incorporate amino acids into the polypeptide chain", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b105", "sec": "tRNA Processing", "kind": "basic", "front": "When are rare bases made in tRNA?", "back": "After transcription, by tRNA-modifying enzymes", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b106", "sec": "tRNA Processing", "kind": "basic", "front": "What do tRNA rare bases affect?", "back": "tRNA structure and how it interacts with ribosome and mRNA", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b107", "sec": "tRNA Processing", "kind": "basic", "front": "Which rare base is uracil with an added methyl group?", "back": "Ribothymidine", "extra": "Fig. 14.18.", "added": false, "viz": "", "vf": false}, {"id": "b108", "sec": "tRNA Processing", "kind": "basic", "front": "Besides ribothymidine, which rare base is made from uracil?", "back": "Pseudouridine", "extra": "Fig. 14.18 (spelled Pseudouradine on the slide).", "added": false, "viz": "", "vf": false}, {"id": "b109", "sec": "rRNA Processing", "kind": "basic", "front": "What are ribosomes composed of?", "back": "rRNA plus many proteins", "extra": "", "added": false, "viz": "ribosome", "vf": false}, {"id": "b110", "sec": "rRNA Processing", "kind": "basic", "front": "What does the S in 70S stand for?", "back": "Svedberg unit", "extra": "", "added": false, "viz": "ribosome", "vf": false}, {"id": "b111", "sec": "rRNA Processing", "kind": "basic", "front": "What size is the bacterial ribosome?", "back": "70S", "extra": "Large 50S plus small 30S subunit.", "added": false, "viz": "ribosome:bact", "vf": false}, {"id": "b112", "sec": "rRNA Processing", "kind": "basic", "front": "What size is the eukaryotic ribosome?", "back": "80S", "extra": "Large 60S plus small 40S subunit.", "added": false, "viz": "ribosome:euk", "vf": false}, {"id": "b113", "sec": "rRNA Processing", "kind": "basic", "front": "Which rRNA is in the bacterial small (30S) subunit?", "back": "16S rRNA (1500 nucleotides)", "extra": "Table 14.3.", "added": false, "viz": "ribosome:bact", "vf": false}, {"id": "b114", "sec": "rRNA Processing", "kind": "basic", "front": "Which rRNA is in the eukaryotic small (40S) subunit?", "back": "18S rRNA (1900 nucleotides)", "extra": "Table 14.3.", "added": false, "viz": "ribosome:euk", "vf": false}, {"id": "b115", "sec": "rRNA Processing", "kind": "basic", "front": "How many proteins are in the bacterial large (50S) subunit?", "back": "31", "extra": "Table 14.3.", "added": false, "viz": "ribosome:bact", "vf": false}, {"id": "b116", "sec": "rRNA Processing", "kind": "basic", "front": "How many proteins are in the bacterial small (30S) subunit?", "back": "21", "extra": "Table 14.3.", "added": false, "viz": "ribosome:bact", "vf": false}, {"id": "b117", "sec": "rRNA Processing", "kind": "basic", "front": "How many proteins are in the eukaryotic large (60S) subunit?", "back": "49", "extra": "Table 14.3.", "added": false, "viz": "ribosome:euk", "vf": false}, {"id": "b118", "sec": "rRNA Processing", "kind": "basic", "front": "How many proteins are in the eukaryotic small (40S) subunit?", "back": "33", "extra": "Table 14.3.", "added": false, "viz": "ribosome:euk", "vf": false}, {"id": "b119", "sec": "rRNA Processing", "kind": "basic", "front": "What is rRNA's function, per Table 13.2?", "back": "Structural and functional components of the ribosome", "extra": "Functions in the cytoplasm.", "added": false, "viz": "", "vf": false}, {"id": "b120", "sec": "rRNA Processing", "kind": "basic", "front": "What does precursor rRNA processing generate?", "back": "Several rRNAs from a single precursor", "extra": "", "added": false, "viz": "rrna", "vf": false}, {"id": "b121", "sec": "rRNA Processing", "kind": "basic", "front": "What size is the prokaryotic precursor rRNA transcript?", "back": "30S", "extra": "Fig. 14.21.", "added": false, "viz": "rrna", "vf": false}, {"id": "b122", "sec": "rRNA Processing", "kind": "basic", "front": "What size is the eukaryotic precursor rRNA transcript?", "back": "45S", "extra": "Fig. 14.21.", "added": false, "viz": "rrna", "vf": false}, {"id": "b123", "sec": "rRNA Processing", "kind": "basic", "front": "Which RNA class processes and assembles rRNA?", "back": "Small nucleolar RNA (snoRNA)", "extra": "Table 13.2. Eukaryotic, nucleus.", "added": false, "viz": "", "vf": false}, {"id": "c0_1", "sec": "Pre-mRNA Basics", "kind": "cloze", "front": "<div class=\"list\">Central dogma:<br>DNA is <span class=\"cz gap\">?</span> into RNA<br>mRNA is translated into protein</div>", "back": "<div class=\"list\">Central dogma:<br>DNA is <span class=\"cz\">transcribed</span> into RNA<br>mRNA is translated into protein</div>", "extra": "Flow of genetic information is linear, in one direction.", "added": false, "viz": "", "vf": false}, {"id": "c0_2", "sec": "Pre-mRNA Basics", "kind": "cloze", "front": "<div class=\"list\">Central dogma:<br>DNA is transcribed into RNA<br>mRNA is <span class=\"cz gap\">?</span> into protein</div>", "back": "<div class=\"list\">Central dogma:<br>DNA is transcribed into RNA<br>mRNA is <span class=\"cz\">translated</span> into protein</div>", "extra": "Flow of genetic information is linear, in one direction.", "added": false, "viz": "", "vf": false}, {"id": "c1_1", "sec": "Pre-mRNA Basics", "kind": "cloze", "front": "<div class=\"list\">Mature mRNA, 5\u2032 to 3\u2032:<br><span class=\"cz gap\">?</span><br>Protein-coding region<br>3\u2032 untranslated region</div>", "back": "<div class=\"list\">Mature mRNA, 5\u2032 to 3\u2032:<br><span class=\"cz\">5\u2032 untranslated region</span><br>Protein-coding region<br>3\u2032 untranslated region</div>", "extra": "Start codon begins the coding region; stop codon ends it. Fig. 14.5.", "added": false, "viz": "mrna", "vf": false}, {"id": "c1_2", "sec": "Pre-mRNA Basics", "kind": "cloze", "front": "<div class=\"list\">Mature mRNA, 5\u2032 to 3\u2032:<br>5\u2032 untranslated region<br><span class=\"cz gap\">?</span><br>3\u2032 untranslated region</div>", "back": "<div class=\"list\">Mature mRNA, 5\u2032 to 3\u2032:<br>5\u2032 untranslated region<br><span class=\"cz\">Protein-coding region</span><br>3\u2032 untranslated region</div>", "extra": "Start codon begins the coding region; stop codon ends it. Fig. 14.5.", "added": false, "viz": "mrna", "vf": false}, {"id": "c1_3", "sec": "Pre-mRNA Basics", "kind": "cloze", "front": "<div class=\"list\">Mature mRNA, 5\u2032 to 3\u2032:<br>5\u2032 untranslated region<br>Protein-coding region<br><span class=\"cz gap\">?</span></div>", "back": "<div class=\"list\">Mature mRNA, 5\u2032 to 3\u2032:<br>5\u2032 untranslated region<br>Protein-coding region<br><span class=\"cz\">3\u2032 untranslated region</span></div>", "extra": "Start codon begins the coding region; stop codon ends it. Fig. 14.5.", "added": false, "viz": "mrna", "vf": false}, {"id": "c2_1", "sec": "Pre-mRNA Basics", "kind": "cloze", "front": "<div class=\"list\">Posttranscriptional modifications (Table 14.2):<br>Addition of the <span class=\"cz gap\">?</span><br>3\u2032 cleavage and addition of the poly(A) tail<br>RNA splicing<br>RNA editing</div>", "back": "<div class=\"list\">Posttranscriptional modifications (Table 14.2):<br>Addition of the <span class=\"cz\">5\u2032 cap</span><br>3\u2032 cleavage and addition of the poly(A) tail<br>RNA splicing<br>RNA editing</div>", "extra": "", "added": false, "viz": "processing", "vf": false}, {"id": "c2_2", "sec": "Pre-mRNA Basics", "kind": "cloze", "front": "<div class=\"list\">Posttranscriptional modifications (Table 14.2):<br>Addition of the 5\u2032 cap<br>3\u2032 cleavage and addition of the <span class=\"cz gap\">?</span><br>RNA splicing<br>RNA editing</div>", "back": "<div class=\"list\">Posttranscriptional modifications (Table 14.2):<br>Addition of the 5\u2032 cap<br>3\u2032 cleavage and addition of the <span class=\"cz\">poly(A) tail</span><br>RNA splicing<br>RNA editing</div>", "extra": "", "added": false, "viz": "processing", "vf": false}, {"id": "c2_3", "sec": "Pre-mRNA Basics", "kind": "cloze", "front": "<div class=\"list\">Posttranscriptional modifications (Table 14.2):<br>Addition of the 5\u2032 cap<br>3\u2032 cleavage and addition of the poly(A) tail<br>RNA <span class=\"cz gap\">?</span><br>RNA editing</div>", "back": "<div class=\"list\">Posttranscriptional modifications (Table 14.2):<br>Addition of the 5\u2032 cap<br>3\u2032 cleavage and addition of the poly(A) tail<br>RNA <span class=\"cz\">splicing</span><br>RNA editing</div>", "extra": "", "added": false, "viz": "processing", "vf": false}, {"id": "c2_4", "sec": "Pre-mRNA Basics", "kind": "cloze", "front": "<div class=\"list\">Posttranscriptional modifications (Table 14.2):<br>Addition of the 5\u2032 cap<br>3\u2032 cleavage and addition of the poly(A) tail<br>RNA splicing<br>RNA <span class=\"cz gap\">?</span></div>", "back": "<div class=\"list\">Posttranscriptional modifications (Table 14.2):<br>Addition of the 5\u2032 cap<br>3\u2032 cleavage and addition of the poly(A) tail<br>RNA splicing<br>RNA <span class=\"cz\">editing</span></div>", "extra": "", "added": false, "viz": "processing", "vf": false}, {"id": "c3_1", "sec": "Pre-mRNA Basics", "kind": "cloze", "front": "<div class=\"list\">Nuclear pre-mRNA processing:<br><span class=\"cz gap\">?</span> added soon after transcription initiation<br>3\u2032 end cleaved and polyadenylated<br>Introns are spliced</div>", "back": "<div class=\"list\">Nuclear pre-mRNA processing:<br><span class=\"cz\">5\u2032 cap</span> added soon after transcription initiation<br>3\u2032 end cleaved and polyadenylated<br>Introns are spliced</div>", "extra": "Fig. 14.16.", "added": false, "viz": "processing", "vf": false}, {"id": "c3_2", "sec": "Pre-mRNA Basics", "kind": "cloze", "front": "<div class=\"list\">Nuclear pre-mRNA processing:<br>5\u2032 cap added soon after transcription initiation<br>3\u2032 end <span class=\"cz gap\">?</span> and polyadenylated<br>Introns are spliced</div>", "back": "<div class=\"list\">Nuclear pre-mRNA processing:<br>5\u2032 cap added soon after transcription initiation<br>3\u2032 end <span class=\"cz\">cleaved</span> and polyadenylated<br>Introns are spliced</div>", "extra": "Fig. 14.16.", "added": false, "viz": "processing", "vf": false}, {"id": "c3_3", "sec": "Pre-mRNA Basics", "kind": "cloze", "front": "<div class=\"list\">Nuclear pre-mRNA processing:<br>5\u2032 cap added soon after transcription initiation<br>3\u2032 end cleaved and polyadenylated<br><span class=\"cz gap\">?</span> are spliced</div>", "back": "<div class=\"list\">Nuclear pre-mRNA processing:<br>5\u2032 cap added soon after transcription initiation<br>3\u2032 end cleaved and polyadenylated<br><span class=\"cz\">Introns</span> are spliced</div>", "extra": "Fig. 14.16.", "added": false, "viz": "processing", "vf": false}, {"id": "c4_1", "sec": "Capping", "kind": "cloze", "front": "<div class=\"list\">Adding the 5\u2032 cap:<br>1. One of three <span class=\"cz gap\">?</span> removed from the 5\u2032 end<br>2. A guanine nucleotide is added<br>3. Methyl added to position 7 of the guanine base<br>4. Methyl added to the 2\u2032 position of the 2nd (sometimes 3rd) sugar<br>5. If the 2nd base is A, it may also be methylated</div>", "back": "<div class=\"list\">Adding the 5\u2032 cap:<br>1. One of three <span class=\"cz\">phosphate groups</span> removed from the 5\u2032 end<br>2. A guanine nucleotide is added<br>3. Methyl added to position 7 of the guanine base<br>4. Methyl added to the 2\u2032 position of the 2nd (sometimes 3rd) sugar<br>5. If the 2nd base is A, it may also be methylated</div>", "extra": "Fig. 14.6.", "added": false, "viz": "cap", "vf": false}, {"id": "c4_2", "sec": "Capping", "kind": "cloze", "front": "<div class=\"list\">Adding the 5\u2032 cap:<br>1. One of three phosphate groups removed from the 5\u2032 end<br>2. A <span class=\"cz gap\">?</span> is added<br>3. Methyl added to position 7 of the guanine base<br>4. Methyl added to the 2\u2032 position of the 2nd (sometimes 3rd) sugar<br>5. If the 2nd base is A, it may also be methylated</div>", "back": "<div class=\"list\">Adding the 5\u2032 cap:<br>1. One of three phosphate groups removed from the 5\u2032 end<br>2. A <span class=\"cz\">guanine nucleotide</span> is added<br>3. Methyl added to position 7 of the guanine base<br>4. Methyl added to the 2\u2032 position of the 2nd (sometimes 3rd) sugar<br>5. If the 2nd base is A, it may also be methylated</div>", "extra": "Fig. 14.6.", "added": false, "viz": "cap", "vf": false}, {"id": "c4_3", "sec": "Capping", "kind": "cloze", "front": "<div class=\"list\">Adding the 5\u2032 cap:<br>1. One of three phosphate groups removed from the 5\u2032 end<br>2. A guanine nucleotide is added<br>3. Methyl added to <span class=\"cz gap\">?</span> of the guanine base<br>4. Methyl added to the 2\u2032 position of the 2nd (sometimes 3rd) sugar<br>5. If the 2nd base is A, it may also be methylated</div>", "back": "<div class=\"list\">Adding the 5\u2032 cap:<br>1. One of three phosphate groups removed from the 5\u2032 end<br>2. A guanine nucleotide is added<br>3. Methyl added to <span class=\"cz\">position 7</span> of the guanine base<br>4. Methyl added to the 2\u2032 position of the 2nd (sometimes 3rd) sugar<br>5. If the 2nd base is A, it may also be methylated</div>", "extra": "Fig. 14.6.", "added": false, "viz": "cap", "vf": false}, {"id": "c4_4", "sec": "Capping", "kind": "cloze", "front": "<div class=\"list\">Adding the 5\u2032 cap:<br>1. One of three phosphate groups removed from the 5\u2032 end<br>2. A guanine nucleotide is added<br>3. Methyl added to position 7 of the guanine base<br>4. Methyl added to the <span class=\"cz gap\">?</span> of the 2nd (sometimes 3rd) sugar<br>5. If the 2nd base is A, it may also be methylated</div>", "back": "<div class=\"list\">Adding the 5\u2032 cap:<br>1. One of three phosphate groups removed from the 5\u2032 end<br>2. A guanine nucleotide is added<br>3. Methyl added to position 7 of the guanine base<br>4. Methyl added to the <span class=\"cz\">2\u2032 position</span> of the 2nd (sometimes 3rd) sugar<br>5. If the 2nd base is A, it may also be methylated</div>", "extra": "Fig. 14.6.", "added": false, "viz": "cap", "vf": false}, {"id": "c4_5", "sec": "Capping", "kind": "cloze", "front": "<div class=\"list\">Adding the 5\u2032 cap:<br>1. One of three phosphate groups removed from the 5\u2032 end<br>2. A guanine nucleotide is added<br>3. Methyl added to position 7 of the guanine base<br>4. Methyl added to the 2\u2032 position of the 2nd (sometimes 3rd) sugar<br>5. If the 2nd base is <span class=\"cz gap\">?</span>, it may also be methylated</div>", "back": "<div class=\"list\">Adding the 5\u2032 cap:<br>1. One of three phosphate groups removed from the 5\u2032 end<br>2. A guanine nucleotide is added<br>3. Methyl added to position 7 of the guanine base<br>4. Methyl added to the 2\u2032 position of the 2nd (sometimes 3rd) sugar<br>5. If the 2nd base is <span class=\"cz\">A</span>, it may also be methylated</div>", "extra": "Fig. 14.6.", "added": false, "viz": "cap", "vf": false}, {"id": "c5_1", "sec": "Capping", "kind": "cloze", "front": "<div class=\"list\">5\u2032 cap functions (Table 14.2):<br>Facilitates binding of the <span class=\"cz gap\">?</span> to the 5\u2032 end<br>Increases mRNA stability</div>", "back": "<div class=\"list\">5\u2032 cap functions (Table 14.2):<br>Facilitates binding of the <span class=\"cz\">ribosome</span> to the 5\u2032 end<br>Increases mRNA stability</div>", "extra": "Cap + CBC also block 5\u2032 to 3\u2032 exonucleases.", "added": false, "viz": "cap", "vf": false}, {"id": "c5_2", "sec": "Capping", "kind": "cloze", "front": "<div class=\"list\">5\u2032 cap functions (Table 14.2):<br>Facilitates binding of the ribosome to the 5\u2032 end<br>Increases mRNA <span class=\"cz gap\">?</span></div>", "back": "<div class=\"list\">5\u2032 cap functions (Table 14.2):<br>Facilitates binding of the ribosome to the 5\u2032 end<br>Increases mRNA <span class=\"cz\">stability</span></div>", "extra": "Cap + CBC also block 5\u2032 to 3\u2032 exonucleases.", "added": false, "viz": "cap", "vf": false}, {"id": "c6_1", "sec": "Polyadenylation", "kind": "cloze", "front": "<div class=\"list\">Adding the poly(A) tail:<br>1. Pre-mRNA is <span class=\"cz gap\">?</span> 11 to 30 nt downstream of AAUAAA<br>2. Adenine nucleotides are added to the new 3\u2032 end<br>3. PBPs bind the tail</div>", "back": "<div class=\"list\">Adding the poly(A) tail:<br>1. Pre-mRNA is <span class=\"cz\">cleaved</span> 11 to 30 nt downstream of AAUAAA<br>2. Adenine nucleotides are added to the new 3\u2032 end<br>3. PBPs bind the tail</div>", "extra": "Conclusion of Fig. 14.7: the tail is added through cleavage and polyadenylation.", "added": false, "viz": "polya", "vf": false}, {"id": "c6_2", "sec": "Polyadenylation", "kind": "cloze", "front": "<div class=\"list\">Adding the poly(A) tail:<br>1. Pre-mRNA is cleaved 11 to 30 nt downstream of <span class=\"cz gap\">?</span><br>2. Adenine nucleotides are added to the new 3\u2032 end<br>3. PBPs bind the tail</div>", "back": "<div class=\"list\">Adding the poly(A) tail:<br>1. Pre-mRNA is cleaved 11 to 30 nt downstream of <span class=\"cz\">AAUAAA</span><br>2. Adenine nucleotides are added to the new 3\u2032 end<br>3. PBPs bind the tail</div>", "extra": "Conclusion of Fig. 14.7: the tail is added through cleavage and polyadenylation.", "added": false, "viz": "polya", "vf": false}, {"id": "c6_3", "sec": "Polyadenylation", "kind": "cloze", "front": "<div class=\"list\">Adding the poly(A) tail:<br>1. Pre-mRNA is cleaved 11 to 30 nt downstream of AAUAAA<br>2. <span class=\"cz gap\">?</span> nucleotides are added to the new 3\u2032 end<br>3. PBPs bind the tail</div>", "back": "<div class=\"list\">Adding the poly(A) tail:<br>1. Pre-mRNA is cleaved 11 to 30 nt downstream of AAUAAA<br>2. <span class=\"cz\">Adenine</span> nucleotides are added to the new 3\u2032 end<br>3. PBPs bind the tail</div>", "extra": "Conclusion of Fig. 14.7: the tail is added through cleavage and polyadenylation.", "added": false, "viz": "polya", "vf": false}, {"id": "c6_4", "sec": "Polyadenylation", "kind": "cloze", "front": "<div class=\"list\">Adding the poly(A) tail:<br>1. Pre-mRNA is cleaved 11 to 30 nt downstream of AAUAAA<br>2. Adenine nucleotides are added to the new 3\u2032 end<br>3. <span class=\"cz gap\">?</span> bind the tail</div>", "back": "<div class=\"list\">Adding the poly(A) tail:<br>1. Pre-mRNA is cleaved 11 to 30 nt downstream of AAUAAA<br>2. Adenine nucleotides are added to the new 3\u2032 end<br>3. <span class=\"cz\">PBPs</span> bind the tail</div>", "extra": "Conclusion of Fig. 14.7: the tail is added through cleavage and polyadenylation.", "added": false, "viz": "polya", "vf": false}, {"id": "c7_1", "sec": "Polyadenylation", "kind": "cloze", "front": "<div class=\"list\">Poly(A) tail functions (Table 14.2):<br>Increases mRNA <span class=\"cz gap\">?</span><br>Facilitates binding of the ribosome to mRNA</div>", "back": "<div class=\"list\">Poly(A) tail functions (Table 14.2):<br>Increases mRNA <span class=\"cz\">stability</span><br>Facilitates binding of the ribosome to mRNA</div>", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "c7_2", "sec": "Polyadenylation", "kind": "cloze", "front": "<div class=\"list\">Poly(A) tail functions (Table 14.2):<br>Increases mRNA stability<br>Facilitates binding of the <span class=\"cz gap\">?</span> to mRNA</div>", "back": "<div class=\"list\">Poly(A) tail functions (Table 14.2):<br>Increases mRNA stability<br>Facilitates binding of the <span class=\"cz\">ribosome</span> to mRNA</div>", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "c8_1", "sec": "Splicing", "kind": "cloze", "front": "<div class=\"list\">Splicing via the spliceosome requires:<br>1. <span class=\"cz gap\">?</span> within the pre-mRNA<br>2. The spliceosome</div>", "back": "<div class=\"list\">Splicing via the spliceosome requires:<br>1. <span class=\"cz\">Consensus sequences</span> within the pre-mRNA<br>2. The spliceosome</div>", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "c8_2", "sec": "Splicing", "kind": "cloze", "front": "<div class=\"list\">Splicing via the spliceosome requires:<br>1. Consensus sequences within the pre-mRNA<br>2. The <span class=\"cz gap\">?</span></div>", "back": "<div class=\"list\">Splicing via the spliceosome requires:<br>1. Consensus sequences within the pre-mRNA<br>2. The <span class=\"cz\">spliceosome</span></div>", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "c9_1", "sec": "Splicing", "kind": "cloze", "front": "<div class=\"list\">Splicing landmarks, 5\u2032 to 3\u2032 in the intron:<br><span class=\"cz gap\">?</span> (GU)<br>Branch point (A)<br>3\u2032 splice site (AG)</div>", "back": "<div class=\"list\">Splicing landmarks, 5\u2032 to 3\u2032 in the intron:<br><span class=\"cz\">5\u2032 splice site</span> (GU)<br>Branch point (A)<br>3\u2032 splice site (AG)</div>", "extra": "Fig. 14.8.", "added": false, "viz": "splicesites", "vf": false}, {"id": "c9_2", "sec": "Splicing", "kind": "cloze", "front": "<div class=\"list\">Splicing landmarks, 5\u2032 to 3\u2032 in the intron:<br>5\u2032 splice site (GU)<br><span class=\"cz gap\">?</span> (A)<br>3\u2032 splice site (AG)</div>", "back": "<div class=\"list\">Splicing landmarks, 5\u2032 to 3\u2032 in the intron:<br>5\u2032 splice site (GU)<br><span class=\"cz\">Branch point</span> (A)<br>3\u2032 splice site (AG)</div>", "extra": "Fig. 14.8.", "added": false, "viz": "splicesites", "vf": false}, {"id": "c9_3", "sec": "Splicing", "kind": "cloze", "front": "<div class=\"list\">Splicing landmarks, 5\u2032 to 3\u2032 in the intron:<br>5\u2032 splice site (GU)<br>Branch point (A)<br><span class=\"cz gap\">?</span> (AG)</div>", "back": "<div class=\"list\">Splicing landmarks, 5\u2032 to 3\u2032 in the intron:<br>5\u2032 splice site (GU)<br>Branch point (A)<br><span class=\"cz\">3\u2032 splice site</span> (AG)</div>", "extra": "Fig. 14.8.", "added": false, "viz": "splicesites", "vf": false}, {"id": "c10_1", "sec": "Splicing", "kind": "cloze", "front": "Spliceosome snRNPs: <span class=\"cz gap\">?</span>, U2, U4, U5 and U6", "back": "Spliceosome snRNPs: <span class=\"cz\">U1</span>, U2, U4, U5 and U6", "extra": "Five snRNPs.", "added": false, "viz": "spliceosome", "vf": false}, {"id": "c10_2", "sec": "Splicing", "kind": "cloze", "front": "Spliceosome snRNPs: U1, <span class=\"cz gap\">?</span>, U4, U5 and U6", "back": "Spliceosome snRNPs: U1, <span class=\"cz\">U2</span>, U4, U5 and U6", "extra": "Five snRNPs.", "added": false, "viz": "spliceosome", "vf": false}, {"id": "c10_3", "sec": "Splicing", "kind": "cloze", "front": "Spliceosome snRNPs: U1, U2, <span class=\"cz gap\">?</span>, U5 and U6", "back": "Spliceosome snRNPs: U1, U2, <span class=\"cz\">U4</span>, U5 and U6", "extra": "Five snRNPs.", "added": false, "viz": "spliceosome", "vf": false}, {"id": "c10_4", "sec": "Splicing", "kind": "cloze", "front": "Spliceosome snRNPs: U1, U2, U4, <span class=\"cz gap\">?</span> and U6", "back": "Spliceosome snRNPs: U1, U2, U4, <span class=\"cz\">U5</span> and U6", "extra": "Five snRNPs.", "added": false, "viz": "spliceosome", "vf": false}, {"id": "c10_5", "sec": "Splicing", "kind": "cloze", "front": "Spliceosome snRNPs: U1, U2, U4, U5 and <span class=\"cz gap\">?</span>", "back": "Spliceosome snRNPs: U1, U2, U4, U5 and <span class=\"cz\">U6</span>", "extra": "Five snRNPs.", "added": false, "viz": "spliceosome", "vf": false}, {"id": "c11_1", "sec": "Splicing", "kind": "cloze", "front": "<div class=\"list\">Stepwise spliceosome assembly:<br>1. <span class=\"cz gap\">?</span> attaches to the 5\u2032 splice site<br>2. U2 attaches to the branch point<br>3. Complex of U4, U5, U6 joins<br>4. 5\u2032 splice site is cut and the lariat forms<br>5. U1 and U4 are released<br>6. 3\u2032 splice site is cut and exons are joined<br>7. Intron released as a lariat with U2, U5, U6</div>", "back": "<div class=\"list\">Stepwise spliceosome assembly:<br>1. <span class=\"cz\">U1</span> attaches to the 5\u2032 splice site<br>2. U2 attaches to the branch point<br>3. Complex of U4, U5, U6 joins<br>4. 5\u2032 splice site is cut and the lariat forms<br>5. U1 and U4 are released<br>6. 3\u2032 splice site is cut and exons are joined<br>7. Intron released as a lariat with U2, U5, U6</div>", "extra": "Fig. 14.10. The snRNPs dissociate and the lariat is degraded.", "added": false, "viz": "spliceosome", "vf": false}, {"id": "c11_2", "sec": "Splicing", "kind": "cloze", "front": "<div class=\"list\">Stepwise spliceosome assembly:<br>1. U1 attaches to the 5\u2032 splice site<br>2. <span class=\"cz gap\">?</span> attaches to the branch point<br>3. Complex of U4, U5, U6 joins<br>4. 5\u2032 splice site is cut and the lariat forms<br>5. U1 and U4 are released<br>6. 3\u2032 splice site is cut and exons are joined<br>7. Intron released as a lariat with U2, U5, U6</div>", "back": "<div class=\"list\">Stepwise spliceosome assembly:<br>1. U1 attaches to the 5\u2032 splice site<br>2. <span class=\"cz\">U2</span> attaches to the branch point<br>3. Complex of U4, U5, U6 joins<br>4. 5\u2032 splice site is cut and the lariat forms<br>5. U1 and U4 are released<br>6. 3\u2032 splice site is cut and exons are joined<br>7. Intron released as a lariat with U2, U5, U6</div>", "extra": "Fig. 14.10. The snRNPs dissociate and the lariat is degraded.", "added": false, "viz": "spliceosome", "vf": false}, {"id": "c11_3", "sec": "Splicing", "kind": "cloze", "front": "<div class=\"list\">Stepwise spliceosome assembly:<br>1. U1 attaches to the 5\u2032 splice site<br>2. U2 attaches to the branch point<br>3. Complex of <span class=\"cz gap\">?</span> joins<br>4. 5\u2032 splice site is cut and the lariat forms<br>5. U1 and U4 are released<br>6. 3\u2032 splice site is cut and exons are joined<br>7. Intron released as a lariat with U2, U5, U6</div>", "back": "<div class=\"list\">Stepwise spliceosome assembly:<br>1. U1 attaches to the 5\u2032 splice site<br>2. U2 attaches to the branch point<br>3. Complex of <span class=\"cz\">U4, U5, U6</span> joins<br>4. 5\u2032 splice site is cut and the lariat forms<br>5. U1 and U4 are released<br>6. 3\u2032 splice site is cut and exons are joined<br>7. Intron released as a lariat with U2, U5, U6</div>", "extra": "Fig. 14.10. The snRNPs dissociate and the lariat is degraded.", "added": false, "viz": "spliceosome", "vf": false}, {"id": "c11_4", "sec": "Splicing", "kind": "cloze", "front": "<div class=\"list\">Stepwise spliceosome assembly:<br>1. U1 attaches to the 5\u2032 splice site<br>2. U2 attaches to the branch point<br>3. Complex of U4, U5, U6 joins<br>4. 5\u2032 splice site is cut and the <span class=\"cz gap\">?</span> forms<br>5. U1 and U4 are released<br>6. 3\u2032 splice site is cut and exons are joined<br>7. Intron released as a lariat with U2, U5, U6</div>", "back": "<div class=\"list\">Stepwise spliceosome assembly:<br>1. U1 attaches to the 5\u2032 splice site<br>2. U2 attaches to the branch point<br>3. Complex of U4, U5, U6 joins<br>4. 5\u2032 splice site is cut and the <span class=\"cz\">lariat</span> forms<br>5. U1 and U4 are released<br>6. 3\u2032 splice site is cut and exons are joined<br>7. Intron released as a lariat with U2, U5, U6</div>", "extra": "Fig. 14.10. The snRNPs dissociate and the lariat is degraded.", "added": false, "viz": "spliceosome", "vf": false}, {"id": "c11_5", "sec": "Splicing", "kind": "cloze", "front": "<div class=\"list\">Stepwise spliceosome assembly:<br>1. U1 attaches to the 5\u2032 splice site<br>2. U2 attaches to the branch point<br>3. Complex of U4, U5, U6 joins<br>4. 5\u2032 splice site is cut and the lariat forms<br>5. <span class=\"cz gap\">?</span> are released<br>6. 3\u2032 splice site is cut and exons are joined<br>7. Intron released as a lariat with U2, U5, U6</div>", "back": "<div class=\"list\">Stepwise spliceosome assembly:<br>1. U1 attaches to the 5\u2032 splice site<br>2. U2 attaches to the branch point<br>3. Complex of U4, U5, U6 joins<br>4. 5\u2032 splice site is cut and the lariat forms<br>5. <span class=\"cz\">U1 and U4</span> are released<br>6. 3\u2032 splice site is cut and exons are joined<br>7. Intron released as a lariat with U2, U5, U6</div>", "extra": "Fig. 14.10. The snRNPs dissociate and the lariat is degraded.", "added": false, "viz": "spliceosome", "vf": false}, {"id": "c11_6", "sec": "Splicing", "kind": "cloze", "front": "<div class=\"list\">Stepwise spliceosome assembly:<br>1. U1 attaches to the 5\u2032 splice site<br>2. U2 attaches to the branch point<br>3. Complex of U4, U5, U6 joins<br>4. 5\u2032 splice site is cut and the lariat forms<br>5. U1 and U4 are released<br>6. <span class=\"cz gap\">?</span> is cut and exons are joined<br>7. Intron released as a lariat with U2, U5, U6</div>", "back": "<div class=\"list\">Stepwise spliceosome assembly:<br>1. U1 attaches to the 5\u2032 splice site<br>2. U2 attaches to the branch point<br>3. Complex of U4, U5, U6 joins<br>4. 5\u2032 splice site is cut and the lariat forms<br>5. U1 and U4 are released<br>6. <span class=\"cz\">3\u2032 splice site</span> is cut and exons are joined<br>7. Intron released as a lariat with U2, U5, U6</div>", "extra": "Fig. 14.10. The snRNPs dissociate and the lariat is degraded.", "added": false, "viz": "spliceosome", "vf": false}, {"id": "c11_7", "sec": "Splicing", "kind": "cloze", "front": "<div class=\"list\">Stepwise spliceosome assembly:<br>1. U1 attaches to the 5\u2032 splice site<br>2. U2 attaches to the branch point<br>3. Complex of U4, U5, U6 joins<br>4. 5\u2032 splice site is cut and the lariat forms<br>5. U1 and U4 are released<br>6. 3\u2032 splice site is cut and exons are joined<br>7. Intron released as a lariat with <span class=\"cz gap\">?</span></div>", "back": "<div class=\"list\">Stepwise spliceosome assembly:<br>1. U1 attaches to the 5\u2032 splice site<br>2. U2 attaches to the branch point<br>3. Complex of U4, U5, U6 joins<br>4. 5\u2032 splice site is cut and the lariat forms<br>5. U1 and U4 are released<br>6. 3\u2032 splice site is cut and exons are joined<br>7. Intron released as a lariat with <span class=\"cz\">U2, U5, U6</span></div>", "extra": "Fig. 14.10. The snRNPs dissociate and the lariat is degraded.", "added": false, "viz": "spliceosome", "vf": false}, {"id": "c12_1", "sec": "Splicing", "kind": "cloze", "front": "<div class=\"list\">Splicing functions (Table 14.2):<br>Removes noncoding <span class=\"cz gap\">?</span><br>Facilitates export of mRNA to the cytoplasm<br>Allows multiple proteins through alternative splicing</div>", "back": "<div class=\"list\">Splicing functions (Table 14.2):<br>Removes noncoding <span class=\"cz\">introns</span><br>Facilitates export of mRNA to the cytoplasm<br>Allows multiple proteins through alternative splicing</div>", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "c12_2", "sec": "Splicing", "kind": "cloze", "front": "<div class=\"list\">Splicing functions (Table 14.2):<br>Removes noncoding introns<br>Facilitates <span class=\"cz gap\">?</span> of mRNA to the cytoplasm<br>Allows multiple proteins through alternative splicing</div>", "back": "<div class=\"list\">Splicing functions (Table 14.2):<br>Removes noncoding introns<br>Facilitates <span class=\"cz\">export</span> of mRNA to the cytoplasm<br>Allows multiple proteins through alternative splicing</div>", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "c12_3", "sec": "Splicing", "kind": "cloze", "front": "<div class=\"list\">Splicing functions (Table 14.2):<br>Removes noncoding introns<br>Facilitates export of mRNA to the cytoplasm<br>Allows multiple proteins through <span class=\"cz gap\">?</span></div>", "back": "<div class=\"list\">Splicing functions (Table 14.2):<br>Removes noncoding introns<br>Facilitates export of mRNA to the cytoplasm<br>Allows multiple proteins through <span class=\"cz\">alternative splicing</span></div>", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "c13_1", "sec": "Alternative Processing", "kind": "cloze", "front": "<div class=\"list\">Types of alternative processing:<br>1. Alternative <span class=\"cz gap\">?</span><br>2. Multiple 3\u2032 cleavage<br>3. Both in a single gene</div>", "back": "<div class=\"list\">Types of alternative processing:<br>1. Alternative <span class=\"cz\">splicing</span><br>2. Multiple 3\u2032 cleavage<br>3. Both in a single gene</div>", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "c13_2", "sec": "Alternative Processing", "kind": "cloze", "front": "<div class=\"list\">Types of alternative processing:<br>1. Alternative splicing<br>2. Multiple <span class=\"cz gap\">?</span><br>3. Both in a single gene</div>", "back": "<div class=\"list\">Types of alternative processing:<br>1. Alternative splicing<br>2. Multiple <span class=\"cz\">3\u2032 cleavage</span><br>3. Both in a single gene</div>", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "c13_3", "sec": "Alternative Processing", "kind": "cloze", "front": "<div class=\"list\">Types of alternative processing:<br>1. Alternative splicing<br>2. Multiple 3\u2032 cleavage<br>3. Both in a <span class=\"cz gap\">?</span></div>", "back": "<div class=\"list\">Types of alternative processing:<br>1. Alternative splicing<br>2. Multiple 3\u2032 cleavage<br>3. Both in a <span class=\"cz\">single gene</span></div>", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "c14_1", "sec": "Alternative Processing", "kind": "cloze", "front": "<div class=\"list\">CALCA processing:<br>Thyroid: exons <span class=\"cz gap\">?</span> make calcitonin<br>Brain: exons 1, 2, 3, 5, 6 make CGRP</div>", "back": "<div class=\"list\">CALCA processing:<br>Thyroid: exons <span class=\"cz\">1, 2, 3, 4</span> make calcitonin<br>Brain: exons 1, 2, 3, 5, 6 make CGRP</div>", "extra": "Fig. 14.13.", "added": false, "viz": "calca", "vf": false}, {"id": "c14_2", "sec": "Alternative Processing", "kind": "cloze", "front": "<div class=\"list\">CALCA processing:<br>Thyroid: exons 1, 2, 3, 4 make <span class=\"cz gap\">?</span><br>Brain: exons 1, 2, 3, 5, 6 make CGRP</div>", "back": "<div class=\"list\">CALCA processing:<br>Thyroid: exons 1, 2, 3, 4 make <span class=\"cz\">calcitonin</span><br>Brain: exons 1, 2, 3, 5, 6 make CGRP</div>", "extra": "Fig. 14.13.", "added": false, "viz": "calca", "vf": false}, {"id": "c14_3", "sec": "Alternative Processing", "kind": "cloze", "front": "<div class=\"list\">CALCA processing:<br>Thyroid: exons 1, 2, 3, 4 make calcitonin<br>Brain: exons <span class=\"cz gap\">?</span> make CGRP</div>", "back": "<div class=\"list\">CALCA processing:<br>Thyroid: exons 1, 2, 3, 4 make calcitonin<br>Brain: exons <span class=\"cz\">1, 2, 3, 5, 6</span> make CGRP</div>", "extra": "Fig. 14.13.", "added": false, "viz": "calca", "vf": false}, {"id": "c14_4", "sec": "Alternative Processing", "kind": "cloze", "front": "<div class=\"list\">CALCA processing:<br>Thyroid: exons 1, 2, 3, 4 make calcitonin<br>Brain: exons 1, 2, 3, 5, 6 make <span class=\"cz gap\">?</span></div>", "back": "<div class=\"list\">CALCA processing:<br>Thyroid: exons 1, 2, 3, 4 make calcitonin<br>Brain: exons 1, 2, 3, 5, 6 make <span class=\"cz\">CGRP</span></div>", "extra": "Fig. 14.13.", "added": false, "viz": "calca", "vf": false}, {"id": "c15_1", "sec": "tRNA Processing", "kind": "cloze", "front": "tRNA models: <span class=\"cz gap\">?</span>, ribbon and cloverleaf", "back": "tRNA models: <span class=\"cz\">space filling</span>, ribbon and cloverleaf", "extra": "Fig. 14.19.", "added": false, "viz": "trna", "vf": false}, {"id": "c15_2", "sec": "tRNA Processing", "kind": "cloze", "front": "tRNA models: space filling, <span class=\"cz gap\">?</span> and cloverleaf", "back": "tRNA models: space filling, <span class=\"cz\">ribbon</span> and cloverleaf", "extra": "Fig. 14.19.", "added": false, "viz": "trna", "vf": false}, {"id": "c15_3", "sec": "tRNA Processing", "kind": "cloze", "front": "tRNA models: space filling, ribbon and <span class=\"cz gap\">?</span>", "back": "tRNA models: space filling, ribbon and <span class=\"cz\">cloverleaf</span>", "extra": "Fig. 14.19.", "added": false, "viz": "trna", "vf": false}, {"id": "c16_1", "sec": "tRNA Processing", "kind": "cloze", "front": "<div class=\"list\">tRNA processing:<br>1. A large <span class=\"cz gap\">?</span> is cleaved<br>2. An intron is removed by splicing<br>3. Bases are added to the 3\u2032 end<br>4. Several bases are modified</div>", "back": "<div class=\"list\">tRNA processing:<br>1. A large <span class=\"cz\">precursor tRNA</span> is cleaved<br>2. An intron is removed by splicing<br>3. Bases are added to the 3\u2032 end<br>4. Several bases are modified</div>", "extra": "Fig. 14.20. Conclusion: cleavage, splicing, base addition and base modification.", "added": false, "viz": "trna", "vf": false}, {"id": "c16_2", "sec": "tRNA Processing", "kind": "cloze", "front": "<div class=\"list\">tRNA processing:<br>1. A large precursor tRNA is cleaved<br>2. An <span class=\"cz gap\">?</span> is removed by splicing<br>3. Bases are added to the 3\u2032 end<br>4. Several bases are modified</div>", "back": "<div class=\"list\">tRNA processing:<br>1. A large precursor tRNA is cleaved<br>2. An <span class=\"cz\">intron</span> is removed by splicing<br>3. Bases are added to the 3\u2032 end<br>4. Several bases are modified</div>", "extra": "Fig. 14.20. Conclusion: cleavage, splicing, base addition and base modification.", "added": false, "viz": "trna", "vf": false}, {"id": "c16_3", "sec": "tRNA Processing", "kind": "cloze", "front": "<div class=\"list\">tRNA processing:<br>1. A large precursor tRNA is cleaved<br>2. An intron is removed by splicing<br>3. <span class=\"cz gap\">?</span> are added to the 3\u2032 end<br>4. Several bases are modified</div>", "back": "<div class=\"list\">tRNA processing:<br>1. A large precursor tRNA is cleaved<br>2. An intron is removed by splicing<br>3. <span class=\"cz\">Bases</span> are added to the 3\u2032 end<br>4. Several bases are modified</div>", "extra": "Fig. 14.20. Conclusion: cleavage, splicing, base addition and base modification.", "added": false, "viz": "trna", "vf": false}, {"id": "c16_4", "sec": "tRNA Processing", "kind": "cloze", "front": "<div class=\"list\">tRNA processing:<br>1. A large precursor tRNA is cleaved<br>2. An intron is removed by splicing<br>3. Bases are added to the 3\u2032 end<br>4. Several bases are <span class=\"cz gap\">?</span></div>", "back": "<div class=\"list\">tRNA processing:<br>1. A large precursor tRNA is cleaved<br>2. An intron is removed by splicing<br>3. Bases are added to the 3\u2032 end<br>4. Several bases are <span class=\"cz\">modified</span></div>", "extra": "Fig. 14.20. Conclusion: cleavage, splicing, base addition and base modification.", "added": false, "viz": "trna", "vf": false}, {"id": "c17_1", "sec": "rRNA Processing", "kind": "cloze", "front": "<div class=\"list\">Ribosome subunits:<br>Bacterial 70S = <span class=\"cz gap\">?</span> large + 30S small<br>Eukaryotic 80S = 60S large + 40S small</div>", "back": "<div class=\"list\">Ribosome subunits:<br>Bacterial 70S = <span class=\"cz\">50S</span> large + 30S small<br>Eukaryotic 80S = 60S large + 40S small</div>", "extra": "Table 14.3.", "added": false, "viz": "ribosome", "vf": false}, {"id": "c17_2", "sec": "rRNA Processing", "kind": "cloze", "front": "<div class=\"list\">Ribosome subunits:<br>Bacterial 70S = 50S large + <span class=\"cz gap\">?</span> small<br>Eukaryotic 80S = 60S large + 40S small</div>", "back": "<div class=\"list\">Ribosome subunits:<br>Bacterial 70S = 50S large + <span class=\"cz\">30S</span> small<br>Eukaryotic 80S = 60S large + 40S small</div>", "extra": "Table 14.3.", "added": false, "viz": "ribosome", "vf": false}, {"id": "c17_3", "sec": "rRNA Processing", "kind": "cloze", "front": "<div class=\"list\">Ribosome subunits:<br>Bacterial 70S = 50S large + 30S small<br>Eukaryotic 80S = <span class=\"cz gap\">?</span> large + 40S small</div>", "back": "<div class=\"list\">Ribosome subunits:<br>Bacterial 70S = 50S large + 30S small<br>Eukaryotic 80S = <span class=\"cz\">60S</span> large + 40S small</div>", "extra": "Table 14.3.", "added": false, "viz": "ribosome", "vf": false}, {"id": "c17_4", "sec": "rRNA Processing", "kind": "cloze", "front": "<div class=\"list\">Ribosome subunits:<br>Bacterial 70S = 50S large + 30S small<br>Eukaryotic 80S = 60S large + <span class=\"cz gap\">?</span> small</div>", "back": "<div class=\"list\">Ribosome subunits:<br>Bacterial 70S = 50S large + 30S small<br>Eukaryotic 80S = 60S large + <span class=\"cz\">40S</span> small</div>", "extra": "Table 14.3.", "added": false, "viz": "ribosome", "vf": false}, {"id": "c18_1", "sec": "rRNA Processing", "kind": "cloze", "front": "Bacterial large subunit rRNAs: <span class=\"cz gap\">?</span> (2900 nt) and 5S (120 nt)", "back": "Bacterial large subunit rRNAs: <span class=\"cz\">23S</span> (2900 nt) and 5S (120 nt)", "extra": "Table 14.3.", "added": false, "viz": "ribosome:bact", "vf": false}, {"id": "c18_2", "sec": "rRNA Processing", "kind": "cloze", "front": "Bacterial large subunit rRNAs: 23S (2900 nt) and <span class=\"cz gap\">?</span> (120 nt)", "back": "Bacterial large subunit rRNAs: 23S (2900 nt) and <span class=\"cz\">5S</span> (120 nt)", "extra": "Table 14.3.", "added": false, "viz": "ribosome:bact", "vf": false}, {"id": "c19_1", "sec": "rRNA Processing", "kind": "cloze", "front": "Eukaryotic large subunit rRNAs: <span class=\"cz gap\">?</span> (4700 nt), 5.8S (160 nt) and 5S (120 nt)", "back": "Eukaryotic large subunit rRNAs: <span class=\"cz\">28S</span> (4700 nt), 5.8S (160 nt) and 5S (120 nt)", "extra": "Table 14.3.", "added": false, "viz": "ribosome:euk", "vf": false}, {"id": "c19_2", "sec": "rRNA Processing", "kind": "cloze", "front": "Eukaryotic large subunit rRNAs: 28S (4700 nt), <span class=\"cz gap\">?</span> (160 nt) and 5S (120 nt)", "back": "Eukaryotic large subunit rRNAs: 28S (4700 nt), <span class=\"cz\">5.8S</span> (160 nt) and 5S (120 nt)", "extra": "Table 14.3.", "added": false, "viz": "ribosome:euk", "vf": false}, {"id": "c19_3", "sec": "rRNA Processing", "kind": "cloze", "front": "Eukaryotic large subunit rRNAs: 28S (4700 nt), 5.8S (160 nt) and <span class=\"cz gap\">?</span> (120 nt)", "back": "Eukaryotic large subunit rRNAs: 28S (4700 nt), 5.8S (160 nt) and <span class=\"cz\">5S</span> (120 nt)", "extra": "Table 14.3.", "added": false, "viz": "ribosome:euk", "vf": false}, {"id": "c20_1", "sec": "rRNA Processing", "kind": "cloze", "front": "Precursor rRNA processing involves <span class=\"cz gap\">?</span>, cleavage and trimming.", "back": "Precursor rRNA processing involves <span class=\"cz\">methylation</span>, cleavage and trimming.", "extra": "", "added": false, "viz": "rrna", "vf": false}, {"id": "c20_2", "sec": "rRNA Processing", "kind": "cloze", "front": "Precursor rRNA processing involves methylation, <span class=\"cz gap\">?</span> and trimming.", "back": "Precursor rRNA processing involves methylation, <span class=\"cz\">cleavage</span> and trimming.", "extra": "", "added": false, "viz": "rrna", "vf": false}, {"id": "c20_3", "sec": "rRNA Processing", "kind": "cloze", "front": "Precursor rRNA processing involves methylation, cleavage and <span class=\"cz gap\">?</span>.", "back": "Precursor rRNA processing involves methylation, cleavage and <span class=\"cz\">trimming</span>.", "extra": "", "added": false, "viz": "rrna", "vf": false}, {"id": "c21_1", "sec": "rRNA Processing", "kind": "cloze", "front": "Prokaryotic 30S precursor yields: <span class=\"cz gap\">?</span> rRNA, tRNA, 23S rRNA, 5S rRNA", "back": "Prokaryotic 30S precursor yields: <span class=\"cz\">16S</span> rRNA, tRNA, 23S rRNA, 5S rRNA", "extra": "Fig. 14.21a.", "added": false, "viz": "rrna", "vf": false}, {"id": "c21_2", "sec": "rRNA Processing", "kind": "cloze", "front": "Prokaryotic 30S precursor yields: 16S rRNA, <span class=\"cz gap\">?</span>, 23S rRNA, 5S rRNA", "back": "Prokaryotic 30S precursor yields: 16S rRNA, <span class=\"cz\">tRNA</span>, 23S rRNA, 5S rRNA", "extra": "Fig. 14.21a.", "added": false, "viz": "rrna", "vf": false}, {"id": "c21_3", "sec": "rRNA Processing", "kind": "cloze", "front": "Prokaryotic 30S precursor yields: 16S rRNA, tRNA, <span class=\"cz gap\">?</span> rRNA, 5S rRNA", "back": "Prokaryotic 30S precursor yields: 16S rRNA, tRNA, <span class=\"cz\">23S</span> rRNA, 5S rRNA", "extra": "Fig. 14.21a.", "added": false, "viz": "rrna", "vf": false}, {"id": "c21_4", "sec": "rRNA Processing", "kind": "cloze", "front": "Prokaryotic 30S precursor yields: 16S rRNA, tRNA, 23S rRNA, <span class=\"cz gap\">?</span> rRNA", "back": "Prokaryotic 30S precursor yields: 16S rRNA, tRNA, 23S rRNA, <span class=\"cz\">5S</span> rRNA", "extra": "Fig. 14.21a.", "added": false, "viz": "rrna", "vf": false}, {"id": "c22_1", "sec": "rRNA Processing", "kind": "cloze", "front": "Eukaryotic 45S precursor yields: <span class=\"cz gap\">?</span>, 5.8S and 28S rRNA", "back": "Eukaryotic 45S precursor yields: <span class=\"cz\">18S</span>, 5.8S and 28S rRNA", "extra": "Fig. 14.21b.", "added": false, "viz": "rrna", "vf": false}, {"id": "c22_2", "sec": "rRNA Processing", "kind": "cloze", "front": "Eukaryotic 45S precursor yields: 18S, <span class=\"cz gap\">?</span> and 28S rRNA", "back": "Eukaryotic 45S precursor yields: 18S, <span class=\"cz\">5.8S</span> and 28S rRNA", "extra": "Fig. 14.21b.", "added": false, "viz": "rrna", "vf": false}, {"id": "c22_3", "sec": "rRNA Processing", "kind": "cloze", "front": "Eukaryotic 45S precursor yields: 18S, 5.8S and <span class=\"cz gap\">?</span> rRNA", "back": "Eukaryotic 45S precursor yields: 18S, 5.8S and <span class=\"cz\">28S</span> rRNA", "extra": "Fig. 14.21b.", "added": false, "viz": "rrna", "vf": false}, {"id": "d_mrna_5__UTR", "sec": "Pre-mRNA Basics", "kind": "diagram", "front": "Name the hidden region of the mature mRNA.", "back": "5\u2032 UTR", "extra": "", "added": false, "viz": "mrna:5\u2032 UTR", "quiz": "5\u2032 UTR", "vf": true}, {"id": "d_mrna_Coding_region", "sec": "Pre-mRNA Basics", "kind": "diagram", "front": "Name the hidden region of the mature mRNA.", "back": "Coding region", "extra": "", "added": false, "viz": "mrna:Coding region", "quiz": "Coding region", "vf": true}, {"id": "d_mrna_3__UTR", "sec": "Pre-mRNA Basics", "kind": "diagram", "front": "Name the hidden region of the mature mRNA.", "back": "3\u2032 UTR", "extra": "", "added": false, "viz": "mrna:3\u2032 UTR", "quiz": "3\u2032 UTR", "vf": true}, {"id": "d_splicesites_5__splice_site", "sec": "Splicing", "kind": "diagram", "front": "Name the hidden splicing landmark.", "back": "5\u2032 splice site", "extra": "", "added": false, "viz": "splicesites:5\u2032 splice site", "quiz": "5\u2032 splice site", "vf": true}, {"id": "d_splicesites_Branch_point", "sec": "Splicing", "kind": "diagram", "front": "Name the hidden splicing landmark.", "back": "Branch point", "extra": "", "added": false, "viz": "splicesites:Branch point", "quiz": "Branch point", "vf": true}, {"id": "d_splicesites_3__splice_site", "sec": "Splicing", "kind": "diagram", "front": "Name the hidden splicing landmark.", "back": "3\u2032 splice site", "extra": "", "added": false, "viz": "splicesites:3\u2032 splice site", "quiz": "3\u2032 splice site", "vf": true}, {"id": "d_spliceosome_U1", "sec": "Splicing", "kind": "diagram", "front": "Name the hidden snRNP.", "back": "U1", "extra": "", "added": false, "viz": "spliceosome:U1", "quiz": "U1", "vf": true}, {"id": "d_spliceosome_U2", "sec": "Splicing", "kind": "diagram", "front": "Name the hidden snRNP.", "back": "U2", "extra": "", "added": false, "viz": "spliceosome:U2", "quiz": "U2", "vf": true}, {"id": "d_spliceosome_U4_U5_U6", "sec": "Splicing", "kind": "diagram", "front": "Name the hidden snRNP.", "back": "U4/U5/U6", "extra": "", "added": false, "viz": "spliceosome:U4/U5/U6", "quiz": "U4/U5/U6", "vf": true}, {"id": "d_trna_Acceptor_arm", "sec": "tRNA Processing", "kind": "diagram", "front": "Name the hidden arm of the tRNA.", "back": "Acceptor arm", "extra": "", "added": false, "viz": "trna:Acceptor arm", "quiz": "Acceptor arm", "vf": true}, {"id": "d_trna_DHU_arm", "sec": "tRNA Processing", "kind": "diagram", "front": "Name the hidden arm of the tRNA.", "back": "DHU arm", "extra": "", "added": false, "viz": "trna:DHU arm", "quiz": "DHU arm", "vf": true}, {"id": "d_trna_T_C_arm", "sec": "tRNA Processing", "kind": "diagram", "front": "Name the hidden arm of the tRNA.", "back": "T\u03a8C arm", "extra": "", "added": false, "viz": "trna:T\u03a8C arm", "quiz": "T\u03a8C arm", "vf": true}, {"id": "d_trna_Anticodon_arm", "sec": "tRNA Processing", "kind": "diagram", "front": "Name the hidden arm of the tRNA.", "back": "Anticodon arm", "extra": "", "added": false, "viz": "trna:Anticodon arm", "quiz": "Anticodon arm", "vf": true}, {"id": "d_trna_Extra_arm", "sec": "tRNA Processing", "kind": "diagram", "front": "Name the hidden arm of the tRNA.", "back": "Extra arm", "extra": "", "added": false, "viz": "trna:Extra arm", "quiz": "Extra arm", "vf": true}], "paths": {}};
+const CARDS = DATA.cards, P = DATA.paths;
+const SECS = ["Pre-mRNA Basics", "Capping", "Polyadenylation", "Introns and Exons", "Splicing", "Alternative Processing", "tRNA Processing", "rRNA Processing"];
+const slug = s => s.toLowerCase().replace(/ /g,"-");
+const cvar = s => `var(--s-${slug(s)})`;
+const KEY = "studytime:genetics-ch14-rna-processing";
+const DAY = 864e5, INTERVALS = [0,1,2,4,7,14,30];
+let store = {cards:{}, secs:SECS.slice(), mode:"due"};
+try { const s = JSON.parse(localStorage.getItem(KEY)||"null"); if (s) store = Object.assign(store, s); } catch(e){}
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(store)); } catch(e){} };
+const st = id => store.cards[id] || {box:0, due:0, seen:0};
+const esc = s => s.replace(/&/g,"&amp;").replace(/</g,"&lt;");
+
+/* ---------- diagrams ---------- */
+let uid = 0;
+function svgWrap(inner, h=340){ const id = "m"+(++uid);
+  return `<svg viewBox="0 0 600 ${h}" role="img" aria-label="diagram"><defs>
+  <marker id="${id}i" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" style="fill:var(--ink)"/></marker>
+  <marker id="${id}a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" style="fill:var(--c)"/></marker>
+  </defs>${inner.replace(/MK_I/g,`url(#${id}i)`).replace(/MK_A/g,`url(#${id}a)`)}</svg>`; }
+const INK="var(--ink)", ACC="var(--c)", MUT="var(--muted)";
+function label(x,y,t,o,anchor="middle"){
+  const st = o.quiz===t ? "quiz" : (o.hideAll && o.quiz ? "blank" : (o.hl===t ? "hl":"show"));
+  const w = Math.max(28, t.length*15.5+20), x0 = anchor==="middle"? x-w/2 : anchor==="start"? x-8 : x-w+8;
+  if (st==="quiz") return `<rect x="${x-30}" y="${y-22}" width="60" height="40" rx="9" style="fill:var(--c)"/><text x="${x}" y="${y+5}" text-anchor="middle" font-size="30" style="fill:var(--surface)">?</text>`;
+  if (st==="blank") return `<rect x="${x0}" y="${y-19}" width="${w}" height="34" rx="8" style="fill:var(--soft);stroke:var(--line)"/>`;
+  return `<text x="${x}" y="${y+9}" text-anchor="${anchor}" font-size="${st==="hl"?29:26}" style="fill:${st==="hl"?ACC:INK}">${t}</text>`;
+}
+const ln = (x1,y1,x2,y2,c=INK,w=2,extra="") => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" style="stroke:${c}" stroke-width="${w}" ${extra}/>`;
+const arr = (x1,y1,x2,y2,on) => ln(x1,y1,x2,y2,on?ACC:INK,on?5:3.5,`marker-end="${on?"MK_A":"MK_I"}"`);
+const D = {
+ processing(){ const seg=(x,w,y,ex,t)=>`<rect x="${x}" y="${y}" width="${w}" height="30" style="fill:${ex?"color-mix(in srgb,var(--c) 30%,var(--surface))":"var(--soft)"};stroke:var(--ink)" stroke-width="2"/>${t?`<text x="${x+w/2}" y="${y+22}" text-anchor="middle" font-size="18" style="fill:var(--ink)">${t}</text>`:""}`;
+  return svgWrap(`<text x="40" y="40" font-size="22" style="fill:var(--ink)">pre-mRNA (nucleus)</text>
+   ${seg(60,110,60,true,"exon")}${seg(170,90,60,false,"intron")}${seg(260,110,60,true,"exon")}${seg(370,90,60,false,"intron")}${seg(460,90,60,true,"exon")}
+   <text x="44" y="82" text-anchor="end" font-size="20" style="fill:var(--muted)">5′</text><text x="558" y="82" font-size="20" style="fill:var(--muted)">3′</text>
+   ${arr(300,104,300,170,true)}<text x="318" y="132" font-size="21" style="fill:var(--c)">5′ cap, 3′ cleavage and</text><text x="318" y="158" font-size="21" style="fill:var(--c)">poly(A) tail, splicing</text>
+   <circle cx="88" cy="215" r="20" style="fill:var(--c)"/><text x="88" y="221" text-anchor="middle" font-size="16" style="fill:var(--surface)">cap</text>
+   ${seg(108,110,200,true,"exon")}${seg(218,110,200,true,"exon")}${seg(328,110,200,true,"exon")}
+   <text x="444" y="222" font-size="20" style="fill:var(--c);font-family:var(--font-mono)">AAAAA</text>
+   <text x="40" y="275" font-size="22" style="fill:var(--ink)">mature mRNA</text>
+   <text x="300" y="320" text-anchor="middle" font-size="21" style="fill:var(--muted)">moved to the cytoplasm for translation</text>`); },
+ mrna(o){ const f=t=>(o.hl===t||o.quiz===t)?"fill:color-mix(in srgb,var(--c) 35%,var(--surface));stroke:var(--c)":"fill:var(--soft);stroke:var(--ink)";
+  return svgWrap(`<rect x="50" y="150" width="140" height="36" style="${f("5′ UTR")}" stroke-width="2"/>
+   <rect x="190" y="150" width="230" height="36" style="${f("Coding region")}" stroke-width="2"/>
+   <rect x="420" y="150" width="130" height="36" style="${f("3′ UTR")}" stroke-width="2"/>
+   <text x="38" y="176" text-anchor="end" font-size="24" style="fill:var(--ink)">5′</text><text x="560" y="176" font-size="24" style="fill:var(--ink)">3′</text>
+   ${ln(190,140,190,96,INK,2.5)}<text x="190" y="84" text-anchor="middle" font-size="21" style="fill:var(--muted)">start codon</text>
+   ${ln(420,140,420,96,INK,2.5)}<text x="420" y="84" text-anchor="middle" font-size="21" style="fill:var(--muted)">stop codon</text>
+   ${ln(54,200,186,200,MUT,2)}${ln(194,200,416,200,MUT,2)}${ln(424,200,546,200,MUT,2)}
+   ${label(120,232,"5′ UTR",o)}${label(305,232,"Coding region",o)}${label(485,232,"3′ UTR",o)}
+   <text x="300" y="310" text-anchor="middle" font-size="21" style="fill:var(--muted)">UTR = untranslated region</text>`); },
+ cap(o){ const on=t=>o.hl===t, box=(x,y,w,t,hot)=>`<rect x="${x}" y="${y}" width="${w}" height="34" rx="4" style="fill:${hot?"color-mix(in srgb,var(--c) 35%,var(--surface))":"var(--soft)"};stroke:${hot?"var(--c)":"var(--ink)"}" stroke-width="2"/><text x="${x+w/2}" y="${y+24}" text-anchor="middle" font-size="20" style="fill:var(--ink)">${t}</text>`;
+  const p=(x,hot)=>`<circle cx="${x}" cy="170" r="17" style="fill:${hot?"color-mix(in srgb,var(--c) 35%,var(--surface))":"var(--soft)"};stroke:${hot?"var(--c)":"var(--ink)"}" stroke-width="2"/><text x="${x}" y="177" text-anchor="middle" font-size="18" style="fill:var(--ink)">P</text>`;
+  return svgWrap(`<text x="150" y="44" text-anchor="middle" font-size="22" style="fill:${on("G")?ACC:INK}">7-methylguanosine</text>
+   ${box(120,72,60,"CH3",on("G"))}${ln(150,106,150,153,INK,2)}
+   ${ln(60,170,560,170,INK,3)}<text x="40" y="178" text-anchor="end" font-size="22" style="fill:var(--ink)">5′</text><text x="566" y="178" font-size="22" style="fill:var(--ink)">3′</text>
+   ${box(128,153,44,"G",on("G"))}${p(205,on("bond"))}${p(245,on("bond"))}${p(285,on("bond"))}
+   ${box(322,153,40,"N",false)}${p(392,false)}${box(422,153,40,"N",false)}${p(492,false)}
+   ${ln(190,204,300,204,on("bond")?ACC:INK,2.5)}<text x="245" y="238" text-anchor="middle" font-size="22" style="fill:${on("bond")?ACC:INK}">5′-5′ bond</text>
+   ${ln(342,187,342,214,INK,2)}${ln(442,187,442,214,INK,2)}${box(312,214,60,"CH3",on("methyl"))}${box(412,214,60,"CH3",on("methyl"))}
+   <text x="392" y="282" text-anchor="middle" font-size="22" style="fill:${on("methyl")?ACC:INK}">2′ methyl groups</text>
+   <text x="300" y="325" text-anchor="middle" font-size="21" style="fill:var(--muted)">added soon after transcription initiation</text>`); },
+ polya(){ return svgWrap(`<text x="40" y="40" font-size="22" style="fill:var(--ink)">pre-mRNA</text>
+   <rect x="40" y="88" width="520" height="26" style="fill:var(--soft);stroke:var(--ink)" stroke-width="2"/>
+   <rect x="200" y="88" width="100" height="26" style="fill:color-mix(in srgb,var(--c) 30%,var(--surface));stroke:var(--c)" stroke-width="2"/>
+   <text x="250" y="108" text-anchor="middle" font-size="18" style="fill:var(--ink);font-family:var(--font-mono)">AAUAAA</text>
+   <rect x="460" y="88" width="56" height="26" style="fill:var(--ink)"/>
+   ${ln(300,78,410,78,MUT,2)}<text x="355" y="68" text-anchor="middle" font-size="20" style="fill:var(--muted)">11-30 nt</text>
+   <text x="490" y="68" text-anchor="middle" font-size="20" style="fill:var(--muted)">U-rich</text>
+   ${ln(410,142,410,120,ACC,3,'marker-end="MK_A"')}<text x="422" y="148" font-size="20" style="fill:var(--c)">cleavage site</text>
+   ${arr(120,124,120,200,false)}<text x="138" y="180" font-size="20" style="fill:var(--ink)">cleave, then polyadenylate</text>
+   <rect x="40" y="248" width="370" height="26" style="fill:var(--soft);stroke:var(--ink)" stroke-width="2"/>
+   <rect x="200" y="248" width="100" height="26" style="fill:color-mix(in srgb,var(--c) 30%,var(--surface));stroke:var(--c)" stroke-width="2"/>
+   <text x="250" y="268" text-anchor="middle" font-size="18" style="fill:var(--ink);font-family:var(--font-mono)">AAUAAA</text>
+   <text x="414" y="269" font-size="20" style="fill:var(--c);font-family:var(--font-mono);font-weight:700">AAAAAAA</text>
+   <ellipse cx="438" cy="226" rx="28" ry="17" style="fill:var(--soft);stroke:var(--c)" stroke-width="2"/><text x="438" y="232" text-anchor="middle" font-size="18" style="fill:var(--ink)">PBP</text>
+   <ellipse cx="496" cy="226" rx="28" ry="17" style="fill:var(--soft);stroke:var(--c)" stroke-width="2"/><text x="496" y="232" text-anchor="middle" font-size="18" style="fill:var(--ink)">PBP</text>
+   <text x="30" y="268" text-anchor="end" font-size="20" style="fill:var(--ink)">5′</text>
+   <text x="300" y="320" text-anchor="middle" font-size="21" style="fill:var(--muted)">poly(A) tail: 50-250 A's, bound by PBPs</text>`); },
+ exons(o){ const ex=o.hl==="exon", it=o.hl==="intron";
+  const s=(x,w,y,isEx,t)=>`<rect x="${x}" y="${y}" width="${w}" height="34" style="fill:${isEx?(ex?"var(--c)":"color-mix(in srgb,var(--c) 30%,var(--surface))"):(it?"color-mix(in srgb,var(--c) 15%,var(--surface))":"var(--soft)")};stroke:${(isEx&&ex)||(!isEx&&it)?"var(--c)":"var(--ink)"}" stroke-width="2"/><text x="${x+w/2}" y="${y+24}" text-anchor="middle" font-size="18" style="fill:${isEx&&ex?"var(--surface)":"var(--ink)"}">${t}</text>`;
+  return svgWrap(`<text x="40" y="44" font-size="22" style="fill:var(--ink)">gene (DNA)</text>
+   ${s(40,90,70,true,"exon 1")}${s(130,110,70,false,"intron")}${s(240,90,70,true,"exon 2")}${s(330,110,70,false,"intron")}${s(440,100,70,true,"exon 3")}
+   ${arr(300,120,300,196,true)}<text x="318" y="152" font-size="21" style="fill:var(--c)">transcription,</text><text x="318" y="178" font-size="21" style="fill:var(--c)">then RNA splicing</text>
+   <text x="40" y="190" font-size="22" style="fill:var(--ink)">mRNA</text>
+   ${s(140,90,210,true,"exon 1")}${s(230,90,210,true,"exon 2")}${s(320,100,210,true,"exon 3")}
+   <text x="128" y="234" text-anchor="end" font-size="20" style="fill:var(--ink)">5′</text><text x="428" y="234" font-size="20" style="fill:var(--ink)">3′</text>
+   <text x="300" y="296" text-anchor="middle" font-size="21" style="fill:var(--muted)">exons are in the mRNA; introns are not</text>`); },
+ splicesites(o){ const f=t=>(o.hl===t||o.quiz===t)?ACC:INK;
+  return svgWrap(`<rect x="40" y="150" width="110" height="34" style="fill:color-mix(in srgb,var(--c) 30%,var(--surface));stroke:var(--ink)" stroke-width="2"/>
+   <rect x="150" y="150" width="300" height="34" style="fill:var(--soft);stroke:var(--ink)" stroke-width="2"/>
+   <rect x="450" y="150" width="110" height="34" style="fill:color-mix(in srgb,var(--c) 30%,var(--surface));stroke:var(--ink)" stroke-width="2"/>
+   <text x="95" y="174" text-anchor="middle" font-size="18" style="fill:var(--ink)">exon 1</text><text x="300" y="174" text-anchor="middle" font-size="18" style="fill:var(--ink)">intron</text><text x="505" y="174" text-anchor="middle" font-size="18" style="fill:var(--ink)">exon 2</text>
+   <text x="28" y="174" text-anchor="end" font-size="20" style="fill:var(--ink)">5′</text><text x="568" y="174" font-size="20" style="fill:var(--ink)">3′</text>
+   ${ln(150,122,150,146,f("5′ splice site"),3,'marker-end="MK_I"')}${ln(450,122,450,146,f("3′ splice site"),3,'marker-end="MK_I"')}
+   ${label(150,98,"5′ splice site",o)}${label(450,98,"3′ splice site",o)}
+   <text x="150" y="214" text-anchor="middle" font-size="20" style="fill:var(--ink);font-family:var(--font-mono)">AG|GU</text>
+   <text x="450" y="214" text-anchor="middle" font-size="20" style="fill:var(--ink);font-family:var(--font-mono)">CAG|G</text>
+   <text x="370" y="214" text-anchor="middle" font-size="22" style="fill:${f("Branch point")};font-family:var(--font-mono);font-weight:700">A</text>
+   ${ln(370,222,370,240,f("Branch point"),2)}${label(370,262,"Branch point",o)}
+   <text x="300" y="322" text-anchor="middle" font-size="20" style="fill:var(--muted)">branch point A: 18-40 bp upstream of 3′ site</text>`); },
+ lariat(){ return svgWrap(`<rect x="40" y="250" width="120" height="30" style="fill:color-mix(in srgb,var(--c) 30%,var(--surface));stroke:var(--ink)" stroke-width="2"/>
+   <text x="100" y="272" text-anchor="middle" font-size="18" style="fill:var(--ink)">exon 1</text>
+   <text x="100" y="236" text-anchor="middle" font-size="18" style="fill:var(--muted)">cut at 5′ site</text>
+   <circle cx="300" cy="140" r="62" style="fill:none;stroke:var(--c)" stroke-width="6"/>
+   <path d="M344 184 Q380 232 420 260" style="fill:none;stroke:var(--c)" stroke-width="6"/>
+   <rect x="420" y="250" width="130" height="30" style="fill:color-mix(in srgb,var(--c) 30%,var(--surface));stroke:var(--ink)" stroke-width="2"/>
+   <text x="485" y="272" text-anchor="middle" font-size="18" style="fill:var(--ink)">exon 2</text>
+   <circle cx="344" cy="184" r="9" style="fill:var(--ink)"/>
+   <text x="300" y="148" text-anchor="middle" font-size="24" style="fill:var(--ink)">lariat</text>
+   <text x="358" y="178" font-size="22" style="fill:var(--ink)">A</text>
+   <text x="396" y="60" font-size="20" style="fill:var(--c)">5′ phosphate of the</text>
+   <text x="396" y="86" font-size="20" style="fill:var(--c)">intron's G bonds to</text>
+   <text x="396" y="112" font-size="20" style="fill:var(--c)">the 2′ OH of the</text>
+   <text x="396" y="138" font-size="20" style="fill:var(--c)">branch-point A</text>
+   <text x="300" y="322" text-anchor="middle" font-size="21" style="fill:var(--muted)">then the 3′ site is cut and the exons join</text>`); },
+ spliceosome(o){ const on=t=>o.hl===t||o.quiz===t, st=t=>on(t)?"fill:color-mix(in srgb,var(--c) 30%,var(--surface));stroke:var(--c)":"fill:var(--soft);stroke:var(--ink)";
+  return svgWrap(`<rect x="40" y="200" width="100" height="30" style="fill:color-mix(in srgb,var(--c) 30%,var(--surface));stroke:var(--ink)" stroke-width="2"/>
+   <rect x="140" y="200" width="320" height="30" style="fill:var(--soft);stroke:var(--ink)" stroke-width="2"/>
+   <rect x="460" y="200" width="100" height="30" style="fill:color-mix(in srgb,var(--c) 30%,var(--surface));stroke:var(--ink)" stroke-width="2"/>
+   <text x="90" y="222" text-anchor="middle" font-size="18" style="fill:var(--ink)">exon 1</text><text x="510" y="222" text-anchor="middle" font-size="18" style="fill:var(--ink)">exon 2</text>
+   <text x="380" y="222" text-anchor="middle" font-size="20" style="fill:var(--ink);font-family:var(--font-mono);font-weight:700">A</text>
+   <rect x="110" y="128" width="80" height="50" rx="12" style="${st("U1")}" stroke-width="2.5"/>${ln(150,178,150,198,INK,2)}${label(150,150,"U1",o)}
+   <rect x="340" y="128" width="80" height="50" rx="12" style="${st("U2")}" stroke-width="2.5"/>${ln(380,178,380,198,INK,2)}${label(380,150,"U2",o)}
+   <rect x="160" y="30" width="200" height="54" rx="12" style="${st("U4/U5/U6")}" stroke-width="2.5"/>${label(260,54,"U4/U5/U6",o)}
+   ${arr(260,90,260,180,false)}
+   <text x="300" y="282" text-anchor="middle" font-size="21" style="fill:var(--muted)">U1 at the 5′ splice site, U2 at the branch point</text>
+   <text x="300" y="316" text-anchor="middle" font-size="21" style="fill:var(--muted)">then U4, U5 and U6 join as a complex</text>`); },
+ altsplice(o){ const b=(x,y,w,t,hot)=>`<rect x="${x}" y="${y}" width="${w}" height="32" style="fill:${hot?"color-mix(in srgb,var(--c) 35%,var(--surface))":"var(--soft)"};stroke:var(--ink)" stroke-width="2"/><text x="${x+w/2}" y="${y+22}" text-anchor="middle" font-size="18" style="fill:var(--ink)">${t}</text>`;
+  const i=(x,y,w)=>ln(x,y+16,x+w,y+16,MUT,3);
+  return svgWrap(`<text x="40" y="38" font-size="22" style="fill:var(--ink)">pre-mRNA</text>
+   ${b(70,56,100,"exon 1")}${i(170,56,80)}${b(250,56,100,"exon 2",true)}${i(350,56,80)}${b(430,56,100,"exon 3")}
+   ${arr(220,98,150,170,o.hl==="123")}${arr(380,98,450,170,o.hl==="13")}
+   ${b(30,186,80,"1")}${b(110,186,80,"2",true)}${b(190,186,80,"3")}
+   ${b(380,186,80,"1")}${b(460,186,80,"3")}
+   <text x="150" y="258" text-anchor="middle" font-size="22" style="fill:${o.hl==="123"?ACC:INK}">exons 1, 2, 3</text>
+   <text x="460" y="258" text-anchor="middle" font-size="22" style="fill:${o.hl==="13"?ACC:INK}">exons 1, 3</text>
+   <text x="300" y="316" text-anchor="middle" font-size="21" style="fill:var(--muted)">exon 2 removed with the introns on the right</text>`); },
+ multi3(){ const b=(x,y,w,t,c)=>`<rect x="${x}" y="${y}" width="${w}" height="30" style="fill:${c?"color-mix(in srgb,var(--c) 30%,var(--surface))":"var(--soft)"};stroke:var(--ink)" stroke-width="2"/>${t?`<text x="${x+w/2}" y="${y+21}" text-anchor="middle" font-size="18" style="fill:var(--ink)">${t}</text>`:""}`;
+  const tail=(x,y)=>`<text x="${x+6}" y="${y+21}" font-size="18" style="fill:var(--c);font-family:var(--font-mono);font-weight:700">AAAA</text>`;
+  return svgWrap(`<text x="40" y="40" font-size="22" style="fill:var(--ink)">pre-mRNA</text>
+   ${b(40,60,100,"exon 1")}${ln(140,75,200,75,MUT,3)}${b(200,60,360,"exon 2",true)}
+   ${ln(360,40,360,56,ACC,3,'marker-end="MK_A"')}${ln(500,40,500,56,ACC,3,'marker-end="MK_A"')}
+   <text x="344" y="38" text-anchor="end" font-size="20" style="fill:var(--c)">site 1</text><text x="516" y="38" font-size="20" style="fill:var(--c)">2</text>
+   <text x="40" y="150" font-size="20" style="fill:var(--muted)">cut at site 1</text>
+   ${b(40,164,100,"1")}${b(140,164,160,"2",true)}${tail(300,164)}
+   <text x="40" y="236" font-size="20" style="fill:var(--muted)">cut at site 2</text>
+   ${b(40,250,100,"1")}${b(140,250,300,"2",true)}${tail(440,250)}
+   <text x="300" y="324" text-anchor="middle" font-size="21" style="fill:var(--muted)">mRNA products of different length</text>`); },
+ calca(o){ const b=(x,y,t,hot)=>`<rect x="${x}" y="${y}" width="52" height="30" style="fill:${hot?"color-mix(in srgb,var(--c) 35%,var(--surface))":"var(--soft)"};stroke:var(--ink)" stroke-width="2"/><text x="${x+26}" y="${y+21}" text-anchor="middle" font-size="18" style="fill:var(--ink)">${t}</text>`;
+  const row=(y,ex,hot)=>ex.map((e,k)=>b(140+k*58,y,e,hot)).join("");
+  const th=o.hl==="thyroid", br=o.hl==="brain";
+  return svgWrap(`<text x="30" y="96" font-size="20" style="fill:var(--ink)">pre-mRNA</text>${ln(140,90,520,90,MUT,2)}
+   ${[1,2,3,4,5,6].map((e,k)=>b(140+k*64,75,e,false)).join("")}
+   ${ln(358,44,358,70,ACC,3,'marker-end="MK_A"')}${ln(486,44,486,70,ACC,3,'marker-end="MK_A"')}
+   <text x="300" y="36" text-anchor="middle" font-size="18" style="fill:var(--c)">3′ cleavage sites in exons 4 and 6</text>
+   <text x="30" y="186" font-size="22" style="fill:${th?ACC:INK}">thyroid</text>${row(165,[1,2,3,4],th)}
+   <text x="378" y="186" font-size="20" style="fill:${th?ACC:INK}">calcitonin</text>
+   <text x="30" y="266" font-size="22" style="fill:${br?ACC:INK}">brain</text>${row(245,[1,2,3,5,6],br)}
+   <text x="436" y="266" font-size="20" style="fill:${br?ACC:INK}">CGRP</text>
+   <text x="300" y="322" text-anchor="middle" font-size="21" style="fill:var(--muted)">tissue-specific alternative processing</text>`); },
+ trna(o){ const on=t=>o.hl===t||o.quiz===t, c=t=>on(t)?ACC:INK;
+  const stem=(x1,y1,x2,y2,t)=>ln(x1,y1,x2,y2,c(t),7);
+  const loop=(cx,cy,r,t)=>`<circle cx="${cx}" cy="${cy}" r="${r}" style="fill:none;stroke:${c(t)}" stroke-width="7"/>`;
+  return svgWrap(`${stem(300,48,300,150,"Acceptor arm")}
+   <text x="288" y="56" text-anchor="end" font-size="20" style="fill:var(--ink)">5′</text>
+   <text x="314" y="44" font-size="20" style="fill:var(--c);font-family:var(--font-mono);font-weight:700">3′ CCA</text>
+   ${stem(296,150,196,150,"DHU arm")}${loop(166,150,30,"DHU arm")}
+   ${stem(304,150,404,150,"TΨC arm")}${loop(434,150,30,"TΨC arm")}
+   ${stem(300,150,300,236,"Anticodon arm")}${loop(300,264,28,"Anticodon arm")}
+   ${stem(302,196,346,236,"Extra arm")}${loop(356,246,13,"Extra arm")}
+   ${label(450,86,"Acceptor arm",o)}${label(130,216,"DHU arm",o)}${label(476,216,"TΨC arm",o)}
+   ${label(146,280,"Anticodon arm",o)}${label(470,276,"Extra arm",o)}`); },
+ ribosome(o){ const col=(cx,hot,head,L,Lr,S,Sr)=>`<text x="${cx}" y="36" text-anchor="middle" font-size="24" style="fill:${hot?ACC:INK}">${head}</text>
+   <ellipse cx="${cx}" cy="112" rx="112" ry="56" style="fill:${hot?"color-mix(in srgb,var(--c) 30%,var(--surface))":"var(--soft)"};stroke:${hot?"var(--c)":"var(--ink)"}" stroke-width="2.5"/>
+   <text x="${cx}" y="108" text-anchor="middle" font-size="28" style="fill:var(--ink)">${L}</text><text x="${cx}" y="136" text-anchor="middle" font-size="18" style="fill:var(--muted)">${Lr}</text>
+   <ellipse cx="${cx}" cy="218" rx="90" ry="42" style="fill:${hot?"color-mix(in srgb,var(--c) 30%,var(--surface))":"var(--soft)"};stroke:${hot?"var(--c)":"var(--ink)"}" stroke-width="2.5"/>
+   <text x="${cx}" y="214" text-anchor="middle" font-size="26" style="fill:var(--ink)">${S}</text><text x="${cx}" y="240" text-anchor="middle" font-size="18" style="fill:var(--muted)">${Sr}</text>`;
+  return svgWrap(col(150,o.hl==="bact","Bacterial 70S","50S","23S, 5S rRNA","30S","16S rRNA")+col(450,o.hl==="euk","Eukaryotic 80S","60S","28S, 5.8S, 5S rRNA","40S","18S rRNA")
+   +`<text x="300" y="306" text-anchor="middle" font-size="21" style="fill:var(--muted)">rRNA plus many proteins</text>
+   <text x="300" y="332" text-anchor="middle" font-size="20" style="fill:var(--muted)">S = Svedberg unit</text>`); },
+ rrna(){ const bar=(y,segs)=>`<rect x="40" y="${y}" width="520" height="20" style="fill:var(--soft);stroke:var(--ink)" stroke-width="2"/>`+segs.map(([x,w])=>`<rect x="${x}" y="${y}" width="${w}" height="20" style="fill:color-mix(in srgb,var(--c) 40%,var(--surface))"/>`).join("");
+  const prod=(y,items)=>items.map(([x,w,t])=>`<rect x="${x}" y="${y}" width="${w}" height="30" rx="4" style="fill:color-mix(in srgb,var(--c) 30%,var(--surface));stroke:var(--c)" stroke-width="2"/><text x="${x+w/2}" y="${y+22}" text-anchor="middle" font-size="18" style="fill:var(--ink)">${t}</text>`).join("");
+  return svgWrap(`<text x="40" y="30" font-size="21" style="fill:var(--ink)">prokaryotic precursor (30S)</text>${bar(42,[[50,120],[200,60],[290,180],[500,50]])}
+   ${arr(300,68,300,96,false)}${prod(100,[[50,120,"16S"],[200,60,"tRNA"],[290,180,"23S"],[500,50,"5S"]])}
+   <text x="40" y="178" font-size="21" style="fill:var(--ink)">eukaryotic precursor (45S)</text>${bar(190,[[50,120],[250,80],[400,150]])}
+   ${arr(300,216,300,244,false)}${prod(248,[[50,120,"18S"],[250,80,"5.8S"],[400,150,"28S"]])}
+   <text x="300" y="320" text-anchor="middle" font-size="21" style="fill:var(--muted)">methylation, cleavage and trimming</text>`); },
+}
+;
+function viz(spec, extra={}){ if(!spec) return ""; const [k,arg]=spec.split(":");
+  const o = Object.assign({}, extra); if(arg && !o.quiz) o.hl=arg;
+  return D[k] ? `<div class="viz">${D[k](o)}</div>` : ""; }
+
+/* ---------- scheduling ---------- */
+const BYID = Object.fromEntries(CARDS.map(c=>[c.id,c]));
+const GRADES = ["Again","Hard","Good","Easy"];
+function isDue(c){ const s=st(c.id); return s.due<=Date.now(); }
+function pool(){ return CARDS.filter(c=>store.secs.includes(c.sec)); }
+function shuffle(a){ for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];} return a; }
+// Share of past grades that were Good or Easy; null if never studied.
+function pct(id){ const s=st(id); return s.seen ? Math.round((s.right||0)/s.seen*100) : null; }
+function buildQueue(){ let p = pool();
+  if(store.mode==="revisit") return shuffle(p.filter(c=>st(c.id).right)).sort((a,b)=>pct(a.id)-pct(b.id));
+  if(store.mode==="cram") return shuffle(p.slice());
+  p=p.filter(isDue);
+  // qm = missed on a quiz: always comes up next, even if never studied as a flashcard.
+  const qm=p.filter(c=>st(c.id).qm), seen=p.filter(c=>st(c.id).seen&&!st(c.id).qm), fresh=p.filter(c=>!st(c.id).seen&&!st(c.id).qm);
+  shuffle(qm); shuffle(seen); shuffle(fresh); return qm.concat(seen, fresh.slice(0,30)); }
+function preview(c,g){ const s=st(c.id);
+  if(g===1) return "again soon"; if(g===2) return "later this session";
+  const b=Math.min(6,(s.box||0)+(g===3?1:2)); const d=INTERVALS[b]; return d===1?"1 day":d+" days"; }
+function grade(c,g){ const s=Object.assign({},st(c.id)); s.seen=(s.seen||0)+1; if(g>=3) s.right=(s.right||0)+1; delete s.qm;
+  if(g===1){ s.box=0; s.due=0; } else if(g===2){ s.box=Math.max(1,s.box||0); s.due=Date.now()+DAY*0.5; }
+  else { s.box=Math.min(6,(s.box||0)+(g===3?1:2)); s.due=Date.now()+DAY*INTERVALS[s.box]-36e5; }
+  store.cards[c.id]=s; save(); return s; }
+
+/* ---------- views ---------- */
+const app = document.getElementById("app");
+// The session lives in store.session so it survives Pause, closing the tab, or a dead battery.
+let S = null, Q = null, flipped = false;
+if(store.session){ store.session.ids=store.session.ids.filter(id=>BYID[id]); if(!store.session.ids.length){ store.session=null; save(); } }
+function mastery(sec){ const cs=CARDS.filter(c=>c.sec===sec); let m=0,l=0,seen=0,right=0;
+  cs.forEach(c=>{const s=st(c.id), b=s.box||0; if(b>=3)m++; else if(s.seen)l++; seen+=s.seen||0; right+=s.right||0;});
+  return {n:cs.length,m,l,p:seen?Math.round(right/seen*100):null}; }
+const MODES = {due:["Daily study","Due cards plus up to 30 new"], cram:["Test prep","Every selected card, shuffled"],
+  revisit:["Revisit","Cards you got right, lowest % first"]};
+function home(){ S=null; Q=null; flipped=false;
+  const startN = buildQueue().length, R = store.session;
+  const label = {due:"cards ready to study", cram:"cards in this review", revisit:"cards to revisit"}[store.mode];
+  const empty = {due:"Nothing due. Switch to test prep.", cram:"No sections selected.", revisit:"Nothing to revisit yet."}[store.mode];
+  app.innerHTML = `<header class="hero guides deckhero"><div class="band" aria-hidden="true"></div><div class="reading">
+    <nav class="toplinks"><a class="link quiet" href="../../">All decks</a><a class="link" href="guide.html">Study guide</a></nav>
+    <p class="label">Genetics</p><h1>Ch 14: RNA Processing</h1><p class="lead">Capping, polyadenylation, splicing, alternative processing, tRNAs and rRNAs.</p></div></header>
+  <main class="reading overlap stack">
+  ${R?`<div class="card float resume rise"><h2>Session paused</h2><p class="hint num">${R.ids.length} of ${R.total} cards left, ${MODES[R.mode][0].toLowerCase()}</p>
+    <button class="btn block" id="resume">Resume</button><div class="center"><button class="link quiet" id="discard">End it and see results</button></div></div>`:""}
+  <div class="card float rise"><div class="due"><b class="num">${startN}</b><span>${label}</span></div>
+   <div class="modes">${Object.entries(MODES).map(([k,[n,d]])=>`<button class="mode" data-mode="${k}" aria-pressed="${store.mode===k}">${n}<small>${d}</small></button>`).join("")}</div>
+   <button class="btn block${R?" ghost":""}" id="go" ${startN?"":"disabled"}>${startN?(R?"Start a new session":"Start studying"):empty}</button></div>
+  ${quizPanel()}
+  <div class="card secs"><h2>Sections</h2>${SECS.map(s=>{const m=mastery(s);return `
+   <button class="secrow" style="--c:${cvar(s)}" data-sec="${s}" aria-pressed="${store.secs.includes(s)}">
+    <span class="chk"></span><span class="secname">${s}</span><span class="secmeta num">${m.m} of ${m.n} solid${m.p===null?"":` · ${m.p}% right`}</span>
+    <span class="track"><i style="width:${m.m/m.n*100}%"></i><i style="width:${m.l/m.n*100}%;background:color-mix(in srgb,var(--c) 35%,transparent)"></i></span>
+   </button>`}).join("")}
+   <div class="legend"><span style="--sw:var(--ink)">Solid: answered right 3 times running</span><span style="--sw:color-mix(in srgb,var(--ink) 35%,transparent)">Learning</span><span class="nosw">% right: share of all your grades that were Good or Easy</span></div></div>
+  <div class="foot"><span>${CARDS.length} cards. Every grade saves on this device as you go.</span><button class="link quiet" id="reset">Reset progress</button></div></main>`;
+  app.querySelectorAll(".mode").forEach(b=>b.onclick=()=>{store.mode=b.dataset.mode;save();home();});
+  app.querySelectorAll(".secrow").forEach(b=>b.onclick=()=>{const s=b.dataset.sec; store.secs=store.secs.includes(s)?store.secs.filter(x=>x!==s):store.secs.concat(s); save(); home();});
+  document.getElementById("go").onclick=()=>{ if(R && !confirm("Start over? The paused session's grades are kept, but its remaining cards are dropped.")) return; start(buildQueue().map(c=>c.id), store.mode); };
+  if(R){ document.getElementById("resume").onclick=()=>{ S=store.session; card(); };
+    document.getElementById("discard").onclick=()=>{ S=store.session; finish(); }; }
+  app.querySelectorAll(".len").forEach(b=>b.onclick=()=>{store.qlen=+b.dataset.len;save();home();});
+  document.getElementById("quiz").onclick=()=>startQuiz(shuffle(pool().slice()).slice(0,(store.qlen===undefined?25:store.qlen)||Infinity).map(c=>c.id));
+  document.getElementById("reset").onclick=()=>{ if(confirm("Erase all progress and quiz history on this device?")){store.cards={};store.session=null;store.quizzes=[];save();home();} };
+}
+function start(ids, mode){ if(!ids.length) return;
+  S = store.session = {ids, mode, total:ids.length, done:0, right:0, requeued:{}, first:{}}; save(); flipped=false; card(); }
+function head(){ return `<div class="top"><button class="link quiet" id="pause" title="Save your place and come back later">Pause</button>
+  <div class="track"><i style="width:${S.done/S.total*100}%"></i></div><span class="count num">${S.ids.length} left</span>
+  <button class="link quiet" id="end" title="Stop now and see your results">End</button></div>`; }
+function card(){
+  if(!S.ids.length) return finish();
+  const c=BYID[S.ids[0]], f=flipped, p=pct(c.id), s=st(c.id);
+  const frontViz = c.vf ? viz(c.viz, c.kind==="diagram"&&!f?{quiz:c.quiz,hideAll:true}:{}) : "";
+  const backViz = f ? (c.kind==="diagram" ? viz(c.viz,{hl:c.quiz}) : (c.vizBack? viz(c.vizBack) : (c.vf?"":viz(c.viz)))) : "";
+  app.innerHTML = `<main class="reading study">`+head()+`<article class="card float accent fc rise" style="--c:${cvar(c.sec)}">
+   <div class="chip"><span class="tag sec">${c.sec}</span>${c.added?'<span class="tag">Beyond the slides</span>':""}
+    <span class="score num" title="Times you graded this card Good or Easy">${p===null?"New card":`${p}% right (${s.right||0} of ${s.seen})`}</span></div>
+   <div class="prompt">${f&&c.kind==="cloze"?c.back:c.front}</div>
+   ${(c.kind==="diagram"||c.vizBack)&&f?"":frontViz}
+   ${f?`<div class="answer">${c.kind==="cloze"?"":`<div class="ans">${c.back}</div>`}${backViz}${c.extra?`<div class="extra">${c.extra}</div>`:""}</div>`:""}
+   <div class="spacer"></div>
+   ${f?`<div class="grades">${GRADES.map((n,k)=>`<button class="g" data-g="${k+1}" style="--gc:var(--${n.toLowerCase()})">${n}<small>${preview(c,k+1)}</small></button>`).join("")}</div>
+     <div class="keys">Keys 1 to 4 to grade. Esc to pause.</div>`
+   :`<button class="btn dark block no-chev" id="flip">Show answer</button><div class="keys">Space to show the answer. Esc to pause.</div>`}
+  </article></main>`;
+  document.getElementById("pause").onclick=home;
+  document.getElementById("end").onclick=()=>{ if(confirm(`End the session now? Your ${S.done} graded card${S.done===1?"":"s"} are saved; the ${S.ids.length} left stay for next time.`)) finish(); };
+  if(f) app.querySelectorAll(".g").forEach(b=>b.onclick=()=>answer(+b.dataset.g));
+  else document.getElementById("flip").onclick=()=>{flipped=true;card();};
+}
+function answer(g){ const id=S.ids.shift(); grade(BYID[id],g); flipped=false;
+  if(!(id in S.first)) S.first[id]=g;
+  if(g===1){ S.ids.splice(Math.min(3,S.ids.length),0,id); }
+  else if(g===2 && !S.requeued[id]){ S.requeued[id]=1; S.ids.splice(Math.min(8,S.ids.length),0,id); }
+  else { S.done++; if(g>=3) S.right++; }
+  if(S.done>S.total) S.total=S.done;
+  save(); card(); }
+function finish(){ const R=S, ids=Object.keys(R.first), n=ids.length, left=R.ids.filter(id=>!(id in R.first)).length;
+  store.session=null; save(); S=null; flipped=false;
+  const counts=[0,0,0,0], bySec={}; ids.forEach(id=>{ const g=R.first[id], sec=BYID[id]?.sec; counts[g-1]++;
+    if(sec){ const b=bySec[sec]=bySec[sec]||{n:0,r:0}; b.n++; if(g>=3) b.r++; } });
+  const known=n?Math.round((counts[2]+counts[3])/n*100):0, missed=ids.filter(id=>R.first[id]<=2&&BYID[id]);
+  app.innerHTML=`<main class="reading study done rise"><h1>${R.ids.length?"Session ended":"Session complete"}</h1>
+  <p class="hint">Saved on this device. ${left?`${left} card${left===1?"":"s"} not reached; they stay due for next time.`:""}</p>
+  ${n?`<div class="card"><div class="big"><b class="num">${known}%</b><span class="num">right on the first try, ${counts[2]+counts[3]} of ${n} cards</span></div>
+   <div class="gbar">${counts.map((k,i)=>k?`<i style="flex:${k};background:var(--${GRADES[i].toLowerCase()})"></i>`:"").join("")}</div>
+   <div class="glegend">${counts.map((k,i)=>`<span style="--sw:var(--${GRADES[i].toLowerCase()})">${GRADES[i]} ${k}</span>`).join("")}</div>
+   <div class="bysec">${SECS.filter(s=>bySec[s]).map(s=>{const b=bySec[s],p=Math.round(b.r/b.n*100);return `
+    <div class="bs" style="--c:${cvar(s)}"><span>${s}</span><span class="secmeta num">${p}% · ${b.r} of ${b.n}</span><span class="track"><i style="width:${p}%"></i></span></div>`}).join("")}</div></div>`
+  :`<p>No cards graded this time.</p>`}
+  <div class="stack" style="margin-top:var(--sp-5)">${missed.length?`<button class="btn block" id="miss">Practice the ${missed.length} I missed</button>`:""}
+  <button class="btn block${missed.length?" ghost":""}" id="h">Back to sections</button></div></main>`;
+  document.getElementById("h").onclick=home;
+  if(missed.length) document.getElementById("miss").onclick=()=>start(shuffle(missed), "cram");
+}
+/* ---------- quiz ---------- */
+// Multiple choice built from the cards. Kept apart from flashcard levels and % right;
+// the only link back is that missed questions come up first in the next Daily study.
+const plain = h => h.replace(/<[^>]+>/g," ").replace(/\s+/g," ").trim();
+const answerOf = c => { if(c.kind!=="cloze") return c.back; const m=c.back.match(/<span class="cz">(.*?)<\/span>/); return m?m[1]:c.back; };
+const family = c => c.kind==="cloze" ? c.id.split("_")[0] : c.kind==="diagram" ? c.viz.split(":")[0] : null;
+function choices(c){
+  const right=answerOf(c), key=a=>plain(a).toLowerCase(), used=new Set([key(right)]), out=[], shown=plain(c.front).toLowerCase();
+  // Skip any choice already visible in the question (the rest of a list, or a word the prompt itself uses).
+  const take=list=>{ for(const a of list){ if(out.length>=3) break; const k=key(a); if(k&&!used.has(k)&&!shown.includes(k)){ used.add(k); out.push(a); } } };
+  // Siblings first: the other gaps of the same list, or the other labels of the same diagram.
+  const fam=family(c); if(fam) take(shuffle(CARDS.filter(x=>x!==c&&family(x)===fam).map(answerOf)));
+  // Then lookalikes: same card kind, similar length, numbers with numbers, same section preferred.
+  const sh=a=>{const p=plain(a); return {w:p.split(" ").length, n:/\d/.test(p)};}, r=sh(right);
+  take(CARDS.filter(x=>x!==c&&x.kind===c.kind).map(x=>{const a=answerOf(x), s=sh(a);
+    return [a, Math.abs(s.w-r.w)*1.5+(s.n!==r.n?6:0)+(x.sec!==c.sec?2.5:0)+Math.random()*2];}).sort((a,b)=>a[1]-b[1]).map(x=>x[0]));
+  const opts=shuffle(out.concat([right])); return {id:c.id, opts, ans:opts.indexOf(right)}; }
+function startQuiz(ids){ if(!ids.length) return; S=null; Q={qs:ids.map(id=>choices(BYID[id])), i:0, picks:[]}; renderQ(); }
+const LENS=[10,25,50,0];
+function quizPanel(){ const n=pool().length, len=store.qlen===undefined?25:store.qlen, take=len?Math.min(len,n):n, H=store.quizzes||[];
+  return `<div class="card"><h2>Quiz</h2><p class="hint">Multiple choice from the selected sections. Scores are kept separate from your flashcards.</p>
+   ${H.length?scoreChart(H):""}
+   <div class="lens" role="group" aria-label="Quiz length">${LENS.map(l=>`<button class="len" data-len="${l}" aria-pressed="${len===l}">${l||"All"}</button>`).join("")}</div>
+   <button class="btn dark block" id="quiz" ${n?"":"disabled"}>${n?`Start a ${take}-question quiz`:"No sections selected."}</button></div>`; }
+function scoreChart(H){ const h=H.slice(-12), last=h[h.length-1], best=Math.max(...H.map(q=>Math.round(q.r/q.n*100)));
+  const W=600, T=160, L=78, R=30, top=20, bot=20, X=i=>h.length<2?(L+W-R)/2:L+i*(W-L-R)/(h.length-1), Y=p=>top+(100-p)*(T-top-bot)/100;
+  const pts=h.map((q,i)=>({x:X(i),y:Y(Math.round(q.r/q.n*100)),p:Math.round(q.r/q.n*100),q}));
+  const day=t=>new Date(t).toLocaleDateString(undefined,{month:"short",day:"numeric"});
+  return `<div class="hist"><div class="histhead"><span><b class="num">${pts[pts.length-1].p}%</b> last quiz</span><span class="num">Best ${best}% · ${H.length} quiz${H.length===1?"":"zes"} taken</span></div>
+   <svg viewBox="0 0 ${W} ${T}" role="img" aria-label="Quiz scores, oldest to newest: ${pts.map(t=>t.p+"%").join(", ")}">
+   ${[0,50,100].map(v=>`<line x1="${L}" x2="${W-R+10}" y1="${Y(v)}" y2="${Y(v)}" style="stroke:var(--line)" vector-effect="non-scaling-stroke" stroke-width="1"/><text x="${L-10}" y="${Y(v)+7}" text-anchor="end" font-size="24" style="fill:var(--muted)">${v}%</text>`).join("")}
+   ${pts.length>1?`<polyline points="${pts.map(t=>t.x+","+t.y).join(" ")}" fill="none" style="stroke:var(--sky-ink)" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>`:""}
+   ${pts.map(t=>`<g class="pt"><title>${day(t.q.t)}: ${t.p}% (${t.q.r} of ${t.q.n})</title><circle cx="${t.x}" cy="${t.y}" r="22" fill="transparent"/>
+     <circle cx="${t.x}" cy="${t.y}" r="8" style="fill:var(--sky-ink);stroke:var(--surface)" stroke-width="3"/></g>`).join("")}
+   </svg></div>`; }
+function qhead(){ return `<div class="top"><button class="link quiet" id="qend">End</button><div class="track"><i style="width:${Q.picks.length/Q.qs.length*100}%"></i></div><span class="count num">${Math.min(Q.i+1,Q.qs.length)} of ${Q.qs.length}</span></div>`; }
+function renderQ(){ const q=Q.qs[Q.i], c=BYID[q.id], k=Q.picks[Q.i], done=k!==undefined;
+  const v = c.kind==="diagram" ? viz(c.viz, done?{hl:c.quiz}:{quiz:c.quiz,hideAll:true}) : (c.vf||done ? viz(c.viz) : "");
+  app.innerHTML = `<main class="reading study">`+qhead()+`<article class="card float accent fc rise" style="--c:${cvar(c.sec)}">
+   <div class="chip"><span class="tag sec">${c.sec}</span></div>
+   <div class="prompt">${done&&c.kind==="cloze"?c.back:c.front}</div>${v}
+   <div class="opts">${q.opts.map((o,i)=>`<button class="opt${done?(i===q.ans?" ok":i===k?" bad":" dim"):""}" data-k="${i}" ${done?"disabled":""}>
+     <span class="ltr">${done&&i===q.ans?"✓":done&&i===k?"✗":"ABCD"[i]}</span><span>${o}</span></button>`).join("")}</div>
+   ${done?`<div class="verdict ${k===q.ans?"ok":"bad"}">${k===q.ans?"Correct":"Not quite"}</div>${c.extra?`<div class="extra">${c.extra}</div>`:""}`:""}
+   <div class="spacer"></div>
+   ${done?`<button class="btn dark block" id="next">${Q.i+1<Q.qs.length?"Next question":"See results"}</button><div class="keys">Space for next</div>`
+     :`<div class="keys">Keys 1 to 4 or A to D to answer</div>`}</article></main>`;
+  document.getElementById("qend").onclick=()=>{ if(!Q.picks.length) return home(); if(confirm(`End the quiz now? You'll be scored on the ${Q.picks.length} you answered.`)) quizResults(); };
+  if(done) document.getElementById("next").onclick=nextQ;
+  else app.querySelectorAll(".opt").forEach(b=>b.onclick=()=>pick(+b.dataset.k)); }
+function pick(k){ Q.picks[Q.i]=k; renderQ(); }
+function nextQ(){ Q.i++; Q.i<Q.qs.length ? renderQ() : quizResults(); }
+function quizResults(){ const done=Q.qs.filter((q,i)=>Q.picks[i]!==undefined), n=done.length;
+  const missed=done.filter(q=>Q.picks[Q.qs.indexOf(q)]!==q.ans), r=n-missed.length, p=n?Math.round(r/n*100):0, bySec={};
+  done.forEach(q=>{const s=BYID[q.id].sec, b=bySec[s]=bySec[s]||{n:0,r:0}; b.n++; if(Q.picks[Q.qs.indexOf(q)]===q.ans) b.r++;});
+  if(n){ store.quizzes=(store.quizzes||[]).concat({t:Date.now(),n,r}).slice(-50);
+    missed.forEach(q=>{ store.cards[q.id]=Object.assign({},st(q.id),{due:0,qm:1}); }); save(); }
+  const ids=missed.map(q=>q.id), all=Q.qs.length; Q=null;
+  app.innerHTML=`<main class="reading study done rise"><h1>Quiz ${n<all?"ended":"complete"}</h1>
+  ${n?`<div class="card"><div class="big"><b class="num">${p}%</b><span class="num">${r} of ${n} correct</span></div>
+   <div class="bysec">${SECS.filter(s=>bySec[s]).map(s=>{const b=bySec[s],sp=Math.round(b.r/b.n*100);return `
+    <div class="bs" style="--c:${cvar(s)}"><span>${s}</span><span class="secmeta num">${sp}% · ${b.r} of ${b.n}</span><span class="track"><i style="width:${sp}%"></i></span></div>`}).join("")}</div></div>
+   ${missed.length?`<div class="card" style="margin-top:var(--sp-5)"><h2>Missed</h2><p class="hint">These come up first in your next Daily study.</p>${missed.map(q=>{const c=BYID[q.id];return `
+    <div class="mq" style="--c:${cvar(c.sec)}"><div>${c.kind==="diagram"?`${plain(c.front)}`:c.front}</div><div class="ma">${answerOf(c)}</div></div>`}).join("")}</div>`:""}`
+  :`<p>No questions answered.</p>`}
+  <div class="stack" style="margin-top:var(--sp-5)">${missed.length?`<button class="btn block" id="retake">Retake the ${missed.length} I missed</button>`:""}
+  <button class="btn block${missed.length?" ghost":""}" id="h">Back to the deck</button></div></main>`;
+  document.getElementById("h").onclick=home;
+  if(missed.length) document.getElementById("retake").onclick=()=>startQuiz(shuffle(ids)); }
+
+document.addEventListener("keydown",e=>{ if(e.metaKey||e.ctrlKey) return;
+  if(Q){ const q=Q.qs[Q.i]; if(!q) return;
+    if(Q.picks[Q.i]===undefined){ const k=e.key.length===1?Math.max("1234".indexOf(e.key),"abcd".indexOf(e.key.toLowerCase())):-1; if(k>=0&&k<q.opts.length) pick(k); }
+    else if(e.key===" "||e.key==="Enter"){ e.preventDefault(); nextQ(); }
+    return; }
+  if(!S||!S.ids.length) return;
+  if(e.key==="Escape"){ home(); return; }
+  if(!flipped && (e.key===" "||e.key==="Enter")){ e.preventDefault(); flipped=true; card(); }
+  else if(flipped && /^[1-4]$/.test(e.key)) answer(+e.key); });
+home();
+</script>
+</body>
+</html>

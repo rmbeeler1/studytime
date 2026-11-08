@@ -1,0 +1,715 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Genetics Ch 14: RNA Processing Study Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* Study Time design tokens and components. Source of truth: _builder/design/DESIGN.md
+   Decks are self-contained pages, so builders inline this file rather than linking it.
+   Load the font in <head>:
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"> */
+
+/* ---------- tokens: light ---------- */
+/* [data-theme] on any element scopes a theme to that subtree (used by preview.html). */
+:root,[data-theme="light"]{
+  /* surfaces */
+  --bg:#f6f8fc;            /* page: cool off-white */
+  --surface:#ffffff;       /* raised panels and cards */
+  --sunken:#eef2f8;        /* wells, inputs, progress tracks */
+  --soft:#eef2f8;          /* alias of --sunken; diagrams and decks use it */
+  --line:#e1e7f0;          /* hairlines and card borders */
+  --line-strong:#c9d3e1;   /* input borders, dividers that must be seen */
+  --guide:#d3dbe8;         /* dashed column guides */
+  /* text */
+  --ink:#0c2340;           /* headings, key numbers, diagram strokes */
+  --text:#425672;          /* body copy */
+  --muted:#5b6b82;         /* captions, meta, helper text */
+  --on-accent:#ffffff;     /* text on --accent fills */
+  /* brand */
+  --accent:#5332e6;        /* violet: links, primary buttons, eyebrow labels */
+  --accent-hover:#4322cf;
+  --accent-tint:#efecfe;   /* violet wash behind selected items */
+  --sky:#0aa5f0;           /* bright sky: bands, fills, illustration only (not text) */
+  --sky-ink:#0068a8;       /* sky as text */
+  --sky-tint:#e3f4fd;
+  --band-from:#0aa5f0;     /* diagonal hero band */
+  --band-to:#5332e6;
+  /* feedback (flashcard grades) */
+  --again:#b42318; --hard:#985a00; --good:#2152c4; --easy:#0b7a5f;
+  /* section accents: decks map their 6 to 8 sections onto these, in order */
+  --sec-blue:#1f5bc4; --sec-violet:#7d3fc8; --sec-teal:#08776b; --sec-rose:#be2b6a;
+  --sec-orange:#bd4310; --sec-amber:#946000; --sec-green:#3d7a17; --sec-slate:#4d5d76;
+
+  /* type */
+  --font-sans:"Inter",ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+  --font-mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  --fs-display:clamp(2.75rem,1.6rem + 5vw,5.25rem);  /* hero headline */
+  --fs-h1:clamp(2.25rem,1.6rem + 2.8vw,3.5rem);
+  --fs-h2:clamp(1.625rem,1.3rem + 1.4vw,2.25rem);
+  --fs-h3:1.375rem;
+  --fs-lead:clamp(1.125rem,1rem + .5vw,1.375rem);    /* intro paragraph under a headline */
+  --fs-body:1.0625rem;     /* 17px */
+  --fs-small:.9375rem;     /* 15px */
+  --fs-caption:.8125rem;   /* 13px */
+  --fs-label:1rem;         /* eyebrow label */
+  --lh-tight:1.04; --lh-heading:1.15; --lh-body:1.65;
+  --track-display:-.04em; --track-heading:-.025em; --track-body:-.006em;
+  --fw-regular:400; --fw-medium:500; --fw-semibold:600; --fw-bold:700; --fw-black:800;
+
+  /* spacing: 4px base */
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:24px; --sp-6:32px;
+  --sp-7:48px; --sp-8:64px; --sp-9:96px; --sp-10:128px;
+  --gutter:16px;           /* side gutter on phones; 24px from 640px, 32px from 1024px */
+  --content-max:1080px;    /* wide grid for home page and heroes */
+  --reading-max:680px;     /* one column of prose or one flashcard */
+  --columns:4;             /* dashed guides; 2 on phones */
+
+  /* radii */
+  --r-xs:4px; --r-sm:6px; --r-md:10px; --r-lg:16px; --r-xl:24px; --r-pill:999px;
+
+  /* shadows: two layers each, tinted with navy, never pure black */
+  --shadow-xs:0 1px 2px rgba(12,35,64,.06),0 1px 1px rgba(12,35,64,.04);
+  --shadow-sm:0 2px 5px -1px rgba(30,40,90,.10),0 1px 3px -1px rgba(12,35,64,.10);
+  --shadow-md:0 13px 27px -5px rgba(30,40,90,.16),0 8px 16px -8px rgba(12,35,64,.18);
+  --shadow-lg:0 30px 60px -12px rgba(30,40,90,.22),0 18px 36px -18px rgba(12,35,64,.26);
+  --shadow-xl:0 50px 100px -20px rgba(30,40,90,.24),0 30px 60px -30px rgba(12,35,64,.30);
+
+  /* motion */
+  --ease-out:cubic-bezier(.2,.7,.2,1);
+  --ease-in-out:cubic-bezier(.65,0,.35,1);
+  --dur-fast:150ms; --dur-base:240ms; --dur-slow:420ms;
+
+  /* diagonal band */
+  --band-angle:-9deg;
+  --band-height:clamp(180px,32vw,380px);
+
+  color-scheme:light;
+}
+
+/* ---------- tokens: dark ---------- */
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --bg:#0a1524; --surface:#122036; --sunken:#0e1a2d; --soft:#1a2a44; --line:#22344f; --line-strong:#33496a; --guide:#22344f;
+  --ink:#f2f6fc; --text:#b6c3d6; --muted:#93a3ba; --on-accent:#0a1524;
+  --accent:#a99cff; --accent-hover:#c0b6ff; --accent-tint:#221f4d;
+  --sky:#38bdf8; --sky-ink:#5ec8ff; --sky-tint:#0d2a40; --band-from:#0b6fae; --band-to:#4b35c9;
+  --again:#ff8b80; --hard:#f2bd5c; --good:#86b1ff; --easy:#4fd6ad;
+  --sec-blue:#86b4ff; --sec-violet:#caa7f7; --sec-teal:#4fd2bf; --sec-rose:#f892c1;
+  --sec-orange:#ffa173; --sec-amber:#f0bf5e; --sec-green:#a6d86c; --sec-slate:#b0bdd2;
+  --shadow-xs:0 1px 2px rgba(0,0,0,.30);
+  --shadow-sm:0 2px 5px -1px rgba(0,0,0,.40),0 1px 3px -1px rgba(0,0,0,.30);
+  --shadow-md:0 13px 27px -5px rgba(0,0,0,.45),0 8px 16px -8px rgba(0,0,0,.40);
+  --shadow-lg:0 30px 60px -12px rgba(0,0,0,.55),0 18px 36px -18px rgba(0,0,0,.50);
+  --shadow-xl:0 50px 100px -20px rgba(0,0,0,.60),0 30px 60px -30px rgba(0,0,0,.55);
+  color-scheme:dark;
+}}
+:root[data-theme="dark"],[data-theme="dark"]{
+  --bg:#0a1524; --surface:#122036; --sunken:#0e1a2d; --soft:#1a2a44; --line:#22344f; --line-strong:#33496a; --guide:#22344f;
+  --ink:#f2f6fc; --text:#b6c3d6; --muted:#93a3ba; --on-accent:#0a1524;
+  --accent:#a99cff; --accent-hover:#c0b6ff; --accent-tint:#221f4d;
+  --sky:#38bdf8; --sky-ink:#5ec8ff; --sky-tint:#0d2a40; --band-from:#0b6fae; --band-to:#4b35c9;
+  --again:#ff8b80; --hard:#f2bd5c; --good:#86b1ff; --easy:#4fd6ad;
+  --sec-blue:#86b4ff; --sec-violet:#caa7f7; --sec-teal:#4fd2bf; --sec-rose:#f892c1;
+  --sec-orange:#ffa173; --sec-amber:#f0bf5e; --sec-green:#a6d86c; --sec-slate:#b0bdd2;
+  --shadow-xs:0 1px 2px rgba(0,0,0,.30);
+  --shadow-sm:0 2px 5px -1px rgba(0,0,0,.40),0 1px 3px -1px rgba(0,0,0,.30);
+  --shadow-md:0 13px 27px -5px rgba(0,0,0,.45),0 8px 16px -8px rgba(0,0,0,.40);
+  --shadow-lg:0 30px 60px -12px rgba(0,0,0,.55),0 18px 36px -18px rgba(0,0,0,.50);
+  --shadow-xl:0 50px 100px -20px rgba(0,0,0,.60),0 30px 60px -30px rgba(0,0,0,.55);
+  color-scheme:dark;
+}
+:root,[data-theme]{--focus-ring:0 0 0 3px color-mix(in srgb,var(--accent) 45%,transparent)}
+@media (min-width:640px){ :root{ --gutter:24px; } }
+@media (min-width:1024px){ :root{ --gutter:32px; } }
+@media (max-width:639px){ :root{ --columns:2; } }
+
+/* ---------- base ---------- */
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font-sans);font-size:var(--fs-body);
+  line-height:var(--lh-body);letter-spacing:var(--track-body);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2,h3,h4{color:var(--ink);font-weight:var(--fw-bold);line-height:var(--lh-heading);letter-spacing:var(--track-heading);margin:0 0 .4em;text-wrap:balance}
+h1{font-size:var(--fs-h1)} h2{font-size:var(--fs-h2)} h3{font-size:var(--fs-h3)}
+p{margin:0 0 1em;text-wrap:pretty}
+a{color:var(--accent)}
+:focus-visible{outline:none;box-shadow:var(--focus-ring);border-radius:var(--r-sm)}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---------- layout ---------- */
+.container{max-width:calc(var(--content-max) + 2*var(--gutter));margin-inline:auto;padding-inline:var(--gutter)}
+.reading{max-width:calc(var(--reading-max) + 2*var(--gutter));margin-inline:auto;padding-inline:var(--gutter)}
+
+/* Dashed vertical column guides. Put .guides on a positioned wrapper; content above it needs position:relative. */
+.guides{position:relative;isolation:isolate}
+.guides::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  width:min(100% - 2*var(--gutter),var(--content-max));margin-inline:auto;
+  --dash:linear-gradient(to bottom,var(--guide) 0 4px,transparent 4px 8px);
+  background-image:var(--dash),var(--dash),var(--dash),var(--dash),var(--dash);
+  background-size:1px 8px;background-repeat:repeat-y;
+  background-position:0 0,33.333% 0,50% 0,66.667% 0,100% 0}
+@media (min-width:640px){ .guides::before{background-position:0 0,25% 0,50% 0,75% 0,100% 0} }
+@media (max-width:639px){ .guides::before{background-image:var(--dash),var(--dash);background-position:0 0,100% 0} }
+
+/* ---------- hero and diagonal band ---------- */
+/* Bottom padding clears the band: text never sits on it. */
+.hero{position:relative;overflow:hidden;padding-block:var(--sp-9) calc(var(--band-height) * .6 + var(--sp-8))}
+.hero>:not(.band){position:relative}
+.band{position:absolute;left:-2%;right:-2%;bottom:calc(var(--band-height) * -.4);height:var(--band-height);pointer-events:none;
+  transform:skewY(var(--band-angle));transform-origin:0 100%;
+  background:linear-gradient(100deg,var(--band-from) 0%,var(--band-from) 50%,var(--band-to) 100%)}
+.band.solid{background:var(--band-from)}
+.display{color:var(--ink)}
+.hero .display{font-size:var(--fs-display);line-height:var(--lh-tight);letter-spacing:var(--track-display);font-weight:var(--fw-bold);max-width:14ch;margin-bottom:.35em}
+.lead{font-size:var(--fs-lead);line-height:1.6;color:var(--text);max-width:36ch}
+@media (max-width:639px){ .hero{padding-block:var(--sp-7) calc(var(--band-height) * .6 + var(--sp-7))} }
+
+/* ---------- eyebrow label ---------- */
+.label{display:inline-block;color:var(--accent);font-size:var(--fs-label);font-weight:var(--fw-semibold);letter-spacing:-.01em;margin:0 0 var(--sp-4)}
+.label.sky{color:var(--sky-ink)}
+.label.sec{color:var(--c,var(--accent))}
+.tag{display:inline-flex;align-items:center;gap:6px;padding:2px 10px;border-radius:var(--r-pill);background:var(--accent-tint);
+  color:var(--accent);font-size:var(--fs-caption);font-weight:var(--fw-semibold);line-height:1.6}
+.tag.sec{background:color-mix(in srgb,var(--c) 12%,transparent);color:var(--c)}
+
+/* ---------- buttons and links (both carry a chevron) ---------- */
+.btn,.link{--chev:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M3 1.5 6.5 5 3 8.5' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+.btn::after,.link::after{content:"";width:.7em;height:.7em;flex:none;background:currentColor;
+  -webkit-mask:var(--chev) center/contain no-repeat;mask:var(--chev) center/contain no-repeat;
+  transition:transform var(--dur-fast) var(--ease-out)}
+.btn:hover::after,.link:hover::after{transform:translateX(3px)}
+.btn.no-chev::after{display:none}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4em;min-height:44px;padding:10px 20px 10px 22px;
+  border:0;border-radius:var(--r-pill);background:var(--accent);color:var(--on-accent);
+  font:inherit;font-weight:var(--fw-semibold);font-size:var(--fs-body);line-height:1.2;text-decoration:none;cursor:pointer;
+  transition:background var(--dur-fast) var(--ease-out),box-shadow var(--dur-fast) var(--ease-out),transform var(--dur-fast) var(--ease-out)}
+.btn:hover{background:var(--accent-hover)}
+.btn:active{transform:translateY(1px)}
+.btn:disabled{opacity:.45;cursor:default}
+.btn.dark{background:var(--ink);color:var(--surface)}
+.btn.dark:hover{background:color-mix(in srgb,var(--ink) 86%,var(--accent))}
+.btn.ghost{background:var(--surface);color:var(--ink);box-shadow:var(--shadow-sm)}
+.btn.ghost:hover{box-shadow:var(--shadow-md)}
+.btn.block{width:100%}
+.btn.sm{min-height:36px;padding:6px 14px 6px 16px;font-size:var(--fs-small)}
+.link{display:inline-flex;align-items:center;gap:.3em;padding:6px 2px;color:var(--accent);font-weight:var(--fw-semibold);text-decoration:none;cursor:pointer;background:none;border:0;font:inherit;font-weight:var(--fw-semibold)}
+.link:hover{color:var(--accent-hover)}
+.link.quiet{color:var(--muted);font-weight:var(--fw-medium)}
+
+/* ---------- cards and panels ---------- */
+.card{position:relative;background:var(--surface);border-radius:var(--r-lg);box-shadow:var(--shadow-md);padding:var(--sp-5)}
+.card.flat{box-shadow:none;border:1px solid var(--line)}
+.card.float{box-shadow:var(--shadow-lg)}
+.card.lift{transition:box-shadow var(--dur-base) var(--ease-out),transform var(--dur-base) var(--ease-out)}
+.card.lift:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+.card.accent{border-top:4px solid var(--c,var(--accent))}
+.panel{background:var(--surface);border-radius:var(--r-md);box-shadow:var(--shadow-xl);overflow:hidden}
+.panel-head{display:flex;align-items:center;justify-content:space-between;padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--line);font-size:var(--fs-small);color:var(--ink);font-weight:var(--fw-semibold)}
+.panel-body{padding:var(--sp-4)}
+.track{height:6px;border-radius:var(--r-pill);background:var(--sunken);overflow:hidden}
+.track>i{display:block;height:100%;background:var(--c,var(--accent));border-radius:inherit;transition:width var(--dur-slow) var(--ease-out)}
+
+/* ---------- motion ---------- */
+.rise{animation:rise var(--dur-base) var(--ease-out) both}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* ---------- study guide: DESIGN.md section 11. Tokens only; no raw colors, sizes, radii or shadows. ---------- */
+:root{ --s-pre-mrna-basics:var(--sec-blue); --s-capping:var(--sec-violet); --s-polyadenylation:var(--sec-teal); --s-introns-and-exons:var(--sec-rose); --s-splicing:var(--sec-orange); --s-alternative-processing:var(--sec-amber); --s-trna-processing:var(--sec-green); --s-rrna-processing:var(--sec-slate);  --deck-c:var(--sec-blue); }
+html{scroll-padding-top:var(--sp-4);scroll-behavior:smooth}
+svg text{font-family:var(--font-sans);font-weight:var(--fw-semibold);letter-spacing:-.01em}
+.deckhero{--band-from:var(--deck-c);padding-top:max(var(--sp-6),env(safe-area-inset-top,0px))}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .deckhero{--band-from:color-mix(in oklch,var(--deck-c) 62%,var(--bg))} }
+:root[data-theme="dark"] .deckhero{--band-from:color-mix(in oklch,var(--deck-c) 62%,var(--bg))}
+.deckhero h1{margin-bottom:var(--sp-3)}
+.deckhero .label{margin-bottom:var(--sp-2)}
+.deckhero .lead{max-width:40ch;margin:0}
+.toplinks{display:flex;gap:var(--sp-5);flex-wrap:wrap;margin:0 0 var(--sp-6)}
+.overlap{position:relative;margin-top:calc(var(--band-height) * -.5);padding-bottom:var(--sp-8)}
+.toc h2{font-size:var(--fs-h3);margin-bottom:var(--sp-3)}
+.toc ol{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--sp-1) var(--sp-5)}
+.toc a{display:flex;align-items:center;gap:var(--sp-2);color:var(--ink);text-decoration:none;font-weight:var(--fw-medium);padding:var(--sp-1) 0;line-height:1.35}
+.toc a:hover{color:var(--accent)}
+.toc a::before{content:"";width:10px;height:10px;border-radius:var(--r-xs);background:var(--c);flex:none}
+.tocfoot{display:flex;justify-content:space-between;align-items:center;gap:var(--sp-3);margin-top:var(--sp-4);padding-top:var(--sp-3);border-top:1px solid var(--line)}
+section.card{margin-top:var(--sp-6)}
+section>h2{display:flex;align-items:baseline;gap:var(--sp-3);margin:var(--sp-2) 0 var(--sp-3)}
+section>h2 .n{color:var(--c)}
+h3{color:var(--ink);margin:var(--sp-6) 0 var(--sp-2)}
+section p,section li{max-width:var(--reading-max)}
+ul,ol{padding-left:1.3em;margin:0 0 1em}
+li{margin:var(--sp-1) 0}
+b,strong{font-weight:var(--fw-semibold);color:var(--ink)}
+.term{font-weight:var(--fw-semibold);color:var(--c)}
+.tablewrap{overflow-x:auto;margin:var(--sp-3) 0 var(--sp-4)}
+table{width:100%;border-collapse:collapse;font-size:var(--fs-small)}
+th,td{text-align:start;padding:var(--sp-2) var(--sp-3) var(--sp-2) 0;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:var(--fw-semibold)}
+td{color:var(--text)}
+.viz{margin:var(--sp-4) 0 var(--sp-2)}
+.viz svg{width:100%;height:auto;max-height:420px;display:block}
+figure{margin:var(--sp-4) 0}
+figcaption{color:var(--muted);font-size:var(--fs-caption)}
+.box{--bar:var(--c);border-radius:var(--r-md);padding:var(--sp-3) var(--sp-4);margin:var(--sp-4) 0;background:color-mix(in srgb,var(--bar) 9%,var(--surface));border-left:4px solid var(--bar)}
+.box.warn{--bar:var(--again)}
+.box>.lbl{display:block;font-weight:var(--fw-bold);color:var(--bar);margin-bottom:var(--sp-1)}
+details.check{border:1.5px solid var(--line-strong);border-radius:var(--r-md);padding:var(--sp-3) var(--sp-4);margin:var(--sp-3) 0}
+details.check summary{cursor:pointer;list-style:none;color:var(--ink);font-weight:var(--fw-semibold)}
+details.check summary::-webkit-details-marker{display:none}
+details.check summary .link{padding:0 0 var(--sp-1)}
+details.check summary .link::after{transition:transform var(--dur-fast) var(--ease-out)}
+details.check[open] summary .link::after{transform:rotate(90deg)}
+details.check .a{margin-top:var(--sp-3);padding-top:var(--sp-3);border-top:1px solid var(--line);color:var(--text)}
+.math{font-family:var(--font-mono);font-size:.92em;background:var(--sunken);padding:1px var(--sp-1);border-radius:var(--r-xs);color:var(--ink)}
+.backtop{display:flex;justify-content:flex-end;margin-top:var(--sp-3)}
+.end{margin-top:var(--sp-7)}
+.end h2{font-size:var(--fs-h3)}
+@media (max-width:520px){.toc ol{grid-template-columns:1fr}}
+@media (max-width:420px){.card{padding:var(--sp-4)}}
+@media print{
+  :root{--bg:var(--surface)}
+  .band,.toplinks,.tocfoot,.backtop,.end{display:none!important}
+  .guides::before{display:none}
+  .hero{padding-block:0 var(--sp-4)}
+  .overlap{margin-top:0;padding-bottom:0}
+  .card{box-shadow:none}
+  section.card{break-inside:auto}
+  figure,.box,table,details{break-inside:avoid}
+  details.check summary .link::after{display:none}
+}
+</style>
+</head>
+<body>
+<header class="hero guides deckhero"><div class="band" aria-hidden="true"></div><div class="reading">
+  <nav class="toplinks"><a class="link quiet" href="../../">Back to all decks</a><a class="link" href="./">Study the flashcards</a></nav>
+  <p class="label">Genetics study guide</p><h1>Ch 14: RNA Processing</h1><p class="lead">Capping, polyadenylation, splicing, alternative processing, tRNAs and rRNAs.</p></div></header>
+<main class="reading overlap">
+<nav class="card float toc" id="toc" aria-label="Sections"><h2>Contents</h2><ol id="toclist"></ol>
+  <div class="tocfoot"><span class="hint">Every fact here is also a flashcard.</span><button class="btn ghost sm no-chev" onclick="document.querySelectorAll('details').forEach(d=>d.open=true);print()">Print</button></div></nav>
+<section data-sec="Pre-mRNA Basics">
+<h2>Pre-mRNA Basics</h2>
+<p>All RNA is transcribed from a <b>DNA template</b>. The flow of genetic information is linear, in one direction: DNA is <b>transcribed</b> into RNA, and messenger RNA (mRNA) is <b>translated</b> into protein.</p>
+
+<h3>Why eukaryotic RNA gets processed</h3>
+<p>In eukaryotes, transcription and translation are <b>separated in time and space</b>. Transcription occurs in the <b>nucleus</b>; translation occurs in the <b>cytoplasm</b>. That gap is an opportunity for the RNA transcript to be modified before it is translated.</p>
+<ul>
+<li><span class="term">Precursor mRNA (pre-mRNA)</span>: the initial, direct transcription product of a DNA template, inside the nucleus.</li>
+<li><span class="term">Messenger RNA (mRNA)</span>: processed, mature mRNA, moved to the cytoplasm for translation.</li>
+</ul>
+<figure><div data-viz="processing"></div><figcaption>Pre-mRNA processing turns the primary transcript into mature mRNA.</figcaption></figure>
+
+<h3>Mature mRNA structure</h3>
+<ul>
+<li><span class="term">Untranslated regions (UTRs)</span>: parts of the mRNA that are not translated into protein.</li>
+<li><span class="term">Protein-coding region</span>: the sequence that is translated into protein, flanked by the <b>5′ and 3′ untranslated regions</b>. It begins at the <b>start codon</b> and ends at the <b>stop codon</b>.</li>
+</ul>
+<figure><div data-viz="mrna"></div><figcaption>Fig. 14.5.</figcaption></figure>
+
+<h3>Posttranscriptional modifications (Table 14.2)</h3>
+<div class="tablewrap"><table>
+<tr><th>Modification</th><th>Function</th></tr>
+<tr><td><b>Addition of 5′ cap</b></td><td>Facilitates binding of the ribosome to the 5′ end of mRNA; increases mRNA stability</td></tr>
+<tr><td><b>3′ cleavage and addition of poly(A) tail</b></td><td>Increases stability of mRNA; facilitates binding of the ribosome to mRNA</td></tr>
+<tr><td><b>RNA splicing</b></td><td>Removes noncoding introns from pre-mRNA; facilitates export of mRNA to the cytoplasm; allows multiple proteins to be produced through alternative splicing</td></tr>
+<tr><td><b>RNA editing</b></td><td>Alters the nucleotide sequence of mRNA (details skipped this term)</td></tr>
+</table></div>
+<p>In order (Fig. 14.16): the <b>5′ cap</b> is added soon after transcription initiation, the <b>3′ end is cleaved and polyadenylated</b>, and the <b>introns are spliced</b>.</p>
+</section>
+
+<section data-sec="Capping">
+<h2>Capping</h2>
+<p>The 5′ cap is added <b>soon after transcription initiation</b>. Recall that nucleotides are joined by phosphodiester bonds in an alternating phosphate-ribose backbone (5′ to 3′), and that the <b>first nucleotide of a pre-mRNA has three phosphates</b>.</p>
+
+<h3>Adding the cap (Fig. 14.6)</h3>
+<ol>
+<li>One of the three <b>phosphate groups</b> at the 5′ end is removed.</li>
+<li>A <b>guanine nucleotide</b> (with its phosphate group) is added. It comes from GTP, releasing PPi.</li>
+<li>Methyl groups are added to <b>position 7</b> of the base of the terminal guanine, making <span class="term">7-methylguanosine</span>.</li>
+<li>Methyl groups are added to the <b>2′ position of the sugar</b> in the second and sometimes third nucleotides.</li>
+<li>If the base on the second nucleotide is <b>A</b>, that base may also be methylated.</li>
+</ol>
+<p>The cap guanine is joined to the mRNA by a <span class="term">unique 5′-5′ bond</span>.</p>
+<figure><div data-viz="cap"></div></figure>
+
+<h3>What the cap does</h3>
+<ul>
+<li>The cap is bound by the <span class="term">Cap Binding Complex (CBC)</span>.</li>
+<li>Cap + CBC <b>facilitate binding of the ribosome</b> to the 5′ end of mRNA, so the cap promotes translation (clearer in Chapter 15).</li>
+<li>The cap <b>increases mRNA stability</b>.</li>
+<li>Cap + CBC <b>block 5′ to 3′ exonucleases</b>.</li>
+</ul>
+
+<h3>Link to Chapter 13: Rat1</h3>
+<p>In RNA polymerase II termination (Fig. 13.19), the RNA is cleaved to generate its 3′ end, and <span class="term">Rat1</span>, a 5′ to 3′ exonuclease, attaches to the 5′ end of the trailing RNA and degrades it. Adding CBC <b>blocks Rat1 exonuclease activity</b> on the pre-mRNA, which prevents degradation of the mRNA that was just made.</p>
+</section>
+
+<section data-sec="Polyadenylation">
+<h2>Polyadenylation</h2>
+<p>The <span class="term">poly(A) tail</span> is <b>50 to 250 adenine nucleotides</b> added at the 3′ end. These adenines are <b>not encoded in the DNA</b>; they are added after transcription.</p>
+<h3>How the tail is added (Fig. 14.7)</h3>
+<ol>
+<li>The pre-mRNA has a consensus sequence, <b>AAUAAA</b>, and a <b>U-rich sequence</b> further downstream.</li>
+<li>The pre-mRNA is <b>cleaved</b> 11 to 30 nucleotides downstream of the consensus sequence, in the 3′ untranslated region.</li>
+<li>Adenine nucleotides are added to the new 3′ end (<span class="term">polyadenylation</span>), generating the poly(A) tail.</li>
+<li>The tail is bound by <span class="term">poly(A) binding proteins (PBPs)</span>.</li>
+</ol>
+<figure><div data-viz="polya"></div></figure>
+<div class="box"><span class="lbl">Conclusion</span>In pre-mRNA processing, a poly(A) tail is added through <b>cleavage and polyadenylation</b>. The tail increases mRNA stability and facilitates binding of the ribosome to mRNA.</div>
+</section>
+
+<section data-sec="Introns and Exons">
+<h2>Introns and Exons</h2>
+<h3>Colinearity</h3>
+<p>Many prokaryotic genes are <span class="term">colinear</span>: a continuous sequence of nucleotides in the DNA encodes a continuous sequence of amino acids in the protein, so the number of nucleotides in the gene is proportional to the number of amino acids in the protein (Fig. 14.1).</p>
+<p>Most eukaryotic genes are <b>not</b> colinear. In the experiment of Fig. 14.2, DNA was mixed with complementary mRNA and heated to separate the strands, then cooled so complementary sequences paired. Noncoding regions of DNA were seen as <b>loops</b>, revealing that some internal sequences of genes are not present in the RNA. Conclusion: coding sequences in a gene may be interrupted by noncoding sequences.</p>
+
+<h3>Exons and introns</h3>
+<ul>
+<li><span class="term">Exons</span>: sequences that are present in mRNA.</li>
+<li><span class="term">Introns</span>: sequences present in genes that are not present in mRNA. They are removed by <b>RNA splicing</b>.</li>
+</ul>
+<figure><div data-viz="exons"></div></figure>
+<div class="tablewrap"><table>
+<tr><th>Gene</th><th>Exons</th><th>Introns</th></tr>
+<tr><td>Ovalbumin</td><td>8</td><td>7</td></tr>
+<tr><td>Cytochrome b</td><td>5</td><td>4</td></tr>
+</table></div>
+<p>In the human <b>interleukin 2</b> gene (Fig. 14.17), noncoding introns occupy large parts of the gene, while the exons encode fewer than 165 amino acids, a small protein.</p>
+
+<h3>Types of introns (Table 14.1)</h3>
+<div class="tablewrap"><table>
+<tr><th>Intron</th><th>Location</th><th>Splicing</th></tr>
+<tr><td><b>Nuclear pre-mRNA</b></td><td>Protein-encoding genes in the nucleus of eukaryotes</td><td>Spliceosomal</td></tr>
+<tr><td><b>tRNA</b></td><td>tRNA genes of bacteria, archaea and eukaryotes</td><td>Enzymatic</td></tr>
+</table></div>
+<p>Group I and group II introns are crossed out on the slide, so they are not covered here.</p>
+</section>
+
+<section data-sec="Splicing">
+<h2>Splicing</h2>
+<p>Splicing via the spliceosome requires two things: <b>consensus sequences</b> within the pre-mRNA and the <b>spliceosome</b>.</p>
+
+<h3>Consensus sequences (Fig. 14.8)</h3>
+<ul>
+<li><span class="term">5′ splice site</span>: at the intron-exon junction; the <b>GU</b> sequence in the intron is critical.</li>
+<li><span class="term">3′ splice site</span>: at the intron-exon junction; the <b>AG</b> sequence in the intron is critical.</li>
+<li><span class="term">Branch point</span>: within the intron, an <b>adenine (A)</b> nucleotide 18 to 40 bp upstream of the 3′ splice site.</li>
+</ul>
+<figure><div data-viz="splicesites"></div></figure>
+
+<h3>Two-step splicing (Fig. 14.9)</h3>
+<ol>
+<li>The pre-mRNA is cut at the <b>5′ splice site</b>.</li>
+<li>The 5′ end of the intron attaches to the branch point, forming a <span class="term">lariat</span>: the <b>5′ phosphate group of G</b> attaches to the <b>2′ OH group of the branch-point A</b>.</li>
+<li>A cut is made at the <b>3′ splice site</b>.</li>
+<li>The intron is released as a lariat, and the two exons are spliced together.</li>
+<li>The bond holding the lariat is broken, and the linear intron is degraded.</li>
+<li>The spliced mRNA is exported to the cytoplasm and translated.</li>
+</ol>
+<figure><div data-viz="lariat"></div></figure>
+
+<h3>The spliceosome</h3>
+<ul>
+<li>Composed of <b>5 snRNPs</b> (small ribonuclear particles): <b>U1, U2, U4, U5 and U6</b>.</li>
+<li><span class="term">snRNP</span> = small nuclear RNA (snRNA) + associated proteins.</li>
+<li>What's special about snRNAs? They <b>base pair complementarily with the pre-mRNA</b>.</li>
+</ul>
+<h3>snRNPs assemble stepwise (Fig. 14.10)</h3>
+<ol>
+<li><b>U1</b> attaches to the 5′ splice site.</li>
+<li><b>U2</b> attaches to the branch point.</li>
+<li>A complex of <b>U4, U5 and U6</b> joins the spliceosome.</li>
+<li>The 5′ splice site is cut and the lariat is formed.</li>
+<li><b>U1 and U4</b> are released.</li>
+<li>The 3′ splice site is cut and the 2 exons are joined covalently together.</li>
+<li>The intron is released as a lariat with <b>U2, U5 and U6</b>. The snRNPs dissociate and the lariat is degraded, leaving mature mRNA.</li>
+</ol>
+<figure><div data-viz="spliceosome"></div></figure>
+<details class="check"><summary>If the sequence encoding the 5′ splice site were mutated, what would be the effect on mRNA splicing?</summary><div class="a">The intron would be retained in the mature mRNA. (The handwritten note adds that the 5′ end, U1, would not bind to the branch point.)</div></details>
+<details class="check"><summary>What effect would this mutation have on the protein encoded by this gene?</summary><div class="a">A different (wrong) protein would be produced.</div></details>
+</section>
+
+<section data-sec="Alternative Processing">
+<h2>Alternative Processing</h2>
+<p>A single pre-mRNA can produce multiple mRNAs through <span class="term">alternative processing</span>:</p>
+<ol>
+<li><b>Alternative splicing</b></li>
+<li><b>Multiple 3′ cleavage</b></li>
+<li>A single gene can undergo <b>both</b> alternative splicing and alternative 3′ cleavage.</li>
+</ol>
+
+<h3>Alternative splicing (Fig. 14.12a)</h3>
+<p>Example: a pre-mRNA has 3 exons and 2 introns. Removing the 2 introns gives an mRNA with <b>exons 1, 2 and 3</b>. Removing the 2 introns <b>and exon 2</b> gives an mRNA with <b>exons 1 and 3</b>.</p>
+<figure><div data-viz="altsplice"></div></figure>
+
+<h3>Multiple 3′ cleavage (Fig. 14.12b)</h3>
+<p>Example: exon 2 contains two possible 3′ cleavage sites. Cutting at one or the other produces <b>mRNA products of different length</b>.</p>
+<figure><div data-viz="multi3"></div></figure>
+
+<h3>Tissue-specific processing of CALCA (Fig. 14.13)</h3>
+<ul>
+<li><b>Thyroid cells</b> use the 3′ cleavage site in <b>exon 4</b>.</li>
+<li><b>Brain cells</b> use the 3′ cleavage site in <b>exon 6</b>, and exon 4 is removed during splicing.</li>
+</ul>
+<div class="tablewrap"><table>
+<tr><th>Cells</th><th>Mature mRNA</th><th>Product</th></tr>
+<tr><td><b>Thyroid</b></td><td>Exons 1, 2, 3, 4</td><td>Calcitonin</td></tr>
+<tr><td><b>Brain</b></td><td>Exons 1, 2, 3, 5, 6</td><td>Calcitonin-gene-related peptide (CGRP)</td></tr>
+</table></div>
+<figure><div data-viz="calca"></div></figure>
+</section>
+
+<section data-sec="tRNA Processing">
+<h2>tRNA Processing</h2>
+<h3>tRNA structure (Fig. 14.19)</h3>
+<ul>
+<li>tRNAs are <span class="term">adapter molecules</span> that connect three-letter mRNA sequences to their corresponding amino acids. In eukaryotic cells they function in the cytoplasm, helping incorporate amino acids into the polypeptide chain.</li>
+<li>The <span class="term">anticodon</span> is complementary to mRNA.</li>
+<li>The <b>amino acid attachment site</b> is at the 3′ end and is always <b>5′-CCA-3′</b>.</li>
+<li>The structure is held by <b>intramolecular base pairing</b> (hydrogen bonds between paired bases).</li>
+<li>It can be drawn as a space-filling model, a ribbon model or a cloverleaf model.</li>
+</ul>
+<figure><div data-viz="trna"></div><figcaption>Cloverleaf arms. The extra arm varies in size.</figcaption></figure>
+
+<h3>Processing (Fig. 14.20)</h3>
+<ol>
+<li>A large <b>precursor tRNA</b> is cleaved to produce an individual tRNA molecule.</li>
+<li>An <b>intron</b> is removed by splicing.</li>
+<li><b>Bases are added</b> to the 3′ end.</li>
+<li>Several <b>bases are modified</b>, producing the mature tRNA.</li>
+</ol>
+
+<h3>Rare bases</h3>
+<ul>
+<li>Made <b>after transcription</b> by tRNA-modifying enzymes.</li>
+<li>They affect the structure of the tRNA and how it interacts with the ribosome and mRNA.</li>
+<li>Examples made from uracil (Fig. 14.18): <span class="term">ribothymidine</span> (a methyl group added) and <span class="term">pseudouridine</span>.</li>
+</ul>
+</section>
+
+<section data-sec="rRNA Processing">
+<h2>rRNA Processing</h2>
+<p>Ribosomes are complex structures composed of <b>rRNA plus many proteins</b>. rRNA's job is to be the structural and functional components of the ribosome, in the cytoplasm. In eukaryotes, <b>snoRNA</b> processes and assembles rRNA.</p>
+
+<h3>Ribosome composition (Table 14.3)</h3>
+<div class="tablewrap"><table>
+<tr><th>Ribosome</th><th>Subunit</th><th>rRNA</th><th>Proteins</th></tr>
+<tr><td rowspan="2"><b>Bacterial 70S</b></td><td>Large 50S</td><td>23S (2900 nt), 5S (120 nt)</td><td>31</td></tr>
+<tr><td>Small 30S</td><td>16S (1500 nt)</td><td>21</td></tr>
+<tr><td rowspan="2"><b>Eukaryotic 80S</b></td><td>Large 60S</td><td>28S (4700 nt), 5.8S (160 nt), 5S (120 nt)</td><td>49</td></tr>
+<tr><td>Small 40S</td><td>18S (1900 nt)</td><td>33</td></tr>
+</table></div>
+<p>The letter S stands for <b>Svedberg unit</b>.</p>
+<figure><div data-viz="ribosome"></div></figure>
+
+<h3>Precursor rRNA processing (Fig. 14.21)</h3>
+<p>Processing involves <b>methylation, cleavage and trimming</b> to generate several rRNAs from a single precursor.</p>
+<div class="tablewrap"><table>
+<tr><th></th><th>Precursor</th><th>Mature RNAs</th></tr>
+<tr><td><b>Prokaryotic</b></td><td>30S</td><td>16S rRNA, tRNA, 23S rRNA, 5S rRNA</td></tr>
+<tr><td><b>Eukaryotic</b></td><td>45S</td><td>18S, 5.8S and 28S rRNA</td></tr>
+</table></div>
+<figure><div data-viz="rrna"></div></figure>
+</section>
+
+<div class="card end"><h2>Done reading?</h2><p>Test what stuck with the flashcards and the quiz.</p><a class="btn block" href="./">Open flashcards and quiz</a></div>
+</main>
+<script>
+const P = {};
+/* ---------- diagrams ---------- */
+let uid = 0;
+function svgWrap(inner, h=340){ const id = "m"+(++uid);
+  return `<svg viewBox="0 0 600 ${h}" role="img" aria-label="diagram"><defs>
+  <marker id="${id}i" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" style="fill:var(--ink)"/></marker>
+  <marker id="${id}a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" style="fill:var(--c)"/></marker>
+  </defs>${inner.replace(/MK_I/g,`url(#${id}i)`).replace(/MK_A/g,`url(#${id}a)`)}</svg>`; }
+const INK="var(--ink)", ACC="var(--c)", MUT="var(--muted)";
+function label(x,y,t,o,anchor="middle"){
+  const st = o.quiz===t ? "quiz" : (o.hideAll && o.quiz ? "blank" : (o.hl===t ? "hl":"show"));
+  const w = Math.max(28, t.length*15.5+20), x0 = anchor==="middle"? x-w/2 : anchor==="start"? x-8 : x-w+8;
+  if (st==="quiz") return `<rect x="${x-30}" y="${y-22}" width="60" height="40" rx="9" style="fill:var(--c)"/><text x="${x}" y="${y+5}" text-anchor="middle" font-size="30" style="fill:var(--surface)">?</text>`;
+  if (st==="blank") return `<rect x="${x0}" y="${y-19}" width="${w}" height="34" rx="8" style="fill:var(--soft);stroke:var(--line)"/>`;
+  return `<text x="${x}" y="${y+9}" text-anchor="${anchor}" font-size="${st==="hl"?29:26}" style="fill:${st==="hl"?ACC:INK}">${t}</text>`;
+}
+const ln = (x1,y1,x2,y2,c=INK,w=2,extra="") => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" style="stroke:${c}" stroke-width="${w}" ${extra}/>`;
+const arr = (x1,y1,x2,y2,on) => ln(x1,y1,x2,y2,on?ACC:INK,on?5:3.5,`marker-end="${on?"MK_A":"MK_I"}"`);
+const D = {
+ processing(){ const seg=(x,w,y,ex,t)=>`<rect x="${x}" y="${y}" width="${w}" height="30" style="fill:${ex?"color-mix(in srgb,var(--c) 30%,var(--surface))":"var(--soft)"};stroke:var(--ink)" stroke-width="2"/>${t?`<text x="${x+w/2}" y="${y+22}" text-anchor="middle" font-size="18" style="fill:var(--ink)">${t}</text>`:""}`;
+  return svgWrap(`<text x="40" y="40" font-size="22" style="fill:var(--ink)">pre-mRNA (nucleus)</text>
+   ${seg(60,110,60,true,"exon")}${seg(170,90,60,false,"intron")}${seg(260,110,60,true,"exon")}${seg(370,90,60,false,"intron")}${seg(460,90,60,true,"exon")}
+   <text x="44" y="82" text-anchor="end" font-size="20" style="fill:var(--muted)">5′</text><text x="558" y="82" font-size="20" style="fill:var(--muted)">3′</text>
+   ${arr(300,104,300,170,true)}<text x="318" y="132" font-size="21" style="fill:var(--c)">5′ cap, 3′ cleavage and</text><text x="318" y="158" font-size="21" style="fill:var(--c)">poly(A) tail, splicing</text>
+   <circle cx="88" cy="215" r="20" style="fill:var(--c)"/><text x="88" y="221" text-anchor="middle" font-size="16" style="fill:var(--surface)">cap</text>
+   ${seg(108,110,200,true,"exon")}${seg(218,110,200,true,"exon")}${seg(328,110,200,true,"exon")}
+   <text x="444" y="222" font-size="20" style="fill:var(--c);font-family:var(--font-mono)">AAAAA</text>
+   <text x="40" y="275" font-size="22" style="fill:var(--ink)">mature mRNA</text>
+   <text x="300" y="320" text-anchor="middle" font-size="21" style="fill:var(--muted)">moved to the cytoplasm for translation</text>`); },
+ mrna(o){ const f=t=>(o.hl===t||o.quiz===t)?"fill:color-mix(in srgb,var(--c) 35%,var(--surface));stroke:var(--c)":"fill:var(--soft);stroke:var(--ink)";
+  return svgWrap(`<rect x="50" y="150" width="140" height="36" style="${f("5′ UTR")}" stroke-width="2"/>
+   <rect x="190" y="150" width="230" height="36" style="${f("Coding region")}" stroke-width="2"/>
+   <rect x="420" y="150" width="130" height="36" style="${f("3′ UTR")}" stroke-width="2"/>
+   <text x="38" y="176" text-anchor="end" font-size="24" style="fill:var(--ink)">5′</text><text x="560" y="176" font-size="24" style="fill:var(--ink)">3′</text>
+   ${ln(190,140,190,96,INK,2.5)}<text x="190" y="84" text-anchor="middle" font-size="21" style="fill:var(--muted)">start codon</text>
+   ${ln(420,140,420,96,INK,2.5)}<text x="420" y="84" text-anchor="middle" font-size="21" style="fill:var(--muted)">stop codon</text>
+   ${ln(54,200,186,200,MUT,2)}${ln(194,200,416,200,MUT,2)}${ln(424,200,546,200,MUT,2)}
+   ${label(120,232,"5′ UTR",o)}${label(305,232,"Coding region",o)}${label(485,232,"3′ UTR",o)}
+   <text x="300" y="310" text-anchor="middle" font-size="21" style="fill:var(--muted)">UTR = untranslated region</text>`); },
+ cap(o){ const on=t=>o.hl===t, box=(x,y,w,t,hot)=>`<rect x="${x}" y="${y}" width="${w}" height="34" rx="4" style="fill:${hot?"color-mix(in srgb,var(--c) 35%,var(--surface))":"var(--soft)"};stroke:${hot?"var(--c)":"var(--ink)"}" stroke-width="2"/><text x="${x+w/2}" y="${y+24}" text-anchor="middle" font-size="20" style="fill:var(--ink)">${t}</text>`;
+  const p=(x,hot)=>`<circle cx="${x}" cy="170" r="17" style="fill:${hot?"color-mix(in srgb,var(--c) 35%,var(--surface))":"var(--soft)"};stroke:${hot?"var(--c)":"var(--ink)"}" stroke-width="2"/><text x="${x}" y="177" text-anchor="middle" font-size="18" style="fill:var(--ink)">P</text>`;
+  return svgWrap(`<text x="150" y="44" text-anchor="middle" font-size="22" style="fill:${on("G")?ACC:INK}">7-methylguanosine</text>
+   ${box(120,72,60,"CH3",on("G"))}${ln(150,106,150,153,INK,2)}
+   ${ln(60,170,560,170,INK,3)}<text x="40" y="178" text-anchor="end" font-size="22" style="fill:var(--ink)">5′</text><text x="566" y="178" font-size="22" style="fill:var(--ink)">3′</text>
+   ${box(128,153,44,"G",on("G"))}${p(205,on("bond"))}${p(245,on("bond"))}${p(285,on("bond"))}
+   ${box(322,153,40,"N",false)}${p(392,false)}${box(422,153,40,"N",false)}${p(492,false)}
+   ${ln(190,204,300,204,on("bond")?ACC:INK,2.5)}<text x="245" y="238" text-anchor="middle" font-size="22" style="fill:${on("bond")?ACC:INK}">5′-5′ bond</text>
+   ${ln(342,187,342,214,INK,2)}${ln(442,187,442,214,INK,2)}${box(312,214,60,"CH3",on("methyl"))}${box(412,214,60,"CH3",on("methyl"))}
+   <text x="392" y="282" text-anchor="middle" font-size="22" style="fill:${on("methyl")?ACC:INK}">2′ methyl groups</text>
+   <text x="300" y="325" text-anchor="middle" font-size="21" style="fill:var(--muted)">added soon after transcription initiation</text>`); },
+ polya(){ return svgWrap(`<text x="40" y="40" font-size="22" style="fill:var(--ink)">pre-mRNA</text>
+   <rect x="40" y="88" width="520" height="26" style="fill:var(--soft);stroke:var(--ink)" stroke-width="2"/>
+   <rect x="200" y="88" width="100" height="26" style="fill:color-mix(in srgb,var(--c) 30%,var(--surface));stroke:var(--c)" stroke-width="2"/>
+   <text x="250" y="108" text-anchor="middle" font-size="18" style="fill:var(--ink);font-family:var(--font-mono)">AAUAAA</text>
+   <rect x="460" y="88" width="56" height="26" style="fill:var(--ink)"/>
+   ${ln(300,78,410,78,MUT,2)}<text x="355" y="68" text-anchor="middle" font-size="20" style="fill:var(--muted)">11-30 nt</text>
+   <text x="490" y="68" text-anchor="middle" font-size="20" style="fill:var(--muted)">U-rich</text>
+   ${ln(410,142,410,120,ACC,3,'marker-end="MK_A"')}<text x="422" y="148" font-size="20" style="fill:var(--c)">cleavage site</text>
+   ${arr(120,124,120,200,false)}<text x="138" y="180" font-size="20" style="fill:var(--ink)">cleave, then polyadenylate</text>
+   <rect x="40" y="248" width="370" height="26" style="fill:var(--soft);stroke:var(--ink)" stroke-width="2"/>
+   <rect x="200" y="248" width="100" height="26" style="fill:color-mix(in srgb,var(--c) 30%,var(--surface));stroke:var(--c)" stroke-width="2"/>
+   <text x="250" y="268" text-anchor="middle" font-size="18" style="fill:var(--ink);font-family:var(--font-mono)">AAUAAA</text>
+   <text x="414" y="269" font-size="20" style="fill:var(--c);font-family:var(--font-mono);font-weight:700">AAAAAAA</text>
+   <ellipse cx="438" cy="226" rx="28" ry="17" style="fill:var(--soft);stroke:var(--c)" stroke-width="2"/><text x="438" y="232" text-anchor="middle" font-size="18" style="fill:var(--ink)">PBP</text>
+   <ellipse cx="496" cy="226" rx="28" ry="17" style="fill:var(--soft);stroke:var(--c)" stroke-width="2"/><text x="496" y="232" text-anchor="middle" font-size="18" style="fill:var(--ink)">PBP</text>
+   <text x="30" y="268" text-anchor="end" font-size="20" style="fill:var(--ink)">5′</text>
+   <text x="300" y="320" text-anchor="middle" font-size="21" style="fill:var(--muted)">poly(A) tail: 50-250 A's, bound by PBPs</text>`); },
+ exons(o){ const ex=o.hl==="exon", it=o.hl==="intron";
+  const s=(x,w,y,isEx,t)=>`<rect x="${x}" y="${y}" width="${w}" height="34" style="fill:${isEx?(ex?"var(--c)":"color-mix(in srgb,var(--c) 30%,var(--surface))"):(it?"color-mix(in srgb,var(--c) 15%,var(--surface))":"var(--soft)")};stroke:${(isEx&&ex)||(!isEx&&it)?"var(--c)":"var(--ink)"}" stroke-width="2"/><text x="${x+w/2}" y="${y+24}" text-anchor="middle" font-size="18" style="fill:${isEx&&ex?"var(--surface)":"var(--ink)"}">${t}</text>`;
+  return svgWrap(`<text x="40" y="44" font-size="22" style="fill:var(--ink)">gene (DNA)</text>
+   ${s(40,90,70,true,"exon 1")}${s(130,110,70,false,"intron")}${s(240,90,70,true,"exon 2")}${s(330,110,70,false,"intron")}${s(440,100,70,true,"exon 3")}
+   ${arr(300,120,300,196,true)}<text x="318" y="152" font-size="21" style="fill:var(--c)">transcription,</text><text x="318" y="178" font-size="21" style="fill:var(--c)">then RNA splicing</text>
+   <text x="40" y="190" font-size="22" style="fill:var(--ink)">mRNA</text>
+   ${s(140,90,210,true,"exon 1")}${s(230,90,210,true,"exon 2")}${s(320,100,210,true,"exon 3")}
+   <text x="128" y="234" text-anchor="end" font-size="20" style="fill:var(--ink)">5′</text><text x="428" y="234" font-size="20" style="fill:var(--ink)">3′</text>
+   <text x="300" y="296" text-anchor="middle" font-size="21" style="fill:var(--muted)">exons are in the mRNA; introns are not</text>`); },
+ splicesites(o){ const f=t=>(o.hl===t||o.quiz===t)?ACC:INK;
+  return svgWrap(`<rect x="40" y="150" width="110" height="34" style="fill:color-mix(in srgb,var(--c) 30%,var(--surface));stroke:var(--ink)" stroke-width="2"/>
+   <rect x="150" y="150" width="300" height="34" style="fill:var(--soft);stroke:var(--ink)" stroke-width="2"/>
+   <rect x="450" y="150" width="110" height="34" style="fill:color-mix(in srgb,var(--c) 30%,var(--surface));stroke:var(--ink)" stroke-width="2"/>
+   <text x="95" y="174" text-anchor="middle" font-size="18" style="fill:var(--ink)">exon 1</text><text x="300" y="174" text-anchor="middle" font-size="18" style="fill:var(--ink)">intron</text><text x="505" y="174" text-anchor="middle" font-size="18" style="fill:var(--ink)">exon 2</text>
+   <text x="28" y="174" text-anchor="end" font-size="20" style="fill:var(--ink)">5′</text><text x="568" y="174" font-size="20" style="fill:var(--ink)">3′</text>
+   ${ln(150,122,150,146,f("5′ splice site"),3,'marker-end="MK_I"')}${ln(450,122,450,146,f("3′ splice site"),3,'marker-end="MK_I"')}
+   ${label(150,98,"5′ splice site",o)}${label(450,98,"3′ splice site",o)}
+   <text x="150" y="214" text-anchor="middle" font-size="20" style="fill:var(--ink);font-family:var(--font-mono)">AG|GU</text>
+   <text x="450" y="214" text-anchor="middle" font-size="20" style="fill:var(--ink);font-family:var(--font-mono)">CAG|G</text>
+   <text x="370" y="214" text-anchor="middle" font-size="22" style="fill:${f("Branch point")};font-family:var(--font-mono);font-weight:700">A</text>
+   ${ln(370,222,370,240,f("Branch point"),2)}${label(370,262,"Branch point",o)}
+   <text x="300" y="322" text-anchor="middle" font-size="20" style="fill:var(--muted)">branch point A: 18-40 bp upstream of 3′ site</text>`); },
+ lariat(){ return svgWrap(`<rect x="40" y="250" width="120" height="30" style="fill:color-mix(in srgb,var(--c) 30%,var(--surface));stroke:var(--ink)" stroke-width="2"/>
+   <text x="100" y="272" text-anchor="middle" font-size="18" style="fill:var(--ink)">exon 1</text>
+   <text x="100" y="236" text-anchor="middle" font-size="18" style="fill:var(--muted)">cut at 5′ site</text>
+   <circle cx="300" cy="140" r="62" style="fill:none;stroke:var(--c)" stroke-width="6"/>
+   <path d="M344 184 Q380 232 420 260" style="fill:none;stroke:var(--c)" stroke-width="6"/>
+   <rect x="420" y="250" width="130" height="30" style="fill:color-mix(in srgb,var(--c) 30%,var(--surface));stroke:var(--ink)" stroke-width="2"/>
+   <text x="485" y="272" text-anchor="middle" font-size="18" style="fill:var(--ink)">exon 2</text>
+   <circle cx="344" cy="184" r="9" style="fill:var(--ink)"/>
+   <text x="300" y="148" text-anchor="middle" font-size="24" style="fill:var(--ink)">lariat</text>
+   <text x="358" y="178" font-size="22" style="fill:var(--ink)">A</text>
+   <text x="396" y="60" font-size="20" style="fill:var(--c)">5′ phosphate of the</text>
+   <text x="396" y="86" font-size="20" style="fill:var(--c)">intron's G bonds to</text>
+   <text x="396" y="112" font-size="20" style="fill:var(--c)">the 2′ OH of the</text>
+   <text x="396" y="138" font-size="20" style="fill:var(--c)">branch-point A</text>
+   <text x="300" y="322" text-anchor="middle" font-size="21" style="fill:var(--muted)">then the 3′ site is cut and the exons join</text>`); },
+ spliceosome(o){ const on=t=>o.hl===t||o.quiz===t, st=t=>on(t)?"fill:color-mix(in srgb,var(--c) 30%,var(--surface));stroke:var(--c)":"fill:var(--soft);stroke:var(--ink)";
+  return svgWrap(`<rect x="40" y="200" width="100" height="30" style="fill:color-mix(in srgb,var(--c) 30%,var(--surface));stroke:var(--ink)" stroke-width="2"/>
+   <rect x="140" y="200" width="320" height="30" style="fill:var(--soft);stroke:var(--ink)" stroke-width="2"/>
+   <rect x="460" y="200" width="100" height="30" style="fill:color-mix(in srgb,var(--c) 30%,var(--surface));stroke:var(--ink)" stroke-width="2"/>
+   <text x="90" y="222" text-anchor="middle" font-size="18" style="fill:var(--ink)">exon 1</text><text x="510" y="222" text-anchor="middle" font-size="18" style="fill:var(--ink)">exon 2</text>
+   <text x="380" y="222" text-anchor="middle" font-size="20" style="fill:var(--ink);font-family:var(--font-mono);font-weight:700">A</text>
+   <rect x="110" y="128" width="80" height="50" rx="12" style="${st("U1")}" stroke-width="2.5"/>${ln(150,178,150,198,INK,2)}${label(150,150,"U1",o)}
+   <rect x="340" y="128" width="80" height="50" rx="12" style="${st("U2")}" stroke-width="2.5"/>${ln(380,178,380,198,INK,2)}${label(380,150,"U2",o)}
+   <rect x="160" y="30" width="200" height="54" rx="12" style="${st("U4/U5/U6")}" stroke-width="2.5"/>${label(260,54,"U4/U5/U6",o)}
+   ${arr(260,90,260,180,false)}
+   <text x="300" y="282" text-anchor="middle" font-size="21" style="fill:var(--muted)">U1 at the 5′ splice site, U2 at the branch point</text>
+   <text x="300" y="316" text-anchor="middle" font-size="21" style="fill:var(--muted)">then U4, U5 and U6 join as a complex</text>`); },
+ altsplice(o){ const b=(x,y,w,t,hot)=>`<rect x="${x}" y="${y}" width="${w}" height="32" style="fill:${hot?"color-mix(in srgb,var(--c) 35%,var(--surface))":"var(--soft)"};stroke:var(--ink)" stroke-width="2"/><text x="${x+w/2}" y="${y+22}" text-anchor="middle" font-size="18" style="fill:var(--ink)">${t}</text>`;
+  const i=(x,y,w)=>ln(x,y+16,x+w,y+16,MUT,3);
+  return svgWrap(`<text x="40" y="38" font-size="22" style="fill:var(--ink)">pre-mRNA</text>
+   ${b(70,56,100,"exon 1")}${i(170,56,80)}${b(250,56,100,"exon 2",true)}${i(350,56,80)}${b(430,56,100,"exon 3")}
+   ${arr(220,98,150,170,o.hl==="123")}${arr(380,98,450,170,o.hl==="13")}
+   ${b(30,186,80,"1")}${b(110,186,80,"2",true)}${b(190,186,80,"3")}
+   ${b(380,186,80,"1")}${b(460,186,80,"3")}
+   <text x="150" y="258" text-anchor="middle" font-size="22" style="fill:${o.hl==="123"?ACC:INK}">exons 1, 2, 3</text>
+   <text x="460" y="258" text-anchor="middle" font-size="22" style="fill:${o.hl==="13"?ACC:INK}">exons 1, 3</text>
+   <text x="300" y="316" text-anchor="middle" font-size="21" style="fill:var(--muted)">exon 2 removed with the introns on the right</text>`); },
+ multi3(){ const b=(x,y,w,t,c)=>`<rect x="${x}" y="${y}" width="${w}" height="30" style="fill:${c?"color-mix(in srgb,var(--c) 30%,var(--surface))":"var(--soft)"};stroke:var(--ink)" stroke-width="2"/>${t?`<text x="${x+w/2}" y="${y+21}" text-anchor="middle" font-size="18" style="fill:var(--ink)">${t}</text>`:""}`;
+  const tail=(x,y)=>`<text x="${x+6}" y="${y+21}" font-size="18" style="fill:var(--c);font-family:var(--font-mono);font-weight:700">AAAA</text>`;
+  return svgWrap(`<text x="40" y="40" font-size="22" style="fill:var(--ink)">pre-mRNA</text>
+   ${b(40,60,100,"exon 1")}${ln(140,75,200,75,MUT,3)}${b(200,60,360,"exon 2",true)}
+   ${ln(360,40,360,56,ACC,3,'marker-end="MK_A"')}${ln(500,40,500,56,ACC,3,'marker-end="MK_A"')}
+   <text x="344" y="38" text-anchor="end" font-size="20" style="fill:var(--c)">site 1</text><text x="516" y="38" font-size="20" style="fill:var(--c)">2</text>
+   <text x="40" y="150" font-size="20" style="fill:var(--muted)">cut at site 1</text>
+   ${b(40,164,100,"1")}${b(140,164,160,"2",true)}${tail(300,164)}
+   <text x="40" y="236" font-size="20" style="fill:var(--muted)">cut at site 2</text>
+   ${b(40,250,100,"1")}${b(140,250,300,"2",true)}${tail(440,250)}
+   <text x="300" y="324" text-anchor="middle" font-size="21" style="fill:var(--muted)">mRNA products of different length</text>`); },
+ calca(o){ const b=(x,y,t,hot)=>`<rect x="${x}" y="${y}" width="52" height="30" style="fill:${hot?"color-mix(in srgb,var(--c) 35%,var(--surface))":"var(--soft)"};stroke:var(--ink)" stroke-width="2"/><text x="${x+26}" y="${y+21}" text-anchor="middle" font-size="18" style="fill:var(--ink)">${t}</text>`;
+  const row=(y,ex,hot)=>ex.map((e,k)=>b(140+k*58,y,e,hot)).join("");
+  const th=o.hl==="thyroid", br=o.hl==="brain";
+  return svgWrap(`<text x="30" y="96" font-size="20" style="fill:var(--ink)">pre-mRNA</text>${ln(140,90,520,90,MUT,2)}
+   ${[1,2,3,4,5,6].map((e,k)=>b(140+k*64,75,e,false)).join("")}
+   ${ln(358,44,358,70,ACC,3,'marker-end="MK_A"')}${ln(486,44,486,70,ACC,3,'marker-end="MK_A"')}
+   <text x="300" y="36" text-anchor="middle" font-size="18" style="fill:var(--c)">3′ cleavage sites in exons 4 and 6</text>
+   <text x="30" y="186" font-size="22" style="fill:${th?ACC:INK}">thyroid</text>${row(165,[1,2,3,4],th)}
+   <text x="378" y="186" font-size="20" style="fill:${th?ACC:INK}">calcitonin</text>
+   <text x="30" y="266" font-size="22" style="fill:${br?ACC:INK}">brain</text>${row(245,[1,2,3,5,6],br)}
+   <text x="436" y="266" font-size="20" style="fill:${br?ACC:INK}">CGRP</text>
+   <text x="300" y="322" text-anchor="middle" font-size="21" style="fill:var(--muted)">tissue-specific alternative processing</text>`); },
+ trna(o){ const on=t=>o.hl===t||o.quiz===t, c=t=>on(t)?ACC:INK;
+  const stem=(x1,y1,x2,y2,t)=>ln(x1,y1,x2,y2,c(t),7);
+  const loop=(cx,cy,r,t)=>`<circle cx="${cx}" cy="${cy}" r="${r}" style="fill:none;stroke:${c(t)}" stroke-width="7"/>`;
+  return svgWrap(`${stem(300,48,300,150,"Acceptor arm")}
+   <text x="288" y="56" text-anchor="end" font-size="20" style="fill:var(--ink)">5′</text>
+   <text x="314" y="44" font-size="20" style="fill:var(--c);font-family:var(--font-mono);font-weight:700">3′ CCA</text>
+   ${stem(296,150,196,150,"DHU arm")}${loop(166,150,30,"DHU arm")}
+   ${stem(304,150,404,150,"TΨC arm")}${loop(434,150,30,"TΨC arm")}
+   ${stem(300,150,300,236,"Anticodon arm")}${loop(300,264,28,"Anticodon arm")}
+   ${stem(302,196,346,236,"Extra arm")}${loop(356,246,13,"Extra arm")}
+   ${label(450,86,"Acceptor arm",o)}${label(130,216,"DHU arm",o)}${label(476,216,"TΨC arm",o)}
+   ${label(146,280,"Anticodon arm",o)}${label(470,276,"Extra arm",o)}`); },
+ ribosome(o){ const col=(cx,hot,head,L,Lr,S,Sr)=>`<text x="${cx}" y="36" text-anchor="middle" font-size="24" style="fill:${hot?ACC:INK}">${head}</text>
+   <ellipse cx="${cx}" cy="112" rx="112" ry="56" style="fill:${hot?"color-mix(in srgb,var(--c) 30%,var(--surface))":"var(--soft)"};stroke:${hot?"var(--c)":"var(--ink)"}" stroke-width="2.5"/>
+   <text x="${cx}" y="108" text-anchor="middle" font-size="28" style="fill:var(--ink)">${L}</text><text x="${cx}" y="136" text-anchor="middle" font-size="18" style="fill:var(--muted)">${Lr}</text>
+   <ellipse cx="${cx}" cy="218" rx="90" ry="42" style="fill:${hot?"color-mix(in srgb,var(--c) 30%,var(--surface))":"var(--soft)"};stroke:${hot?"var(--c)":"var(--ink)"}" stroke-width="2.5"/>
+   <text x="${cx}" y="214" text-anchor="middle" font-size="26" style="fill:var(--ink)">${S}</text><text x="${cx}" y="240" text-anchor="middle" font-size="18" style="fill:var(--muted)">${Sr}</text>`;
+  return svgWrap(col(150,o.hl==="bact","Bacterial 70S","50S","23S, 5S rRNA","30S","16S rRNA")+col(450,o.hl==="euk","Eukaryotic 80S","60S","28S, 5.8S, 5S rRNA","40S","18S rRNA")
+   +`<text x="300" y="306" text-anchor="middle" font-size="21" style="fill:var(--muted)">rRNA plus many proteins</text>
+   <text x="300" y="332" text-anchor="middle" font-size="20" style="fill:var(--muted)">S = Svedberg unit</text>`); },
+ rrna(){ const bar=(y,segs)=>`<rect x="40" y="${y}" width="520" height="20" style="fill:var(--soft);stroke:var(--ink)" stroke-width="2"/>`+segs.map(([x,w])=>`<rect x="${x}" y="${y}" width="${w}" height="20" style="fill:color-mix(in srgb,var(--c) 40%,var(--surface))"/>`).join("");
+  const prod=(y,items)=>items.map(([x,w,t])=>`<rect x="${x}" y="${y}" width="${w}" height="30" rx="4" style="fill:color-mix(in srgb,var(--c) 30%,var(--surface));stroke:var(--c)" stroke-width="2"/><text x="${x+w/2}" y="${y+22}" text-anchor="middle" font-size="18" style="fill:var(--ink)">${t}</text>`).join("");
+  return svgWrap(`<text x="40" y="30" font-size="21" style="fill:var(--ink)">prokaryotic precursor (30S)</text>${bar(42,[[50,120],[200,60],[290,180],[500,50]])}
+   ${arr(300,68,300,96,false)}${prod(100,[[50,120,"16S"],[200,60,"tRNA"],[290,180,"23S"],[500,50,"5S"]])}
+   <text x="40" y="178" font-size="21" style="fill:var(--ink)">eukaryotic precursor (45S)</text>${bar(190,[[50,120],[250,80],[400,150]])}
+   ${arr(300,216,300,244,false)}${prod(248,[[50,120,"18S"],[250,80,"5.8S"],[400,150,"28S"]])}
+   <text x="300" y="320" text-anchor="middle" font-size="21" style="fill:var(--muted)">methylation, cleavage and trimming</text>`); },
+}
+;
+function viz(spec, extra={}){ if(!spec) return ""; const [k,arg]=spec.split(":");
+  const o = Object.assign({}, extra); if(arg && !o.quiz) o.hl=arg;
+  return D[k] ? `<div class="viz">${D[k](o)}</div>` : ""; }
+
+
+const slug = s => s.toLowerCase().replace(/ /g,"-");
+document.querySelectorAll("section[data-sec]").forEach((s,i)=>{
+  const name=s.dataset.sec, c=`var(--s-${slug(name)})`; s.id=slug(name); s.classList.add("card","accent"); s.style.setProperty("--c",c);
+  const h=s.querySelector("h2"); if(h) h.insertAdjacentHTML("afterbegin",`<span class="n num">${i+1}</span>`);
+  s.insertAdjacentHTML("beforeend",'<div class="backtop"><a class="link quiet" href="#toc">Back to contents</a></div>');
+  document.getElementById("toclist").insertAdjacentHTML("beforeend",`<li><a href="#${s.id}" style="--c:${c}">${name}</a></li>`);
+});
+document.querySelectorAll("details.check summary").forEach(s=>{ s.innerHTML=`<span class="link">Check yourself</span><span>${s.innerHTML}</span>`; s.style.display="grid"; });
+document.querySelectorAll("[data-viz]").forEach(el=>{ el.outerHTML = viz(el.dataset.viz) || ""; });
+</script>
+</body>
+</html>
