@@ -1,0 +1,627 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Genetics Ch 18: Mutations and DNA Repair</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* Study Time design tokens and components. Source of truth: _builder/design/DESIGN.md
+   Decks are self-contained pages, so builders inline this file rather than linking it.
+   Load the font in <head>:
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"> */
+
+/* ---------- tokens: light ---------- */
+/* [data-theme] on any element scopes a theme to that subtree (used by preview.html). */
+:root,[data-theme="light"]{
+  /* surfaces */
+  --bg:#f6f8fc;            /* page: cool off-white */
+  --surface:#ffffff;       /* raised panels and cards */
+  --sunken:#eef2f8;        /* wells, inputs, progress tracks */
+  --soft:#eef2f8;          /* alias of --sunken; diagrams and decks use it */
+  --line:#e1e7f0;          /* hairlines and card borders */
+  --line-strong:#c9d3e1;   /* input borders, dividers that must be seen */
+  --guide:#d3dbe8;         /* dashed column guides */
+  /* text */
+  --ink:#0c2340;           /* headings, key numbers, diagram strokes */
+  --text:#425672;          /* body copy */
+  --muted:#5b6b82;         /* captions, meta, helper text */
+  --on-accent:#ffffff;     /* text on --accent fills */
+  /* brand */
+  --accent:#5332e6;        /* violet: links, primary buttons, eyebrow labels */
+  --accent-hover:#4322cf;
+  --accent-tint:#efecfe;   /* violet wash behind selected items */
+  --sky:#0aa5f0;           /* bright sky: bands, fills, illustration only (not text) */
+  --sky-ink:#0068a8;       /* sky as text */
+  --sky-tint:#e3f4fd;
+  --band-from:#0aa5f0;     /* diagonal hero band */
+  --band-to:#5332e6;
+  /* feedback (flashcard grades) */
+  --again:#b42318; --hard:#985a00; --good:#2152c4; --easy:#0b7a5f;
+  /* section accents: decks map their 6 to 8 sections onto these, in order */
+  --sec-blue:#1f5bc4; --sec-violet:#7d3fc8; --sec-teal:#08776b; --sec-rose:#be2b6a;
+  --sec-orange:#bd4310; --sec-amber:#946000; --sec-green:#3d7a17; --sec-slate:#4d5d76;
+
+  /* type */
+  --font-sans:"Inter",ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+  --font-mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  --fs-display:clamp(2.75rem,1.6rem + 5vw,5.25rem);  /* hero headline */
+  --fs-h1:clamp(2.25rem,1.6rem + 2.8vw,3.5rem);
+  --fs-h2:clamp(1.625rem,1.3rem + 1.4vw,2.25rem);
+  --fs-h3:1.375rem;
+  --fs-lead:clamp(1.125rem,1rem + .5vw,1.375rem);    /* intro paragraph under a headline */
+  --fs-body:1.0625rem;     /* 17px */
+  --fs-small:.9375rem;     /* 15px */
+  --fs-caption:.8125rem;   /* 13px */
+  --fs-label:1rem;         /* eyebrow label */
+  --lh-tight:1.04; --lh-heading:1.15; --lh-body:1.65;
+  --track-display:-.04em; --track-heading:-.025em; --track-body:-.006em;
+  --fw-regular:400; --fw-medium:500; --fw-semibold:600; --fw-bold:700; --fw-black:800;
+
+  /* spacing: 4px base */
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:24px; --sp-6:32px;
+  --sp-7:48px; --sp-8:64px; --sp-9:96px; --sp-10:128px;
+  --gutter:16px;           /* side gutter on phones; 24px from 640px, 32px from 1024px */
+  --content-max:1080px;    /* wide grid for home page and heroes */
+  --reading-max:680px;     /* one column of prose or one flashcard */
+  --columns:4;             /* dashed guides; 2 on phones */
+
+  /* radii */
+  --r-xs:4px; --r-sm:6px; --r-md:10px; --r-lg:16px; --r-xl:24px; --r-pill:999px;
+
+  /* shadows: two layers each, tinted with navy, never pure black */
+  --shadow-xs:0 1px 2px rgba(12,35,64,.06),0 1px 1px rgba(12,35,64,.04);
+  --shadow-sm:0 2px 5px -1px rgba(30,40,90,.10),0 1px 3px -1px rgba(12,35,64,.10);
+  --shadow-md:0 13px 27px -5px rgba(30,40,90,.16),0 8px 16px -8px rgba(12,35,64,.18);
+  --shadow-lg:0 30px 60px -12px rgba(30,40,90,.22),0 18px 36px -18px rgba(12,35,64,.26);
+  --shadow-xl:0 50px 100px -20px rgba(30,40,90,.24),0 30px 60px -30px rgba(12,35,64,.30);
+
+  /* motion */
+  --ease-out:cubic-bezier(.2,.7,.2,1);
+  --ease-in-out:cubic-bezier(.65,0,.35,1);
+  --dur-fast:150ms; --dur-base:240ms; --dur-slow:420ms;
+
+  /* diagonal band */
+  --band-angle:-9deg;
+  --band-height:clamp(180px,32vw,380px);
+
+  color-scheme:light;
+}
+
+/* ---------- tokens: dark ---------- */
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --bg:#0a1524; --surface:#122036; --sunken:#0e1a2d; --soft:#1a2a44; --line:#22344f; --line-strong:#33496a; --guide:#22344f;
+  --ink:#f2f6fc; --text:#b6c3d6; --muted:#93a3ba; --on-accent:#0a1524;
+  --accent:#a99cff; --accent-hover:#c0b6ff; --accent-tint:#221f4d;
+  --sky:#38bdf8; --sky-ink:#5ec8ff; --sky-tint:#0d2a40; --band-from:#0b6fae; --band-to:#4b35c9;
+  --again:#ff8b80; --hard:#f2bd5c; --good:#86b1ff; --easy:#4fd6ad;
+  --sec-blue:#86b4ff; --sec-violet:#caa7f7; --sec-teal:#4fd2bf; --sec-rose:#f892c1;
+  --sec-orange:#ffa173; --sec-amber:#f0bf5e; --sec-green:#a6d86c; --sec-slate:#b0bdd2;
+  --shadow-xs:0 1px 2px rgba(0,0,0,.30);
+  --shadow-sm:0 2px 5px -1px rgba(0,0,0,.40),0 1px 3px -1px rgba(0,0,0,.30);
+  --shadow-md:0 13px 27px -5px rgba(0,0,0,.45),0 8px 16px -8px rgba(0,0,0,.40);
+  --shadow-lg:0 30px 60px -12px rgba(0,0,0,.55),0 18px 36px -18px rgba(0,0,0,.50);
+  --shadow-xl:0 50px 100px -20px rgba(0,0,0,.60),0 30px 60px -30px rgba(0,0,0,.55);
+  color-scheme:dark;
+}}
+:root[data-theme="dark"],[data-theme="dark"]{
+  --bg:#0a1524; --surface:#122036; --sunken:#0e1a2d; --soft:#1a2a44; --line:#22344f; --line-strong:#33496a; --guide:#22344f;
+  --ink:#f2f6fc; --text:#b6c3d6; --muted:#93a3ba; --on-accent:#0a1524;
+  --accent:#a99cff; --accent-hover:#c0b6ff; --accent-tint:#221f4d;
+  --sky:#38bdf8; --sky-ink:#5ec8ff; --sky-tint:#0d2a40; --band-from:#0b6fae; --band-to:#4b35c9;
+  --again:#ff8b80; --hard:#f2bd5c; --good:#86b1ff; --easy:#4fd6ad;
+  --sec-blue:#86b4ff; --sec-violet:#caa7f7; --sec-teal:#4fd2bf; --sec-rose:#f892c1;
+  --sec-orange:#ffa173; --sec-amber:#f0bf5e; --sec-green:#a6d86c; --sec-slate:#b0bdd2;
+  --shadow-xs:0 1px 2px rgba(0,0,0,.30);
+  --shadow-sm:0 2px 5px -1px rgba(0,0,0,.40),0 1px 3px -1px rgba(0,0,0,.30);
+  --shadow-md:0 13px 27px -5px rgba(0,0,0,.45),0 8px 16px -8px rgba(0,0,0,.40);
+  --shadow-lg:0 30px 60px -12px rgba(0,0,0,.55),0 18px 36px -18px rgba(0,0,0,.50);
+  --shadow-xl:0 50px 100px -20px rgba(0,0,0,.60),0 30px 60px -30px rgba(0,0,0,.55);
+  color-scheme:dark;
+}
+:root,[data-theme]{--focus-ring:0 0 0 3px color-mix(in srgb,var(--accent) 45%,transparent)}
+@media (min-width:640px){ :root{ --gutter:24px; } }
+@media (min-width:1024px){ :root{ --gutter:32px; } }
+@media (max-width:639px){ :root{ --columns:2; } }
+
+/* ---------- base ---------- */
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font-sans);font-size:var(--fs-body);
+  line-height:var(--lh-body);letter-spacing:var(--track-body);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2,h3,h4{color:var(--ink);font-weight:var(--fw-bold);line-height:var(--lh-heading);letter-spacing:var(--track-heading);margin:0 0 .4em;text-wrap:balance}
+h1{font-size:var(--fs-h1)} h2{font-size:var(--fs-h2)} h3{font-size:var(--fs-h3)}
+p{margin:0 0 1em;text-wrap:pretty}
+a{color:var(--accent)}
+:focus-visible{outline:none;box-shadow:var(--focus-ring);border-radius:var(--r-sm)}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---------- layout ---------- */
+.container{max-width:calc(var(--content-max) + 2*var(--gutter));margin-inline:auto;padding-inline:var(--gutter)}
+.reading{max-width:calc(var(--reading-max) + 2*var(--gutter));margin-inline:auto;padding-inline:var(--gutter)}
+
+/* Dashed vertical column guides. Put .guides on a positioned wrapper; content above it needs position:relative. */
+.guides{position:relative;isolation:isolate}
+.guides::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  width:min(100% - 2*var(--gutter),var(--content-max));margin-inline:auto;
+  --dash:linear-gradient(to bottom,var(--guide) 0 4px,transparent 4px 8px);
+  background-image:var(--dash),var(--dash),var(--dash),var(--dash),var(--dash);
+  background-size:1px 8px;background-repeat:repeat-y;
+  background-position:0 0,33.333% 0,50% 0,66.667% 0,100% 0}
+@media (min-width:640px){ .guides::before{background-position:0 0,25% 0,50% 0,75% 0,100% 0} }
+@media (max-width:639px){ .guides::before{background-image:var(--dash),var(--dash);background-position:0 0,100% 0} }
+
+/* ---------- hero and diagonal band ---------- */
+/* Bottom padding clears the band: text never sits on it. */
+.hero{position:relative;overflow:hidden;padding-block:var(--sp-9) calc(var(--band-height) * .6 + var(--sp-8))}
+.hero>:not(.band){position:relative}
+.band{position:absolute;left:-2%;right:-2%;bottom:calc(var(--band-height) * -.4);height:var(--band-height);pointer-events:none;
+  transform:skewY(var(--band-angle));transform-origin:0 100%;
+  background:linear-gradient(100deg,var(--band-from) 0%,var(--band-from) 50%,var(--band-to) 100%)}
+.band.solid{background:var(--band-from)}
+.display{color:var(--ink)}
+.hero .display{font-size:var(--fs-display);line-height:var(--lh-tight);letter-spacing:var(--track-display);font-weight:var(--fw-bold);max-width:14ch;margin-bottom:.35em}
+.lead{font-size:var(--fs-lead);line-height:1.6;color:var(--text);max-width:36ch}
+@media (max-width:639px){ .hero{padding-block:var(--sp-7) calc(var(--band-height) * .6 + var(--sp-7))} }
+
+/* ---------- eyebrow label ---------- */
+.label{display:inline-block;color:var(--accent);font-size:var(--fs-label);font-weight:var(--fw-semibold);letter-spacing:-.01em;margin:0 0 var(--sp-4)}
+.label.sky{color:var(--sky-ink)}
+.label.sec{color:var(--c,var(--accent))}
+.tag{display:inline-flex;align-items:center;gap:6px;padding:2px 10px;border-radius:var(--r-pill);background:var(--accent-tint);
+  color:var(--accent);font-size:var(--fs-caption);font-weight:var(--fw-semibold);line-height:1.6}
+.tag.sec{background:color-mix(in srgb,var(--c) 12%,transparent);color:var(--c)}
+
+/* ---------- buttons and links (both carry a chevron) ---------- */
+.btn,.link{--chev:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M3 1.5 6.5 5 3 8.5' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+.btn::after,.link::after{content:"";width:.7em;height:.7em;flex:none;background:currentColor;
+  -webkit-mask:var(--chev) center/contain no-repeat;mask:var(--chev) center/contain no-repeat;
+  transition:transform var(--dur-fast) var(--ease-out)}
+.btn:hover::after,.link:hover::after{transform:translateX(3px)}
+.btn.no-chev::after{display:none}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4em;min-height:44px;padding:10px 20px 10px 22px;
+  border:0;border-radius:var(--r-pill);background:var(--accent);color:var(--on-accent);
+  font:inherit;font-weight:var(--fw-semibold);font-size:var(--fs-body);line-height:1.2;text-decoration:none;cursor:pointer;
+  transition:background var(--dur-fast) var(--ease-out),box-shadow var(--dur-fast) var(--ease-out),transform var(--dur-fast) var(--ease-out)}
+.btn:hover{background:var(--accent-hover)}
+.btn:active{transform:translateY(1px)}
+.btn:disabled{opacity:.45;cursor:default}
+.btn.dark{background:var(--ink);color:var(--surface)}
+.btn.dark:hover{background:color-mix(in srgb,var(--ink) 86%,var(--accent))}
+.btn.ghost{background:var(--surface);color:var(--ink);box-shadow:var(--shadow-sm)}
+.btn.ghost:hover{box-shadow:var(--shadow-md)}
+.btn.block{width:100%}
+.btn.sm{min-height:36px;padding:6px 14px 6px 16px;font-size:var(--fs-small)}
+.link{display:inline-flex;align-items:center;gap:.3em;padding:6px 2px;color:var(--accent);font-weight:var(--fw-semibold);text-decoration:none;cursor:pointer;background:none;border:0;font:inherit;font-weight:var(--fw-semibold)}
+.link:hover{color:var(--accent-hover)}
+.link.quiet{color:var(--muted);font-weight:var(--fw-medium)}
+
+/* ---------- cards and panels ---------- */
+.card{position:relative;background:var(--surface);border-radius:var(--r-lg);box-shadow:var(--shadow-md);padding:var(--sp-5)}
+.card.flat{box-shadow:none;border:1px solid var(--line)}
+.card.float{box-shadow:var(--shadow-lg)}
+.card.lift{transition:box-shadow var(--dur-base) var(--ease-out),transform var(--dur-base) var(--ease-out)}
+.card.lift:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+.card.accent{border-top:4px solid var(--c,var(--accent))}
+.panel{background:var(--surface);border-radius:var(--r-md);box-shadow:var(--shadow-xl);overflow:hidden}
+.panel-head{display:flex;align-items:center;justify-content:space-between;padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--line);font-size:var(--fs-small);color:var(--ink);font-weight:var(--fw-semibold)}
+.panel-body{padding:var(--sp-4)}
+.track{height:6px;border-radius:var(--r-pill);background:var(--sunken);overflow:hidden}
+.track>i{display:block;height:100%;background:var(--c,var(--accent));border-radius:inherit;transition:width var(--dur-slow) var(--ease-out)}
+
+/* ---------- motion ---------- */
+.rise{animation:rise var(--dur-base) var(--ease-out) both}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* ---------- deck page: DESIGN.md section 10. Tokens only; no raw colors, sizes, radii or shadows. ---------- */
+:root{ --s-mutation-basics:var(--sec-blue); --s-chromosome-rearrangements:var(--sec-violet); --s-gene-mutations:var(--sec-teal); --s-spontaneous-mutations:var(--sec-rose); --s-induced-mutations:var(--sec-orange); --s-phenotypic-effects:var(--sec-amber); --s-dna-repair:var(--sec-green); --s-transposable-elements:var(--sec-slate);  --deck-c:var(--sec-blue); }
+body{padding-bottom:env(safe-area-inset-bottom,0px)}
+button{font:inherit;color:inherit}
+svg text{font-family:var(--font-sans);font-weight:var(--fw-semibold);letter-spacing:-.01em}
+/* home hero: band starts in the deck's first section color; darkened in dark mode so it doesn't glare */
+.deckhero{--band-from:var(--deck-c);padding-top:max(var(--sp-6),env(safe-area-inset-top,0px))}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .deckhero{--band-from:color-mix(in oklch,var(--deck-c) 62%,var(--bg))} }
+:root[data-theme="dark"] .deckhero{--band-from:color-mix(in oklch,var(--deck-c) 62%,var(--bg))}
+.deckhero h1{margin-bottom:var(--sp-3)}
+.deckhero .label{margin-bottom:var(--sp-2)}
+.deckhero .lead{max-width:40ch;margin:0}
+.toplinks{display:flex;gap:var(--sp-5);flex-wrap:wrap;margin:0 0 var(--sp-6)}
+.overlap{position:relative;margin-top:calc(var(--band-height) * -.5);padding-bottom:var(--sp-8)}
+.stack>*+*{margin-top:var(--sp-5)}
+.card h2{font-size:var(--fs-h3);margin-bottom:var(--sp-1)}
+.hint{color:var(--muted);font-size:var(--fs-small);margin:0 0 var(--sp-4)}
+.resume{border-top:4px solid var(--accent)}
+.center{display:flex;justify-content:center;margin-top:var(--sp-2)}
+/* launch */
+.due{display:flex;align-items:baseline;gap:var(--sp-3);flex-wrap:wrap}
+.due b{font-size:var(--fs-h1);line-height:1;letter-spacing:var(--track-display);color:var(--ink);font-weight:var(--fw-bold)}
+.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--sp-2);margin:var(--sp-5) 0}
+.mode{min-width:0;padding:var(--sp-3);border-radius:var(--r-md);border:1.5px solid var(--line-strong);background:var(--surface);text-align:start;line-height:var(--lh-heading);
+  color:var(--ink);font-weight:var(--fw-semibold);font-size:var(--fs-small);cursor:pointer;transition:border-color var(--dur-fast) var(--ease-out),background var(--dur-fast) var(--ease-out)}
+.mode small{display:block;color:var(--muted);font-weight:var(--fw-regular);font-size:var(--fs-caption);margin-top:var(--sp-1);line-height:1.4}
+.mode:hover,.len:hover{border-color:var(--accent)}
+.mode[aria-pressed="true"],.len[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-tint)}
+/* quiz length and history */
+.lens{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-2);margin:0 0 var(--sp-4)}
+.len{min-height:44px;border-radius:var(--r-pill);border:1.5px solid var(--line-strong);background:var(--surface);font-weight:var(--fw-semibold);color:var(--ink);cursor:pointer}
+.hist{margin:0 0 var(--sp-5)}
+.histhead{display:flex;justify-content:space-between;align-items:baseline;gap:var(--sp-3);flex-wrap:wrap;color:var(--muted);font-size:var(--fs-small)}
+.histhead b{font-size:var(--fs-h3);color:var(--ink);margin-right:var(--sp-1)}
+.hist svg{width:100%;height:auto;display:block;margin-top:var(--sp-2)}
+.hist svg text{font-weight:var(--fw-medium)}
+/* sections */
+.secs{padding:var(--sp-2) var(--sp-5)}
+.secs h2{margin:var(--sp-4) 0 var(--sp-2)}
+.secrow{display:grid;grid-template-columns:22px 1fr auto;gap:var(--sp-1) var(--sp-3);align-items:center;width:100%;padding:var(--sp-3) 0;background:none;border:0;border-top:1px solid var(--line);text-align:start;cursor:pointer;color:var(--ink)}
+.chk{width:22px;height:22px;border-radius:var(--r-sm);border:2px solid var(--c);display:grid;place-items:center}
+.secrow[aria-pressed="true"] .chk{background:var(--c)}
+.secrow[aria-pressed="true"] .chk::after{content:"";width:10px;height:5px;border:2.5px solid var(--surface);border-top:0;border-right:0;transform:rotate(-45deg) translate(1px,-1px)}
+.secname{font-weight:var(--fw-semibold)}
+.secmeta{color:var(--muted);font-size:var(--fs-caption);white-space:nowrap}
+.secrow .track,.bs .track{grid-column:2/4;display:flex}
+.bs .track{grid-column:1/3}
+.track>i+i{border-radius:0}
+.legend{display:flex;gap:var(--sp-2) var(--sp-4);color:var(--muted);font-size:var(--fs-caption);flex-wrap:wrap;padding:var(--sp-3) 0 var(--sp-4);border-top:1px solid var(--line)}
+.legend span::before,.glegend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:var(--r-xs);margin-right:var(--sp-1);vertical-align:-1px;background:var(--sw)}
+.legend .nosw::before{display:none}
+.foot{display:flex;justify-content:space-between;align-items:center;gap:var(--sp-3);color:var(--muted);font-size:var(--fs-small)}
+/* study mode: no band, no guides, one card */
+.study{padding-top:max(var(--sp-4),env(safe-area-inset-top,0px));padding-bottom:var(--sp-7)}
+.top{display:flex;align-items:center;gap:var(--sp-3)}
+.top .track{flex:1}
+.top .track>i{background:var(--accent)}
+.count{color:var(--muted);font-size:var(--fs-small);white-space:nowrap}
+.fc{--c:var(--ink);margin-top:var(--sp-4);min-height:360px;display:flex;flex-direction:column}
+.chip{display:flex;align-items:center;gap:var(--sp-2);flex-wrap:wrap}
+.score{margin-left:auto;color:var(--muted);font-size:var(--fs-caption);font-weight:var(--fw-medium);white-space:nowrap}
+.prompt{color:var(--ink);font-size:var(--fs-h3);font-weight:var(--fw-semibold);line-height:1.35;letter-spacing:-.015em;margin:var(--sp-4) 0 var(--sp-1)}
+.list{display:inline-block;text-align:start}
+.cz{color:var(--c);font-weight:var(--fw-bold)}
+.cz.gap{display:inline-block;min-width:3.2em;padding:0 var(--sp-2);border-radius:var(--r-sm);background:color-mix(in srgb,var(--c) 12%,transparent);border-bottom:2.5px solid var(--c);text-align:center;font-weight:var(--fw-semibold)}
+.viz{margin:var(--sp-3) 0 var(--sp-1)}
+.viz svg{width:100%;height:auto;max-height:46vh;display:block}
+.answer{border-top:1px solid var(--line);margin-top:var(--sp-4);padding-top:var(--sp-4)}
+.ans{font-size:var(--fs-h3);line-height:1.35;font-weight:var(--fw-semibold);color:var(--c);letter-spacing:-.015em}
+.extra{color:var(--text);font-size:var(--fs-small);margin-top:var(--sp-2)}
+.spacer{flex:1}
+.fc .btn{margin-top:var(--sp-5)}
+.grades{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--sp-2);margin-top:var(--sp-5)}
+.g{min-height:56px;padding:var(--sp-2) var(--sp-1);border-radius:var(--r-md);border:0;background:var(--soft);border-bottom:3px solid var(--gc);color:var(--ink);font-weight:var(--fw-semibold);line-height:1.2;cursor:pointer;
+  transition:transform var(--dur-fast) var(--ease-out)}
+.g:active{transform:translateY(1px)}
+.g small{display:block;font-weight:var(--fw-regular);color:var(--muted);font-size:var(--fs-caption);margin-top:2px}
+.keys{color:var(--muted);font-size:var(--fs-caption);margin-top:var(--sp-3)}
+@media (hover:none){.keys{display:none}}
+/* quiz */
+.opts{display:grid;gap:var(--sp-2);margin-top:var(--sp-4)}
+.opt{display:flex;align-items:center;gap:var(--sp-3);width:100%;min-height:52px;padding:var(--sp-3) var(--sp-4);border-radius:var(--r-md);border:1.5px solid var(--line-strong);background:var(--surface);
+  text-align:start;line-height:1.35;color:var(--ink);cursor:pointer;transition:border-color var(--dur-fast) var(--ease-out)}
+.opt:not(:disabled):hover{border-color:var(--accent)}
+.opt .ltr{flex:none;width:28px;height:28px;border-radius:var(--r-sm);display:grid;place-items:center;background:var(--soft);font-weight:var(--fw-semibold);font-size:var(--fs-caption)}
+.opt:disabled{cursor:default}
+.opt.ok{border-color:var(--easy);background:color-mix(in srgb,var(--easy) 12%,var(--surface))}
+.opt.ok .ltr{background:var(--easy);color:var(--surface)}
+.opt.bad{border-color:var(--again);background:color-mix(in srgb,var(--again) 12%,var(--surface))}
+.opt.bad .ltr{background:var(--again);color:var(--surface)}
+.opt.dim{opacity:.55}
+.verdict{margin-top:var(--sp-4);font-weight:var(--fw-semibold)}
+.verdict.ok{color:var(--easy)}.verdict.bad{color:var(--again)}
+/* results */
+.done h1{margin-top:var(--sp-5)}
+.big{text-align:center;padding:var(--sp-2) 0 var(--sp-4)}
+.big b{display:block;font-size:var(--fs-display);line-height:var(--lh-tight);letter-spacing:var(--track-display);color:var(--ink)}
+.big span{color:var(--muted);font-size:var(--fs-small)}
+.gbar{display:flex;gap:2px;height:10px;border-radius:var(--r-pill);overflow:hidden;margin:var(--sp-2) 0;background:var(--sunken)}
+.glegend{display:flex;gap:var(--sp-2) var(--sp-4);flex-wrap:wrap;color:var(--muted);font-size:var(--fs-caption)}
+.bysec{margin-top:var(--sp-4)}
+.bs{display:grid;grid-template-columns:1fr auto;gap:var(--sp-1) var(--sp-3);padding:var(--sp-3) 0;border-top:1px solid var(--line);color:var(--ink);font-weight:var(--fw-medium)}
+.mq{border-top:1px solid var(--line);border-left:4px solid var(--c);padding:var(--sp-3) 0 var(--sp-3) var(--sp-3);font-size:var(--fs-small);color:var(--text)}
+.mq .ma{color:var(--c);font-weight:var(--fw-semibold);margin-top:2px}
+@media (max-width:420px){.modes{gap:var(--sp-1)}.mode{padding:var(--sp-2)}.card{padding:var(--sp-4)}.secs{padding:var(--sp-1) var(--sp-4)}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+
+const DATA = {"cards": [{"id": "b0", "sec": "Mutation Basics", "kind": "basic", "front": "Mutations are the source of all what?", "back": "Genetic variation", "extra": "Which provides the raw material for evolution.", "added": false, "viz": "", "vf": false}, {"id": "b1", "sec": "Mutation Basics", "kind": "basic", "front": "Can mutations be harmful, beneficial or neutral?", "back": "Any of the three", "extra": "They are also a source of many diseases and useful for probing biological processes.", "added": false, "viz": "", "vf": false}, {"id": "b2", "sec": "Mutation Basics", "kind": "basic", "front": "What is germline tissue?", "back": "Reproductive cells that produce gametes", "extra": "Sperm or eggs.", "added": false, "viz": "", "vf": false}, {"id": "b3", "sec": "Mutation Basics", "kind": "basic", "front": "What is somatic tissue?", "back": "All other cells in the body", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b4", "sec": "Mutation Basics", "kind": "basic", "front": "What determines whether a mutation is passed to offspring?", "back": "Its location: soma or germline", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b5", "sec": "Mutation Basics", "kind": "basic", "front": "Are somatic mutations inheritable?", "back": "No", "extra": "A somatic mutation spreads by mitosis to a population of mutant cells. Fig. 18.1.", "added": false, "viz": "", "vf": false}, {"id": "b6", "sec": "Mutation Basics", "kind": "basic", "front": "Are germline mutations inheritable?", "back": "Yes", "extra": "Passed on through sexual reproduction.", "added": false, "viz": "", "vf": false}, {"id": "b7", "sec": "Mutation Basics", "kind": "basic", "front": "Which gene is called the guardian of the genome?", "back": "Tp53", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b8", "sec": "Mutation Basics", "kind": "basic", "front": "Somatic Tp53 mutations occur in about what share of human cancers?", "back": "About 50%", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b9", "sec": "Mutation Basics", "kind": "basic", "front": "What is Li-Fraumeni syndrome?", "back": "A germline mutation of Tp53", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b10", "sec": "Mutation Basics", "kind": "basic", "front": "Chromosomal rearrangements are what scale of mutation?", "back": "Large scale, affecting multiple genes", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b11", "sec": "Mutation Basics", "kind": "basic", "front": "Gene mutations are what scale of mutation?", "back": "Small changes affecting single genes", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b12", "sec": "Chromosome Rearrangements", "kind": "basic", "front": "What is a deletion?", "back": "Part of a chromosome is deleted", "extra": "Loss of genetic material.", "added": false, "viz": "rearr:Deletion", "vf": false}, {"id": "b13", "sec": "Chromosome Rearrangements", "kind": "basic", "front": "What are the consequences of a deletion?", "back": "Neutral to severe, by size and location", "extra": "Range from neutral to severe defects depending on the size and location of the deletion.", "added": false, "viz": "rearr:Deletion", "vf": false}, {"id": "b14", "sec": "Chromosome Rearrangements", "kind": "basic", "front": "What is a duplication?", "back": "Part of a chromosome is doubled", "extra": "Gain of genetic material.", "added": false, "viz": "rearr:Duplication", "vf": false}, {"id": "b15", "sec": "Chromosome Rearrangements", "kind": "basic", "front": "A duplicated segment right next to the original is called what?", "back": "A tandem duplication", "extra": "Duplications can also be displaced and/or reversed. Handwritten: may have been inserted anywhere.", "added": false, "viz": "rearr:Duplication", "vf": false}, {"id": "b16", "sec": "Chromosome Rearrangements", "kind": "basic", "front": "How does a duplication cause problems in meiosis?", "back": "Problems in chromosome pairing", "extra": "The duplicated region must loop out so homologous sequences can align. Fig. 8.6.", "added": false, "viz": "", "vf": false}, {"id": "b17", "sec": "Chromosome Rearrangements", "kind": "basic", "front": "Besides pairing problems, what else does a duplication alter?", "back": "Gene dosage", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b18", "sec": "Chromosome Rearrangements", "kind": "basic", "front": "What are primary drivers of biological complexity and new traits?", "back": "Gene duplication and subsequent divergent evolution", "extra": "Example: flies have p53; humans have p53, p63 and p73.", "added": false, "viz": "", "vf": false}, {"id": "b19", "sec": "Chromosome Rearrangements", "kind": "basic", "front": "What is an inversion?", "back": "A chromosome segment is inverted", "extra": "No loss or gain of genetic material.", "added": false, "viz": "rearr:Inversion", "vf": false}, {"id": "b20", "sec": "Chromosome Rearrangements", "kind": "basic", "front": "Does an inversion gain or lose genetic material?", "back": "Neither", "extra": "", "added": false, "viz": "rearr:Inversion", "vf": false}, {"id": "b21", "sec": "Chromosome Rearrangements", "kind": "basic", "front": "What are the possible consequences of an inversion?", "back": "Neutral, a gene broken in two, or position effect", "extra": "", "added": false, "viz": "rearr:Inversion", "vf": false}, {"id": "b22", "sec": "Chromosome Rearrangements", "kind": "basic", "front": "What is a translocation?", "back": "Genetic material moves from one chromosome to another", "extra": "", "added": false, "viz": "rearr:Translocation", "vf": false}, {"id": "b23", "sec": "Chromosome Rearrangements", "kind": "basic", "front": "What frequently accompanies translocations?", "back": "Deletions", "extra": "Translocations can also cause a position effect.", "added": false, "viz": "rearr:Translocation", "vf": false}, {"id": "b24", "sec": "Gene Mutations", "kind": "basic", "front": "What is a base pair substitution?", "back": "Alteration of a single nucleotide", "extra": "", "added": false, "viz": "subst", "vf": false}, {"id": "b25", "sec": "Gene Mutations", "kind": "basic", "front": "Do base pair substitutions always change the amino acid?", "back": "No, they may or may not", "extra": "", "added": false, "viz": "subst", "vf": false}, {"id": "b26", "sec": "Gene Mutations", "kind": "basic", "front": "GTA becomes GCA by substitution. Amino acid change?", "back": "Val becomes Ala", "extra": "One codon changed. Slide 18 prints Ser here, but GCA codes for Ala, as the handwritten note on slide 17 says.", "added": false, "viz": "subst", "vf": false}, {"id": "b27", "sec": "Gene Mutations", "kind": "basic", "front": "GTA becomes GTG by substitution. Amino acid change?", "back": "None: both encode Val", "extra": "", "added": false, "viz": "subst", "vf": false}, {"id": "b28", "sec": "Gene Mutations", "kind": "basic", "front": "What is a transition?", "back": "Purine for purine, or pyrimidine for pyrimidine", "extra": "Handwritten: s = same.", "added": false, "viz": "", "vf": false}, {"id": "b29", "sec": "Gene Mutations", "kind": "basic", "front": "What is a transversion?", "back": "Pyrimidine for purine, or purine for pyrimidine", "extra": "Handwritten: v = versa. Usually more severe.", "added": false, "viz": "", "vf": false}, {"id": "b30", "sec": "Gene Mutations", "kind": "basic", "front": "Which type of base substitution is usually more severe?", "back": "Transversion", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b31", "sec": "Gene Mutations", "kind": "basic", "front": "Is A to G a transition or transversion?", "back": "Transition", "extra": "Both purines.", "added": false, "viz": "", "vf": false}, {"id": "b32", "sec": "Gene Mutations", "kind": "basic", "front": "Is C to A a transition or transversion?", "back": "Transversion", "extra": "Pyrimidine to purine.", "added": false, "viz": "", "vf": false}, {"id": "b33", "sec": "Gene Mutations", "kind": "basic", "front": "What is an indel?", "back": "Addition or removal of one or more nucleotides", "extra": "Insertion/deletion.", "added": false, "viz": "indel", "vf": false}, {"id": "b34", "sec": "Gene Mutations", "kind": "basic", "front": "What is the consequence of a single-nucleotide indel?", "back": "A frameshift mutation", "extra": "Alters the encoded amino acids at or following the mutation.", "added": false, "viz": "indel", "vf": false}, {"id": "b35", "sec": "Gene Mutations", "kind": "basic", "front": "A frameshift alters which amino acids?", "back": "Those at or following the mutation", "extra": "", "added": false, "viz": "indel", "vf": false}, {"id": "b36", "sec": "Gene Mutations", "kind": "basic", "front": "GGG AGT GTA GAT CGT gets a T after GT. New amino acids?", "back": "Gly Ser Val Arg Ser", "extra": "Original Gly Ser Val Asp Arg. Notice how the codons shift over.", "added": false, "viz": "indel", "vf": false}, {"id": "b37", "sec": "Gene Mutations", "kind": "basic", "front": "GGG AGT GTA GAT CGT loses the T in GTA. New amino acids?", "back": "Gly Ser Glu Ile Val", "extra": "As given on slide 21.", "added": false, "viz": "indel", "vf": false}, {"id": "b38", "sec": "Gene Mutations", "kind": "basic", "front": "What are short tandem repeats (STRs)?", "back": "Short repeated sequences found in genes", "extra": "Handwritten: anywhere in the gene.", "added": false, "viz": "", "vf": false}, {"id": "b39", "sec": "Gene Mutations", "kind": "basic", "front": "Where in a gene can STRs be found?", "back": "Promoter, 5\u2032UTR, exon, intron or 3\u2032UTR", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b40", "sec": "Gene Mutations", "kind": "basic", "front": "What happens to STRs in the disease state?", "back": "They are expanded", "extra": "Handwritten: affects protein produced and/or how the gene is regulated.", "added": false, "viz": "", "vf": false}, {"id": "b41", "sec": "Gene Mutations", "kind": "basic", "front": "Most expanding repeats are which kind of sequence?", "back": "A 3-nucleotide set (CNG)", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b42", "sec": "Gene Mutations", "kind": "basic", "front": "In expanding repeat diseases, what does more copies mean?", "back": "More severe disease", "extra": "Handwritten note beside Table 18.1.", "added": false, "viz": "", "vf": false}, {"id": "b43", "sec": "Gene Mutations", "kind": "basic", "front": "Which disease is a human example of expanding nucleotide repeats?", "back": "ALS (amyotrophic lateral sclerosis)", "extra": "Lou Gehrig was diagnosed with ALS at age 36.", "added": false, "viz": "", "vf": false}, {"id": "b44", "sec": "Gene Mutations", "kind": "basic", "front": "When does repeat expansion occur?", "back": "During DNA replication", "extra": "", "added": false, "viz": "expand", "vf": false}, {"id": "b45", "sec": "Gene Mutations", "kind": "basic", "front": "In the repeat expansion model, what forms on the new strand?", "back": "A hairpin", "extra": "By intramolecular base pairing.", "added": false, "viz": "expand", "vf": false}, {"id": "b46", "sec": "Gene Mutations", "kind": "basic", "front": "How does the hairpin increase repeat number?", "back": "Part of the template is replicated twice", "extra": "Handwritten: DNA polymerase stutters and reattaches.", "added": false, "viz": "expand", "vf": false}, {"id": "b47", "sec": "Gene Mutations", "kind": "basic", "front": "In Fig. 18.5, the CAG repeat goes from how many copies to how many?", "back": "8 to 13", "extra": "Handwritten note.", "added": false, "viz": "expand", "vf": false}, {"id": "b48", "sec": "Spontaneous Mutations", "kind": "basic", "front": "What are the two kinds of spontaneous mutations?", "back": "Replication or meiosis mistakes; spontaneous chemical changes", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b49", "sec": "Spontaneous Mutations", "kind": "basic", "front": "What causes induced mutations?", "back": "Environmental mutagens: chemical or radiation", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b50", "sec": "Spontaneous Mutations", "kind": "basic", "front": "Are spontaneous mutation rates common or rare?", "back": "Rare", "extra": "Rates vary among organisms and genes. Table 18.3.", "added": false, "viz": "", "vf": false}, {"id": "b51", "sec": "Spontaneous Mutations", "kind": "basic", "front": "What permits mispairing of DNA bases by wobble?", "back": "Flexibility of DNA strands", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b52", "sec": "Spontaneous Mutations", "kind": "basic", "front": "Name the two wobble base pairs in Fig. 18.11.", "back": "Thymine-guanine; cytosine-adenine (protonated)", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b53", "sec": "Spontaneous Mutations", "kind": "basic", "front": "In cytosine-adenine wobble, what is special about adenine?", "back": "It is protonated (extra hydrogen atom)", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b54", "sec": "Spontaneous Mutations", "kind": "basic", "front": "Is Ch 18 wobble the same as Ch 15 wobble?", "back": "No", "extra": "Ch 18: mispairing of DNA bases. Ch 15: codon-anticodon flexibility behind code degeneracy.", "added": false, "viz": "", "vf": false}, {"id": "b55", "sec": "Spontaneous Mutations", "kind": "basic", "front": "How many rounds of replication does wobble need for a permanent error?", "back": "Two", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b56", "sec": "Spontaneous Mutations", "kind": "basic", "front": "DNA wobble mispairing leads to which kind of mutation?", "back": "Base pair substitutions", "extra": "In Fig. 18.12, a transition mutation.", "added": false, "viz": "", "vf": false}, {"id": "b57", "sec": "Spontaneous Mutations", "kind": "basic", "front": "What does strand slippage cause?", "back": "Insertions and deletions", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b58", "sec": "Spontaneous Mutations", "kind": "basic", "front": "In strand slippage, a newly synthesized strand loop gives what?", "back": "Addition of a nucleotide on the new strand", "extra": "Insertion.", "added": false, "viz": "", "vf": false}, {"id": "b59", "sec": "Spontaneous Mutations", "kind": "basic", "front": "In strand slippage, a template strand loop gives what?", "back": "Omission of a nucleotide on the new strand", "extra": "Deletion.", "added": false, "viz": "", "vf": false}, {"id": "b60", "sec": "Spontaneous Mutations", "kind": "basic", "front": "What happens in unequal crossing over?", "back": "Homologous chromosomes misalign during crossing over", "extra": "During meiosis I (prophase I).", "added": false, "viz": "", "vf": false}, {"id": "b61", "sec": "Spontaneous Mutations", "kind": "basic", "front": "What are the two products of unequal crossing over?", "back": "One insertion, one deletion", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b62", "sec": "Spontaneous Mutations", "kind": "basic", "front": "What is depurination?", "back": "Loss of a base from breaking the base-sugar bond", "extra": "The lost base is usually a purine.", "added": false, "viz": "", "vf": false}, {"id": "b63", "sec": "Spontaneous Mutations", "kind": "basic", "front": "Which bases are purines?", "back": "A or G", "extra": "Mnemonic: Pure As Gold.", "added": false, "viz": "", "vf": false}, {"id": "b64", "sec": "Spontaneous Mutations", "kind": "basic", "front": "Which bases are pyrimidines?", "back": "C, U or T", "extra": "Mnemonic: CUT the py.", "added": false, "viz": "", "vf": false}, {"id": "b65", "sec": "Spontaneous Mutations", "kind": "basic", "front": "After depurination, which base is often incorporated opposite the gap?", "back": "Often an A", "extra": "The absence of a base causes a roughly random base to be incorporated.", "added": false, "viz": "", "vf": false}, {"id": "b66", "sec": "Spontaneous Mutations", "kind": "basic", "front": "What is an apurinic site?", "back": "A site missing its purine base", "extra": "It cannot template the new strand. Fig. 18.14.", "added": false, "viz": "", "vf": false}, {"id": "b67", "sec": "Spontaneous Mutations", "kind": "basic", "front": "What is oxidative deamination?", "back": "Loss of an amino group from a base", "extra": "Changes it into a base that pairs differently.", "added": false, "viz": "", "vf": false}, {"id": "b68", "sec": "Spontaneous Mutations", "kind": "basic", "front": "Deamination turns cytosine into what?", "back": "Uracil", "extra": "C\u2022G \u2192 U\u2022A \u2192 T\u2022A.", "added": false, "viz": "", "vf": false}, {"id": "b69", "sec": "Spontaneous Mutations", "kind": "basic", "front": "Deamination turns 5-methylcytosine into what?", "back": "Thymine", "extra": "C\u2022G \u2192 5mC\u2022G \u2192 T\u2022G \u2192 T\u2022A.", "added": false, "viz": "", "vf": false}, {"id": "b70", "sec": "Spontaneous Mutations", "kind": "basic", "front": "What is 5-methylcytosine?", "back": "A naturally occurring modified base in DNA", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b71", "sec": "Spontaneous Mutations", "kind": "basic", "front": "What class of mutation does oxidative deamination of C cause?", "back": "C to T transition", "extra": "Both examples are C to T base pair substitutions = transitions.", "added": false, "viz": "", "vf": false}, {"id": "b72", "sec": "Spontaneous Mutations", "kind": "basic", "front": "What produces reactive forms of oxygen?", "back": "Normal metabolism", "extra": "Elevated by chemical mutagens and ionizing radiation.", "added": false, "viz": "", "vf": false}, {"id": "b73", "sec": "Spontaneous Mutations", "kind": "basic", "front": "Oxidative radicals turn guanine into what?", "back": "8-oxy-7,8-dihydrodeoxyguanine (8-oxoG)", "extra": "May mispair with adenine.", "added": false, "viz": "", "vf": false}, {"id": "b74", "sec": "Spontaneous Mutations", "kind": "basic", "front": "What mutation does 8-oxoG cause?", "back": "G-C to T-A transversion", "extra": "G\u2022C \u2192 8-oxoG\u2022C \u2192 8-oxoG\u2022A \u2192 T\u2022A.", "added": false, "viz": "", "vf": false}, {"id": "b75", "sec": "Induced Mutations", "kind": "basic", "front": "What are base analogs?", "back": "Molecules that mimic normal DNA bases", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b76", "sec": "Induced Mutations", "kind": "basic", "front": "How does 5-bromouracil (5BU) differ from thymine?", "back": "Br atom instead of a methyl on carbon 5", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b77", "sec": "Induced Mutations", "kind": "basic", "front": "What does 5BU normally pair with?", "back": "Adenine", "extra": "Like thymine.", "added": false, "viz": "", "vf": false}, {"id": "b78", "sec": "Induced Mutations", "kind": "basic", "front": "What does ionized 5BU pair with?", "back": "Guanine", "extra": "Through wobble.", "added": false, "viz": "", "vf": false}, {"id": "b79", "sec": "Induced Mutations", "kind": "basic", "front": "What mutation do 5BU and wobble produce?", "back": "A-T to G-C transition", "extra": "Permanent after two additional rounds of replication.", "added": false, "viz": "", "vf": false}, {"id": "b80", "sec": "Induced Mutations", "kind": "basic", "front": "Which mutagen class does EMS belong to?", "back": "Alkylating agents", "extra": "EMS turns guanine into O6-ethylguanine, which pairs with thymine.", "added": false, "viz": "", "vf": false}, {"id": "b81", "sec": "Induced Mutations", "kind": "basic", "front": "What does EMS turn guanine into?", "back": "O6-ethylguanine", "extra": "Pairs with thymine: CG \u2192 TA, TA \u2192 CG.", "added": false, "viz": "", "vf": false}, {"id": "b82", "sec": "Induced Mutations", "kind": "basic", "front": "Nitrous acid causes which kind of chemical change?", "back": "Oxidative deamination", "extra": "Cytosine to uracil, which pairs with adenine.", "added": false, "viz": "", "vf": false}, {"id": "b83", "sec": "Induced Mutations", "kind": "basic", "front": "Hydroxylamine causes which base change?", "back": "CG to TA", "extra": "Makes hydroxylaminocytosine, which pairs with adenine.", "added": false, "viz": "", "vf": false}, {"id": "b84", "sec": "Induced Mutations", "kind": "basic", "front": "What are intercalating agents?", "back": "Flat molecules that slip between bases", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b85", "sec": "Induced Mutations", "kind": "basic", "front": "What do intercalating agents do to DNA?", "back": "Distort the helix and increase strand slippage", "extra": "Causing single-nucleotide insertions and deletions during replication.", "added": false, "viz": "", "vf": false}, {"id": "b86", "sec": "Induced Mutations", "kind": "basic", "front": "Which intercalating agent is shown in Fig. 18.20?", "back": "Acridine orange", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b87", "sec": "Induced Mutations", "kind": "basic", "front": "Who used acridine orange to establish the triplet code?", "back": "Crick and colleagues", "extra": "They generated mutants with single-nucleotide insertions or deletions.", "added": false, "viz": "triplet", "vf": false}, {"id": "b88", "sec": "Induced Mutations", "kind": "basic", "front": "Adding or removing a base shifts what?", "back": "The entire reading frame downstream", "extra": "", "added": false, "viz": "triplet", "vf": false}, {"id": "b89", "sec": "Induced Mutations", "kind": "basic", "front": "How many base additions restored the reading frame?", "back": "Three", "extra": "Restore the reading frame! Established the code was a triplet.", "added": false, "viz": "triplet", "vf": false}, {"id": "b90", "sec": "Induced Mutations", "kind": "basic", "front": "Which types of ionizing radiation are named?", "back": "X-rays and gamma rays", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b91", "sec": "Induced Mutations", "kind": "basic", "front": "How does ionizing radiation damage DNA?", "back": "Oxidizes bases or breaks the DNA backbone", "extra": "It breaks chemical bonds in water and other molecules.", "added": false, "viz": "", "vf": false}, {"id": "b92", "sec": "Induced Mutations", "kind": "basic", "front": "At what wavelength is UV light absorbed by bases?", "back": "About 260 nm", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b93", "sec": "Induced Mutations", "kind": "basic", "front": "What does UV light cause in DNA?", "back": "Pyrimidine dimers, which block replication", "extra": "Covalent bonds join adjacent thymines. Fig. 18.21.", "added": false, "viz": "", "vf": false}, {"id": "b94", "sec": "Phenotypic Effects", "kind": "basic", "front": "What is a forward mutation?", "back": "Wild-type phenotype to mutant phenotype", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b95", "sec": "Phenotypic Effects", "kind": "basic", "front": "What is a reverse mutation?", "back": "Mutant phenotype back to wild-type phenotype", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b96", "sec": "Phenotypic Effects", "kind": "basic", "front": "What is the Ames test used for?", "back": "Testing whether chemicals are mutagens", "extra": "And therefore may cause cancer.", "added": false, "viz": "", "vf": false}, {"id": "b97", "sec": "Phenotypic Effects", "kind": "basic", "front": "The Ames test looks for reversion of what?", "back": "his\u2212 auxotrophic mutant bacteria", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b98", "sec": "Phenotypic Effects", "kind": "basic", "front": "In the Ames test, what does colony growth mean?", "back": "A his\u2212 to his+ mutation: the chemical is a mutagen", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b99", "sec": "Phenotypic Effects", "kind": "basic", "front": "Ames test conclusion: a chemical raising colony numbers is what?", "back": "Mutagenic, and probably carcinogenic", "extra": "Fig. 18.23.", "added": false, "viz": "", "vf": false}, {"id": "b100", "sec": "Phenotypic Effects", "kind": "basic", "front": "What is a missense mutation?", "back": "A sense codon changed to a different amino acid's codon", "extra": "Incorporation of a different amino acid in the protein.", "added": false, "viz": "effects:Missense", "vf": false}, {"id": "b101", "sec": "Phenotypic Effects", "kind": "basic", "front": "What is a nonsense mutation?", "back": "A sense codon changed to a stop codon", "extra": "Premature termination of translation (premature stop).", "added": false, "viz": "effects:Nonsense", "vf": false}, {"id": "b102", "sec": "Phenotypic Effects", "kind": "basic", "front": "What is a silent mutation?", "back": "A synonymous codon change; protein unchanged", "extra": "", "added": false, "viz": "effects:Silent", "vf": false}, {"id": "b103", "sec": "Phenotypic Effects", "kind": "basic", "front": "What is a neutral mutation?", "back": "Changes the protein's sequence but not its function", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b104", "sec": "Phenotypic Effects", "kind": "basic", "front": "What is a loss-of-function mutation?", "back": "Complete or partial loss of protein function", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b105", "sec": "Phenotypic Effects", "kind": "basic", "front": "What is a gain-of-function mutation?", "back": "Causes a new trait or function", "extra": "Or a trait in an inappropriate tissue or at an inappropriate time.", "added": false, "viz": "", "vf": false}, {"id": "b106", "sec": "Phenotypic Effects", "kind": "basic", "front": "What is a lethal mutation?", "back": "One that causes premature death", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b107", "sec": "Phenotypic Effects", "kind": "basic", "front": "What is a conditional mutation?", "back": "Phenotype expressed only under certain conditions", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b108", "sec": "Phenotypic Effects", "kind": "basic", "front": "Siamese cat coloring is an example of what?", "back": "A conditional mutation", "extra": "A recessive temperature-sensitive allele of an albinism gene.", "added": false, "viz": "", "vf": false}, {"id": "b109", "sec": "Phenotypic Effects", "kind": "basic", "front": "Why are Siamese cats dark only at the extremities?", "back": "The mutant protein works only in cooler cells", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b110", "sec": "Phenotypic Effects", "kind": "basic", "front": "What is a suppressor mutation?", "back": "A second mutation masking another without reverting it", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b111", "sec": "Phenotypic Effects", "kind": "basic", "front": "What is an intragenic suppressor mutation?", "back": "A suppressor within the same gene", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b112", "sec": "Phenotypic Effects", "kind": "basic", "front": "What is an intergenic suppressor mutation?", "back": "A suppressor in a different gene", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b113", "sec": "Phenotypic Effects", "kind": "basic", "front": "How can an intragenic suppressor work?", "back": "Restore the wild-type amino acid or compensate", "extra": "Change the codon back, or change a different amino acid so the original effect is compensated.", "added": false, "viz": "", "vf": false}, {"id": "b114", "sec": "Phenotypic Effects", "kind": "basic", "front": "In Fig. 18.8, UUA (Leu) became UUU (Phe). What restored Leu?", "back": "A second change making CUU (Leu)", "extra": "An intragenic suppressor.", "added": false, "viz": "", "vf": false}, {"id": "b115", "sec": "Phenotypic Effects", "kind": "basic", "front": "In Fig. 18.9, what gene carries the intergenic suppressor?", "back": "A gene encoding tyrosine tRNA", "extra": "Its anticodon changed from AUA to AUC.", "added": false, "viz": "", "vf": false}, {"id": "b116", "sec": "Phenotypic Effects", "kind": "basic", "front": "What does the mutant tyrosine tRNA in Fig. 18.9 pair with?", "back": "The stop codon UAG", "extra": "Handwritten: which will not normally happen.", "added": false, "viz": "", "vf": false}, {"id": "b117", "sec": "Phenotypic Effects", "kind": "basic", "front": "What is the result of the Fig. 18.9 intergenic suppressor?", "back": "Tyr is inserted and a full-length protein is made", "extra": "Translation continues past the stop codon.", "added": false, "viz": "", "vf": false}, {"id": "b118", "sec": "DNA Repair", "kind": "basic", "front": "What damage does mismatch repair fix?", "back": "Replication errors: mispaired bases, strand slippage", "extra": "Table 18.5.", "added": false, "viz": "", "vf": false}, {"id": "b119", "sec": "DNA Repair", "kind": "basic", "front": "What detects a mismatch?", "back": "The mismatch repair complex", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b120", "sec": "DNA Repair", "kind": "basic", "front": "Mismatch repair complex interacts with protein bound to what?", "back": "Hemi-methylated GATC", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b121", "sec": "DNA Repair", "kind": "basic", "front": "How does mismatch repair tell old and new strands apart?", "back": "The old strand is methylated; the new is not yet", "extra": "There is a lag in methylation right after replication.", "added": false, "viz": "", "vf": false}, {"id": "b122", "sec": "DNA Repair", "kind": "basic", "front": "Where are nicks made in mismatch repair?", "back": "Next to the unmethylated GATC", "extra": "On the new strand.", "added": false, "viz": "", "vf": false}, {"id": "b123", "sec": "DNA Repair", "kind": "basic", "front": "In mismatch repair, what removes and replaces the strand?", "back": "Exonuclease removes; DNA polymerase replaces", "extra": "DNA ligase seals the nick.", "added": false, "viz": "", "vf": false}, {"id": "b124", "sec": "DNA Repair", "kind": "basic", "front": "What damage does direct repair fix?", "back": "Pyrimidine dimers and specific other alterations", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b125", "sec": "DNA Repair", "kind": "basic", "front": "Does direct repair replace the altered nucleotide?", "back": "No, it restores its correct structure", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b126", "sec": "DNA Repair", "kind": "basic", "front": "Which enzyme directly repairs O6-methylguanine?", "back": "Methyltransferase", "extra": "Removes the CH3, restoring guanine.", "added": false, "viz": "", "vf": false}, {"id": "b127", "sec": "DNA Repair", "kind": "basic", "front": "What damage does base excision repair fix?", "back": "Abnormal bases, modified bases, pyrimidine dimers", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b128", "sec": "DNA Repair", "kind": "basic", "front": "What recognizes and removes a modified base?", "back": "A specific DNA glycosylase", "extra": "E.g. uracil glycosylase removes uracil from DNA.", "added": false, "viz": "", "vf": false}, {"id": "b129", "sec": "DNA Repair", "kind": "basic", "front": "Removing the damaged base creates what?", "back": "An apurinic or apyrimidinic (AP) site", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b130", "sec": "DNA Repair", "kind": "basic", "front": "Which enzyme cuts next to the AP site?", "back": "AP endonuclease", "extra": "It cleaves the phosphodiester bond on the 5\u2032 side.", "added": false, "viz": "", "vf": false}, {"id": "b131", "sec": "DNA Repair", "kind": "basic", "front": "In base excision repair, what fills in the nucleotide?", "back": "DNA polymerase", "extra": "It recognizes the nick; DNA ligase seals it.", "added": false, "viz": "", "vf": false}, {"id": "b132", "sec": "DNA Repair", "kind": "basic", "front": "What damage does nucleotide excision repair fix?", "back": "Bulky distortions in the double helix", "extra": "E.g. pyrimidine dimers.", "added": false, "viz": "", "vf": false}, {"id": "b133", "sec": "DNA Repair", "kind": "basic", "front": "In nucleotide excision repair, what keeps the strands separated?", "back": "Single-strand DNA binding proteins", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b134", "sec": "DNA Repair", "kind": "basic", "front": "In nucleotide excision repair, where is the damaged strand cut?", "back": "On both sides of the damage", "extra": "Helicases help remove it.", "added": false, "viz": "", "vf": false}, {"id": "b135", "sec": "DNA Repair", "kind": "basic", "front": "Which repair systems fix double-strand breaks?", "back": "Homologous recombination; nonhomologous end joining", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b136", "sec": "DNA Repair", "kind": "basic", "front": "In homologous recombination, what replaces the broken region?", "back": "Sequence from the sister chromatid", "extra": "Handwritten: the preferred method.", "added": false, "viz": "", "vf": false}, {"id": "b137", "sec": "DNA Repair", "kind": "basic", "front": "What happens in nonhomologous end joining?", "back": "Proteins bind and join the broken ends", "extra": "Very error prone, but may allow the cell to survive.", "added": false, "viz": "", "vf": false}, {"id": "b138", "sec": "DNA Repair", "kind": "basic", "front": "What can nonhomologous end joining produce?", "back": "Deletions, duplications, inversions, translocations", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b139", "sec": "DNA Repair", "kind": "basic", "front": "Inheriting a faulty DNA repair allele raises what?", "back": "The somatic mutation rate", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b140", "sec": "DNA Repair", "kind": "basic", "front": "BRCA1 and BRCA2 are involved in which repair pathway?", "back": "Homologous recombination", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b141", "sec": "DNA Repair", "kind": "basic", "front": "If BRCA1 or BRCA2 is mutated, how is DNA repaired?", "back": "Through nonhomologous end joining", "extra": "Handwritten: higher mutation chance.", "added": false, "viz": "", "vf": false}, {"id": "b142", "sec": "DNA Repair", "kind": "basic", "front": "A mutant BRCA1 or BRCA2 allele raises risk for which cancers?", "back": "Breast and ovarian cancer", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b143", "sec": "Transposable Elements", "kind": "basic", "front": "What are transposable elements?", "back": "DNA sequences that jump between genomic locations", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b144", "sec": "Transposable Elements", "kind": "basic", "front": "Why can transposition be harmful?", "back": "It can be mutagenic and cause genomic instability", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b145", "sec": "Transposable Elements", "kind": "basic", "front": "What share of the human genome is transposable elements?", "back": "46%", "extra": "Protein coding is 3%. Handwritten: dark genome.", "added": false, "viz": "", "vf": false}, {"id": "b146", "sec": "Transposable Elements", "kind": "basic", "front": "How do Class I retrotransposons transpose?", "back": "By an RNA intermediate", "extra": "Copy and paste.", "added": false, "viz": "te:retro", "vf": false}, {"id": "b147", "sec": "Transposable Elements", "kind": "basic", "front": "Which gene do retrotransposons encode?", "back": "Reverse transcriptase (and endonuclease)", "extra": "", "added": false, "viz": "te:retro", "vf": false}, {"id": "b148", "sec": "Transposable Elements", "kind": "basic", "front": "What does the retrotransposon endonuclease do?", "back": "Nicks DNA so the copy can integrate", "extra": "", "added": false, "viz": "te:retro", "vf": false}, {"id": "b149", "sec": "Transposable Elements", "kind": "basic", "front": "How do Class II DNA transposons transpose?", "back": "Through DNA, cut and paste", "extra": "Replicative or nonreplicative.", "added": false, "viz": "te:dna", "vf": false}, {"id": "b150", "sec": "Transposable Elements", "kind": "basic", "front": "Which gene do DNA transposons encode?", "back": "Transposase", "extra": "", "added": false, "viz": "te:dna", "vf": false}, {"id": "b151", "sec": "Transposable Elements", "kind": "basic", "front": "What does transposase do?", "back": "Binds inverted repeats and cuts the DNA", "extra": "The transposon then inserts at a new site.", "added": false, "viz": "te:dna", "vf": false}, {"id": "b152", "sec": "Transposable Elements", "kind": "basic", "front": "Which repeats end a DNA transposon?", "back": "Short terminal inverted repeats", "extra": "Retrotransposons have long terminal direct repeats.", "added": false, "viz": "", "vf": false}, {"id": "b153", "sec": "Transposable Elements", "kind": "basic", "front": "Which human element is a Class I retrotransposon example?", "back": "Alu", "extra": "Also Ty (yeast) and copia (Drosophila).", "added": false, "viz": "", "vf": false}, {"id": "b154", "sec": "Transposable Elements", "kind": "basic", "front": "Name a DNA transposon in corn.", "back": "Ac and Ds", "extra": "Others: IS1, Tn3 (E. coli), P elements (Drosophila).", "added": false, "viz": "", "vf": false}, {"id": "b155", "sec": "Transposable Elements", "kind": "basic", "front": "How do the two classes of transposable elements differ?", "back": "Genes encoded and how they jump", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b156", "sec": "Transposable Elements", "kind": "basic", "front": "What does the Ac element have that Ds lacks?", "back": "An intact transposase gene", "extra": "Handwritten: allows for cutting.", "added": false, "viz": "acds", "vf": false}, {"id": "b157", "sec": "Transposable Elements", "kind": "basic", "front": "How does a Ds element jump?", "back": "It hijacks the Ac transposase", "extra": "Ds transposase genes are truncated and not functional.", "added": false, "viz": "acds", "vf": false}, {"id": "b158", "sec": "Transposable Elements", "kind": "basic", "front": "What is a non-autonomous transposable element?", "back": "One that cannot jump on its own, like Ds", "extra": "", "added": false, "viz": "acds", "vf": false}, {"id": "b159", "sec": "Transposable Elements", "kind": "basic", "front": "What do some bacterial transposons such as Tn10 carry?", "back": "Antibiotic resistance genes", "extra": "Tn10 carries tetR between IS10L and IS10R.", "added": false, "viz": "", "vf": false}, {"id": "b160", "sec": "Transposable Elements", "kind": "basic", "front": "Why do antibiotic-resistance transposons matter?", "back": "They make transferable multi-drug resistant DNA", "extra": "It can be transmitted from one bacterium to another.", "added": false, "viz": "", "vf": false}, {"id": "b161", "sec": "Transposable Elements", "kind": "basic", "front": "How can a transposable element disrupt a gene?", "back": "Inserting into or right next to it", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b162", "sec": "Transposable Elements", "kind": "basic", "front": "Why are white grapes white?", "back": "A Gret1 retrotransposon near VvmybA1 blocks anthocyanin", "extra": "Fig. 18.27.", "added": false, "viz": "", "vf": false}, {"id": "b163", "sec": "Transposable Elements", "kind": "basic", "front": "Why are red grapes partly colored again?", "back": "Most of the retrotransposon was removed", "extra": "A piece is left behind, so anthocyanin is partly restored.", "added": false, "viz": "", "vf": false}, {"id": "b164", "sec": "Transposable Elements", "kind": "basic", "front": "What is LINE-1?", "back": "An autonomous retrotransposon in humans", "extra": "We have about 150 full-length copies.", "added": false, "viz": "", "vf": false}, {"id": "b165", "sec": "Transposable Elements", "kind": "basic", "front": "About how many full-length LINE-1 copies are in our genome?", "back": "About 150", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "b166", "sec": "Transposable Elements", "kind": "basic", "front": "LINE-1 retrotransposition is a source of what?", "back": "DNA damage and genome instability", "extra": "Its proteins are biomarkers for cancer.", "added": false, "viz": "", "vf": false}, {"id": "c0_1", "sec": "Mutation Basics", "kind": "cloze", "front": "<div class=\"list\">Mutation categories:<br>1. <span class=\"cz gap\">?</span>: large scale, multiple genes<br>2. Gene mutations: small changes, single genes</div>", "back": "<div class=\"list\">Mutation categories:<br>1. <span class=\"cz\">Chromosomal rearrangements</span>: large scale, multiple genes<br>2. Gene mutations: small changes, single genes</div>", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "c0_2", "sec": "Mutation Basics", "kind": "cloze", "front": "<div class=\"list\">Mutation categories:<br>1. Chromosomal rearrangements: large scale, multiple genes<br>2. <span class=\"cz gap\">?</span>: small changes, single genes</div>", "back": "<div class=\"list\">Mutation categories:<br>1. Chromosomal rearrangements: large scale, multiple genes<br>2. <span class=\"cz\">Gene mutations</span>: small changes, single genes</div>", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "c1_1", "sec": "Chromosome Rearrangements", "kind": "cloze", "front": "<div class=\"list\">Chromosomal rearrangements (Ch 8.2):<br>1. <span class=\"cz gap\">?</span><br>2. Duplication<br>3. Inversion<br>4. Translocation</div>", "back": "<div class=\"list\">Chromosomal rearrangements (Ch 8.2):<br>1. <span class=\"cz\">Deletion</span><br>2. Duplication<br>3. Inversion<br>4. Translocation</div>", "extra": "Fig. 8.4.", "added": false, "viz": "rearr", "vf": false}, {"id": "c1_2", "sec": "Chromosome Rearrangements", "kind": "cloze", "front": "<div class=\"list\">Chromosomal rearrangements (Ch 8.2):<br>1. Deletion<br>2. <span class=\"cz gap\">?</span><br>3. Inversion<br>4. Translocation</div>", "back": "<div class=\"list\">Chromosomal rearrangements (Ch 8.2):<br>1. Deletion<br>2. <span class=\"cz\">Duplication</span><br>3. Inversion<br>4. Translocation</div>", "extra": "Fig. 8.4.", "added": false, "viz": "rearr", "vf": false}, {"id": "c1_3", "sec": "Chromosome Rearrangements", "kind": "cloze", "front": "<div class=\"list\">Chromosomal rearrangements (Ch 8.2):<br>1. Deletion<br>2. Duplication<br>3. <span class=\"cz gap\">?</span><br>4. Translocation</div>", "back": "<div class=\"list\">Chromosomal rearrangements (Ch 8.2):<br>1. Deletion<br>2. Duplication<br>3. <span class=\"cz\">Inversion</span><br>4. Translocation</div>", "extra": "Fig. 8.4.", "added": false, "viz": "rearr", "vf": false}, {"id": "c1_4", "sec": "Chromosome Rearrangements", "kind": "cloze", "front": "<div class=\"list\">Chromosomal rearrangements (Ch 8.2):<br>1. Deletion<br>2. Duplication<br>3. Inversion<br>4. <span class=\"cz gap\">?</span></div>", "back": "<div class=\"list\">Chromosomal rearrangements (Ch 8.2):<br>1. Deletion<br>2. Duplication<br>3. Inversion<br>4. <span class=\"cz\">Translocation</span></div>", "extra": "Fig. 8.4.", "added": false, "viz": "rearr", "vf": false}, {"id": "c2_1", "sec": "Gene Mutations", "kind": "cloze", "front": "<div class=\"list\">Gene mutations (Ch 18.1):<br>1. <span class=\"cz gap\">?</span><br>2. Insertions/deletions (indels)<br>3. Expanding nucleotide repeats</div>", "back": "<div class=\"list\">Gene mutations (Ch 18.1):<br>1. <span class=\"cz\">Base pair substitutions</span><br>2. Insertions/deletions (indels)<br>3. Expanding nucleotide repeats</div>", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "c2_2", "sec": "Gene Mutations", "kind": "cloze", "front": "<div class=\"list\">Gene mutations (Ch 18.1):<br>1. Base pair substitutions<br>2. <span class=\"cz gap\">?</span> (indels)<br>3. Expanding nucleotide repeats</div>", "back": "<div class=\"list\">Gene mutations (Ch 18.1):<br>1. Base pair substitutions<br>2. <span class=\"cz\">Insertions/deletions</span> (indels)<br>3. Expanding nucleotide repeats</div>", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "c2_3", "sec": "Gene Mutations", "kind": "cloze", "front": "<div class=\"list\">Gene mutations (Ch 18.1):<br>1. Base pair substitutions<br>2. Insertions/deletions (indels)<br>3. <span class=\"cz gap\">?</span></div>", "back": "<div class=\"list\">Gene mutations (Ch 18.1):<br>1. Base pair substitutions<br>2. Insertions/deletions (indels)<br>3. <span class=\"cz\">Expanding nucleotide repeats</span></div>", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "c3_1", "sec": "Gene Mutations", "kind": "cloze", "front": "<div class=\"list\">Repeat expansion model:<br>1. A <span class=\"cz gap\">?</span> forms on the new strand<br>2. Part of the template is replicated twice<br>3. The longer strand is used as a template<br>4. DNA ends up with extra CAG copies</div>", "back": "<div class=\"list\">Repeat expansion model:<br>1. A <span class=\"cz\">hairpin</span> forms on the new strand<br>2. Part of the template is replicated twice<br>3. The longer strand is used as a template<br>4. DNA ends up with extra CAG copies</div>", "extra": "Fig. 18.5.", "added": false, "viz": "expand", "vf": false}, {"id": "c3_2", "sec": "Gene Mutations", "kind": "cloze", "front": "<div class=\"list\">Repeat expansion model:<br>1. A hairpin forms on the new strand<br>2. Part of the template is <span class=\"cz gap\">?</span><br>3. The longer strand is used as a template<br>4. DNA ends up with extra CAG copies</div>", "back": "<div class=\"list\">Repeat expansion model:<br>1. A hairpin forms on the new strand<br>2. Part of the template is <span class=\"cz\">replicated twice</span><br>3. The longer strand is used as a template<br>4. DNA ends up with extra CAG copies</div>", "extra": "Fig. 18.5.", "added": false, "viz": "expand", "vf": false}, {"id": "c3_3", "sec": "Gene Mutations", "kind": "cloze", "front": "<div class=\"list\">Repeat expansion model:<br>1. A hairpin forms on the new strand<br>2. Part of the template is replicated twice<br>3. The longer strand is used as a <span class=\"cz gap\">?</span><br>4. DNA ends up with extra CAG copies</div>", "back": "<div class=\"list\">Repeat expansion model:<br>1. A hairpin forms on the new strand<br>2. Part of the template is replicated twice<br>3. The longer strand is used as a <span class=\"cz\">template</span><br>4. DNA ends up with extra CAG copies</div>", "extra": "Fig. 18.5.", "added": false, "viz": "expand", "vf": false}, {"id": "c3_4", "sec": "Gene Mutations", "kind": "cloze", "front": "<div class=\"list\">Repeat expansion model:<br>1. A hairpin forms on the new strand<br>2. Part of the template is replicated twice<br>3. The longer strand is used as a template<br>4. DNA ends up with extra <span class=\"cz gap\">?</span> copies</div>", "back": "<div class=\"list\">Repeat expansion model:<br>1. A hairpin forms on the new strand<br>2. Part of the template is replicated twice<br>3. The longer strand is used as a template<br>4. DNA ends up with extra <span class=\"cz\">CAG</span> copies</div>", "extra": "Fig. 18.5.", "added": false, "viz": "expand", "vf": false}, {"id": "c4_1", "sec": "Spontaneous Mutations", "kind": "cloze", "front": "<div class=\"list\">Spontaneous mistakes in replication or meiosis:<br><span class=\"cz gap\">?</span><br>Wobble<br>Strand slippage<br>Unequal crossing over</div>", "back": "<div class=\"list\">Spontaneous mistakes in replication or meiosis:<br><span class=\"cz\">Expanding nucleotide repeats</span><br>Wobble<br>Strand slippage<br>Unequal crossing over</div>", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "c4_2", "sec": "Spontaneous Mutations", "kind": "cloze", "front": "<div class=\"list\">Spontaneous mistakes in replication or meiosis:<br>Expanding nucleotide repeats<br><span class=\"cz gap\">?</span><br>Strand slippage<br>Unequal crossing over</div>", "back": "<div class=\"list\">Spontaneous mistakes in replication or meiosis:<br>Expanding nucleotide repeats<br><span class=\"cz\">Wobble</span><br>Strand slippage<br>Unequal crossing over</div>", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "c4_3", "sec": "Spontaneous Mutations", "kind": "cloze", "front": "<div class=\"list\">Spontaneous mistakes in replication or meiosis:<br>Expanding nucleotide repeats<br>Wobble<br><span class=\"cz gap\">?</span><br>Unequal crossing over</div>", "back": "<div class=\"list\">Spontaneous mistakes in replication or meiosis:<br>Expanding nucleotide repeats<br>Wobble<br><span class=\"cz\">Strand slippage</span><br>Unequal crossing over</div>", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "c4_4", "sec": "Spontaneous Mutations", "kind": "cloze", "front": "<div class=\"list\">Spontaneous mistakes in replication or meiosis:<br>Expanding nucleotide repeats<br>Wobble<br>Strand slippage<br><span class=\"cz gap\">?</span></div>", "back": "<div class=\"list\">Spontaneous mistakes in replication or meiosis:<br>Expanding nucleotide repeats<br>Wobble<br>Strand slippage<br><span class=\"cz\">Unequal crossing over</span></div>", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "c5_1", "sec": "Spontaneous Mutations", "kind": "cloze", "front": "<div class=\"list\">Spontaneous chemical changes:<br><span class=\"cz gap\">?</span><br>Oxidative deamination<br>Oxidation by reactive forms of oxygen</div>", "back": "<div class=\"list\">Spontaneous chemical changes:<br><span class=\"cz\">Depurination</span><br>Oxidative deamination<br>Oxidation by reactive forms of oxygen</div>", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "c5_2", "sec": "Spontaneous Mutations", "kind": "cloze", "front": "<div class=\"list\">Spontaneous chemical changes:<br>Depurination<br><span class=\"cz gap\">?</span><br>Oxidation by reactive forms of oxygen</div>", "back": "<div class=\"list\">Spontaneous chemical changes:<br>Depurination<br><span class=\"cz\">Oxidative deamination</span><br>Oxidation by reactive forms of oxygen</div>", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "c5_3", "sec": "Spontaneous Mutations", "kind": "cloze", "front": "<div class=\"list\">Spontaneous chemical changes:<br>Depurination<br>Oxidative deamination<br><span class=\"cz gap\">?</span></div>", "back": "<div class=\"list\">Spontaneous chemical changes:<br>Depurination<br>Oxidative deamination<br><span class=\"cz\">Oxidation by reactive forms of oxygen</span></div>", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "c6_1", "sec": "Induced Mutations", "kind": "cloze", "front": "<div class=\"list\">Chemical mutagens (Fig. 18.18):<br><span class=\"cz gap\">?</span> (EMS)<br>Oxidative deamination (nitrous acid)<br>Hydroxylamine</div>", "back": "<div class=\"list\">Chemical mutagens (Fig. 18.18):<br><span class=\"cz\">Alkylating agents</span> (EMS)<br>Oxidative deamination (nitrous acid)<br>Hydroxylamine</div>", "extra": "All cause base pair substitutions.", "added": false, "viz": "", "vf": false}, {"id": "c6_2", "sec": "Induced Mutations", "kind": "cloze", "front": "<div class=\"list\">Chemical mutagens (Fig. 18.18):<br>Alkylating agents (EMS)<br><span class=\"cz gap\">?</span> (nitrous acid)<br>Hydroxylamine</div>", "back": "<div class=\"list\">Chemical mutagens (Fig. 18.18):<br>Alkylating agents (EMS)<br><span class=\"cz\">Oxidative deamination</span> (nitrous acid)<br>Hydroxylamine</div>", "extra": "All cause base pair substitutions.", "added": false, "viz": "", "vf": false}, {"id": "c6_3", "sec": "Induced Mutations", "kind": "cloze", "front": "<div class=\"list\">Chemical mutagens (Fig. 18.18):<br>Alkylating agents (EMS)<br>Oxidative deamination (nitrous acid)<br><span class=\"cz gap\">?</span></div>", "back": "<div class=\"list\">Chemical mutagens (Fig. 18.18):<br>Alkylating agents (EMS)<br>Oxidative deamination (nitrous acid)<br><span class=\"cz\">Hydroxylamine</span></div>", "extra": "All cause base pair substitutions.", "added": false, "viz": "", "vf": false}, {"id": "c7_1", "sec": "Induced Mutations", "kind": "cloze", "front": "<div class=\"list\">Radiation:<br><span class=\"cz gap\">?</span> (X-rays, gamma rays): oxidize bases or break backbone<br>UV (about 260 nm): pyrimidine dimers</div>", "back": "<div class=\"list\">Radiation:<br><span class=\"cz\">Ionizing</span> (X-rays, gamma rays): oxidize bases or break backbone<br>UV (about 260 nm): pyrimidine dimers</div>", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "c7_2", "sec": "Induced Mutations", "kind": "cloze", "front": "<div class=\"list\">Radiation:<br>Ionizing (X-rays, gamma rays): oxidize bases or break backbone<br><span class=\"cz gap\">?</span> (about 260 nm): pyrimidine dimers</div>", "back": "<div class=\"list\">Radiation:<br>Ionizing (X-rays, gamma rays): oxidize bases or break backbone<br><span class=\"cz\">UV</span> (about 260 nm): pyrimidine dimers</div>", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "c8_1", "sec": "Phenotypic Effects", "kind": "cloze", "front": "<div class=\"list\">Effects on protein (Fig. 18.6):<br><span class=\"cz gap\">?</span>: different amino acid<br>Nonsense: premature stop<br>Silent: same amino acid</div>", "back": "<div class=\"list\">Effects on protein (Fig. 18.6):<br><span class=\"cz\">Missense</span>: different amino acid<br>Nonsense: premature stop<br>Silent: same amino acid</div>", "extra": "", "added": false, "viz": "effects", "vf": false}, {"id": "c8_2", "sec": "Phenotypic Effects", "kind": "cloze", "front": "<div class=\"list\">Effects on protein (Fig. 18.6):<br>Missense: different amino acid<br><span class=\"cz gap\">?</span>: premature stop<br>Silent: same amino acid</div>", "back": "<div class=\"list\">Effects on protein (Fig. 18.6):<br>Missense: different amino acid<br><span class=\"cz\">Nonsense</span>: premature stop<br>Silent: same amino acid</div>", "extra": "", "added": false, "viz": "effects", "vf": false}, {"id": "c8_3", "sec": "Phenotypic Effects", "kind": "cloze", "front": "<div class=\"list\">Effects on protein (Fig. 18.6):<br>Missense: different amino acid<br>Nonsense: premature stop<br><span class=\"cz gap\">?</span>: same amino acid</div>", "back": "<div class=\"list\">Effects on protein (Fig. 18.6):<br>Missense: different amino acid<br>Nonsense: premature stop<br><span class=\"cz\">Silent</span>: same amino acid</div>", "extra": "", "added": false, "viz": "effects", "vf": false}, {"id": "c9_1", "sec": "Phenotypic Effects", "kind": "cloze", "front": "Additional classes: <span class=\"cz gap\">?</span>, loss-of-function, gain-of-function, lethal", "back": "Additional classes: <span class=\"cz\">neutral</span>, loss-of-function, gain-of-function, lethal", "extra": "Table 18.2.", "added": false, "viz": "", "vf": false}, {"id": "c9_2", "sec": "Phenotypic Effects", "kind": "cloze", "front": "Additional classes: neutral, <span class=\"cz gap\">?</span>, gain-of-function, lethal", "back": "Additional classes: neutral, <span class=\"cz\">loss-of-function</span>, gain-of-function, lethal", "extra": "Table 18.2.", "added": false, "viz": "", "vf": false}, {"id": "c9_3", "sec": "Phenotypic Effects", "kind": "cloze", "front": "Additional classes: neutral, loss-of-function, <span class=\"cz gap\">?</span>, lethal", "back": "Additional classes: neutral, loss-of-function, <span class=\"cz\">gain-of-function</span>, lethal", "extra": "Table 18.2.", "added": false, "viz": "", "vf": false}, {"id": "c9_4", "sec": "Phenotypic Effects", "kind": "cloze", "front": "Additional classes: neutral, loss-of-function, gain-of-function, <span class=\"cz gap\">?</span>", "back": "Additional classes: neutral, loss-of-function, gain-of-function, <span class=\"cz\">lethal</span>", "extra": "Table 18.2.", "added": false, "viz": "", "vf": false}, {"id": "c10_1", "sec": "Phenotypic Effects", "kind": "cloze", "front": "<div class=\"list\">Suppressor mutations:<br><span class=\"cz gap\">?</span>: within the same gene<br>Intergenic: within a different gene</div>", "back": "<div class=\"list\">Suppressor mutations:<br><span class=\"cz\">Intragenic</span>: within the same gene<br>Intergenic: within a different gene</div>", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "c10_2", "sec": "Phenotypic Effects", "kind": "cloze", "front": "<div class=\"list\">Suppressor mutations:<br>Intragenic: within the same gene<br><span class=\"cz gap\">?</span>: within a different gene</div>", "back": "<div class=\"list\">Suppressor mutations:<br>Intragenic: within the same gene<br><span class=\"cz\">Intergenic</span>: within a different gene</div>", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "c11_1", "sec": "DNA Repair", "kind": "cloze", "front": "<div class=\"list\">DNA repair systems (Table 18.5):<br><span class=\"cz gap\">?</span><br>Direct<br>Base excision<br>Nucleotide excision<br>Homologous recombination<br>Nonhomologous end joining</div>", "back": "<div class=\"list\">DNA repair systems (Table 18.5):<br><span class=\"cz\">Mismatch</span><br>Direct<br>Base excision<br>Nucleotide excision<br>Homologous recombination<br>Nonhomologous end joining</div>", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "c11_2", "sec": "DNA Repair", "kind": "cloze", "front": "<div class=\"list\">DNA repair systems (Table 18.5):<br>Mismatch<br><span class=\"cz gap\">?</span><br>Base excision<br>Nucleotide excision<br>Homologous recombination<br>Nonhomologous end joining</div>", "back": "<div class=\"list\">DNA repair systems (Table 18.5):<br>Mismatch<br><span class=\"cz\">Direct</span><br>Base excision<br>Nucleotide excision<br>Homologous recombination<br>Nonhomologous end joining</div>", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "c11_3", "sec": "DNA Repair", "kind": "cloze", "front": "<div class=\"list\">DNA repair systems (Table 18.5):<br>Mismatch<br>Direct<br><span class=\"cz gap\">?</span><br>Nucleotide excision<br>Homologous recombination<br>Nonhomologous end joining</div>", "back": "<div class=\"list\">DNA repair systems (Table 18.5):<br>Mismatch<br>Direct<br><span class=\"cz\">Base excision</span><br>Nucleotide excision<br>Homologous recombination<br>Nonhomologous end joining</div>", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "c11_4", "sec": "DNA Repair", "kind": "cloze", "front": "<div class=\"list\">DNA repair systems (Table 18.5):<br>Mismatch<br>Direct<br>Base excision<br><span class=\"cz gap\">?</span><br>Homologous recombination<br>Nonhomologous end joining</div>", "back": "<div class=\"list\">DNA repair systems (Table 18.5):<br>Mismatch<br>Direct<br>Base excision<br><span class=\"cz\">Nucleotide excision</span><br>Homologous recombination<br>Nonhomologous end joining</div>", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "c11_5", "sec": "DNA Repair", "kind": "cloze", "front": "<div class=\"list\">DNA repair systems (Table 18.5):<br>Mismatch<br>Direct<br>Base excision<br>Nucleotide excision<br><span class=\"cz gap\">?</span><br>Nonhomologous end joining</div>", "back": "<div class=\"list\">DNA repair systems (Table 18.5):<br>Mismatch<br>Direct<br>Base excision<br>Nucleotide excision<br><span class=\"cz\">Homologous recombination</span><br>Nonhomologous end joining</div>", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "c11_6", "sec": "DNA Repair", "kind": "cloze", "front": "<div class=\"list\">DNA repair systems (Table 18.5):<br>Mismatch<br>Direct<br>Base excision<br>Nucleotide excision<br>Homologous recombination<br><span class=\"cz gap\">?</span></div>", "back": "<div class=\"list\">DNA repair systems (Table 18.5):<br>Mismatch<br>Direct<br>Base excision<br>Nucleotide excision<br>Homologous recombination<br><span class=\"cz\">Nonhomologous end joining</span></div>", "extra": "", "added": false, "viz": "", "vf": false}, {"id": "c12_1", "sec": "DNA Repair", "kind": "cloze", "front": "<div class=\"list\">Base excision repair:<br>1. <span class=\"cz gap\">?</span> removes the damaged base<br>2. AP endonuclease cleaves next to the AP site<br>3. DNA polymerase adds nucleotides<br>4. DNA ligase seals the nick</div>", "back": "<div class=\"list\">Base excision repair:<br>1. <span class=\"cz\">DNA glycosylase</span> removes the damaged base<br>2. AP endonuclease cleaves next to the AP site<br>3. DNA polymerase adds nucleotides<br>4. DNA ligase seals the nick</div>", "extra": "Fig. 18.38.", "added": false, "viz": "", "vf": false}, {"id": "c12_2", "sec": "DNA Repair", "kind": "cloze", "front": "<div class=\"list\">Base excision repair:<br>1. DNA glycosylase removes the damaged base<br>2. <span class=\"cz gap\">?</span> cleaves next to the AP site<br>3. DNA polymerase adds nucleotides<br>4. DNA ligase seals the nick</div>", "back": "<div class=\"list\">Base excision repair:<br>1. DNA glycosylase removes the damaged base<br>2. <span class=\"cz\">AP endonuclease</span> cleaves next to the AP site<br>3. DNA polymerase adds nucleotides<br>4. DNA ligase seals the nick</div>", "extra": "Fig. 18.38.", "added": false, "viz": "", "vf": false}, {"id": "c12_3", "sec": "DNA Repair", "kind": "cloze", "front": "<div class=\"list\">Base excision repair:<br>1. DNA glycosylase removes the damaged base<br>2. AP endonuclease cleaves next to the AP site<br>3. <span class=\"cz gap\">?</span> adds nucleotides<br>4. DNA ligase seals the nick</div>", "back": "<div class=\"list\">Base excision repair:<br>1. DNA glycosylase removes the damaged base<br>2. AP endonuclease cleaves next to the AP site<br>3. <span class=\"cz\">DNA polymerase</span> adds nucleotides<br>4. DNA ligase seals the nick</div>", "extra": "Fig. 18.38.", "added": false, "viz": "", "vf": false}, {"id": "c12_4", "sec": "DNA Repair", "kind": "cloze", "front": "<div class=\"list\">Base excision repair:<br>1. DNA glycosylase removes the damaged base<br>2. AP endonuclease cleaves next to the AP site<br>3. DNA polymerase adds nucleotides<br>4. <span class=\"cz gap\">?</span> seals the nick</div>", "back": "<div class=\"list\">Base excision repair:<br>1. DNA glycosylase removes the damaged base<br>2. AP endonuclease cleaves next to the AP site<br>3. DNA polymerase adds nucleotides<br>4. <span class=\"cz\">DNA ligase</span> seals the nick</div>", "extra": "Fig. 18.38.", "added": false, "viz": "", "vf": false}, {"id": "c13_1", "sec": "Transposable Elements", "kind": "cloze", "front": "<div class=\"list\">Transposable element classes:<br>Class I <span class=\"cz gap\">?</span>: RNA intermediate, copy and paste<br>Class II DNA transposons: DNA, cut and paste</div>", "back": "<div class=\"list\">Transposable element classes:<br>Class I <span class=\"cz\">retrotransposons</span>: RNA intermediate, copy and paste<br>Class II DNA transposons: DNA, cut and paste</div>", "extra": "Table 18.4.", "added": false, "viz": "te", "vf": false}, {"id": "c13_2", "sec": "Transposable Elements", "kind": "cloze", "front": "<div class=\"list\">Transposable element classes:<br>Class I retrotransposons: RNA intermediate, copy and paste<br>Class II <span class=\"cz gap\">?</span>: DNA, cut and paste</div>", "back": "<div class=\"list\">Transposable element classes:<br>Class I retrotransposons: RNA intermediate, copy and paste<br>Class II <span class=\"cz\">DNA transposons</span>: DNA, cut and paste</div>", "extra": "Table 18.4.", "added": false, "viz": "te", "vf": false}, {"id": "d_rearr_Deletion", "sec": "Chromosome Rearrangements", "kind": "diagram", "front": "Name the hidden rearrangement.", "back": "Deletion", "extra": "", "added": false, "viz": "rearr:Deletion", "quiz": "Deletion", "vf": true}, {"id": "d_rearr_Duplication", "sec": "Chromosome Rearrangements", "kind": "diagram", "front": "Name the hidden rearrangement.", "back": "Duplication", "extra": "", "added": false, "viz": "rearr:Duplication", "quiz": "Duplication", "vf": true}, {"id": "d_rearr_Inversion", "sec": "Chromosome Rearrangements", "kind": "diagram", "front": "Name the hidden rearrangement.", "back": "Inversion", "extra": "", "added": false, "viz": "rearr:Inversion", "quiz": "Inversion", "vf": true}, {"id": "d_rearr_Translocation", "sec": "Chromosome Rearrangements", "kind": "diagram", "front": "Name the hidden rearrangement.", "back": "Translocation", "extra": "", "added": false, "viz": "rearr:Translocation", "quiz": "Translocation", "vf": true}, {"id": "d_effects_Missense", "sec": "Phenotypic Effects", "kind": "diagram", "front": "Name the hidden type of mutation.", "back": "Missense", "extra": "", "added": false, "viz": "effects:Missense", "quiz": "Missense", "vf": true}, {"id": "d_effects_Nonsense", "sec": "Phenotypic Effects", "kind": "diagram", "front": "Name the hidden type of mutation.", "back": "Nonsense", "extra": "", "added": false, "viz": "effects:Nonsense", "quiz": "Nonsense", "vf": true}, {"id": "d_effects_Silent", "sec": "Phenotypic Effects", "kind": "diagram", "front": "Name the hidden type of mutation.", "back": "Silent", "extra": "", "added": false, "viz": "effects:Silent", "quiz": "Silent", "vf": true}], "paths": {}};
+const CARDS = DATA.cards, P = DATA.paths;
+const SECS = ["Mutation Basics", "Chromosome Rearrangements", "Gene Mutations", "Spontaneous Mutations", "Induced Mutations", "Phenotypic Effects", "DNA Repair", "Transposable Elements"];
+const slug = s => s.toLowerCase().replace(/ /g,"-");
+const cvar = s => `var(--s-${slug(s)})`;
+const KEY = "studytime:genetics-ch18-mutations-dna-repair";
+const DAY = 864e5, INTERVALS = [0,1,2,4,7,14,30];
+let store = {cards:{}, secs:SECS.slice(), mode:"due"};
+try { const s = JSON.parse(localStorage.getItem(KEY)||"null"); if (s) store = Object.assign(store, s); } catch(e){}
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(store)); } catch(e){} };
+const st = id => store.cards[id] || {box:0, due:0, seen:0};
+const esc = s => s.replace(/&/g,"&amp;").replace(/</g,"&lt;");
+
+/* ---------- diagrams ---------- */
+let uid = 0;
+function svgWrap(inner, h=340){ const id = "m"+(++uid);
+  return `<svg viewBox="0 0 600 ${h}" role="img" aria-label="diagram"><defs>
+  <marker id="${id}i" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" style="fill:var(--ink)"/></marker>
+  <marker id="${id}a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" style="fill:var(--c)"/></marker>
+  </defs>${inner.replace(/MK_I/g,`url(#${id}i)`).replace(/MK_A/g,`url(#${id}a)`)}</svg>`; }
+const INK="var(--ink)", ACC="var(--c)", MUT="var(--muted)";
+function label(x,y,t,o,anchor="middle"){
+  const st = o.quiz===t ? "quiz" : (o.hideAll && o.quiz ? "blank" : (o.hl===t ? "hl":"show"));
+  const w = Math.max(28, t.length*15.5+20), x0 = anchor==="middle"? x-w/2 : anchor==="start"? x-8 : x-w+8;
+  if (st==="quiz") return `<rect x="${x-30}" y="${y-22}" width="60" height="40" rx="9" style="fill:var(--c)"/><text x="${x}" y="${y+5}" text-anchor="middle" font-size="30" style="fill:var(--surface)">?</text>`;
+  if (st==="blank") return `<rect x="${x0}" y="${y-19}" width="${w}" height="34" rx="8" style="fill:var(--soft);stroke:var(--line)"/>`;
+  return `<text x="${x}" y="${y+9}" text-anchor="${anchor}" font-size="${st==="hl"?29:26}" style="fill:${st==="hl"?ACC:INK}">${t}</text>`;
+}
+const ln = (x1,y1,x2,y2,c=INK,w=2,extra="") => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" style="stroke:${c}" stroke-width="${w}" ${extra}/>`;
+const arr = (x1,y1,x2,y2,on) => ln(x1,y1,x2,y2,on?ACC:INK,on?5:3.5,`marker-end="${on?"MK_A":"MK_I"}"`);
+const D = {
+ rearr(o){ const seg=(x,y,t,hot,dark)=>`<rect x="${x}" y="${y}" width="36" height="30" rx="4" style="fill:${hot?"color-mix(in srgb,var(--c) 35%,var(--surface))":dark?"var(--line)":"var(--soft)"};stroke:${hot?"var(--c)":"var(--ink)"}" stroke-width="2"/><text x="${x+18}" y="${y+22}" text-anchor="middle" font-size="18" style="fill:var(--ink)">${t}</text>`;
+  const row=(y,name,letters,hot,dark)=>{ const on=o.hl===name||o.quiz===name;
+    return label(112,y+15,name,o)+letters.map((l,i)=>seg(240+i*38,y,l,on&&hot.includes(i),dark&&dark.includes(i))).join(""); };
+  return svgWrap(`<text x="240" y="36" font-size="18" style="fill:var(--muted)">original: A B C D E F G</text>
+   ${row(70,"Deletion",["A","B","C","D","G"],[3,4])}
+   <text x="440" y="92" font-size="18" style="fill:var(--muted)">E F lost</text>
+   ${row(150,"Duplication",["A","B","C","D","E","F","E","F","G"],[6,7])}
+   ${row(230,"Inversion",["A","B","C","F","E","D","G"],[3,4,5])}
+   ${row(310,"Translocation",["A","B","C","D","Q","R","S"],[4,5,6],[4,5,6])}
+   <text x="300" y="392" text-anchor="middle" font-size="20" style="fill:var(--muted)">Q R S came from a different chromosome</text>`,410); },
+ subst(){ const codons=(y,list,hot)=>list.map((c,i)=>`<text x="${120+i*90}" y="${y}" text-anchor="middle" font-size="24" style="fill:${hot===i?"var(--c)":"var(--ink)"};font-family:var(--font-mono);font-weight:${hot===i?700:400}">${c}</text>`).join("");
+  return svgWrap(`<text x="20" y="40" font-size="20" style="fill:var(--muted)">original</text>${codons(80,["GGG","AGT","GTA","GAT","CGT"],-1)}
+   <text x="300" y="112" text-anchor="middle" font-size="20" style="fill:var(--ink)">GTA = Val</text>
+   <text x="20" y="152" font-size="20" style="fill:var(--muted)">substitution</text>${codons(190,["GGG","AGT","GCA","GAT","CGT"],2)}
+   <text x="300" y="222" text-anchor="middle" font-size="20" style="fill:var(--c)">GCA = Ala: one codon changed</text>
+   <text x="20" y="262" font-size="20" style="fill:var(--muted)">another example</text>${codons(298,["GGG","AGT","GTG","GAT","CGT"],2)}
+   <text x="300" y="330" text-anchor="middle" font-size="20" style="fill:var(--ink)">GTG = Val: same amino acid</text>`); },
+ indel(){ const r=(y,codons,aas,hotFrom)=>codons.map((c,i)=>`<text x="${110+i*95}" y="${y}" text-anchor="middle" font-size="24" style="fill:${i>=hotFrom?"var(--c)":"var(--ink)"};font-family:var(--font-mono)">${c}</text><text x="${110+i*95}" y="${y+30}" text-anchor="middle" font-size="20" style="fill:${i>=hotFrom?"var(--c)":"var(--muted)"}">${aas[i]||""}</text>`).join("");
+  return svgWrap(`<text x="20" y="34" font-size="20" style="fill:var(--muted)">original</text>${r(70,["GGG","AGT","GTA","GAT","CGT"],["Gly","Ser","Val","Asp","Arg"],9)}
+   <text x="20" y="140" font-size="20" style="fill:var(--muted)">insertion of T</text>${r(176,["GGG","AGT","GTT","AGA","TCG"],["Gly","Ser","Val","Arg","Ser"],3)}
+   <text x="20" y="246" font-size="20" style="fill:var(--muted)">deletion of T</text>${r(282,["GGG","AGT","GAG","ATC","GT"],["Gly","Ser","Glu","Ile","Val"],2)}`); },
+ expand(){ const rep=(x,y,n,hot)=>{let s=""; for(let i=0;i<n;i++) s+=`<rect x="${x+i*34}" y="${y}" width="32" height="26" rx="3" style="fill:${hot&&i>=8?"color-mix(in srgb,var(--c) 40%,var(--surface))":"var(--soft)"};stroke:var(--ink)" stroke-width="1.5"/>`; return s;};
+  return svgWrap(`<text x="20" y="40" font-size="20" style="fill:var(--ink)">template: 8 CAG repeats</text>${rep(40,56,8,false)}
+   <path d="M330 150 L330 190 A20 20 0 1 0 370 190 L370 150" style="fill:none;stroke:var(--c)" stroke-width="5"/>
+   <text x="390" y="170" font-size="20" style="fill:var(--c)">hairpin on</text><text x="390" y="196" font-size="20" style="fill:var(--c)">the new strand</text>
+   <text x="40" y="170" font-size="20" style="fill:var(--muted)">polymerase re-copies</text><text x="40" y="196" font-size="20" style="fill:var(--muted)">part of the template</text>
+   <text x="20" y="262" font-size="20" style="fill:var(--ink)">result: 13 repeats</text>${rep(40,278,13,true)}`); },
+ triplet(){ const row=(y,seq,mark,res)=>{ let s=""; [...seq].forEach((c,i)=>{ const add=mark.includes(i); s+=`<text x="${60+i*24}" y="${y}" text-anchor="middle" font-size="22" style="fill:${add?"var(--c)":"var(--ink)"};font-family:var(--font-mono);font-weight:${add?700:400}">${c}</text>`; }); return s+`<text x="580" y="${y}" text-anchor="end" font-size="20" style="fill:${res==="normal"?"var(--c)":"var(--muted)"}">${res}</text>`; };
+  return svgWrap(`<text x="20" y="40" font-size="20" style="fill:var(--muted)">reading the code in triplets</text>
+   ${row(90,"ABCABCABCABCABCABC",[],"normal")}
+   ${row(150,"ABCXABCABCABCABCAB",[3],"mutant")}
+   ${row(210,"ABCXABCYABCABCABCA",[3,7],"mutant")}
+   ${row(270,"ABCXABCYABCZABCABC",[3,7,11],"normal")}
+   <text x="300" y="322" text-anchor="middle" font-size="20" style="fill:var(--c)">three additions restore the reading frame</text>`); },
+ effects(o){ const col=(x,name,codon,aa,hot)=>{ const on=o.hl===name||o.quiz===name;
+   return `<text x="${x}" y="120" text-anchor="middle" font-size="24" style="fill:var(--ink);font-family:var(--font-mono)">${codon.slice(0,1)}<tspan style="fill:var(--c);font-weight:700">${codon.slice(1,2)}</tspan>${codon.slice(2)}</text>
+    ${arr(x,134,x,184,on)}<circle cx="${x}" cy="222" r="30" style="fill:${on?"color-mix(in srgb,var(--c) 35%,var(--surface))":"var(--soft)"};stroke:${on?"var(--c)":"var(--ink)"}" stroke-width="2"/>
+    <text x="${x}" y="229" text-anchor="middle" font-size="18" style="fill:var(--ink)">${aa}</text>${label(x,290,name,o)}`; };
+  return svgWrap(`<text x="300" y="40" text-anchor="middle" font-size="20" style="fill:var(--muted)">wild type: UCA = Ser</text>
+   ${col(110,"Missense","UUA","Leu")}${col(300,"Nonsense","UAA","Stop")}${col(490,"Silent","UCG","Ser")}`); },
+ te(o){ const box=(x,t,on)=>`<rect x="${x}" y="240" width="160" height="40" rx="4" style="fill:${on?"color-mix(in srgb,var(--c) 35%,var(--surface))":"var(--soft)"};stroke:${on?"var(--c)":"var(--ink)"}" stroke-width="2"/><text x="${x+80}" y="267" text-anchor="middle" font-size="18" style="fill:var(--ink)">${t}</text>`;
+  const r=o.hl==="retro", d=o.hl==="dna";
+  return svgWrap(`<text x="150" y="40" text-anchor="middle" font-size="22" style="fill:${r?ACC:INK}">Class I retrotransposon</text>
+   <text x="150" y="70" text-anchor="middle" font-size="18" style="fill:var(--muted)">copy and paste via RNA</text>
+   <text x="150" y="112" text-anchor="middle" font-size="18" style="fill:var(--ink)">encodes reverse transcriptase</text>
+   <text x="150" y="138" text-anchor="middle" font-size="18" style="fill:var(--ink)">and endonuclease</text>
+   ${box(10,"",false)}<text x="90" y="267" text-anchor="middle" font-size="18" style="fill:var(--ink)">stays</text>
+   ${arr(110,232,110,170,r)}<text x="160" y="200" font-size="18" style="fill:${r?ACC:INK}">RNA copy</text>
+   <text x="450" y="40" text-anchor="middle" font-size="22" style="fill:${d?ACC:INK}">Class II DNA transposon</text>
+   <text x="450" y="70" text-anchor="middle" font-size="18" style="fill:var(--muted)">cut and paste via DNA</text>
+   <text x="450" y="112" text-anchor="middle" font-size="18" style="fill:var(--ink)">encodes transposase,</text>
+   <text x="450" y="138" text-anchor="middle" font-size="18" style="fill:var(--ink)">which cuts at inverted repeats</text>
+   ${box(370,"",false)}<text x="450" y="267" text-anchor="middle" font-size="18" style="fill:var(--ink)">excised</text>
+   ${arr(450,232,450,170,d)}<text x="470" y="200" font-size="18" style="fill:${d?ACC:INK}">moves</text>
+   <text x="300" y="320" text-anchor="middle" font-size="20" style="fill:var(--muted)">both insert at a new genomic location</text>`); },
+ acds(){ const el=(y,name,gap)=>`<text x="20" y="${y+20}" font-size="20" style="fill:var(--ink)">${name}</text>
+   <rect x="120" y="${y}" width="30" height="28" style="fill:var(--c)"/><rect x="530" y="${y}" width="30" height="28" style="fill:var(--c)"/>
+   ${gap?`<rect x="150" y="${y}" width="150" height="28" style="fill:var(--soft);stroke:var(--ink)" stroke-width="1.5"/><rect x="400" y="${y}" width="130" height="28" style="fill:var(--soft);stroke:var(--ink)" stroke-width="1.5"/><text x="350" y="${y+20}" text-anchor="middle" font-size="16" style="fill:var(--muted)">deleted</text>`
+     :`<rect x="150" y="${y}" width="380" height="28" style="fill:color-mix(in srgb,var(--c) 30%,var(--surface));stroke:var(--ink)" stroke-width="1.5"/><text x="340" y="${y+20}" text-anchor="middle" font-size="16" style="fill:var(--ink)">intact transposase gene</text>`}`;
+  return svgWrap(`${el(60,"Ac",false)}${el(160,"Ds",true)}
+   ${arr(300,100,300,150,true)}<text x="318" y="132" font-size="18" style="fill:var(--c)">Ds hijacks Ac transposase</text>
+   <text x="300" y="250" text-anchor="middle" font-size="20" style="fill:var(--muted)">terminal inverted repeats at both ends</text>
+   <text x="300" y="290" text-anchor="middle" font-size="20" style="fill:var(--muted)">Ds is non-autonomous</text>`); },
+}
+;
+function viz(spec, extra={}){ if(!spec) return ""; const [k,arg]=spec.split(":");
+  const o = Object.assign({}, extra); if(arg && !o.quiz) o.hl=arg;
+  return D[k] ? `<div class="viz">${D[k](o)}</div>` : ""; }
+
+/* ---------- scheduling ---------- */
+const BYID = Object.fromEntries(CARDS.map(c=>[c.id,c]));
+const GRADES = ["Again","Hard","Good","Easy"];
+function isDue(c){ const s=st(c.id); return s.due<=Date.now(); }
+function pool(){ return CARDS.filter(c=>store.secs.includes(c.sec)); }
+function shuffle(a){ for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];} return a; }
+// Share of past grades that were Good or Easy; null if never studied.
+function pct(id){ const s=st(id); return s.seen ? Math.round((s.right||0)/s.seen*100) : null; }
+function buildQueue(){ let p = pool();
+  if(store.mode==="revisit") return shuffle(p.filter(c=>st(c.id).right)).sort((a,b)=>pct(a.id)-pct(b.id));
+  if(store.mode==="cram") return shuffle(p.slice());
+  p=p.filter(isDue);
+  // qm = missed on a quiz: always comes up next, even if never studied as a flashcard.
+  const qm=p.filter(c=>st(c.id).qm), seen=p.filter(c=>st(c.id).seen&&!st(c.id).qm), fresh=p.filter(c=>!st(c.id).seen&&!st(c.id).qm);
+  shuffle(qm); shuffle(seen); shuffle(fresh); return qm.concat(seen, fresh.slice(0,30)); }
+function preview(c,g){ const s=st(c.id);
+  if(g===1) return "again soon"; if(g===2) return "later this session";
+  const b=Math.min(6,(s.box||0)+(g===3?1:2)); const d=INTERVALS[b]; return d===1?"1 day":d+" days"; }
+function grade(c,g){ const s=Object.assign({},st(c.id)); s.seen=(s.seen||0)+1; if(g>=3) s.right=(s.right||0)+1; delete s.qm;
+  if(g===1){ s.box=0; s.due=0; } else if(g===2){ s.box=Math.max(1,s.box||0); s.due=Date.now()+DAY*0.5; }
+  else { s.box=Math.min(6,(s.box||0)+(g===3?1:2)); s.due=Date.now()+DAY*INTERVALS[s.box]-36e5; }
+  store.cards[c.id]=s; save(); return s; }
+
+/* ---------- views ---------- */
+const app = document.getElementById("app");
+// The session lives in store.session so it survives Pause, closing the tab, or a dead battery.
+let S = null, Q = null, flipped = false;
+if(store.session){ store.session.ids=store.session.ids.filter(id=>BYID[id]); if(!store.session.ids.length){ store.session=null; save(); } }
+function mastery(sec){ const cs=CARDS.filter(c=>c.sec===sec); let m=0,l=0,seen=0,right=0;
+  cs.forEach(c=>{const s=st(c.id), b=s.box||0; if(b>=3)m++; else if(s.seen)l++; seen+=s.seen||0; right+=s.right||0;});
+  return {n:cs.length,m,l,p:seen?Math.round(right/seen*100):null}; }
+const MODES = {due:["Daily study","Due cards plus up to 30 new"], cram:["Test prep","Every selected card, shuffled"],
+  revisit:["Revisit","Cards you got right, lowest % first"]};
+function home(){ S=null; Q=null; flipped=false;
+  const startN = buildQueue().length, R = store.session;
+  const label = {due:"cards ready to study", cram:"cards in this review", revisit:"cards to revisit"}[store.mode];
+  const empty = {due:"Nothing due. Switch to test prep.", cram:"No sections selected.", revisit:"Nothing to revisit yet."}[store.mode];
+  app.innerHTML = `<header class="hero guides deckhero"><div class="band" aria-hidden="true"></div><div class="reading">
+    <nav class="toplinks"><a class="link quiet" href="../../">All decks</a><a class="link" href="guide.html">Study guide</a></nav>
+    <p class="label">Genetics</p><h1>Ch 18: Mutations and DNA Repair</h1><p class="lead">Chromosome rearrangements, gene mutations, their causes and effects, DNA repair and transposable elements.</p></div></header>
+  <main class="reading overlap stack">
+  ${R?`<div class="card float resume rise"><h2>Session paused</h2><p class="hint num">${R.ids.length} of ${R.total} cards left, ${MODES[R.mode][0].toLowerCase()}</p>
+    <button class="btn block" id="resume">Resume</button><div class="center"><button class="link quiet" id="discard">End it and see results</button></div></div>`:""}
+  <div class="card float rise"><div class="due"><b class="num">${startN}</b><span>${label}</span></div>
+   <div class="modes">${Object.entries(MODES).map(([k,[n,d]])=>`<button class="mode" data-mode="${k}" aria-pressed="${store.mode===k}">${n}<small>${d}</small></button>`).join("")}</div>
+   <button class="btn block${R?" ghost":""}" id="go" ${startN?"":"disabled"}>${startN?(R?"Start a new session":"Start studying"):empty}</button></div>
+  ${quizPanel()}
+  <div class="card secs"><h2>Sections</h2>${SECS.map(s=>{const m=mastery(s);return `
+   <button class="secrow" style="--c:${cvar(s)}" data-sec="${s}" aria-pressed="${store.secs.includes(s)}">
+    <span class="chk"></span><span class="secname">${s}</span><span class="secmeta num">${m.m} of ${m.n} solid${m.p===null?"":` · ${m.p}% right`}</span>
+    <span class="track"><i style="width:${m.m/m.n*100}%"></i><i style="width:${m.l/m.n*100}%;background:color-mix(in srgb,var(--c) 35%,transparent)"></i></span>
+   </button>`}).join("")}
+   <div class="legend"><span style="--sw:var(--ink)">Solid: answered right 3 times running</span><span style="--sw:color-mix(in srgb,var(--ink) 35%,transparent)">Learning</span><span class="nosw">% right: share of all your grades that were Good or Easy</span></div></div>
+  <div class="foot"><span>${CARDS.length} cards. Every grade saves on this device as you go.</span><button class="link quiet" id="reset">Reset progress</button></div></main>`;
+  app.querySelectorAll(".mode").forEach(b=>b.onclick=()=>{store.mode=b.dataset.mode;save();home();});
+  app.querySelectorAll(".secrow").forEach(b=>b.onclick=()=>{const s=b.dataset.sec; store.secs=store.secs.includes(s)?store.secs.filter(x=>x!==s):store.secs.concat(s); save(); home();});
+  document.getElementById("go").onclick=()=>{ if(R && !confirm("Start over? The paused session's grades are kept, but its remaining cards are dropped.")) return; start(buildQueue().map(c=>c.id), store.mode); };
+  if(R){ document.getElementById("resume").onclick=()=>{ S=store.session; card(); };
+    document.getElementById("discard").onclick=()=>{ S=store.session; finish(); }; }
+  app.querySelectorAll(".len").forEach(b=>b.onclick=()=>{store.qlen=+b.dataset.len;save();home();});
+  document.getElementById("quiz").onclick=()=>startQuiz(shuffle(pool().slice()).slice(0,(store.qlen===undefined?25:store.qlen)||Infinity).map(c=>c.id));
+  document.getElementById("reset").onclick=()=>{ if(confirm("Erase all progress and quiz history on this device?")){store.cards={};store.session=null;store.quizzes=[];save();home();} };
+}
+function start(ids, mode){ if(!ids.length) return;
+  S = store.session = {ids, mode, total:ids.length, done:0, right:0, requeued:{}, first:{}}; save(); flipped=false; card(); }
+function head(){ return `<div class="top"><button class="link quiet" id="pause" title="Save your place and come back later">Pause</button>
+  <div class="track"><i style="width:${S.done/S.total*100}%"></i></div><span class="count num">${S.ids.length} left</span>
+  <button class="link quiet" id="end" title="Stop now and see your results">End</button></div>`; }
+function card(){
+  if(!S.ids.length) return finish();
+  const c=BYID[S.ids[0]], f=flipped, p=pct(c.id), s=st(c.id);
+  const frontViz = c.vf ? viz(c.viz, c.kind==="diagram"&&!f?{quiz:c.quiz,hideAll:true}:{}) : "";
+  const backViz = f ? (c.kind==="diagram" ? viz(c.viz,{hl:c.quiz}) : (c.vizBack? viz(c.vizBack) : (c.vf?"":viz(c.viz)))) : "";
+  app.innerHTML = `<main class="reading study">`+head()+`<article class="card float accent fc rise" style="--c:${cvar(c.sec)}">
+   <div class="chip"><span class="tag sec">${c.sec}</span>${c.added?'<span class="tag">Beyond the slides</span>':""}
+    <span class="score num" title="Times you graded this card Good or Easy">${p===null?"New card":`${p}% right (${s.right||0} of ${s.seen})`}</span></div>
+   <div class="prompt">${f&&c.kind==="cloze"?c.back:c.front}</div>
+   ${(c.kind==="diagram"||c.vizBack)&&f?"":frontViz}
+   ${f?`<div class="answer">${c.kind==="cloze"?"":`<div class="ans">${c.back}</div>`}${backViz}${c.extra?`<div class="extra">${c.extra}</div>`:""}</div>`:""}
+   <div class="spacer"></div>
+   ${f?`<div class="grades">${GRADES.map((n,k)=>`<button class="g" data-g="${k+1}" style="--gc:var(--${n.toLowerCase()})">${n}<small>${preview(c,k+1)}</small></button>`).join("")}</div>
+     <div class="keys">Keys 1 to 4 to grade. Esc to pause.</div>`
+   :`<button class="btn dark block no-chev" id="flip">Show answer</button><div class="keys">Space to show the answer. Esc to pause.</div>`}
+  </article></main>`;
+  document.getElementById("pause").onclick=home;
+  document.getElementById("end").onclick=()=>{ if(confirm(`End the session now? Your ${S.done} graded card${S.done===1?"":"s"} are saved; the ${S.ids.length} left stay for next time.`)) finish(); };
+  if(f) app.querySelectorAll(".g").forEach(b=>b.onclick=()=>answer(+b.dataset.g));
+  else document.getElementById("flip").onclick=()=>{flipped=true;card();};
+}
+function answer(g){ const id=S.ids.shift(); grade(BYID[id],g); flipped=false;
+  if(!(id in S.first)) S.first[id]=g;
+  if(g===1){ S.ids.splice(Math.min(3,S.ids.length),0,id); }
+  else if(g===2 && !S.requeued[id]){ S.requeued[id]=1; S.ids.splice(Math.min(8,S.ids.length),0,id); }
+  else { S.done++; if(g>=3) S.right++; }
+  if(S.done>S.total) S.total=S.done;
+  save(); card(); }
+function finish(){ const R=S, ids=Object.keys(R.first), n=ids.length, left=R.ids.filter(id=>!(id in R.first)).length;
+  store.session=null; save(); S=null; flipped=false;
+  const counts=[0,0,0,0], bySec={}; ids.forEach(id=>{ const g=R.first[id], sec=BYID[id]?.sec; counts[g-1]++;
+    if(sec){ const b=bySec[sec]=bySec[sec]||{n:0,r:0}; b.n++; if(g>=3) b.r++; } });
+  const known=n?Math.round((counts[2]+counts[3])/n*100):0, missed=ids.filter(id=>R.first[id]<=2&&BYID[id]);
+  app.innerHTML=`<main class="reading study done rise"><h1>${R.ids.length?"Session ended":"Session complete"}</h1>
+  <p class="hint">Saved on this device. ${left?`${left} card${left===1?"":"s"} not reached; they stay due for next time.`:""}</p>
+  ${n?`<div class="card"><div class="big"><b class="num">${known}%</b><span class="num">right on the first try, ${counts[2]+counts[3]} of ${n} cards</span></div>
+   <div class="gbar">${counts.map((k,i)=>k?`<i style="flex:${k};background:var(--${GRADES[i].toLowerCase()})"></i>`:"").join("")}</div>
+   <div class="glegend">${counts.map((k,i)=>`<span style="--sw:var(--${GRADES[i].toLowerCase()})">${GRADES[i]} ${k}</span>`).join("")}</div>
+   <div class="bysec">${SECS.filter(s=>bySec[s]).map(s=>{const b=bySec[s],p=Math.round(b.r/b.n*100);return `
+    <div class="bs" style="--c:${cvar(s)}"><span>${s}</span><span class="secmeta num">${p}% · ${b.r} of ${b.n}</span><span class="track"><i style="width:${p}%"></i></span></div>`}).join("")}</div></div>`
+  :`<p>No cards graded this time.</p>`}
+  <div class="stack" style="margin-top:var(--sp-5)">${missed.length?`<button class="btn block" id="miss">Practice the ${missed.length} I missed</button>`:""}
+  <button class="btn block${missed.length?" ghost":""}" id="h">Back to sections</button></div></main>`;
+  document.getElementById("h").onclick=home;
+  if(missed.length) document.getElementById("miss").onclick=()=>start(shuffle(missed), "cram");
+}
+/* ---------- quiz ---------- */
+// Multiple choice built from the cards. Kept apart from flashcard levels and % right;
+// the only link back is that missed questions come up first in the next Daily study.
+const plain = h => h.replace(/<[^>]+>/g," ").replace(/\s+/g," ").trim();
+const answerOf = c => { if(c.kind!=="cloze") return c.back; const m=c.back.match(/<span class="cz">(.*?)<\/span>/); return m?m[1]:c.back; };
+const family = c => c.kind==="cloze" ? c.id.split("_")[0] : c.kind==="diagram" ? c.viz.split(":")[0] : null;
+function choices(c){
+  const right=answerOf(c), key=a=>plain(a).toLowerCase(), used=new Set([key(right)]), out=[], shown=plain(c.front).toLowerCase();
+  // Skip any choice already visible in the question (the rest of a list, or a word the prompt itself uses).
+  const take=list=>{ for(const a of list){ if(out.length>=3) break; const k=key(a); if(k&&!used.has(k)&&!shown.includes(k)){ used.add(k); out.push(a); } } };
+  // Siblings first: the other gaps of the same list, or the other labels of the same diagram.
+  const fam=family(c); if(fam) take(shuffle(CARDS.filter(x=>x!==c&&family(x)===fam).map(answerOf)));
+  // Then lookalikes: same card kind, similar length, numbers with numbers, same section preferred.
+  const sh=a=>{const p=plain(a); return {w:p.split(" ").length, n:/\d/.test(p)};}, r=sh(right);
+  take(CARDS.filter(x=>x!==c&&x.kind===c.kind).map(x=>{const a=answerOf(x), s=sh(a);
+    return [a, Math.abs(s.w-r.w)*1.5+(s.n!==r.n?6:0)+(x.sec!==c.sec?2.5:0)+Math.random()*2];}).sort((a,b)=>a[1]-b[1]).map(x=>x[0]));
+  const opts=shuffle(out.concat([right])); return {id:c.id, opts, ans:opts.indexOf(right)}; }
+function startQuiz(ids){ if(!ids.length) return; S=null; Q={qs:ids.map(id=>choices(BYID[id])), i:0, picks:[]}; renderQ(); }
+const LENS=[10,25,50,0];
+function quizPanel(){ const n=pool().length, len=store.qlen===undefined?25:store.qlen, take=len?Math.min(len,n):n, H=store.quizzes||[];
+  return `<div class="card"><h2>Quiz</h2><p class="hint">Multiple choice from the selected sections. Scores are kept separate from your flashcards.</p>
+   ${H.length?scoreChart(H):""}
+   <div class="lens" role="group" aria-label="Quiz length">${LENS.map(l=>`<button class="len" data-len="${l}" aria-pressed="${len===l}">${l||"All"}</button>`).join("")}</div>
+   <button class="btn dark block" id="quiz" ${n?"":"disabled"}>${n?`Start a ${take}-question quiz`:"No sections selected."}</button></div>`; }
+function scoreChart(H){ const h=H.slice(-12), last=h[h.length-1], best=Math.max(...H.map(q=>Math.round(q.r/q.n*100)));
+  const W=600, T=160, L=78, R=30, top=20, bot=20, X=i=>h.length<2?(L+W-R)/2:L+i*(W-L-R)/(h.length-1), Y=p=>top+(100-p)*(T-top-bot)/100;
+  const pts=h.map((q,i)=>({x:X(i),y:Y(Math.round(q.r/q.n*100)),p:Math.round(q.r/q.n*100),q}));
+  const day=t=>new Date(t).toLocaleDateString(undefined,{month:"short",day:"numeric"});
+  return `<div class="hist"><div class="histhead"><span><b class="num">${pts[pts.length-1].p}%</b> last quiz</span><span class="num">Best ${best}% · ${H.length} quiz${H.length===1?"":"zes"} taken</span></div>
+   <svg viewBox="0 0 ${W} ${T}" role="img" aria-label="Quiz scores, oldest to newest: ${pts.map(t=>t.p+"%").join(", ")}">
+   ${[0,50,100].map(v=>`<line x1="${L}" x2="${W-R+10}" y1="${Y(v)}" y2="${Y(v)}" style="stroke:var(--line)" vector-effect="non-scaling-stroke" stroke-width="1"/><text x="${L-10}" y="${Y(v)+7}" text-anchor="end" font-size="24" style="fill:var(--muted)">${v}%</text>`).join("")}
+   ${pts.length>1?`<polyline points="${pts.map(t=>t.x+","+t.y).join(" ")}" fill="none" style="stroke:var(--sky-ink)" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>`:""}
+   ${pts.map(t=>`<g class="pt"><title>${day(t.q.t)}: ${t.p}% (${t.q.r} of ${t.q.n})</title><circle cx="${t.x}" cy="${t.y}" r="22" fill="transparent"/>
+     <circle cx="${t.x}" cy="${t.y}" r="8" style="fill:var(--sky-ink);stroke:var(--surface)" stroke-width="3"/></g>`).join("")}
+   </svg></div>`; }
+function qhead(){ return `<div class="top"><button class="link quiet" id="qend">End</button><div class="track"><i style="width:${Q.picks.length/Q.qs.length*100}%"></i></div><span class="count num">${Math.min(Q.i+1,Q.qs.length)} of ${Q.qs.length}</span></div>`; }
+function renderQ(){ const q=Q.qs[Q.i], c=BYID[q.id], k=Q.picks[Q.i], done=k!==undefined;
+  const v = c.kind==="diagram" ? viz(c.viz, done?{hl:c.quiz}:{quiz:c.quiz,hideAll:true}) : (c.vf||done ? viz(c.viz) : "");
+  app.innerHTML = `<main class="reading study">`+qhead()+`<article class="card float accent fc rise" style="--c:${cvar(c.sec)}">
+   <div class="chip"><span class="tag sec">${c.sec}</span></div>
+   <div class="prompt">${done&&c.kind==="cloze"?c.back:c.front}</div>${v}
+   <div class="opts">${q.opts.map((o,i)=>`<button class="opt${done?(i===q.ans?" ok":i===k?" bad":" dim"):""}" data-k="${i}" ${done?"disabled":""}>
+     <span class="ltr">${done&&i===q.ans?"✓":done&&i===k?"✗":"ABCD"[i]}</span><span>${o}</span></button>`).join("")}</div>
+   ${done?`<div class="verdict ${k===q.ans?"ok":"bad"}">${k===q.ans?"Correct":"Not quite"}</div>${c.extra?`<div class="extra">${c.extra}</div>`:""}`:""}
+   <div class="spacer"></div>
+   ${done?`<button class="btn dark block" id="next">${Q.i+1<Q.qs.length?"Next question":"See results"}</button><div class="keys">Space for next</div>`
+     :`<div class="keys">Keys 1 to 4 or A to D to answer</div>`}</article></main>`;
+  document.getElementById("qend").onclick=()=>{ if(!Q.picks.length) return home(); if(confirm(`End the quiz now? You'll be scored on the ${Q.picks.length} you answered.`)) quizResults(); };
+  if(done) document.getElementById("next").onclick=nextQ;
+  else app.querySelectorAll(".opt").forEach(b=>b.onclick=()=>pick(+b.dataset.k)); }
+function pick(k){ Q.picks[Q.i]=k; renderQ(); }
+function nextQ(){ Q.i++; Q.i<Q.qs.length ? renderQ() : quizResults(); }
+function quizResults(){ const done=Q.qs.filter((q,i)=>Q.picks[i]!==undefined), n=done.length;
+  const missed=done.filter(q=>Q.picks[Q.qs.indexOf(q)]!==q.ans), r=n-missed.length, p=n?Math.round(r/n*100):0, bySec={};
+  done.forEach(q=>{const s=BYID[q.id].sec, b=bySec[s]=bySec[s]||{n:0,r:0}; b.n++; if(Q.picks[Q.qs.indexOf(q)]===q.ans) b.r++;});
+  if(n){ store.quizzes=(store.quizzes||[]).concat({t:Date.now(),n,r}).slice(-50);
+    missed.forEach(q=>{ store.cards[q.id]=Object.assign({},st(q.id),{due:0,qm:1}); }); save(); }
+  const ids=missed.map(q=>q.id), all=Q.qs.length; Q=null;
+  app.innerHTML=`<main class="reading study done rise"><h1>Quiz ${n<all?"ended":"complete"}</h1>
+  ${n?`<div class="card"><div class="big"><b class="num">${p}%</b><span class="num">${r} of ${n} correct</span></div>
+   <div class="bysec">${SECS.filter(s=>bySec[s]).map(s=>{const b=bySec[s],sp=Math.round(b.r/b.n*100);return `
+    <div class="bs" style="--c:${cvar(s)}"><span>${s}</span><span class="secmeta num">${sp}% · ${b.r} of ${b.n}</span><span class="track"><i style="width:${sp}%"></i></span></div>`}).join("")}</div></div>
+   ${missed.length?`<div class="card" style="margin-top:var(--sp-5)"><h2>Missed</h2><p class="hint">These come up first in your next Daily study.</p>${missed.map(q=>{const c=BYID[q.id];return `
+    <div class="mq" style="--c:${cvar(c.sec)}"><div>${c.kind==="diagram"?`${plain(c.front)}`:c.front}</div><div class="ma">${answerOf(c)}</div></div>`}).join("")}</div>`:""}`
+  :`<p>No questions answered.</p>`}
+  <div class="stack" style="margin-top:var(--sp-5)">${missed.length?`<button class="btn block" id="retake">Retake the ${missed.length} I missed</button>`:""}
+  <button class="btn block${missed.length?" ghost":""}" id="h">Back to the deck</button></div></main>`;
+  document.getElementById("h").onclick=home;
+  if(missed.length) document.getElementById("retake").onclick=()=>startQuiz(shuffle(ids)); }
+
+document.addEventListener("keydown",e=>{ if(e.metaKey||e.ctrlKey) return;
+  if(Q){ const q=Q.qs[Q.i]; if(!q) return;
+    if(Q.picks[Q.i]===undefined){ const k=e.key.length===1?Math.max("1234".indexOf(e.key),"abcd".indexOf(e.key.toLowerCase())):-1; if(k>=0&&k<q.opts.length) pick(k); }
+    else if(e.key===" "||e.key==="Enter"){ e.preventDefault(); nextQ(); }
+    return; }
+  if(!S||!S.ids.length) return;
+  if(e.key==="Escape"){ home(); return; }
+  if(!flipped && (e.key===" "||e.key==="Enter")){ e.preventDefault(); flipped=true; card(); }
+  else if(flipped && /^[1-4]$/.test(e.key)) answer(+e.key); });
+home();
+</script>
+</body>
+</html>

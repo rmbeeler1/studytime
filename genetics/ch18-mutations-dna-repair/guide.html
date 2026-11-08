@@ -1,0 +1,601 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Genetics Ch 18: Mutations and DNA Repair Study Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* Study Time design tokens and components. Source of truth: _builder/design/DESIGN.md
+   Decks are self-contained pages, so builders inline this file rather than linking it.
+   Load the font in <head>:
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"> */
+
+/* ---------- tokens: light ---------- */
+/* [data-theme] on any element scopes a theme to that subtree (used by preview.html). */
+:root,[data-theme="light"]{
+  /* surfaces */
+  --bg:#f6f8fc;            /* page: cool off-white */
+  --surface:#ffffff;       /* raised panels and cards */
+  --sunken:#eef2f8;        /* wells, inputs, progress tracks */
+  --soft:#eef2f8;          /* alias of --sunken; diagrams and decks use it */
+  --line:#e1e7f0;          /* hairlines and card borders */
+  --line-strong:#c9d3e1;   /* input borders, dividers that must be seen */
+  --guide:#d3dbe8;         /* dashed column guides */
+  /* text */
+  --ink:#0c2340;           /* headings, key numbers, diagram strokes */
+  --text:#425672;          /* body copy */
+  --muted:#5b6b82;         /* captions, meta, helper text */
+  --on-accent:#ffffff;     /* text on --accent fills */
+  /* brand */
+  --accent:#5332e6;        /* violet: links, primary buttons, eyebrow labels */
+  --accent-hover:#4322cf;
+  --accent-tint:#efecfe;   /* violet wash behind selected items */
+  --sky:#0aa5f0;           /* bright sky: bands, fills, illustration only (not text) */
+  --sky-ink:#0068a8;       /* sky as text */
+  --sky-tint:#e3f4fd;
+  --band-from:#0aa5f0;     /* diagonal hero band */
+  --band-to:#5332e6;
+  /* feedback (flashcard grades) */
+  --again:#b42318; --hard:#985a00; --good:#2152c4; --easy:#0b7a5f;
+  /* section accents: decks map their 6 to 8 sections onto these, in order */
+  --sec-blue:#1f5bc4; --sec-violet:#7d3fc8; --sec-teal:#08776b; --sec-rose:#be2b6a;
+  --sec-orange:#bd4310; --sec-amber:#946000; --sec-green:#3d7a17; --sec-slate:#4d5d76;
+
+  /* type */
+  --font-sans:"Inter",ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji";
+  --font-mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  --fs-display:clamp(2.75rem,1.6rem + 5vw,5.25rem);  /* hero headline */
+  --fs-h1:clamp(2.25rem,1.6rem + 2.8vw,3.5rem);
+  --fs-h2:clamp(1.625rem,1.3rem + 1.4vw,2.25rem);
+  --fs-h3:1.375rem;
+  --fs-lead:clamp(1.125rem,1rem + .5vw,1.375rem);    /* intro paragraph under a headline */
+  --fs-body:1.0625rem;     /* 17px */
+  --fs-small:.9375rem;     /* 15px */
+  --fs-caption:.8125rem;   /* 13px */
+  --fs-label:1rem;         /* eyebrow label */
+  --lh-tight:1.04; --lh-heading:1.15; --lh-body:1.65;
+  --track-display:-.04em; --track-heading:-.025em; --track-body:-.006em;
+  --fw-regular:400; --fw-medium:500; --fw-semibold:600; --fw-bold:700; --fw-black:800;
+
+  /* spacing: 4px base */
+  --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-5:24px; --sp-6:32px;
+  --sp-7:48px; --sp-8:64px; --sp-9:96px; --sp-10:128px;
+  --gutter:16px;           /* side gutter on phones; 24px from 640px, 32px from 1024px */
+  --content-max:1080px;    /* wide grid for home page and heroes */
+  --reading-max:680px;     /* one column of prose or one flashcard */
+  --columns:4;             /* dashed guides; 2 on phones */
+
+  /* radii */
+  --r-xs:4px; --r-sm:6px; --r-md:10px; --r-lg:16px; --r-xl:24px; --r-pill:999px;
+
+  /* shadows: two layers each, tinted with navy, never pure black */
+  --shadow-xs:0 1px 2px rgba(12,35,64,.06),0 1px 1px rgba(12,35,64,.04);
+  --shadow-sm:0 2px 5px -1px rgba(30,40,90,.10),0 1px 3px -1px rgba(12,35,64,.10);
+  --shadow-md:0 13px 27px -5px rgba(30,40,90,.16),0 8px 16px -8px rgba(12,35,64,.18);
+  --shadow-lg:0 30px 60px -12px rgba(30,40,90,.22),0 18px 36px -18px rgba(12,35,64,.26);
+  --shadow-xl:0 50px 100px -20px rgba(30,40,90,.24),0 30px 60px -30px rgba(12,35,64,.30);
+
+  /* motion */
+  --ease-out:cubic-bezier(.2,.7,.2,1);
+  --ease-in-out:cubic-bezier(.65,0,.35,1);
+  --dur-fast:150ms; --dur-base:240ms; --dur-slow:420ms;
+
+  /* diagonal band */
+  --band-angle:-9deg;
+  --band-height:clamp(180px,32vw,380px);
+
+  color-scheme:light;
+}
+
+/* ---------- tokens: dark ---------- */
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --bg:#0a1524; --surface:#122036; --sunken:#0e1a2d; --soft:#1a2a44; --line:#22344f; --line-strong:#33496a; --guide:#22344f;
+  --ink:#f2f6fc; --text:#b6c3d6; --muted:#93a3ba; --on-accent:#0a1524;
+  --accent:#a99cff; --accent-hover:#c0b6ff; --accent-tint:#221f4d;
+  --sky:#38bdf8; --sky-ink:#5ec8ff; --sky-tint:#0d2a40; --band-from:#0b6fae; --band-to:#4b35c9;
+  --again:#ff8b80; --hard:#f2bd5c; --good:#86b1ff; --easy:#4fd6ad;
+  --sec-blue:#86b4ff; --sec-violet:#caa7f7; --sec-teal:#4fd2bf; --sec-rose:#f892c1;
+  --sec-orange:#ffa173; --sec-amber:#f0bf5e; --sec-green:#a6d86c; --sec-slate:#b0bdd2;
+  --shadow-xs:0 1px 2px rgba(0,0,0,.30);
+  --shadow-sm:0 2px 5px -1px rgba(0,0,0,.40),0 1px 3px -1px rgba(0,0,0,.30);
+  --shadow-md:0 13px 27px -5px rgba(0,0,0,.45),0 8px 16px -8px rgba(0,0,0,.40);
+  --shadow-lg:0 30px 60px -12px rgba(0,0,0,.55),0 18px 36px -18px rgba(0,0,0,.50);
+  --shadow-xl:0 50px 100px -20px rgba(0,0,0,.60),0 30px 60px -30px rgba(0,0,0,.55);
+  color-scheme:dark;
+}}
+:root[data-theme="dark"],[data-theme="dark"]{
+  --bg:#0a1524; --surface:#122036; --sunken:#0e1a2d; --soft:#1a2a44; --line:#22344f; --line-strong:#33496a; --guide:#22344f;
+  --ink:#f2f6fc; --text:#b6c3d6; --muted:#93a3ba; --on-accent:#0a1524;
+  --accent:#a99cff; --accent-hover:#c0b6ff; --accent-tint:#221f4d;
+  --sky:#38bdf8; --sky-ink:#5ec8ff; --sky-tint:#0d2a40; --band-from:#0b6fae; --band-to:#4b35c9;
+  --again:#ff8b80; --hard:#f2bd5c; --good:#86b1ff; --easy:#4fd6ad;
+  --sec-blue:#86b4ff; --sec-violet:#caa7f7; --sec-teal:#4fd2bf; --sec-rose:#f892c1;
+  --sec-orange:#ffa173; --sec-amber:#f0bf5e; --sec-green:#a6d86c; --sec-slate:#b0bdd2;
+  --shadow-xs:0 1px 2px rgba(0,0,0,.30);
+  --shadow-sm:0 2px 5px -1px rgba(0,0,0,.40),0 1px 3px -1px rgba(0,0,0,.30);
+  --shadow-md:0 13px 27px -5px rgba(0,0,0,.45),0 8px 16px -8px rgba(0,0,0,.40);
+  --shadow-lg:0 30px 60px -12px rgba(0,0,0,.55),0 18px 36px -18px rgba(0,0,0,.50);
+  --shadow-xl:0 50px 100px -20px rgba(0,0,0,.60),0 30px 60px -30px rgba(0,0,0,.55);
+  color-scheme:dark;
+}
+:root,[data-theme]{--focus-ring:0 0 0 3px color-mix(in srgb,var(--accent) 45%,transparent)}
+@media (min-width:640px){ :root{ --gutter:24px; } }
+@media (min-width:1024px){ :root{ --gutter:32px; } }
+@media (max-width:639px){ :root{ --columns:2; } }
+
+/* ---------- base ---------- */
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font-sans);font-size:var(--fs-body);
+  line-height:var(--lh-body);letter-spacing:var(--track-body);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+h1,h2,h3,h4{color:var(--ink);font-weight:var(--fw-bold);line-height:var(--lh-heading);letter-spacing:var(--track-heading);margin:0 0 .4em;text-wrap:balance}
+h1{font-size:var(--fs-h1)} h2{font-size:var(--fs-h2)} h3{font-size:var(--fs-h3)}
+p{margin:0 0 1em;text-wrap:pretty}
+a{color:var(--accent)}
+:focus-visible{outline:none;box-shadow:var(--focus-ring);border-radius:var(--r-sm)}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---------- layout ---------- */
+.container{max-width:calc(var(--content-max) + 2*var(--gutter));margin-inline:auto;padding-inline:var(--gutter)}
+.reading{max-width:calc(var(--reading-max) + 2*var(--gutter));margin-inline:auto;padding-inline:var(--gutter)}
+
+/* Dashed vertical column guides. Put .guides on a positioned wrapper; content above it needs position:relative. */
+.guides{position:relative;isolation:isolate}
+.guides::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  width:min(100% - 2*var(--gutter),var(--content-max));margin-inline:auto;
+  --dash:linear-gradient(to bottom,var(--guide) 0 4px,transparent 4px 8px);
+  background-image:var(--dash),var(--dash),var(--dash),var(--dash),var(--dash);
+  background-size:1px 8px;background-repeat:repeat-y;
+  background-position:0 0,33.333% 0,50% 0,66.667% 0,100% 0}
+@media (min-width:640px){ .guides::before{background-position:0 0,25% 0,50% 0,75% 0,100% 0} }
+@media (max-width:639px){ .guides::before{background-image:var(--dash),var(--dash);background-position:0 0,100% 0} }
+
+/* ---------- hero and diagonal band ---------- */
+/* Bottom padding clears the band: text never sits on it. */
+.hero{position:relative;overflow:hidden;padding-block:var(--sp-9) calc(var(--band-height) * .6 + var(--sp-8))}
+.hero>:not(.band){position:relative}
+.band{position:absolute;left:-2%;right:-2%;bottom:calc(var(--band-height) * -.4);height:var(--band-height);pointer-events:none;
+  transform:skewY(var(--band-angle));transform-origin:0 100%;
+  background:linear-gradient(100deg,var(--band-from) 0%,var(--band-from) 50%,var(--band-to) 100%)}
+.band.solid{background:var(--band-from)}
+.display{color:var(--ink)}
+.hero .display{font-size:var(--fs-display);line-height:var(--lh-tight);letter-spacing:var(--track-display);font-weight:var(--fw-bold);max-width:14ch;margin-bottom:.35em}
+.lead{font-size:var(--fs-lead);line-height:1.6;color:var(--text);max-width:36ch}
+@media (max-width:639px){ .hero{padding-block:var(--sp-7) calc(var(--band-height) * .6 + var(--sp-7))} }
+
+/* ---------- eyebrow label ---------- */
+.label{display:inline-block;color:var(--accent);font-size:var(--fs-label);font-weight:var(--fw-semibold);letter-spacing:-.01em;margin:0 0 var(--sp-4)}
+.label.sky{color:var(--sky-ink)}
+.label.sec{color:var(--c,var(--accent))}
+.tag{display:inline-flex;align-items:center;gap:6px;padding:2px 10px;border-radius:var(--r-pill);background:var(--accent-tint);
+  color:var(--accent);font-size:var(--fs-caption);font-weight:var(--fw-semibold);line-height:1.6}
+.tag.sec{background:color-mix(in srgb,var(--c) 12%,transparent);color:var(--c)}
+
+/* ---------- buttons and links (both carry a chevron) ---------- */
+.btn,.link{--chev:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M3 1.5 6.5 5 3 8.5' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}
+.btn::after,.link::after{content:"";width:.7em;height:.7em;flex:none;background:currentColor;
+  -webkit-mask:var(--chev) center/contain no-repeat;mask:var(--chev) center/contain no-repeat;
+  transition:transform var(--dur-fast) var(--ease-out)}
+.btn:hover::after,.link:hover::after{transform:translateX(3px)}
+.btn.no-chev::after{display:none}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4em;min-height:44px;padding:10px 20px 10px 22px;
+  border:0;border-radius:var(--r-pill);background:var(--accent);color:var(--on-accent);
+  font:inherit;font-weight:var(--fw-semibold);font-size:var(--fs-body);line-height:1.2;text-decoration:none;cursor:pointer;
+  transition:background var(--dur-fast) var(--ease-out),box-shadow var(--dur-fast) var(--ease-out),transform var(--dur-fast) var(--ease-out)}
+.btn:hover{background:var(--accent-hover)}
+.btn:active{transform:translateY(1px)}
+.btn:disabled{opacity:.45;cursor:default}
+.btn.dark{background:var(--ink);color:var(--surface)}
+.btn.dark:hover{background:color-mix(in srgb,var(--ink) 86%,var(--accent))}
+.btn.ghost{background:var(--surface);color:var(--ink);box-shadow:var(--shadow-sm)}
+.btn.ghost:hover{box-shadow:var(--shadow-md)}
+.btn.block{width:100%}
+.btn.sm{min-height:36px;padding:6px 14px 6px 16px;font-size:var(--fs-small)}
+.link{display:inline-flex;align-items:center;gap:.3em;padding:6px 2px;color:var(--accent);font-weight:var(--fw-semibold);text-decoration:none;cursor:pointer;background:none;border:0;font:inherit;font-weight:var(--fw-semibold)}
+.link:hover{color:var(--accent-hover)}
+.link.quiet{color:var(--muted);font-weight:var(--fw-medium)}
+
+/* ---------- cards and panels ---------- */
+.card{position:relative;background:var(--surface);border-radius:var(--r-lg);box-shadow:var(--shadow-md);padding:var(--sp-5)}
+.card.flat{box-shadow:none;border:1px solid var(--line)}
+.card.float{box-shadow:var(--shadow-lg)}
+.card.lift{transition:box-shadow var(--dur-base) var(--ease-out),transform var(--dur-base) var(--ease-out)}
+.card.lift:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+.card.accent{border-top:4px solid var(--c,var(--accent))}
+.panel{background:var(--surface);border-radius:var(--r-md);box-shadow:var(--shadow-xl);overflow:hidden}
+.panel-head{display:flex;align-items:center;justify-content:space-between;padding:var(--sp-3) var(--sp-4);border-bottom:1px solid var(--line);font-size:var(--fs-small);color:var(--ink);font-weight:var(--fw-semibold)}
+.panel-body{padding:var(--sp-4)}
+.track{height:6px;border-radius:var(--r-pill);background:var(--sunken);overflow:hidden}
+.track>i{display:block;height:100%;background:var(--c,var(--accent));border-radius:inherit;transition:width var(--dur-slow) var(--ease-out)}
+
+/* ---------- motion ---------- */
+.rise{animation:rise var(--dur-base) var(--ease-out) both}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* ---------- study guide: DESIGN.md section 11. Tokens only; no raw colors, sizes, radii or shadows. ---------- */
+:root{ --s-mutation-basics:var(--sec-blue); --s-chromosome-rearrangements:var(--sec-violet); --s-gene-mutations:var(--sec-teal); --s-spontaneous-mutations:var(--sec-rose); --s-induced-mutations:var(--sec-orange); --s-phenotypic-effects:var(--sec-amber); --s-dna-repair:var(--sec-green); --s-transposable-elements:var(--sec-slate);  --deck-c:var(--sec-blue); }
+html{scroll-padding-top:var(--sp-4);scroll-behavior:smooth}
+svg text{font-family:var(--font-sans);font-weight:var(--fw-semibold);letter-spacing:-.01em}
+.deckhero{--band-from:var(--deck-c);padding-top:max(var(--sp-6),env(safe-area-inset-top,0px))}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .deckhero{--band-from:color-mix(in oklch,var(--deck-c) 62%,var(--bg))} }
+:root[data-theme="dark"] .deckhero{--band-from:color-mix(in oklch,var(--deck-c) 62%,var(--bg))}
+.deckhero h1{margin-bottom:var(--sp-3)}
+.deckhero .label{margin-bottom:var(--sp-2)}
+.deckhero .lead{max-width:40ch;margin:0}
+.toplinks{display:flex;gap:var(--sp-5);flex-wrap:wrap;margin:0 0 var(--sp-6)}
+.overlap{position:relative;margin-top:calc(var(--band-height) * -.5);padding-bottom:var(--sp-8)}
+.toc h2{font-size:var(--fs-h3);margin-bottom:var(--sp-3)}
+.toc ol{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--sp-1) var(--sp-5)}
+.toc a{display:flex;align-items:center;gap:var(--sp-2);color:var(--ink);text-decoration:none;font-weight:var(--fw-medium);padding:var(--sp-1) 0;line-height:1.35}
+.toc a:hover{color:var(--accent)}
+.toc a::before{content:"";width:10px;height:10px;border-radius:var(--r-xs);background:var(--c);flex:none}
+.tocfoot{display:flex;justify-content:space-between;align-items:center;gap:var(--sp-3);margin-top:var(--sp-4);padding-top:var(--sp-3);border-top:1px solid var(--line)}
+section.card{margin-top:var(--sp-6)}
+section>h2{display:flex;align-items:baseline;gap:var(--sp-3);margin:var(--sp-2) 0 var(--sp-3)}
+section>h2 .n{color:var(--c)}
+h3{color:var(--ink);margin:var(--sp-6) 0 var(--sp-2)}
+section p,section li{max-width:var(--reading-max)}
+ul,ol{padding-left:1.3em;margin:0 0 1em}
+li{margin:var(--sp-1) 0}
+b,strong{font-weight:var(--fw-semibold);color:var(--ink)}
+.term{font-weight:var(--fw-semibold);color:var(--c)}
+.tablewrap{overflow-x:auto;margin:var(--sp-3) 0 var(--sp-4)}
+table{width:100%;border-collapse:collapse;font-size:var(--fs-small)}
+th,td{text-align:start;padding:var(--sp-2) var(--sp-3) var(--sp-2) 0;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-weight:var(--fw-semibold)}
+td{color:var(--text)}
+.viz{margin:var(--sp-4) 0 var(--sp-2)}
+.viz svg{width:100%;height:auto;max-height:420px;display:block}
+figure{margin:var(--sp-4) 0}
+figcaption{color:var(--muted);font-size:var(--fs-caption)}
+.box{--bar:var(--c);border-radius:var(--r-md);padding:var(--sp-3) var(--sp-4);margin:var(--sp-4) 0;background:color-mix(in srgb,var(--bar) 9%,var(--surface));border-left:4px solid var(--bar)}
+.box.warn{--bar:var(--again)}
+.box>.lbl{display:block;font-weight:var(--fw-bold);color:var(--bar);margin-bottom:var(--sp-1)}
+details.check{border:1.5px solid var(--line-strong);border-radius:var(--r-md);padding:var(--sp-3) var(--sp-4);margin:var(--sp-3) 0}
+details.check summary{cursor:pointer;list-style:none;color:var(--ink);font-weight:var(--fw-semibold)}
+details.check summary::-webkit-details-marker{display:none}
+details.check summary .link{padding:0 0 var(--sp-1)}
+details.check summary .link::after{transition:transform var(--dur-fast) var(--ease-out)}
+details.check[open] summary .link::after{transform:rotate(90deg)}
+details.check .a{margin-top:var(--sp-3);padding-top:var(--sp-3);border-top:1px solid var(--line);color:var(--text)}
+.math{font-family:var(--font-mono);font-size:.92em;background:var(--sunken);padding:1px var(--sp-1);border-radius:var(--r-xs);color:var(--ink)}
+.backtop{display:flex;justify-content:flex-end;margin-top:var(--sp-3)}
+.end{margin-top:var(--sp-7)}
+.end h2{font-size:var(--fs-h3)}
+@media (max-width:520px){.toc ol{grid-template-columns:1fr}}
+@media (max-width:420px){.card{padding:var(--sp-4)}}
+@media print{
+  :root{--bg:var(--surface)}
+  .band,.toplinks,.tocfoot,.backtop,.end{display:none!important}
+  .guides::before{display:none}
+  .hero{padding-block:0 var(--sp-4)}
+  .overlap{margin-top:0;padding-bottom:0}
+  .card{box-shadow:none}
+  section.card{break-inside:auto}
+  figure,.box,table,details{break-inside:avoid}
+  details.check summary .link::after{display:none}
+}
+</style>
+</head>
+<body>
+<header class="hero guides deckhero"><div class="band" aria-hidden="true"></div><div class="reading">
+  <nav class="toplinks"><a class="link quiet" href="../../">Back to all decks</a><a class="link" href="./">Study the flashcards</a></nav>
+  <p class="label">Genetics study guide</p><h1>Ch 18: Mutations and DNA Repair</h1><p class="lead">Chromosome rearrangements, gene mutations, their causes and effects, DNA repair and transposable elements.</p></div></header>
+<main class="reading overlap">
+<nav class="card float toc" id="toc" aria-label="Sections"><h2>Contents</h2><ol id="toclist"></ol>
+  <div class="tocfoot"><span class="hint">Every fact here is also a flashcard.</span><button class="btn ghost sm no-chev" onclick="document.querySelectorAll('details').forEach(d=>d.open=true);print()">Print</button></div></nav>
+<section data-sec="Mutation Basics">
+<h2>Mutation Basics</h2>
+<h3>Why mutations matter</h3>
+<ul>
+<li>Source of <b>all genetic variation</b>, which provides the raw material for evolution.</li>
+<li>Source of many diseases and disorders.</li>
+<li>Useful for probing fundamental biological processes.</li>
+<li>Can be harmful, beneficial or neutral.</li>
+</ul>
+<h3>Somatic vs germline</h3>
+<p>Multicellular organisms have two broad types of tissue: <span class="term">germline tissue</span> (reproductive cells that produce gametes, sperm or eggs) and <span class="term">somatic tissue</span> (all other cells). The location of a mutation determines whether it is passed to offspring.</p>
+<ul>
+<li><b>Somatic mutations are not inheritable.</b> They spread by mitosis to a population of mutant cells.</li>
+<li><b>Germline mutations are inheritable</b> through sexual reproduction (Fig. 18.1).</li>
+</ul>
+<div class="box"><span class="lbl">Example</span><span class="term">Tp53</span>, the guardian of the genome. Somatic mutations of Tp53 occur in about 50% of human cancers. <b>Li-Fraumeni syndrome</b> is a germline mutation of Tp53.</div>
+<h3>Two categories</h3>
+<ol>
+<li><b>Chromosomal rearrangements</b>: large scale, affect multiple genes.</li>
+<li><b>Gene mutations</b>: small changes, affect single genes.</li>
+</ol>
+</section>
+
+<section data-sec="Chromosome Rearrangements">
+<h2>Chromosome Rearrangements</h2>
+<p>Four basic types (Ch 8.2, Fig. 8.4):</p>
+<div class="tablewrap"><table>
+<tr><th>Type</th><th>What happens, and consequences</th></tr>
+<tr><td><b>Deletion</b></td><td>Part of a chromosome is deleted (loss of genetic material). Neutral to severe defects depending on size and location.</td></tr>
+<tr><td><b>Duplication</b></td><td>Part of a chromosome is doubled (gain of genetic material). Problems in chromosome pairing during meiosis; altered gene dosage.</td></tr>
+<tr><td><b>Inversion</b></td><td>A segment is inverted (no loss or gain). Neutral; a gene broken in 2 parts; position effect.</td></tr>
+<tr><td><b>Translocation</b></td><td>Genetic material moves to another chromosome. Position effect; deletions frequently accompany translocations.</td></tr>
+</table></div>
+<figure><div data-viz="rearr"></div></figure>
+<ul>
+<li>A duplication next to the original is a <span class="term">tandem duplication</span>. Duplications can also be displaced and/or reversed (they may have been inserted anywhere).</li>
+<li>In meiosis, a duplicated region must <b>loop out</b> to let the homologous sequences align (Fig. 8.6).</li>
+<li>Gene duplication and subsequent divergent evolution are primary drivers of biological complexity and new traits. Flies have p53; humans have p53, p63 and p73.</li>
+</ul>
+</section>
+
+<section data-sec="Gene Mutations">
+<h2>Gene Mutations</h2>
+<p>Three basic types (Ch 18.1): <b>base pair substitutions</b>, <b>insertions/deletions (indels)</b> and <b>expanding nucleotide repeats</b>.</p>
+<h3>Base pair substitutions</h3>
+<p>Alteration of a single nucleotide. They may or may not alter the encoded amino acid.</p>
+<figure><div data-viz="subst"></div></figure>
+<div class="box warn"><span class="lbl">Slide check</span>Slide 18 prints "Ser" under the GCA codon, but GCA codes for <b>Ala</b> in the codon table, as the handwritten note on slide 17 says.</div>
+<ul>
+<li><span class="term">Transition</span>: purine for purine, or pyrimidine for pyrimidine (s = same). A↔G, T↔C.</li>
+<li><span class="term">Transversion</span>: pyrimidine for purine, or purine for pyrimidine (v = versa). <b>Usually more severe.</b></li>
+</ul>
+<h3>Indels</h3>
+<p>Addition or removal of one or more nucleotides. Consequence: a <span class="term">frameshift mutation</span>, which alters the encoded amino acids at or following the mutation. Notice how the codons shift over.</p>
+<figure><div data-viz="indel"></div></figure>
+<h3>Expanding nucleotide repeats</h3>
+<ul>
+<li>Genes contain <span class="term">short tandem repeats (STRs)</span>, found anywhere in the gene: promoter, 5′UTR, exon, intron or 3′UTR.</li>
+<li>STRs are expanded in the disease state, which can affect the protein produced and/or how the gene is regulated.</li>
+<li>The number of copies of a set of nucleotides increases. Most are expansions of a 3-nucleotide set (<b>CNG</b>). More copies means more severe disease.</li>
+<li><b>ALS</b> is a human genetic disease caused by expanding nucleotide repeats (Lou Gehrig, diagnosed at 36). Table 18.1 lists others; the slide says you do not need to memorize it.</li>
+</ul>
+<h3>A model for repeat expansion (Fig. 18.5)</h3>
+<ol>
+<li>Occurs during DNA replication.</li>
+<li>A <b>hairpin forms</b> on the newly synthesized strand (DNA polymerase stutters, then reattaches).</li>
+<li>Part of the template is <b>replicated twice</b>, increasing the number of repeats.</li>
+<li>The DNA with increased repeats is used as a template, so the result contains extra CAG copies (8 → 13 in the figure).</li>
+</ol>
+<figure><div data-viz="expand"></div></figure>
+</section>
+
+<section data-sec="Spontaneous Mutations">
+<h2>Spontaneous Mutations</h2>
+<p>Mutations are classified by cause: <b>spontaneous</b> (mistakes in replication or meiosis, or spontaneous chemical changes in DNA) or <b>induced</b> (environmental mutagens, chemical or radiation). Spontaneous mutation rates are <b>rare</b> and vary among organisms and genes (Table 18.3).</p>
+
+<h3>Mistakes in replication or meiosis</h3>
+<ul>
+<li><span class="term">Wobble</span>: flexibility of DNA strands permits mispairing, such as thymine-guanine and cytosine-adenine (adenine protonated, with an extra hydrogen). It takes <b>two rounds of replication</b> to make the error permanent, and it leads to base pair substitutions.</li>
+<li><span class="term">Strand slippage</span>: a loop in the newly synthesized strand adds a nucleotide (insertion); a loop in the template omits one (deletion).</li>
+<li><span class="term">Unequal crossing over</span>: in meiosis I (prophase I), homologous chromosomes may misalign. One product has an insertion, the other a deletion.</li>
+<li>Expanding nucleotide repeats (previous section).</li>
+</ul>
+<div class="box warn"><span class="lbl">Not the same</span>Wobble in Ch 18 is mispairing of DNA bases. Wobble in Ch 15 is flexible codon-anticodon pairing at the 3rd codon base, behind the degeneracy of the code.</div>
+
+<h3>Spontaneous chemical changes</h3>
+<ul>
+<li><span class="term">Depurination</span>: a base, usually a purine (A or G, "Pure As Gold"), is lost when the covalent bond between base and sugar breaks. Pyrimidines are C, U or T ("CUT the py"). The apurinic site cannot template, so a roughly random base (often A) is incorporated; at the next round it becomes a permanent mutation (Fig. 18.14).</li>
+<li><span class="term">Oxidative deamination</span>: loss of an amino group from a base, changing it into one that pairs differently.
+ <ul><li>Cytosine → uracil: C•G → U•A → T•A.</li>
+ <li>5-methylcytosine (a naturally occurring modified base) → thymine: C•G → 5mC•G → T•G → T•A.</li>
+ <li>Both are C to T base pair substitutions, so they are <b>transitions</b>.</li></ul></li>
+<li><span class="term">Oxidation by reactive oxygen</span>: produced by normal metabolism, elevated by chemical mutagens and ionizing radiation. Guanine becomes 8-oxy-7,8-dihydrodeoxyguanine, which may mispair with adenine, causing a <b>G-C to T-A transversion</b> (G•C → 8-oxoG•C → 8-oxoG•A → T•A).</li>
+</ul>
+</section>
+
+<section data-sec="Induced Mutations">
+<h2>Induced Mutations</h2>
+<h3>Base analogs</h3>
+<p>Molecules that mimic the structure of normal DNA bases. <b>5-bromouracil (5BU)</b> has a Br atom instead of a methyl group on carbon 5. Like T, it normally pairs with A, but when ionized it pairs with G (wobble). Result: a permanent <b>A-T to G-C transition</b> after two additional rounds of replication (Fig. 18.18).</p>
+<h3>Chemical mutagens cause base pair substitutions</h3>
+<div class="tablewrap"><table>
+<tr><th>Mutagen</th><th>Change</th><th>Mutation</th></tr>
+<tr><td><b>Alkylating agents</b> (EMS)</td><td>Guanine → O6-ethylguanine, pairs with T</td><td>CG → TA, TA → CG</td></tr>
+<tr><td><b>Oxidative deamination</b> (nitrous acid)</td><td>Cytosine → uracil, pairs with A</td><td>CG → TA, TA → CG</td></tr>
+<tr><td><b>Hydroxylamine</b></td><td>Cytosine → hydroxylaminocytosine, pairs with A</td><td>CG → TA</td></tr>
+</table></div>
+<h3>Intercalating agents</h3>
+<p>Flat molecules (e.g. <b>acridine orange</b>) that intercalate between bases. They distort the double helix, increase strand slippage and cause single-nucleotide insertions and deletions during replication.</p>
+<div class="box"><span class="lbl">Establishing the triplet code</span>Crick and colleagues used acridine orange to make mutants with single-nucleotide insertions or deletions. Adding or removing a base shifts the entire reading frame downstream; three additions restore the reading frame, which established that the code is a triplet.</div>
+<figure><div data-viz="triplet"></div></figure>
+<h3>Radiation</h3>
+<ul>
+<li><b>Ionizing radiation</b> (X-rays, gamma rays) breaks chemical bonds in water and other molecules, which oxidize bases or break the DNA backbone.</li>
+<li><b>Ultraviolet light</b> (about 260 nm, absorbed by bases) causes <b>pyrimidine dimers</b>, which block replication.</li>
+</ul>
+</section>
+
+<section data-sec="Phenotypic Effects">
+<h2>Phenotypic Effects</h2>
+<ul>
+<li><span class="term">Forward mutation</span>: wild-type phenotype → mutant phenotype.</li>
+<li><span class="term">Reverse mutation</span>: mutant phenotype → wild-type phenotype.</li>
+</ul>
+<h3>Ames test (Fig. 18.23)</h3>
+<p>Tests whether chemicals are mutagens and therefore may cause cancer, by testing for reversion of <b>his− auxotrophic</b> bacteria. Colonies that grow underwent a his− to his+ mutation. Any chemical that significantly increases the number of colonies on the treatment plate is mutagenic and probably carcinogenic.</p>
+<h3>Effects on protein (Table 18.2)</h3>
+<figure><div data-viz="effects"></div></figure>
+<div class="tablewrap"><table>
+<tr><th>Mutation</th><th>Definition</th></tr>
+<tr><td><b>Missense</b></td><td>Sense codon → different sense codon; a different amino acid</td></tr>
+<tr><td><b>Nonsense</b></td><td>Sense codon → stop codon; premature termination</td></tr>
+<tr><td><b>Silent</b></td><td>Sense codon → synonymous codon; sequence unchanged</td></tr>
+<tr><td><b>Neutral</b></td><td>Changes the sequence without altering function</td></tr>
+<tr><td><b>Loss-of-function</b></td><td>Complete or partial loss of function</td></tr>
+<tr><td><b>Gain-of-function</b></td><td>New trait or function, or one in the wrong tissue or time</td></tr>
+<tr><td><b>Lethal</b></td><td>Causes premature death</td></tr>
+</table></div>
+<p><span class="term">Conditional mutation</span>: the phenotype is only expressed under certain conditions. Siamese cats carry a recessive temperature-sensitive allele of an albinism gene; the mutant protein is only active in cooler cells in the extremities.</p>
+<h3>Suppressor mutations</h3>
+<p>A second mutation that masks the phenotype of another without reverting it.</p>
+<ul>
+<li><span class="term">Intragenic</span>: in the same gene. It may change the codon so the wild-type amino acid is encoded (Fig. 18.8: UUA Leu → UUU Phe → CUU Leu), or change a different amino acid to compensate.</li>
+<li><span class="term">Intergenic</span>: in a different gene. In Fig. 18.9, a nonsense mutation makes UAG; a second mutation in a tyrosine tRNA gene changes its anticodon from AUA to AUC, which pairs with UAG (not normally possible). Tyr is inserted and a full-length, functional protein is made.</li>
+</ul>
+</section>
+
+<section data-sec="DNA Repair">
+<h2>DNA Repair</h2>
+<div class="tablewrap"><table>
+<tr><th>Repair system</th><th>Damage repaired (Table 18.5)</th></tr>
+<tr><td><b>Mismatch</b></td><td>Replication errors: mispaired bases, strand slippage</td></tr>
+<tr><td><b>Direct</b></td><td>Pyrimidine dimers; other specific alterations</td></tr>
+<tr><td><b>Base excision</b></td><td>Abnormal bases, modified bases, pyrimidine dimers</td></tr>
+<tr><td><b>Nucleotide excision</b></td><td>Damage that distorts the double helix</td></tr>
+<tr><td><b>Homologous recombination</b></td><td>Double-strand breaks</td></tr>
+<tr><td><b>Nonhomologous end joining</b></td><td>Double-strand breaks</td></tr>
+</table></div>
+<h3>Mismatch repair</h3>
+<p>The <b>mismatch repair complex</b> detects the mismatch and interacts with protein bound to <b>hemi-methylated GATC</b>. Right after replication the old strand is methylated and the new one is not yet, which identifies the new strand. Single-strand nicks are made next to the unmethylated GATC; exonuclease removes the strand, DNA polymerase replaces it, and DNA ligase seals the nick.</p>
+<h3>Direct repair</h3>
+<p>Does not replace the altered nucleotide; it restores the correct structure. Example: <b>methyltransferase</b> removes the methyl group from O6-methylguanine, restoring guanine.</p>
+<h3>Base excision repair</h3>
+<ol>
+<li>A specific <b>DNA glycosylase</b> recognizes and removes the modified base (e.g. uracil glycosylase removes uracil), creating an <b>AP (apurinic or apyrimidinic) site</b>.</li>
+<li><b>AP endonuclease</b> cleaves the phosphodiester bond next to the AP site.</li>
+<li><b>DNA polymerase</b> recognizes the nick and replaces the missing nucleotide.</li>
+<li><b>DNA ligase</b> seals the nick.</li>
+</ol>
+<h3>Nucleotide excision repair</h3>
+<p>Recognizes and removes bulky distortions in the double helix, such as pyrimidine dimers. An enzyme complex recognizes the distortion and recruits enzymes that separate the strands; single-strand binding proteins keep them apart. The damaged strand is nicked on both sides, helicases remove it, DNA polymerase fills the gap and DNA ligase seals the nick.</p>
+<h3>Double-strand breaks</h3>
+<ul>
+<li><span class="term">Homologous recombination</span>: sequence from the sister chromatid replaces the broken region (the preferred method). Uses BRCA1 and BRCA2.</li>
+<li><span class="term">Nonhomologous end joining</span>: proteins bind the broken ends and join them. Very error prone, but may let the cell survive. It can form deletions, duplications, inversions and translocations.</li>
+</ul>
+<div class="box"><span class="lbl">Disease link</span>Inheriting a mutant allele of a DNA repair gene raises the somatic mutation rate. If BRCA1 or BRCA2 is mutated, the cell must use nonhomologous end joining (higher mutation chance), which greatly increases risk for breast and ovarian cancer.</div>
+</section>
+
+<section data-sec="Transposable Elements">
+<h2>Transposable Elements</h2>
+<p><span class="term">Transposable elements</span> ("jumping genes") are DNA sequences that can move from one genomic location to another. Transposition can be mutagenic and a source of genomic instability. They make up <b>46%</b> of the human genome; protein-coding sequence is 3%.</p>
+<h3>Two classes (Table 18.4)</h3>
+<div class="tablewrap"><table>
+<tr><th></th><th>Class I retrotransposons</th><th>Class II DNA transposons</th></tr>
+<tr><td>Mechanism</td><td>Copy and paste via an RNA intermediate</td><td>Cut and paste via DNA</td></tr>
+<tr><td>Genes</td><td>Reverse transcriptase and endonuclease</td><td>Transposase</td></tr>
+<tr><td>Ends</td><td>Long terminal direct repeats</td><td>Short terminal inverted repeats</td></tr>
+<tr><td>Examples</td><td>Ty (yeast), copia (Drosophila), Alu (human)</td><td>IS1, Tn3 (E. coli), Ac and Ds (corn), P elements (Drosophila)</td></tr>
+</table></div>
+<figure><div data-viz="te"></div></figure>
+<ul>
+<li>Transposase binds the inverted repeats and cuts the DNA; the DNA transposon inserts at a new site.</li>
+<li>Retrotransposon endonuclease nicks or cleaves the DNA so the copy can integrate.</li>
+</ul>
+<h3>Non-autonomous elements</h3>
+<p>The <b>Ac</b> element has an intact transposase gene. <b>Ds</b> elements have truncated, nonfunctional transposase genes (different Ds elements have different deletions) and "hijack" the Ac transposase to jump.</p>
+<figure><div data-viz="acds"></div></figure>
+<h3>Effects</h3>
+<ul>
+<li>Some bacterial transposons carry antibiotic resistance genes; Tn10 carries tetR between IS10L and IS10R. Their transposition can make multi-drug resistant DNA that passes between bacteria.</li>
+<li>Elements may insert into or next to genes and disrupt expression. White grapes: a Gret1 retrotransposon near VvmybA1 disrupts anthocyanin synthesis. Red grapes: most of it was removed, partly restoring color.</li>
+<li><b>LINE-1</b> is an autonomous human retrotransposon with about 150 full-length copies. Its retrotransposition is a source of DNA damage and genome instability, and its proteins are biomarkers for cancer.</li>
+</ul>
+</section>
+
+<div class="card end"><h2>Done reading?</h2><p>Test what stuck with the flashcards and the quiz.</p><a class="btn block" href="./">Open flashcards and quiz</a></div>
+</main>
+<script>
+const P = {};
+/* ---------- diagrams ---------- */
+let uid = 0;
+function svgWrap(inner, h=340){ const id = "m"+(++uid);
+  return `<svg viewBox="0 0 600 ${h}" role="img" aria-label="diagram"><defs>
+  <marker id="${id}i" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" style="fill:var(--ink)"/></marker>
+  <marker id="${id}a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" style="fill:var(--c)"/></marker>
+  </defs>${inner.replace(/MK_I/g,`url(#${id}i)`).replace(/MK_A/g,`url(#${id}a)`)}</svg>`; }
+const INK="var(--ink)", ACC="var(--c)", MUT="var(--muted)";
+function label(x,y,t,o,anchor="middle"){
+  const st = o.quiz===t ? "quiz" : (o.hideAll && o.quiz ? "blank" : (o.hl===t ? "hl":"show"));
+  const w = Math.max(28, t.length*15.5+20), x0 = anchor==="middle"? x-w/2 : anchor==="start"? x-8 : x-w+8;
+  if (st==="quiz") return `<rect x="${x-30}" y="${y-22}" width="60" height="40" rx="9" style="fill:var(--c)"/><text x="${x}" y="${y+5}" text-anchor="middle" font-size="30" style="fill:var(--surface)">?</text>`;
+  if (st==="blank") return `<rect x="${x0}" y="${y-19}" width="${w}" height="34" rx="8" style="fill:var(--soft);stroke:var(--line)"/>`;
+  return `<text x="${x}" y="${y+9}" text-anchor="${anchor}" font-size="${st==="hl"?29:26}" style="fill:${st==="hl"?ACC:INK}">${t}</text>`;
+}
+const ln = (x1,y1,x2,y2,c=INK,w=2,extra="") => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" style="stroke:${c}" stroke-width="${w}" ${extra}/>`;
+const arr = (x1,y1,x2,y2,on) => ln(x1,y1,x2,y2,on?ACC:INK,on?5:3.5,`marker-end="${on?"MK_A":"MK_I"}"`);
+const D = {
+ rearr(o){ const seg=(x,y,t,hot,dark)=>`<rect x="${x}" y="${y}" width="36" height="30" rx="4" style="fill:${hot?"color-mix(in srgb,var(--c) 35%,var(--surface))":dark?"var(--line)":"var(--soft)"};stroke:${hot?"var(--c)":"var(--ink)"}" stroke-width="2"/><text x="${x+18}" y="${y+22}" text-anchor="middle" font-size="18" style="fill:var(--ink)">${t}</text>`;
+  const row=(y,name,letters,hot,dark)=>{ const on=o.hl===name||o.quiz===name;
+    return label(112,y+15,name,o)+letters.map((l,i)=>seg(240+i*38,y,l,on&&hot.includes(i),dark&&dark.includes(i))).join(""); };
+  return svgWrap(`<text x="240" y="36" font-size="18" style="fill:var(--muted)">original: A B C D E F G</text>
+   ${row(70,"Deletion",["A","B","C","D","G"],[3,4])}
+   <text x="440" y="92" font-size="18" style="fill:var(--muted)">E F lost</text>
+   ${row(150,"Duplication",["A","B","C","D","E","F","E","F","G"],[6,7])}
+   ${row(230,"Inversion",["A","B","C","F","E","D","G"],[3,4,5])}
+   ${row(310,"Translocation",["A","B","C","D","Q","R","S"],[4,5,6],[4,5,6])}
+   <text x="300" y="392" text-anchor="middle" font-size="20" style="fill:var(--muted)">Q R S came from a different chromosome</text>`,410); },
+ subst(){ const codons=(y,list,hot)=>list.map((c,i)=>`<text x="${120+i*90}" y="${y}" text-anchor="middle" font-size="24" style="fill:${hot===i?"var(--c)":"var(--ink)"};font-family:var(--font-mono);font-weight:${hot===i?700:400}">${c}</text>`).join("");
+  return svgWrap(`<text x="20" y="40" font-size="20" style="fill:var(--muted)">original</text>${codons(80,["GGG","AGT","GTA","GAT","CGT"],-1)}
+   <text x="300" y="112" text-anchor="middle" font-size="20" style="fill:var(--ink)">GTA = Val</text>
+   <text x="20" y="152" font-size="20" style="fill:var(--muted)">substitution</text>${codons(190,["GGG","AGT","GCA","GAT","CGT"],2)}
+   <text x="300" y="222" text-anchor="middle" font-size="20" style="fill:var(--c)">GCA = Ala: one codon changed</text>
+   <text x="20" y="262" font-size="20" style="fill:var(--muted)">another example</text>${codons(298,["GGG","AGT","GTG","GAT","CGT"],2)}
+   <text x="300" y="330" text-anchor="middle" font-size="20" style="fill:var(--ink)">GTG = Val: same amino acid</text>`); },
+ indel(){ const r=(y,codons,aas,hotFrom)=>codons.map((c,i)=>`<text x="${110+i*95}" y="${y}" text-anchor="middle" font-size="24" style="fill:${i>=hotFrom?"var(--c)":"var(--ink)"};font-family:var(--font-mono)">${c}</text><text x="${110+i*95}" y="${y+30}" text-anchor="middle" font-size="20" style="fill:${i>=hotFrom?"var(--c)":"var(--muted)"}">${aas[i]||""}</text>`).join("");
+  return svgWrap(`<text x="20" y="34" font-size="20" style="fill:var(--muted)">original</text>${r(70,["GGG","AGT","GTA","GAT","CGT"],["Gly","Ser","Val","Asp","Arg"],9)}
+   <text x="20" y="140" font-size="20" style="fill:var(--muted)">insertion of T</text>${r(176,["GGG","AGT","GTT","AGA","TCG"],["Gly","Ser","Val","Arg","Ser"],3)}
+   <text x="20" y="246" font-size="20" style="fill:var(--muted)">deletion of T</text>${r(282,["GGG","AGT","GAG","ATC","GT"],["Gly","Ser","Glu","Ile","Val"],2)}`); },
+ expand(){ const rep=(x,y,n,hot)=>{let s=""; for(let i=0;i<n;i++) s+=`<rect x="${x+i*34}" y="${y}" width="32" height="26" rx="3" style="fill:${hot&&i>=8?"color-mix(in srgb,var(--c) 40%,var(--surface))":"var(--soft)"};stroke:var(--ink)" stroke-width="1.5"/>`; return s;};
+  return svgWrap(`<text x="20" y="40" font-size="20" style="fill:var(--ink)">template: 8 CAG repeats</text>${rep(40,56,8,false)}
+   <path d="M330 150 L330 190 A20 20 0 1 0 370 190 L370 150" style="fill:none;stroke:var(--c)" stroke-width="5"/>
+   <text x="390" y="170" font-size="20" style="fill:var(--c)">hairpin on</text><text x="390" y="196" font-size="20" style="fill:var(--c)">the new strand</text>
+   <text x="40" y="170" font-size="20" style="fill:var(--muted)">polymerase re-copies</text><text x="40" y="196" font-size="20" style="fill:var(--muted)">part of the template</text>
+   <text x="20" y="262" font-size="20" style="fill:var(--ink)">result: 13 repeats</text>${rep(40,278,13,true)}`); },
+ triplet(){ const row=(y,seq,mark,res)=>{ let s=""; [...seq].forEach((c,i)=>{ const add=mark.includes(i); s+=`<text x="${60+i*24}" y="${y}" text-anchor="middle" font-size="22" style="fill:${add?"var(--c)":"var(--ink)"};font-family:var(--font-mono);font-weight:${add?700:400}">${c}</text>`; }); return s+`<text x="580" y="${y}" text-anchor="end" font-size="20" style="fill:${res==="normal"?"var(--c)":"var(--muted)"}">${res}</text>`; };
+  return svgWrap(`<text x="20" y="40" font-size="20" style="fill:var(--muted)">reading the code in triplets</text>
+   ${row(90,"ABCABCABCABCABCABC",[],"normal")}
+   ${row(150,"ABCXABCABCABCABCAB",[3],"mutant")}
+   ${row(210,"ABCXABCYABCABCABCA",[3,7],"mutant")}
+   ${row(270,"ABCXABCYABCZABCABC",[3,7,11],"normal")}
+   <text x="300" y="322" text-anchor="middle" font-size="20" style="fill:var(--c)">three additions restore the reading frame</text>`); },
+ effects(o){ const col=(x,name,codon,aa,hot)=>{ const on=o.hl===name||o.quiz===name;
+   return `<text x="${x}" y="120" text-anchor="middle" font-size="24" style="fill:var(--ink);font-family:var(--font-mono)">${codon.slice(0,1)}<tspan style="fill:var(--c);font-weight:700">${codon.slice(1,2)}</tspan>${codon.slice(2)}</text>
+    ${arr(x,134,x,184,on)}<circle cx="${x}" cy="222" r="30" style="fill:${on?"color-mix(in srgb,var(--c) 35%,var(--surface))":"var(--soft)"};stroke:${on?"var(--c)":"var(--ink)"}" stroke-width="2"/>
+    <text x="${x}" y="229" text-anchor="middle" font-size="18" style="fill:var(--ink)">${aa}</text>${label(x,290,name,o)}`; };
+  return svgWrap(`<text x="300" y="40" text-anchor="middle" font-size="20" style="fill:var(--muted)">wild type: UCA = Ser</text>
+   ${col(110,"Missense","UUA","Leu")}${col(300,"Nonsense","UAA","Stop")}${col(490,"Silent","UCG","Ser")}`); },
+ te(o){ const box=(x,t,on)=>`<rect x="${x}" y="240" width="160" height="40" rx="4" style="fill:${on?"color-mix(in srgb,var(--c) 35%,var(--surface))":"var(--soft)"};stroke:${on?"var(--c)":"var(--ink)"}" stroke-width="2"/><text x="${x+80}" y="267" text-anchor="middle" font-size="18" style="fill:var(--ink)">${t}</text>`;
+  const r=o.hl==="retro", d=o.hl==="dna";
+  return svgWrap(`<text x="150" y="40" text-anchor="middle" font-size="22" style="fill:${r?ACC:INK}">Class I retrotransposon</text>
+   <text x="150" y="70" text-anchor="middle" font-size="18" style="fill:var(--muted)">copy and paste via RNA</text>
+   <text x="150" y="112" text-anchor="middle" font-size="18" style="fill:var(--ink)">encodes reverse transcriptase</text>
+   <text x="150" y="138" text-anchor="middle" font-size="18" style="fill:var(--ink)">and endonuclease</text>
+   ${box(10,"",false)}<text x="90" y="267" text-anchor="middle" font-size="18" style="fill:var(--ink)">stays</text>
+   ${arr(110,232,110,170,r)}<text x="160" y="200" font-size="18" style="fill:${r?ACC:INK}">RNA copy</text>
+   <text x="450" y="40" text-anchor="middle" font-size="22" style="fill:${d?ACC:INK}">Class II DNA transposon</text>
+   <text x="450" y="70" text-anchor="middle" font-size="18" style="fill:var(--muted)">cut and paste via DNA</text>
+   <text x="450" y="112" text-anchor="middle" font-size="18" style="fill:var(--ink)">encodes transposase,</text>
+   <text x="450" y="138" text-anchor="middle" font-size="18" style="fill:var(--ink)">which cuts at inverted repeats</text>
+   ${box(370,"",false)}<text x="450" y="267" text-anchor="middle" font-size="18" style="fill:var(--ink)">excised</text>
+   ${arr(450,232,450,170,d)}<text x="470" y="200" font-size="18" style="fill:${d?ACC:INK}">moves</text>
+   <text x="300" y="320" text-anchor="middle" font-size="20" style="fill:var(--muted)">both insert at a new genomic location</text>`); },
+ acds(){ const el=(y,name,gap)=>`<text x="20" y="${y+20}" font-size="20" style="fill:var(--ink)">${name}</text>
+   <rect x="120" y="${y}" width="30" height="28" style="fill:var(--c)"/><rect x="530" y="${y}" width="30" height="28" style="fill:var(--c)"/>
+   ${gap?`<rect x="150" y="${y}" width="150" height="28" style="fill:var(--soft);stroke:var(--ink)" stroke-width="1.5"/><rect x="400" y="${y}" width="130" height="28" style="fill:var(--soft);stroke:var(--ink)" stroke-width="1.5"/><text x="350" y="${y+20}" text-anchor="middle" font-size="16" style="fill:var(--muted)">deleted</text>`
+     :`<rect x="150" y="${y}" width="380" height="28" style="fill:color-mix(in srgb,var(--c) 30%,var(--surface));stroke:var(--ink)" stroke-width="1.5"/><text x="340" y="${y+20}" text-anchor="middle" font-size="16" style="fill:var(--ink)">intact transposase gene</text>`}`;
+  return svgWrap(`${el(60,"Ac",false)}${el(160,"Ds",true)}
+   ${arr(300,100,300,150,true)}<text x="318" y="132" font-size="18" style="fill:var(--c)">Ds hijacks Ac transposase</text>
+   <text x="300" y="250" text-anchor="middle" font-size="20" style="fill:var(--muted)">terminal inverted repeats at both ends</text>
+   <text x="300" y="290" text-anchor="middle" font-size="20" style="fill:var(--muted)">Ds is non-autonomous</text>`); },
+}
+;
+function viz(spec, extra={}){ if(!spec) return ""; const [k,arg]=spec.split(":");
+  const o = Object.assign({}, extra); if(arg && !o.quiz) o.hl=arg;
+  return D[k] ? `<div class="viz">${D[k](o)}</div>` : ""; }
+
+
+const slug = s => s.toLowerCase().replace(/ /g,"-");
+document.querySelectorAll("section[data-sec]").forEach((s,i)=>{
+  const name=s.dataset.sec, c=`var(--s-${slug(name)})`; s.id=slug(name); s.classList.add("card","accent"); s.style.setProperty("--c",c);
+  const h=s.querySelector("h2"); if(h) h.insertAdjacentHTML("afterbegin",`<span class="n num">${i+1}</span>`);
+  s.insertAdjacentHTML("beforeend",'<div class="backtop"><a class="link quiet" href="#toc">Back to contents</a></div>');
+  document.getElementById("toclist").insertAdjacentHTML("beforeend",`<li><a href="#${s.id}" style="--c:${c}">${name}</a></li>`);
+});
+document.querySelectorAll("details.check summary").forEach(s=>{ s.innerHTML=`<span class="link">Check yourself</span><span>${s.innerHTML}</span>`; s.style.display="grid"; });
+document.querySelectorAll("[data-viz]").forEach(el=>{ el.outerHTML = viz(el.dataset.viz) || ""; });
+</script>
+</body>
+</html>
